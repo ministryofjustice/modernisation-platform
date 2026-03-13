@@ -14,6 +14,7 @@
           "digital-prison-reporting-production",
           "electronic-monitoring-data-production",
           "equip-production",
+          "hmpps-court-data-ingestion-api-production",
           "hmpps-domain-services-production",
           "hmpps-esupervision-production",
           "hmpps-oem-production",
@@ -34,7 +35,7 @@
   "options": {
     "bastion_linux": false,
     "additional_cidrs": [],
-    "secondary_cidr_blocks": ["10.27.168.0/21"],
+    "secondary_cidr_blocks": [],
     "additional_endpoints": [
       "com.amazonaws.eu-west-2.athena",
       "com.amazonaws.eu-west-2.execute-api",

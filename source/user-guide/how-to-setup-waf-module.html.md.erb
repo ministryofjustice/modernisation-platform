@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Web Application Firewall (WAF) Module
-last_reviewed_on: 2025-08-14
+last_reviewed_on: 2026-02-20
 review_in: 6 months
 ---
 
@@ -25,12 +25,12 @@ You can associate the WAF with one or more AWS resources (e.g., Application Load
 
 ```hcl
 module "waf" {
-  source                      = "git::https://github.com/ministryofjustice/modernisation-platform-terraform-waf?ref=v0.0.1"
+  source                      = "git::https://github.com/ministryofjustice/modernisation-platform-terraform-waf?ref=v2.0.0"
   enable_pagerduty_integration = true
-  enable_ddos_protection       = true
-  ddos_rate_limit              = 5000
-  block_non_uk_traffic         = false
-  associated_resource_arns     = [aws_lb.waf_lb.arn]
+  enable_ddos_protection = true
+  ddos_rate_limit        = 5000
+  block_non_uk_traffic   = false
+  associated_resource_arns = [aws_lb.waf_lb.arn]
   managed_rule_actions = {
     AWSManagedRulesKnownBadInputsRuleSet = false
     AWSManagedRulesCommonRuleSet         = false
@@ -41,42 +41,30 @@ module "waf" {
   }
 
   core_logging_account_id = local.environment_management.account_ids["core-logging-production"]
-  application_name        = local.application_name
-  tags                    = local.tags
-}
 
-additional_managed_rules = [
+  application_name = local.application_name
+  tags             = local.tags
+
+  additional_managed_rules = [
   {
     name            = "AWSManagedRulesPHPRuleSet"
     vendor_name     = "AWS"
     override_action = "count"
   },
   {
-    name            = "AWSManagedRulesUnixRuleSet"
-    vendor_name     = "AWS"
+    name        = "AWSManagedRulesUnixRuleSet"
+    vendor_name = "AWS"
     override_action = "count"
   }
 ]
+}
 ```
 
 ---
 
 ## Known issues and limitations
 
-### 1. Rule priority management
-
-Currently, the module does not support configuring the **priority** of WAF rules.  
-This limitation has been raised as an issue and will be addressed in a future release.
-
-**Impact:**  
-You cannot explicitly set the order in which WAF rules are evaluated.
-
-**Workaround:**  
-None at present — rules will be ordered automatically by the module.
-
----
-
-### 2. FM-managed rule conflicts for MOJ teams
+### 1. FM-managed rule conflicts for MOJ teams
 
 For MOJ teams, a Firewall Manager (FM)–managed rule created in the  
 [`aws-root-account`](https://github.com/ministryofjustice/aws-root-account/blob/main/organisation-security/terraform/firewall-manager.tf) repository  
@@ -94,7 +82,7 @@ Run the apply, then manually associate the resources to the WAF afterwards.
 
 To use this module you must:
 
-- Have Terraform ≥ 1.0 and AWS provider ~> 5.90 configured.
+- Have Terraform ≥ 1.0 and AWS provider ~> 6.0 configured.
 - Ensure your target AWS resources (e.g., ALBs, CloudFront distributions) are available for WAF association.
 - For IP blocking, have an SSM SecureString parameter containing the JSON-encoded IP list. The module creates this, however you will need to populate it.
 

@@ -95,7 +95,7 @@ jobs:
           echo "account-id=$ACCOUNT_ID" >> "$GITHUB_OUTPUT"
 
       - name: Configure AWS Credentials (member account OIDC role)
-        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708
+        uses: aws-actions/configure-aws-credentials@8df5847569e6427dd6c4fb1cf565c83acfa8afa7
         with:
           role-to-assume: arn:aws:iam::${{ steps.account.outputs.account-id }}:role/${{ inputs.ASSUME_ROLE_NAME }}
           role-session-name: githubactionsrolesession

@@ -292,7 +292,33 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     condition {
       test     = "ForAnyValue:StringLike"
       variable = "aws:PrincipalArn"
-      values   = ["arn:aws:iam::*:role/github-actions"]
+      values   = ["arn:aws:iam::*:role/github-actions", "arn:aws:iam::*:role/github-actions-environments-dev-test"]
+    }
+  }
+
+  statement {
+    sid     = "AllowGithubActionsTerraformReadOnlyPutLock"
+    effect  = "Allow"
+    actions = ["s3:PutObject"]
+    resources = [
+      "${module.state-bucket.bucket.arn}/*/*.tflock",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::*:role/github-actions-environments-read-only"]
     }
   }
 
@@ -318,7 +344,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     condition {
       test     = "ForAnyValue:StringLike"
       variable = "aws:PrincipalArn"
-      values   = ["arn:aws:iam::*:role/github-actions"]
+      values   = ["arn:aws:iam::*:role/github-actions", "arn:aws:iam::*:role/github-actions-environments-read-only", "arn:aws:iam::*:role/github-actions-environments-dev-test"]
     }
   }
 
@@ -399,7 +425,6 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     effect = "Allow"
     actions = [
       "s3:PutObject",
-      "s3:PutObjectAcl",
       "s3:GetObject"
     ]
     resources = [
@@ -408,7 +433,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     ]
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions"]
+      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions", "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions-environments-dev-test"]
     }
   }
 
@@ -424,7 +449,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     ]
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions"]
+      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions", "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions-environments-dev-test"]
     }
   }
 
@@ -508,8 +533,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     effect = "Allow"
     actions = [
       "s3:GetObject",
-      "s3:PutObject",
-      "s3:PutObjectAcl"
+      "s3:PutObject"
     ]
     resources = ["${module.state-bucket.bucket.arn}/environments/accounts/*"]
     principals {
@@ -600,7 +624,6 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     actions = [
       "s3:GetObject",
       "s3:PutObject",
-      "s3:PutObjectAcl",
       "s3:DeleteObject"
     ]
 
@@ -627,15 +650,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
         local.environment_management.account_ids["cloud-platform-development"],
         local.environment_management.account_ids["cloud-platform-preproduction"],
         local.environment_management.account_ids["cloud-platform-nonlive"],
-        local.environment_management.account_ids["cloud-platform-live"],
-        local.environment_management.account_ids["cloud-platform-non-live-development"],
-        local.environment_management.account_ids["cloud-platform-non-live-test"],
-        local.environment_management.account_ids["cloud-platform-non-live-preproduction"],
-        local.environment_management.account_ids["cloud-platform-non-live-production"],
-        local.environment_management.account_ids["cloud-platform-live-development"],
-        local.environment_management.account_ids["cloud-platform-live-test"],
-        local.environment_management.account_ids["cloud-platform-live-preproduction"],
-        local.environment_management.account_ids["cloud-platform-live-production"]
+        local.environment_management.account_ids["cloud-platform-live"]
       ]
     }
   }
@@ -645,7 +660,6 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     actions = [
       "s3:GetObject",
       "s3:PutObject",
-      "s3:PutObjectAcl",
       "s3:DeleteObject"
     ]
 
@@ -653,7 +667,6 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     principals {
       type = "AWS"
       identifiers = [
-        "arn:aws:iam::${local.environment_management.account_ids["cloud-platform-non-live-development"]}:role/github-actions-development-cluster",
         "arn:aws:iam::${local.environment_management.account_ids["cloud-platform-development"]}:role/github-actions-development-cluster"
       ]
     }

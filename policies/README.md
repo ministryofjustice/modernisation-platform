@@ -11,8 +11,6 @@ This runs the OPA tests against each json file in the [environments](../environm
 
 The policies in the [member](./member) folder are additional policies that will only run against an environments .JSON file if the `account-type` is `member`. This is because some of the early core and unrestricted accounts do not follow are current naming conventions.
 
-Policies in the [collborators](./collaborators) folder check the collaborators.json file.
-
 [scripts/tests/validate/run-opa-tests.sh](../scripts/tests/validate/run-opa-tests.sh)
 
 ## Run the test unit tests
@@ -24,5 +22,3 @@ These verify that the tests are running as expected.
 `conftest verify -p policies/networking`
 
 `conftest verify -p policies/member`
-
-`conftest verify -p policies/collaborators`

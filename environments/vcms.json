@@ -21,6 +21,10 @@
         {
           "sso_group_name": "hosting-migrations",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "hmpps-vcms-write-team",
+          "level": "developer"
         }
       ]
     },

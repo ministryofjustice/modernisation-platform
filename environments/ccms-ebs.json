@@ -4,6 +4,10 @@
     {
       "name": "workspaces-secure-browser",
       "sso_group_name": "aws-root-account-admin-team"
+    },
+    {
+      "name": "ccms-ebs-ssogen",
+      "sso_group_name": "laa-sre-admins"
     }
   ],
   "environments": [
@@ -53,6 +57,10 @@
           "level": "developer"
         },
         {
+          "sso_group_name": "laa-ccms-instance-access",
+          "level": "developer"
+        },
+        {
           "sso_group_name": "laa-ccms-migration-team",
           "level": "instance-management"
         },
@@ -79,6 +87,10 @@
         },
         {
           "sso_group_name": "laa-ccms-developers",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-ccms-instance-access",
           "level": "developer"
         },
         {
@@ -120,7 +132,7 @@
           "level": "view-only"
         },
         {
-          "sso_group_name": "panda-cyber-team",
+          "sso_group_name": "octo-cyber-team",
           "level": "security-audit"
         }
       ]

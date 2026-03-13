@@ -1,6 +1,6 @@
 locals {
 
-  application_name = "operations-engineering"
+  application_name = "laa-workspaces"
 
   environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
 

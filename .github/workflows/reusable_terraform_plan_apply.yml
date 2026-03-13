@@ -27,13 +27,13 @@ on:
       set_github_app_token:
         description: "Whether to set the GitHub App token"
         required: false
-        type: boolean
-        default: false
+        type: string
+        default: "false"
       download_collaborators:
         description: "Whether to download collaborators.json from modernisation-platform-github"
         required: false
-        type: boolean
-        default: false
+        type: string
+        default: "false"
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER:
         required: true
@@ -42,7 +42,7 @@ on:
 
 env:
   TF_IN_AUTOMATION: true
-  TF_DESTROY_THRESHOLD: 10 # Sets a threshold to alert if the number of resources shown to be destroyed in the plan output is equal or threater than this number.
+  TF_DESTROY_THRESHOLD: 10 # Sets a threshold to alert if the number of resources shown to be destroyed in the plan output is equal or greater than this number.
   RATE_THRESHOLD: 100
   APP_ID: 2013696
 
@@ -70,7 +70,7 @@ jobs:
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
       - name: Create GitHub App token
-        if: ${{ inputs.set_github_app_token == true }}
+        if: ${{ inputs.set_github_app_token == 'true' }}
         id: app
         uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
         with:
@@ -79,14 +79,14 @@ jobs:
           owner: "ministryofjustice"
       
       - name: Download collaborators.json from modernisation-platform-github
-        if: ${{ inputs.download_collaborators == true && inputs.set_github_app_token == true }}
+        if: ${{ inputs.download_collaborators == 'true' && inputs.set_github_app_token == 'true' }}
         run: |
           curl -H "Authorization: token ${{ steps.app.outputs.token }}" \
             -o collaborators.json \
             https://raw.githubusercontent.com/ministryofjustice/modernisation-platform-github/main/collaborators.json
 
       - name: Authenticate GitHub CLI as the App and Check the Rate Usage
-        if: ${{ inputs.set_github_app_token == true }}
+        if: ${{ inputs.set_github_app_token == 'true' }}
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}
         run: |
@@ -95,7 +95,7 @@ jobs:
           bash ./scripts/check-github-api-usage.sh
 
       - name: Set TF_VAR_github_token
-        if: ${{ inputs.set_github_app_token == true }}
+        if: ${{ inputs.set_github_app_token == 'true' }}
         run: |
           echo "TF_VAR_github_token=${{ steps.app.outputs.token }}" >> $GITHUB_ENV
 
@@ -118,9 +118,9 @@ jobs:
     
       - name: Setup Go
         if: ${{ steps.vars.outputs.run_terratest == 'true' }}
-        uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5 # v6.2.0
+        uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6.3.0
         with:
-          go-version: 1.25
+          go-version: 1.26
           cache-dependency-path: "${{ inputs.working-directory }}/test/go.sum"
 
       - name: Set Account Number
@@ -130,14 +130,14 @@ jobs:
           echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
 
       - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
+        uses: aws-actions/configure-aws-credentials@8df5847569e6427dd6c4fb1cf565c83acfa8afa7 # v6.0.0
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
           role-session-name: githubactionsrolesession
           aws-region: ${{ inputs.aws_region }}
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
+        uses: hashicorp/setup-terraform@5e8dbf3c6d9deaf4193ca7a8fb23f2ac83bb6c85 # v4.0.0
         with:
           terraform_version: "${{ inputs.terraform_version }}"
           terraform_wrapper: false

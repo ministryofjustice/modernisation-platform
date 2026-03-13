@@ -286,21 +286,9 @@ resource "aws_cloudwatch_metric_alarm" "ErrorPortAllocation" {
 }
 
 # High priority security alerts (non-service-specific)
-# tfsec:ignore:aws-sns-enable-topic-encryption
-resource "aws_sns_topic" "high_priority_alerts" {
-  #checkov:skip=CKV_AWS_26:"encrypted topics do not work with pagerduty subscription"
-  name = "high_priority_alerts"
-
-  tags = local.tags
-}
-
-module "pagerduty_high_priority_alerts" {
-  depends_on = [
-    aws_sns_topic.high_priority_alerts
-  ]
-  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=d88bd90d490268896670a898edfaba24bba2f8ab" # v3.0.0
-  sns_topics                = [aws_sns_topic.high_priority_alerts.name]
-  pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
+# SNS topic and PagerDuty subscription are managed in baselines
+data "aws_sns_topic" "high_priority_alerts" {
+  name = "high-priority-alarms-topic"
 }
 
 # Trust relationship monitoring for ModernisationPlatformAccess
@@ -322,8 +310,8 @@ resource "aws_cloudwatch_metric_alarm" "mpa_trust_policy_changed" {
   alarm_name        = "modernisation-platform-access-trust-policy-changed"
   alarm_description = "High priority alert: Trust relationship (assume role policy) changed for ModernisationPlatformAccess."
 
-  alarm_actions = [aws_sns_topic.high_priority_alerts.arn]
-  ok_actions    = [aws_sns_topic.high_priority_alerts.arn]
+  alarm_actions = [data.aws_sns_topic.high_priority_alerts.arn]
+  ok_actions    = [data.aws_sns_topic.high_priority_alerts.arn]
 
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -337,11 +325,9 @@ resource "aws_cloudwatch_metric_alarm" "mpa_trust_policy_changed" {
   tags = local.tags
 }
 
-
 # Transit Gateway change monitoring
 # All Transit Gateway changes MUST be performed via the ModernisationPlatformAccess automation role.
 # Any TGW change outside this role will raise an alert.
-
 
 locals {
   tgw_unauthorized_role_name = "ModernisationPlatformAccess"
@@ -378,19 +364,8 @@ resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_changes" {
 
   name           = "tgw_unauthorized_${lower(each.value)}_filter"
   log_group_name = "cloudtrail"
-  pattern        = "{ ($.eventSource = \"ec2.amazonaws.com\") && ($.eventName = \"${each.value}\") && (($.userIdentity.type != \"AssumedRole\") || ($.userIdentity.sessionContext.sessionIssuer.userName != \"${local.tgw_unauthorized_role_name}\")) }"
 
-  metric_transformation {
-    name      = "TGWUnauthorizedChange"
-    namespace = "TransitGateway/Security"
-    value     = "1"
-  }
-}
-
-resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_tag_changes" {
-  name           = "tgw_unauthorized_tag_changes_filter"
-  log_group_name = "cloudtrail"
-  pattern        = "{ ($.eventSource = \"ec2.amazonaws.com\") && (($.eventName = \"CreateTags\") || ($.eventName = \"DeleteTags\")) && (($.resources[0].resourceType = \"transit-gateway\") || ($.resources[1].resourceType = \"transit-gateway\") || ($.resources[2].resourceType = \"transit-gateway\")) && (($.userIdentity.type != \"AssumedRole\") || ($.userIdentity.sessionContext.sessionIssuer.userName != \"${local.tgw_unauthorized_role_name}\")) }"
+  pattern = "{ ($.eventSource = \"ec2.amazonaws.com\") && ($.eventName = \"${each.value}\") && (($.userIdentity.type != \"AssumedRole\") || ($.userIdentity.sessionContext.sessionIssuer.userName != \"${local.tgw_unauthorized_role_name}\")) }"
 
   metric_transformation {
     name      = "TGWUnauthorizedChange"
@@ -403,8 +378,8 @@ resource "aws_cloudwatch_metric_alarm" "tgw_unauthorized_change" {
   alarm_name        = "unauthorized-tgw-change"
   alarm_description = "High priority alert: Transit Gateway change detected outside of ${local.tgw_unauthorized_role_name} automation role. This may indicate unauthorized manual modification."
 
-  alarm_actions = [aws_sns_topic.tgw_monitoring_production.arn]
-  ok_actions    = [aws_sns_topic.tgw_monitoring_production.arn]
+  alarm_actions = [data.aws_sns_topic.high_priority_alerts.arn]
+  ok_actions    = [data.aws_sns_topic.high_priority_alerts.arn]
 
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"

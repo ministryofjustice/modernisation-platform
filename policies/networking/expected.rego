@@ -146,6 +146,7 @@ expected :=
           "digital-prison-reporting-development",
           "electronic-monitoring-data-development",
           "equip-development",
+          "hmpps-court-data-ingestion-api-development",
           "hmpps-domain-services-development",
           "hmpps-esupervision-development",
           "hmpps-oem-development",
@@ -190,6 +191,7 @@ expected :=
           "delius-mis-preproduction",
           "digital-prison-reporting-preproduction",
           "electronic-monitoring-data-preproduction",
+          "hmpps-court-data-ingestion-api-preproduction",
           "hmpps-domain-services-preproduction",
           "hmpps-oem-preproduction",
           "nomis-preproduction",
@@ -218,6 +220,7 @@ expected :=
           "digital-prison-reporting-production",
           "electronic-monitoring-data-production",
           "equip-production",
+          "hmpps-court-data-ingestion-api-production",
           "hmpps-domain-services-production",
           "hmpps-esupervision-production",
           "hmpps-oem-production",
@@ -281,6 +284,7 @@ expected :=
               "ccms-pui-development",
               "ccms-pui-internal-development",
               "contract-work-administration-development",
+              "data-factory-laa-development",
               "edw-19c-development",
               "laa-ccms-soa-development",
               "laa-cis-development",
@@ -415,12 +419,12 @@ expected :=
           "analytical-platform-next-poc-hub-deveopment",
           "analytical-platform-next-poc-producer-development",
           "coat-development",
+          "data-factory-moj-development",
           "data-platform-development",
           "data-platform-governance-development",
           "example-development",
           "justice-digital-document-hub-development",
           "observability-platform-development",
-          "operations-engineering-development",
           "panda-cyber-appsec-lab-development"
         ]
       }
@@ -429,6 +433,7 @@ expected :=
       "general": {
         "cidr": "10.26.0.0/21",
         "accounts": [
+          "data-factory-moj-test",
           "data-platform-test",
           "data-platform-governance-test",
           "testing-test"

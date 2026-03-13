@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Creating private Route53 DNS zones
-last_reviewed_on: 2025-08-14
+last_reviewed_on: 2026-02-24
 review_in: 6 months
 ---
 
@@ -27,7 +27,6 @@ In the pull request add a name and supply the DNS name for the private zone you 
     example = "example.gov.uk"
     test    = "development.internal"
   }
-}
 ```
 
 ## Extending the newly created private DNS zone
@@ -50,5 +49,4 @@ The below example shows the configuration needed for the association of two priv
     "additional_private_zones": ["example.gov.uk", "development.internal"],
     ...
   }
-}
 ```

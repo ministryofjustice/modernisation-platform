@@ -39,14 +39,13 @@ exclude = [
     '^https://github\.com/ministryofjustice/deployment-tgw',
     '^https://moj-digital-tools.pagerduty.com',
     '^https://github\.com/ministryofjustice/moj-ip-addresses/',
-    '^https://github\.com/ministryofjustice/modernisation-platform-github/actions/workflows/terraform-github\.yml',
-    '^https://github\.com/ministryofjustice/modernisation-platform-github/blob/main/terraform/github/locals\.tf',
-    '^https://github\.com/ministryofjustice/modernisation-platform-github/blob/main/terraform/github/repositories\.tf',
-    '^https://github\.com/ministryofjustice/modernisation-platform-github/blob/main/collaborators\.json',
-    '^https://github.com/ministryofjustice/modernisation-platform/security/code-scanning.*$'
+    '^https://github\.com/ministryofjustice/modernisation-platform/security/code-scanning.*$',
+    '^https://github\.com/ministryofjustice/modernisation-platform-github.*$'
 ]
 
 # Exclude all private IPs from checking.
 # Equivalent to setting `exclude_private`, `exclude_link_local`, and
 # `exclude_loopback` to true.
+
+# Global rule to ignore all private repos
 exclude_all_private = true

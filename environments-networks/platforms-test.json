@@ -6,6 +6,7 @@
         "accounts": [
           "analytical-platform-compute-test",
           "testing-test",
+          "data-factory-moj-test",
           "data-platform-test",
           "data-platform-governance-test"
         ]

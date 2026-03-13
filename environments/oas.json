@@ -41,6 +41,22 @@
         {
           "sso_group_name": "laa-dba",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-cyber-security-team",
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "laa-cyber-security-team",
+          "level": "view-only"
+        },
+        {
+          "sso_group_name": "laa-cyber-security-team",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "laa-cyber-security-team",
+          "level": "instance-management"
         }
       ]
     },

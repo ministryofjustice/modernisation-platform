@@ -1,0 +1,68 @@
+{
+  "account-type": "member",
+  "codeowners": [
+    "cloud-platform-engineers",
+    "hmpps-calculate-release-dates-team-devs"
+  ],
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "cloud-platform-engineers",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "cloud-platform-engineers",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "hmpps-calculate-release-dates-team-devs",
+          "level": "sandbox",
+          "github_action_reviewer": "true"
+        }
+      ],
+      "nuke": "exclude"
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "cloud-platform-engineers",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "hmpps-calculate-release-dates-team-live",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "cloud-platform-engineers",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "hmpps-calculate-release-dates-team-live",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "hmpps-court-data-ingestion-api",
+    "business-unit": "HMPPS",
+    "infrastructure-support": "calculatereleasedatesdevelopers@justice.gov.uk",
+    "owner": "calculatereleasedatesdevelopers@justice.gov.uk",
+    "slack-channel": "calculate_release_dates_public_channel",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}

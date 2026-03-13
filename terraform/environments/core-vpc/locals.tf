@@ -20,6 +20,7 @@ locals {
 
   tags = {
     business-unit = "Platforms"
+    service-area  = "Hosting"
     application   = "Modernisation Platform: core-vpc"
     is-production = local.is-production
     owner         = "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"

@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Revoking User Access
-last_reviewed_on: 2025-08-14
+last_reviewed_on: 2026-02-24
 review_in: 6 month
 ---
 
@@ -26,7 +26,7 @@ however you could contact the [Ops Engineering](https://moj.enterprise.slack.com
 ### Collaborator Access
 
 [Collaborator access](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/working-as-a-collaborator.html#working-as-a-collaborator)
-is for non-MOJ employees who require access to AWS. These users are defined in the [collaborators.json](https://github.com/ministryofjustice/modernisation-platform/blob/main/collaborators.json) file.
+is for non-MOJ employees who require access to AWS. These users are defined in the [collaborators.json](https://github.com/ministryofjustice/modernisation-platform-github/blob/main/collaborators.json) file.
 
 Use [this guide](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/adding-collaborators.html#removing-collaborators)
 to remove a collaborator (**NB** the Terraform must be run locally as a superadmin user)
@@ -46,7 +46,7 @@ There are a limited set of users who have access to the Root account ("MOJ Maste
 
 These users are defined in the [root account repo](https://github.com/ministryofjustice/aws-root-account/blob/b47c74781927ffbdb3cfba485d07b05ade7a23b9/management-account/terraform/iam-users.tf)
 
-Any PRs raised to remove a users access would need to be approved by a member of [operations-engineering](https://github.com/orgs/ministryofjustice/teams/operations-engineering) or [aws-root-account-admin-team](https://github.com/orgs/ministryofjustice/teams/aws-root-account-admin-team).
+Any PRs raised to remove a users access would need to be approved by a member of the [aws-root-account-admin-team](https://github.com/orgs/ministryofjustice/teams/aws-root-account-admin-team).
 
 ## Teams
 
