@@ -9,11 +9,11 @@
           "level": "developer"
         },
         {
-          "sso_group_name": "panda-cyber-team",
+          "sso_group_name": "octo-cyber-team",
           "level": "read-only"
         },
         {
-          "sso_group_name": "panda-cyber-team",
+          "sso_group_name": "octo-cyber-team",
           "level": "security-audit"
         }
       ]

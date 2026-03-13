@@ -191,6 +191,7 @@ expected :=
           "delius-mis-preproduction",
           "digital-prison-reporting-preproduction",
           "electronic-monitoring-data-preproduction",
+          "hmpps-court-data-ingestion-api-preproduction",
           "hmpps-domain-services-preproduction",
           "hmpps-oem-preproduction",
           "nomis-preproduction",
@@ -283,6 +284,7 @@ expected :=
               "ccms-pui-development",
               "ccms-pui-internal-development",
               "contract-work-administration-development",
+              "data-factory-laa-development",
               "edw-19c-development",
               "laa-ccms-soa-development",
               "laa-cis-development",
@@ -417,6 +419,7 @@ expected :=
           "analytical-platform-next-poc-hub-deveopment",
           "analytical-platform-next-poc-producer-development",
           "coat-development",
+          "data-factory-moj-development",
           "data-platform-development",
           "data-platform-governance-development",
           "example-development",
@@ -430,6 +433,7 @@ expected :=
       "general": {
         "cidr": "10.26.0.0/21",
         "accounts": [
+          "data-factory-moj-test",
           "data-platform-test",
           "data-platform-governance-test",
           "testing-test"

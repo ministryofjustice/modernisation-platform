@@ -119,7 +119,7 @@ jobs:
       - name: Setup Terraform
         if: env.SKIP == 'false'
         id: setup
-        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
+        uses: hashicorp/setup-terraform@5e8dbf3c6d9deaf4193ca7a8fb23f2ac83bb6c85 # v4.0.0
         with:
           terraform_version: "~1"
           terraform_wrapper: false
@@ -171,7 +171,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
       - name: Setup Terraform
         id: setup
-        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
+        uses: hashicorp/setup-terraform@5e8dbf3c6d9deaf4193ca7a8fb23f2ac83bb6c85 # v4.0.0
         with:
           terraform_version: "~1"
           terraform_wrapper: false
@@ -260,7 +260,7 @@ jobs:
       - name: Setup Terraform
         if: env.SKIP == 'false'
         id: setup
-        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
+        uses: hashicorp/setup-terraform@5e8dbf3c6d9deaf4193ca7a8fb23f2ac83bb6c85 # v4.0.0
         with:
           terraform_version: "~1"
           terraform_wrapper: false
@@ -315,7 +315,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
       - name: Setup Terraform
         id: setup
-        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
+        uses: hashicorp/setup-terraform@5e8dbf3c6d9deaf4193ca7a8fb23f2ac83bb6c85 # v4.0.0
         with:
           terraform_version: "~1"
           terraform_wrapper: false

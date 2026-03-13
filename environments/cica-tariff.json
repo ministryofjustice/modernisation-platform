@@ -43,7 +43,9 @@
     "business-unit": "CICA",
     "infrastructure-support": "Infrastructure@cica.gov.uk",
     "owner": "alan.terry@cica.gov.uk",
-    "critical-national-infrastructure": true
+    "critical-national-infrastructure": true,
+    "securityhub-slack-channel": "cica-devops"
   },
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": [""],
+  "go-live-date": "2025-11-29"
 }

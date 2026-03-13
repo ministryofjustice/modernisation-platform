@@ -26,6 +26,16 @@ data "aws_iam_role" "sprinkler_oidc" {
   name  = "github-actions"
 }
 
+data "aws_iam_role" "sprinkler_environments_read_only" {
+  count = (terraform.workspace == "sprinkler-development") ? 1 : 0
+  name  = "github-actions-environments-read-only"
+}
+
+data "aws_iam_role" "sprinkler_environments_dev_test" {
+  count = (terraform.workspace == "sprinkler-development") ? 1 : 0
+  name  = "github-actions-environments-dev-test"
+}
+
 data "http" "environments_file" {
   url = format("https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments/%s.json", local.application_name)
 }
@@ -45,6 +55,7 @@ locals {
 
   tags = {
     business-unit = "Platforms"
+    service-area  = "Hosting"
     application   = "Modernisation Platform: Member Bootstrap"
     is-production = true
     owner         = "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"

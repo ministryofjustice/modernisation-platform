@@ -20,6 +20,10 @@
           "level": "instance-management"
         },
         {
+          "sso_group_name": "azure-aws-sso-csr-application-support",
+          "level": "instance-management"
+        },
+        {
           "sso_group_name": "national-applications-reporting-team",
           "level": "instance-management"
         },
@@ -52,6 +56,10 @@
         },
         {
           "sso_group_name": "csr-application-support",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-csr-application-support",
           "level": "instance-management"
         },
         {
@@ -90,6 +98,10 @@
           "level": "instance-management"
         },
         {
+          "sso_group_name": "azure-aws-sso-csr-application-support",
+          "level": "instance-management"
+        },
+        {
           "sso_group_name": "national-applications-reporting-team",
           "level": "instance-management"
         },
@@ -122,6 +134,10 @@
         },
         {
           "sso_group_name": "csr-application-support",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-csr-application-support",
           "level": "instance-management"
         },
         {

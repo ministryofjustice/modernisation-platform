@@ -419,6 +419,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "athena:DeleteNamedQuery",
       "athena:StartQueryExecution",
       "athena:StopQueryExecution",
+      "apigateway:POST",
       "ce:CreateReport",
       "dms:StartReplicationTask",
       "dms:StopReplicationTask",
@@ -466,6 +467,14 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "lakeformation:RemoveLFTagsFromResource",
       "lakeformation:GetDataAccess",
       "lambda:PutRuntimeManagementConfig",
+      "macie2:ListManagedDataIdentifiers",
+      "macie2:ListCustomDataIdentifiers",
+      "macie2:GetFindings",
+      "macie2:ListFindings",
+      "macie2:GetFindingStatistics",
+      "macie2:GetMacieSession",
+      "macie2:ListClassificationJobs",
+      "macie2:DescribeClassificationJob",
       "sqs:StartMessageMoveTask",
       "sqs:CancelMessageMoveTask",
       "sqs:ListMessageMoveTasks",
@@ -504,7 +513,9 @@ data "aws_iam_policy_document" "data_engineering_additional" {
     resources = [
       "arn:aws:iam::${local.environment_management.account_ids["analytical-platform-data-production"]}:role/data-first-data-science",
       "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/glue-notebook-role-tf",
-      "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-test"]}:role/AWSS3BucketReplication*"
+      "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-test"]}:role/AWSS3BucketReplication*",
+      "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-preproduction"]}:role/AWSS3BucketReplication*",
+      "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/AWSS3BucketReplication*"
     ]
   }
 
@@ -610,6 +621,7 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "apigateway:*",
       "application-autoscaling:*",
       "appstream:*",
+      "aps:*",
       "athena:*",
       "autoscaling:*",
       "aws-marketplace:ViewSubscriptions",
@@ -811,6 +823,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "elasticfilesystem:*",
       "elasticloadbalancing:*",
       "events:*",
+      "execute-api:Invoke",
       "firehose:*",
       "fis:*",
       "glacier:*",

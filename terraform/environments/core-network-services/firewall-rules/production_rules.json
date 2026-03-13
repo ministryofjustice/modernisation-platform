@@ -434,6 +434,13 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
+  "moj_wifi_to_laa_production_mp_https": {
+    "action": "PASS",
+    "source_ip": "${moj-wifi}",
+    "destination_ip": "${laa-production}",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
   "dom1_to_laa_production_mp_https": {
     "action": "PASS",
     "source_ip": "${dom1-domain-controllers}",
@@ -600,6 +607,13 @@
     "source_ip": "${cica-production}",
     "destination_ip": "${cica-onprem-lan}",
     "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "mojo_to_mp_laa_production_mojfin": {
+    "action": "PASS",
+    "source_ip": "${mojo-end-user-devices}",
+    "destination_ip": "${laa-production}",
+    "destination_port": "1521",
     "protocol": "TCP"
   }
 }
