@@ -41,13 +41,14 @@ data "http" "environments_file" {
 }
 
 locals {
-  root_account                   = data.aws_organizations_organization.root_account
-  modernisation_platform_account = data.aws_caller_identity.modernisation-platform
-  environment_management         = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
-  application_name               = try(regex("^bichard*.|^remote-supervisio*.", terraform.workspace), replace(terraform.workspace, "/-([[:alnum:]]+)$/", ""))
-  application_tags               = jsondecode(data.http.environments_file.response_body).tags
-  business_unit                  = local.application_tags.business-unit
-  application_environment        = length(regexall("^bichard*.|^remote-supervisio*.", terraform.workspace)) > 0 ? terraform.workspace : substr(terraform.workspace, length(local.application_name) + 1, -1)
+  root_account                                = data.aws_organizations_organization.root_account
+  modernisation_platform_account              = data.aws_caller_identity.modernisation-platform
+  environment_management                      = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
+  application_name                            = try(regex("^bichard*.|^remote-supervisio*.", terraform.workspace), replace(terraform.workspace, "/-([[:alnum:]]+)$/", ""))
+  application_tags                            = jsondecode(data.http.environments_file.response_body).tags
+  business_unit                               = local.application_tags.business-unit
+  application_environment                     = length(regexall("^bichard*.|^remote-supervisio*.", terraform.workspace)) > 0 ? terraform.workspace : substr(terraform.workspace, length(local.application_name) + 1, -1)
+  is_production_or_pre_production_environment = (local.application_environment == "production" || local.application_environment == "preproduction") ? true : false
   environments_list = {
     for file in fileset("../../../../environments", "*.json") :
     replace(file, ".json", "") => jsondecode(file("../../../../environments/${file}"))
