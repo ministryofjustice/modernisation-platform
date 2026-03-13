@@ -823,6 +823,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "elasticfilesystem:*",
       "elasticloadbalancing:*",
       "events:*",
+      "execute-api:Invoke",
       "firehose:*",
       "fis:*",
       "glacier:*",
