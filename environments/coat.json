@@ -23,7 +23,7 @@
   ],
   "tags": {
     "application": "coat",
-    "business-unit": "Platforms",
+    "business-unit": "OCTO",
     "infrastructure-support": "CloudOptimisationAndAccountability@justice.gov.uk",
     "owner": "CloudOptimisationAndAccountability@justice.gov.uk",
     "critical-national-infrastructure": false
