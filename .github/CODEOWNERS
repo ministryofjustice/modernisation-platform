@@ -40,7 +40,7 @@
 /terraform/environments/core-shared-services/data-platform.tf @ministryofjustice/data-platform-engineering 
 /terraform/environments/core-shared-services/delius-alfresco.tf @ministryofjustice/hosting-migrations 
 /terraform/environments/core-shared-services/delius-core-training.tf @ministryofjustice/hmpps-migration @ministryofjustice/hosting-migrations 
-/terraform/environments/core-shared-services/delius-core.tf @ministryofjustice/hmpps-migration @ministryofjustice/hosting-migrations 
+/terraform/environments/core-shared-services/delius-core.tf @ministryofjustice/hmpps-dba @ministryofjustice/hmpps-migration @ministryofjustice/hosting-migrations 
 /terraform/environments/core-shared-services/delius-iaps.tf @ministryofjustice/hmpps-migration @ministryofjustice/hosting-migrations 
 /terraform/environments/core-shared-services/delius-jitbit.tf @ministryofjustice/hmpps-migration @ministryofjustice/hosting-migrations 
 /terraform/environments/core-shared-services/delius-mis.tf @ministryofjustice/hmpps-migration @ministryofjustice/hosting-migrations 
