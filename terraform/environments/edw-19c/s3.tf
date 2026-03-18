@@ -1,4 +1,6 @@
 resource "aws_s3_bucket" "replica" {
+  count = local.environment == "preprod" ? 1 : 0
+
   bucket = "edw-19c-preprod-replica-bucket"
 
   tags = {
@@ -10,7 +12,8 @@ resource "aws_s3_bucket" "replica" {
 }
 
 resource "aws_s3_bucket_versioning" "replica" {
-  bucket = aws_s3_bucket.replica.id
+  count  = local.environment == "preprod" ? 1 : 0
+  bucket = aws_s3_bucket.replica[0].id
 
   versioning_configuration {
     status = "Enabled"
@@ -18,7 +21,9 @@ resource "aws_s3_bucket_versioning" "replica" {
 }
 
 resource "aws_s3_bucket_public_access_block" "replica" {
-  bucket = aws_s3_bucket.replica.id
+  count  = local.environment == "preprod" ? 1 : 0
+  bucket = aws_s3_bucket.replica[0].id
+
 
   block_public_acls       = true
   block_public_policy     = true
