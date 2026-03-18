@@ -56,6 +56,7 @@ jobs:
           GITHUB_OWNERS=$(extract_field "### GitHub code owner team slug")
           GITHUB_REVIEWERS=$(extract_field "### GitHub actions reviewer team slug")
           
+          
           # Write to GITHUB_ENV
           {
             echo "EXISTING_ACCOUNT=$EXISTING_ACCOUNT"

@@ -20,6 +20,7 @@ def add_app_to_rego(app_name, rego_path):
         print(f"{app_name} already in accounts list.")
         return
 
+
     # Add and sort
     accounts.append(app_name)
     accounts_sorted = sorted(accounts, key=lambda x: x.lower())
