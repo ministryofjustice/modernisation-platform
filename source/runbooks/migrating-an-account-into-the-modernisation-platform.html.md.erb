@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Migrating an existing AWS account into the Modernisation Platform
-last_reviewed_on: 2025-09-17
+last_reviewed_on: 2026-03-18
 review_in: 6 months
 ---
 
@@ -28,7 +28,7 @@ You can make use of the [AWS guidance](https://docs.aws.amazon.com/IAM/latest/Us
 You will want to check that the account being migrated:
 
 - Conforms to Modernisation Platform naming standards (eg, all lower-case letters, with no spaces as separators).
-- Has been removed from any Terraform statefiles that manage the account.
+- Has been removed from any Terraform state files that manage the account.
 - Has been removed from management in code.
 
 ## Importing an account into the Modernisation Platform
@@ -45,7 +45,7 @@ You will want to switch your local branch in GitHub to the one with the newly-cr
 - Merge your new branch into `main`.
 
 It is likely that you will also need to import resources into Terraform state for the [account baselines](https://github.com/ministryofjustice/modernisation-platform-terraform-baselines).
-You will do this through the `terraform/environments/boostrap/member-bootstrap` directory in the relevant workspace(s).
+You will do this through the `terraform/environments/bootstrap/member-bootstrap` directory in the relevant workspace(s).
 
 ## Examples
 
