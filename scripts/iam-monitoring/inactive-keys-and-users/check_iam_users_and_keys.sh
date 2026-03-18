@@ -12,10 +12,10 @@ set -euo pipefail
 # Thresholds (days) – override via env as needed:
 #   KEY_NOTIFY_DAYS   (default 30)
 #   KEY_DISABLE_DAYS  (default 60)
-#   KEY_DELETE_DAYS   (default 90)
+#   KEY_DELETE_DAYS   (default 150)
 #   USER_NOTIFY_DAYS  (default 30)
 #   USER_DISABLE_DAYS (default 60)
-#   USER_DELETE_DAYS  (default 90)
+#   USER_DELETE_DAYS  (default 150)
 #
 # GOV.UK Notify (per-user emails, non-dry-run only):
 #   GOV_UK_NOTIFY_API_KEY   – Notify API key
@@ -74,10 +74,10 @@ fi
 # --- thresholds ---------------------------------------------------------------
 : "${KEY_NOTIFY_DAYS:=30}"
 : "${KEY_DISABLE_DAYS:=60}"
-: "${KEY_DELETE_DAYS:=90}"
+: "${KEY_DELETE_DAYS:=150}"
 : "${USER_NOTIFY_DAYS:=30}"
 : "${USER_DISABLE_DAYS:=60}"
-: "${USER_DELETE_DAYS:=90}"
+: "${USER_DELETE_DAYS:=150}"
 
 IAM_USER_PATH_PREFIX="${IAM_USER_PATH_PREFIX:-}"
 IAM_USER_TAG_KEY="${IAM_USER_TAG_KEY:-}"      # optional filter
