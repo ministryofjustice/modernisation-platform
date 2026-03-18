@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Accessing EC2s
-last_reviewed_on: 2025-09-18
+last_reviewed_on: 2026-03-18
 review_in: 6 months
 ---
 
@@ -55,7 +55,7 @@ aws ssm start-session --target i-12345bc --profile glados-test-developer
 Older operating systems may not support installation of the SSM Agent, in this case a bastion can be used to forward connections on to the EC2. Bastions can also be used for port forwarding to connect to databases or private configuration consoles.
 
 Member accounts can use the [Modernisation Platform bastion module](https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux) to build a bastion configured with user and user SSH keys.
-Once the bastion has been built in the environemnt, these steps outline the additional AWS and SSH configurations required for users to connect to the bastion and on to their desired EC2 within their environment.
+Once the bastion has been built in the environment, these steps outline the additional AWS and SSH configurations required for users to connect to the bastion and on to their desired EC2 within their environment.
 
 5. Add the example in this step to your `~/.ssh/config` file. Give the host a relevant name, for example `glados-test-bastion`. Replace the `User` and the `IdentityFile` path - it is the local path to the corresponding private key of the public key added to the `bastion_linux.json` file set up as part of the [Modernisation Platform bastion module](https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux) build. Replace the `target` with the bastion instance ID in the corresponding AWS account and include the AWS profile created in the previous step:
 
@@ -103,7 +103,7 @@ ssh instanceip
 
 ## Port forwarding to EC2 using the bastion
 
-Replace ports, IP adddresses, and name of Host as appropriate.
+Replace ports, IP addresses, and name of Host as appropriate.
 
 ```
 ssh -L 8000:11.11.11.11:80 glados-test-bastion
