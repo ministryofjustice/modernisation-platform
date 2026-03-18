@@ -128,7 +128,7 @@ jobs:
       EXPECTED_TEMPLATE_VERSION: "2"
 
       SCRIPT_COMMAND: |
-        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
+        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh 
     secrets:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
@@ -152,7 +152,7 @@ jobs:
       EXPECTED_TEMPLATE_VERSION: "2"
 
       SCRIPT_COMMAND: |
-        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
+        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh 
     secrets:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
@@ -176,7 +176,7 @@ jobs:
       EXPECTED_TEMPLATE_VERSION: "2"
 
       SCRIPT_COMMAND: |
-        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
+        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh 
     secrets:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
@@ -200,6 +200,6 @@ jobs:
       EXPECTED_TEMPLATE_VERSION: "2"
 
       SCRIPT_COMMAND: |
-        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
+        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh 
     secrets:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
