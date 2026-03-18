@@ -1,5 +1,10 @@
 {
   "account-type": "member",
+  "components": [
+    {
+      "name": "workspace-components"
+    }
+  ],
   "codeowners": "laa-aws-infrastructure",
   "environments": [
     {
