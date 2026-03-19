@@ -63,6 +63,7 @@ jobs:
             echo "APP_NAME=$APP_NAME"
             echo "APP_TAG=$APP_TAG"
             echo "BUSINESS_UNIT=$BUSINESS_UNIT"
+            echo "SERVICE_AREA=$SERVICE_AREA"
             echo "INFRA_SUPPORT=$INFRA_SUPPORT"
             echo "OWNER=$OWNER"
             echo "SSO_GROUP=$SSO_GROUP"
