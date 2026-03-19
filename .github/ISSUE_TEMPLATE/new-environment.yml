@@ -200,6 +200,7 @@ body:
   id: tag3
   attributes:
     label: service-area
+    description: The service area tag should be used to indicate  Should be the full name of the Service Area in which your team is based e.g. Education Skills & Work, Manage a Workforce, Hosting.
     value:
   validations:
     required: true
