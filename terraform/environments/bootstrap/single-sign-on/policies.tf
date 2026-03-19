@@ -527,6 +527,72 @@ data "aws_iam_policy_document" "data_engineering_additional" {
   }
 }
 
+# analytics engineering policy (some s3 + glue + athena + lakeformation)
+resource "aws_iam_policy" "analytics_engineering" {
+  provider = aws.workspace
+  name     = "analytics_engineering_policy"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.analytics_engineering.json
+}
+
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "analytics_engineering" {
+  #checkov:skip=CKV_AWS_108
+  #checkov:skip=CKV_AWS_109
+  #checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_110
+  #checkov:skip=CKV_AWS_356: Needs to access multiple resources
+  statement {
+    sid    = "AnalyticsEngineeringAllow"
+    effect = "Allow"
+    actions = [
+      "athena:DeleteNamedQuery",
+      "athena:StartQueryExecution",
+      "athena:StopQueryExecution",
+      "athena:List*",
+      "athena:Get*",
+      "glue:Batch*Partition",
+      "glue:BatchDeleteTable",
+      "glue:CreateDatabase",
+      "glue:CreatePartition",
+      "glue:CreateTable",
+      "glue:DeleteDatabase",
+      "glue:DeletePartition",
+      "glue:DeleteTable",
+      "glue:UpdateDatabase",
+      "glue:UpdatePartition",
+      "glue:UpdateTable",
+      "glue:Get*",
+      "glue:List*",
+      "glue:TagResource",
+      "glue:UntagResource",
+      "lakeformation:GetDataLakeSettings",
+      "lakeformation:PutDataLakeSettings",
+      "lakeformation:GrantPermissions",
+      "lakeformation:BatchGrantPermissions",
+      "lakeformation:RevokePermissions",
+      "lakeformation:BatchRevokePermissions",
+      "lakeformation:ListLakeFormationOptIns",
+      "lakeformation:CreateLakeFormationOptIn",
+      "lakeformation:DeleteLakeFormationOptIn",
+      "lakeformation:ListLFTagExpressions",
+      "lakeformation:GetLFTagExpression",
+      "lakeformation:AddLFTagsToResource",
+      "lakeformation:RemoveLFTagsFromResource",
+      "lakeformation:GetDataAccess",
+      "lambda:PutRuntimeManagementConfig",
+      "s3:GetBucketOwnershipControls",
+      "s3:PutObjectAcl",
+      "s3:PutObjectTagging",
+      "s3:List*",
+      "s3:Get*",
+      "s3:DeleteObject*",
+      "s3:PutObject*"
+    ]
+    resources = ["*"]
+  }
+}
+
 # quicksight administrator policy (IAM permissions needed to manage QuickSight subscription)
 # ref: https://docs.aws.amazon.com/quicksight/latest/user/iam-policy-examples.html#security_iam_conosole-administration
 resource "aws_iam_policy" "quicksight_administrator" {
