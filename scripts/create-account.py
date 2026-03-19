@@ -20,6 +20,7 @@ def add_app_to_rego(app_name, rego_path):
         print(f"{app_name} already in accounts list.")
         return
 
+
     # Add and sort
     accounts.append(app_name)
     accounts_sorted = sorted(accounts, key=lambda x: x.lower())
@@ -50,7 +51,7 @@ def application_exists(app_name):
                     continue
     return False
 
-def create_env_json(app_name, app_tag, github_owners, github_reviewers, business_unit, infra_support, owner, slack_channel, cni, sso_group, go_live_date, env_selections):
+def create_env_json(app_name, app_tag, github_owners, github_reviewers, business_unit, service_area, infra_support, owner, slack_channel, cni, sso_group, go_live_date, env_selections):
     environments = []
     for env in env_selections:
         access_levels = [level.strip() for level in env["access_level"].split(",") if level.strip()]
@@ -79,6 +80,7 @@ def create_env_json(app_name, app_tag, github_owners, github_reviewers, business
         "tags": {
             "application": app_tag,
             "business-unit": business_unit,
+            "service-area": service_area,
             "infrastructure-support": infra_support,
             "owner": owner,
             "slack-channel": slack_channel,
@@ -91,10 +93,10 @@ def create_env_json(app_name, app_tag, github_owners, github_reviewers, business
         json.dump(data, f, indent=2)
 
 if __name__ == "__main__":
-    if len(sys.argv) < 13:
-        print("Usage: python create-account.py <app_name> <app_tag> <github_owners> <github_reviewers> <business_unit> <infra_support> <owner> <slack_channel> <cni> <sso_group> <go_live_date> <env_selections_json>")
+    if len(sys.argv) < 15:
+        print("Usage: python create-account.py <app_name> <app_tag> <github_owners> <github_reviewers> <business_unit> <service_area> <infra_support> <owner> <slack_channel> <cni> <sso_group> <go_live_date> <env_selections_json>")
         sys.exit(1)
-    app_name, app_tag, github_owners, github_reviewers, business_unit, infra_support, owner, slack_channel, cni, sso_group, go_live_date, env_selections_json = sys.argv[1:13]
+    app_name, app_tag, github_owners, github_reviewers, business_unit, service_area, infra_support, owner, slack_channel, cni, sso_group, go_live_date, env_selections_json = sys.argv[1:14]
     cni = cni.lower() == "true"
     env_selections = json.loads(env_selections_json)
     if application_exists(app_name):
@@ -107,6 +109,7 @@ if __name__ == "__main__":
             github_owners=github_owners,
             github_reviewers=github_reviewers,
             business_unit=business_unit,
+            service_area=service_area,
             infra_support=infra_support,
             owner=owner,
             slack_channel=slack_channel,

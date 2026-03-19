@@ -172,6 +172,7 @@ body:
       https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tags-you-should-use
 
       The is-production tag will be inferred from the environment and is not needed here
+      
 - type: input
   id: tag1
   attributes:
@@ -179,22 +180,38 @@ body:
     value:
   validations:
     required: true
-- type: input
+- type: dropdown
   id: tag2
   attributes:
     label: business-unit
-    value:
+    options:
+    - Central Digital
+    - HMPPS
+    - OPG
+    - LAA
+    - HMCTS
+    - CICA
+    - Platforms
+    - Technology Services
+    - OCTO
   validations:
     required: true
 - type: input
   id: tag3
+  attributes:
+    label: service-area
+    value:
+  validations:
+    required: true
+- type: input
+  id: tag4
   attributes:
     label: infrastructure-support
     value:
   validations:
     required: true
 - type: input
-  id: tag4
+  id: tag5
   attributes:
     label: owner
     value:
