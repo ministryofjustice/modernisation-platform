@@ -88,7 +88,7 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
 # Modernisation Platform analytics engineer
 resource "aws_ssoadmin_permission_set" "modernisation_platform_analytics_engineer" {
   provider         = aws.sso-management
-  name             = "modernisation-platform-analytics-eng"
+  name             = "modernisation-platform-ae-eng"
   description      = "Modernisation Platform: analytics engineer tenancy"
   instance_arn     = local.sso_admin_instance_arn
   session_duration = "PT8H"
