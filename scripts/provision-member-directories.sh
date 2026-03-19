@@ -217,6 +217,7 @@ EOL
 /terraform/modules/probation-webops @ministryofjustice/modernisation-platform @ministryofjustice/hmpps-migration
 /terraform/modules
 .devcontainer @ministryofjustice/devcontainer-community
+.github/workflows/data-platform-network-firewall-schema-validation.yml @ministryofjustice/data-platform-engineering
 EOL
 
 }
