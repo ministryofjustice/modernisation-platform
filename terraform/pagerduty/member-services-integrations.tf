@@ -1905,6 +1905,8 @@ locals {
     planetfm-preproduction                  = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
     planetfm-production                     = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
     dso-pipelines                           = { slack_channel_id = "C01PWKWDB9D" } # dso_alerts_pipeline
+
+    nomis-production-dba = { slack_channel_id = "C07HFLM47QX", escalation_policy = data.pagerduty_escalation_policy.shef_dba.id } # nomis_alarms_prod
   }
   slack_events = [
     "incident.triggered",
@@ -1924,6 +1926,10 @@ locals {
     "incident.status_update_published",
     "incident.reopened"
   ]
+}
+
+data "pagerduty_escalation_policy" "shef_dba" {
+  name = "NOMIS DBA Support"
 }
 
 data "pagerduty_user" "dso" {
@@ -2088,7 +2094,7 @@ resource "pagerduty_service" "az_dso_alerts" {
   name                    = each.key
   auto_resolve_timeout    = "null"
   acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  escalation_policy       = lookup(each.value, "escalation_policy", pagerduty_escalation_policy.dso.id)
   alert_creation          = "create_alerts_and_incidents"
 }
 
