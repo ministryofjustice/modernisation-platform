@@ -2030,7 +2030,7 @@ resource "pagerduty_service" "services" {
   description             = "${each.key}-alarms"
   auto_resolve_timeout    = "null"
   acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.dso.id
+  escalation_policy       = lookup(each.value, "escalation_policy", pagerduty_escalation_policy.dso.id)
   alert_creation          = "create_alerts_and_incidents"
 }
 
@@ -2094,7 +2094,7 @@ resource "pagerduty_service" "az_dso_alerts" {
   name                    = each.key
   auto_resolve_timeout    = "null"
   acknowledgement_timeout = "null"
-  escalation_policy       = lookup(each.value, "escalation_policy", pagerduty_escalation_policy.dso.id)
+  escalation_policy       = pagerduty_escalation_policy.dso.id
   alert_creation          = "create_alerts_and_incidents"
 }
 
