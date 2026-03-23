@@ -93,7 +93,7 @@ def create_env_json(app_name, app_tag, github_owners, github_reviewers, business
         json.dump(data, f, indent=2)
 
 if __name__ == "__main__":
-    if len(sys.argv) < 15:
+    if len(sys.argv) != 14:
         print("Usage: python create-account.py <app_name> <app_tag> <github_owners> <github_reviewers> <business_unit> <service_area> <infra_support> <owner> <slack_channel> <cni> <sso_group> <go_live_date> <env_selections_json>")
         sys.exit(1)
     app_name, app_tag, github_owners, github_reviewers, business_unit, service_area, infra_support, owner, slack_channel, cni, sso_group, go_live_date, env_selections_json = sys.argv[1:14]
