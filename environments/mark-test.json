@@ -1,0 +1,26 @@
+{
+  "account-type": "member",
+  "codeowners": "modernisation-platform, modernisation-platform",
+  "environments": [
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "migration"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "mark-test",
+    "business-unit": "Platforms",
+    "service-area": "Hosting",
+    "infrastructure-support": "joe.bloggs@testing.com",
+    "owner": "joe.bloggs@testing.com",
+    "slack-channel": "modernisation-platform",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}

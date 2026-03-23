@@ -77,6 +77,7 @@ expected :=
     "long-term-storage",
     "maat",
     "maatdb",
+    "mark-test",
     "mlra",
     "moj-network-operations-centre",
     "mojfin",
