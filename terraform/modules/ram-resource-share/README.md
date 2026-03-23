@@ -35,7 +35,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_resource_arns"></a> [resource\_arns](#input\_resource\_arns) | Resource ARNs to attach to a resource share | `list(string)` | n/a | yes |
+| <a name="input_resource_arns"></a> [resource\_arns](#input\_resource\_arns) | Resource ARNs to attach to a resource share. Can be list(string) or map(string) where keys are static identifiers | `any` | n/a | yes |
 | <a name="input_tags_common"></a> [tags\_common](#input\_tags\_common) | MOJ required tags | `map(string)` | n/a | yes |
 | <a name="input_tags_prefix"></a> [tags\_prefix](#input\_tags\_prefix) | prefix for name tags | `string` | n/a | yes |
 
