@@ -100,7 +100,7 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
   instance_arn       = local.sso_admin_instance_arn
   permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_analytics_engineer.arn
   customer_managed_policy_reference {
-    name = "analytics_engineer_policy"
+    name = "analytics_engineering_policy"
     path = "/"
   }
 }
