@@ -57,11 +57,6 @@ jobs:
         run: |
           echo '{"version":"2.1.0","$schema":"https://json.schemastore.org/sarif-2.1.0.json","runs":[]}' > 'trivy-results.sarif'
           echo 'trivy-action step removed — created empty SARIF stub'
-      - name: Upload Trivy scan results to GitHub Security tab
-        if: success() || failure()
-        uses: github/codeql-action/upload-sarif@c6f931105cb2c34c8f901cc885ba1e2e259cf745 # v4.34.0
-        with:
-          sarif_file: 'trivy-results.sarif'
   checkov:
     name: checkov
     runs-on: ubuntu-latest
