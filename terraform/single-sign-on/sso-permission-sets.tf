@@ -76,6 +76,13 @@ resource "aws_ssoadmin_permission_set" "modernisation_platform_analytics_enginee
   tags             = {}
 }
 
+resource "aws_ssoadmin_managed_policy_attachment" "modernisation_platform_analytics_engineer" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  managed_policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_analytics_engineer.arn
+}
+
 resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_analytics_engineer" {
   provider           = aws.sso-management
   instance_arn       = local.sso_admin_instance_arn
