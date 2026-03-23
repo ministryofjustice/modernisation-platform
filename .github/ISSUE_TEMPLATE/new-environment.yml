@@ -193,7 +193,6 @@ body:
     - CICA
     - Platforms
     - Technology Services
-    - OCTO
   validations:
     required: true
 - type: input
