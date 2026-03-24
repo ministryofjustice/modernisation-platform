@@ -488,6 +488,7 @@ data "aws_iam_policy_document" "member-access-network" {
       "iam:EnableMFADevice",
       "iam:RemoveUserFromGroup",
       "iam:ResyncMFADevice",
+      "s3:DeleteBucketEncryption",
       "iam:UpdateAccountPasswordPolicy",
       "iam:UpdateGroup",
       "iam:UpdateLoginProfile",
@@ -513,6 +514,46 @@ data "aws_iam_policy_document" "member-access-network" {
     ]
     resources = ["arn:aws:iam::*:user/cicd-member-user"]
   }
+
+  statement {
+    effect = "Deny"
+    actions = [
+      "s3:PutObject"
+    ]
+    resources = ["arn:aws:s3:::*/*"]
+    condition {
+      test     = "Null"
+      variable = "s3:x-amz-server-side-encryption"
+      values   = ["true"]
+    }
+  }
+
+  statement {
+    effect = "Deny"
+    actions = [
+      "s3:PutObject"
+    ]
+    resources = ["arn:aws:s3:::*/*"]
+    condition {
+      test     = "StringNotEquals"
+      variable = "s3:x-amz-server-side-encryption"
+      values   = ["aws:kms"]
+    }
+  }
+
+  statement {
+    effect = "Deny"
+    actions = [
+      "s3:PutObject"
+    ]
+    resources = ["arn:aws:s3:::*/*"]
+    condition {
+      test     = "Null"
+      variable = "s3:x-amz-server-side-encryption-aws-kms-key-id"
+      values   = ["true"]
+    }
+  }
+
   statement {
     actions = ["iam:PassRole"]
     effect  = "Deny"
