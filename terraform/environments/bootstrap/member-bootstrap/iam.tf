@@ -421,6 +421,18 @@ data "aws_iam_policy_document" "member-access-network" {
   }
   statement {
     effect    = "Allow"
+    actions   = ["cloudtrail:DeleteTrail"]
+    resources = ["arn:aws:cloudtrail:*:*:trail/ears_sars_cloudtrail*"]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalAccount"
+      values = [
+        local.environment_management.account_ids["electronic-monitoring-data-development"]
+      ]
+    }
+  }
+  statement {
+    effect    = "Allow"
     actions   = ["s3:DeleteObject"]
     resources = ["arn:aws:s3:::cloudtrail-test*/*"]
     condition {
