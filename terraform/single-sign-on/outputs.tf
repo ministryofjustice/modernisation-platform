@@ -2,6 +2,10 @@ output "data_engineer" {
   value = aws_ssoadmin_permission_set.modernisation_platform_data_engineer.arn
 }
 
+output "analytics_engineer" {
+  value = aws_ssoadmin_permission_set.modernisation_platform_analytics_engineer.arn
+}
+
 output "developer" {
   value = aws_ssoadmin_permission_set.modernisation_platform_developer.arn
 }
