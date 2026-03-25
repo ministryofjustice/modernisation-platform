@@ -8,7 +8,12 @@ data "aws_ssm_parameter" "modernisation_platform_account_id" {
 }
 
 locals {
-  enable-cloudtrail-events         = strcontains(terraform.workspace, "digital-prison-reporting") ? false : true
+  enable-cloudtrail-events         = strcontains(terraform.workspace, 
+    "digital-prison-reporting",
+    "sprinkler-development",
+    "electronic-monitoring-data-preproduction",
+    "electronic-monitoring-data-production"
+    ) ? false : true
   reduced_preprod_backup_retention = strcontains(terraform.workspace, "ccms-ebs") ? true : false
   enabled_baseline_regions = [
     "eu-central-1", # Europe (Frankfurt)
@@ -44,4 +49,18 @@ locals {
     "eu-west-2",
     local.securityhub_central_event_bus_account_id,
   )
+
+  # New locals for account-specific s3 cloudtrail event filtering
+  cloudtrail_s3_mgmt_events_disabled_workspaces = [
+    "sprinkler-development",
+    "electronic-monitoring-data-preproduction",
+    "electronic-monitoring-data-production"
+  ]
+
+  # Enable default s3 logging except for the listed workspaces
+  enable_s3_readonly_cloudtrail_alerts = contains(local.cloudtrail_s3_mgmt_events_disabled_workspaces, terraform.workspace) ? false : true
+
+  # List of buckets to restrict read-only cloudtrail events
+  cloudtrail_limit_readonly_bucket_arns = ["arn:aws:s3:::mikereid-temp-testing1010120260218113120747300000001"]
+
 }

@@ -6,7 +6,7 @@ data "aws_kms_key" "cloudtrail_key" {
 
 #trivy:ignore:AVD-AWS-0136
 module "baselines" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=fbaa8e2989b3187348f0f9d626bdad9102e9e13f" # v9.1.2
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=b139b058d57876878952b5b9f3acc0594577db24" # vTesting
   providers = {
     # Default and replication regions
     aws                    = aws.workspace-eu-west-2
@@ -86,6 +86,10 @@ module "baselines" {
   securityhub_slack_alerts_pagerduty_integration_key = local.pagerduty_integration_keys["security_hub_alerts_critical_priority"]
   enable_securityhub_event_forwarding                = local.enable_securityhub_event_forwarding
   securityhub_central_event_bus_arn                  = local.securityhub_central_event_bus_arn
+
+  # Variables to disable read-only s3 data events for selected buckets and accounts
+  enable_cloudtrail_limit_readonly_bucket_events     = local.enable_s3_readonly_cloudtrail_alerts  
+  cloudtrail_limit_readonly_bucket_arns              = local.cloudtrail_limit_readonly_bucket_arns
 
 }
 
