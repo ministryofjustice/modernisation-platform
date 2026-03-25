@@ -3,8 +3,8 @@ name: Biannual Incident Management Simulation
 on:
   schedule:
     # Runs at 00:00 UTC on Jan 1 and July 1
-    - cron: '0 0 1 1,7 *'
-  workflow_dispatch:  # Allows manual trigger
+    - cron: "0 0 1 1,7 *"
+  workflow_dispatch: # Allows manual trigger
 
 permissions:
   issues: write
@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Create Biannual Incident Simulation Issue
         id: create_issue
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -47,7 +47,7 @@ jobs:
             core.setOutput("issue_node_id", issue.data.node_id);
 
       - name: Add Issue to Project
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
