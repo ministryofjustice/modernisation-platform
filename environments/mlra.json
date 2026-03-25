@@ -73,7 +73,7 @@
           "level": "instance-management"
         },
         {
-          "sso_group_name": "octo-cyber-security",
+          "sso_group_name": "octo-cyber-team",
           "level": "security-audit"
         }
       ]
