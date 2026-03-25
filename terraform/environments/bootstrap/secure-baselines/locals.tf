@@ -44,4 +44,18 @@ locals {
     "eu-west-2",
     local.securityhub_central_event_bus_account_id,
   )
+
+  # New locals for account-specific s3 cloudtrail event filtering
+  cloudtrail_s3_mgmt_events_disabled_workspaces = [
+    "sprinkler-development"
+  ]
+
+  # Disables readonly alerts for specific workspaces
+  disable_s3_readonly_cloudtrail_alerts = contains(local.cloudtrail_s3_mgmt_events_disabled_workspaces, terraform.workspace) ? true : false
+
+  # List of buckets to restrict read-only cloudtrail events only when disable_s3_readonly_cloudtrail_alerts is true
+  cloudtrail_limit_readonly_bucket_arns = local.disable_s3_readonly_cloudtrail_alerts ? [
+    "arn:aws:s3:::mikereid-temp-testing1010120260218113120747300000001",
+  ] : []
+
 }
