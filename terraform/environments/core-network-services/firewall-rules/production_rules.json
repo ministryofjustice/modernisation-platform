@@ -615,5 +615,12 @@
     "destination_ip": "${laa-production}",
     "destination_port": "1521",
     "protocol": "TCP"
+  },
+  "mp_hmpps_production_to_noms_transit_live_fw": {
+    "action": "PASS",
+    "source_ip": "${hmpps-production}",
+    "destination_ip": "${noms-transit-live-fw-1}",
+    "destination_port": "445",
+    "protocol": "TCP"
   }
 }
