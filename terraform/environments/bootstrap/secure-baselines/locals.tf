@@ -57,8 +57,8 @@ locals {
     "electronic-monitoring-data-production"
   ]
 
-  # Enable default s3 logging except for the listed workspaces
-  enable_s3_readonly_cloudtrail_alerts = contains(local.cloudtrail_s3_mgmt_events_disabled_workspaces, terraform.workspace) ? false : true
+  # Disables readonly alerts for specific workspaces
+  disable_s3_readonly_cloudtrail_alerts = contains(local.cloudtrail_s3_mgmt_events_disabled_workspaces, terraform.workspace) ? true : false
 
   # List of buckets to restrict read-only cloudtrail events
   cloudtrail_limit_readonly_bucket_arns = ["arn:aws:s3:::mikereid-temp-testing1010120260218113120747300000001"]

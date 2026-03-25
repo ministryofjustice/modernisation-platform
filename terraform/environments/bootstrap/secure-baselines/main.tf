@@ -88,7 +88,7 @@ module "baselines" {
   securityhub_central_event_bus_arn                  = local.securityhub_central_event_bus_arn
 
   # Variables to disable read-only s3 data events for selected buckets and accounts
-  enable_cloudtrail_limit_readonly_bucket_events     = local.enable_s3_readonly_cloudtrail_alerts  
+  enable_cloudtrail_limit_readonly_bucket_events     = local.disable_s3_readonly_cloudtrail_alerts  
   cloudtrail_limit_readonly_bucket_arns              = local.cloudtrail_limit_readonly_bucket_arns
 
 }
