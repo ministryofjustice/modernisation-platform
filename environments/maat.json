@@ -91,6 +91,10 @@
         {
           "sso_group_name": "laa-sre-admins",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "security-audit"
         }
       ]
     }

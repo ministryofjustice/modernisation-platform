@@ -40,6 +40,10 @@
           "sso_group_name": "hosting-migrations",
           "level": "developer",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "security-audit"
         }
       ]
     }
