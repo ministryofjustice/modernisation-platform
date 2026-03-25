@@ -75,7 +75,7 @@
 /terraform/environments/core-shared-services/nomis-combined-reporting.tf @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
 /terraform/environments/core-shared-services/nomis-data-hub.tf @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
 /terraform/environments/core-shared-services/nomis.tf @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
-/terraform/environments/core-shared-services/oas.tf @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-cyber-security-team @ministryofjustice/laa-dba @ministryofjustice/oas-migration 
+/terraform/environments/core-shared-services/oas.tf @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-cyber-security-team @ministryofjustice/laa-dba @ministryofjustice/laa-sre-admins @ministryofjustice/oas-migration 
 /terraform/environments/core-shared-services/oasys-national-reporting.tf @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
 /terraform/environments/core-shared-services/oasys.tf @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
 /terraform/environments/core-shared-services/observability-platform.tf @ministryofjustice/observability-platform 
