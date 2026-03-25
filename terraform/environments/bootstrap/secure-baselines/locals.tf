@@ -8,12 +8,13 @@ data "aws_ssm_parameter" "modernisation_platform_account_id" {
 }
 
 locals {
-  enable-cloudtrail-events         = strcontains(terraform.workspace, 
+  cloudtrail_events_disabled_workspaces = [
     "digital-prison-reporting",
     "sprinkler-development",
     "electronic-monitoring-data-preproduction",
-    "electronic-monitoring-data-production"
-    ) ? false : true
+    "electronic-monitoring-data-production",
+  ]
+  enable-cloudtrail-events = contains(local.cloudtrail_events_disabled_workspaces, terraform.workspace) ? false : true
   reduced_preprod_backup_retention = strcontains(terraform.workspace, "ccms-ebs") ? true : false
   enabled_baseline_regions = [
     "eu-central-1", # Europe (Frankfurt)
