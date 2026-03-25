@@ -5,12 +5,12 @@ resource "aws_sns_topic" "iam_credential_alert" {
 }
 
 data "aws_secretsmanager_secret" "pagerduty_integration_keys" {
-  provider = aws.modernisation-platform
+  provider = aws.modernisation-secrets-read
   name     = "pagerduty_integration_keys"
 }
 
 data "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
-  provider  = aws.modernisation-platform
+  provider  = aws.modernisation-secrets-read
   secret_id = data.aws_secretsmanager_secret.pagerduty_integration_keys.id
 }
 
