@@ -54,6 +54,10 @@
         {
           "sso_group_name": "hmpps-dba",
           "level": "instance-management"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "security-audit"
         }
       ]
     }

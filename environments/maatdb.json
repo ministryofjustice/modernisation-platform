@@ -160,6 +160,10 @@
           "sso_group_name": "laa-maat-migrations",
           "level": "developer",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "security-audit"
         }
       ]
     }

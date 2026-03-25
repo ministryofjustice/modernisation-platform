@@ -71,6 +71,10 @@
         {
           "sso_group_name": "laa-crime-apps-team",
           "level": "instance-management"
+        },
+        {
+          "sso_group_name": "octo-cyber-security",
+          "level": "security-audit"
         }
       ]
     }

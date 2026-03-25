@@ -69,6 +69,10 @@
         {
           "sso_group_name": "laa-ccms-migration-team",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "security-audit"
         }
       ]
     }

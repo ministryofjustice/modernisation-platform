@@ -72,6 +72,10 @@
         {
           "sso_group_name": "hmpps-delius-jitbit-devs",
           "level": "instance-management"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "security-audit"
         }
       ]
     }
