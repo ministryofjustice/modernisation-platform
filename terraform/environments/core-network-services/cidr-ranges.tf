@@ -46,6 +46,7 @@ locals {
     noms-transit-live-vnet = "10.40.160.0/20"
     noms-test-vnet         = "10.101.0.0/16"
     noms-mgmt-vnet         = "10.102.0.0/16"
+    noms-transit-live-fw-1 = "52.142.189.118/32"
     moj-smtp-relay1        = "10.180.104.100/32"
     moj-smtp-relay2        = "10.180.105.100/32"
 
