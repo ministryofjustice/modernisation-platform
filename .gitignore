@@ -16,3 +16,5 @@ config.txt
 execution_log.txt
 .lycheecache
 megalinter-reports
+lambda/credential_responder.zip
+
