@@ -15,6 +15,7 @@ allowed_business_units := [
 
 allowed_access := [
   "administrator",
+  "analytics-engineer",
   "data-engineer",
   "developer",
   "instance-access",
