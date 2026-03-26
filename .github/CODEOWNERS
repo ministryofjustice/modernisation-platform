@@ -30,7 +30,7 @@
 /terraform/environments/core-shared-services/cloud-platform-non-live.tf @ministryofjustice/cloud-platform-engineers 
 /terraform/environments/core-shared-services/cloud-platform.tf @ministryofjustice/cloud-platform-engineers 
 /terraform/environments/core-shared-services/coat.tf @ministryofjustice/cloud-optimisation-and-accountability 
-/terraform/environments/core-shared-services/contract-work-administration.tf @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-cwa-developer @ministryofjustice/laa-pcuam 
+/terraform/environments/core-shared-services/contract-work-administration.tf @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-cwa-developer @ministryofjustice/laa-pcuam @ministryofjustice/laa-sre-admins 
 /terraform/environments/core-shared-services/cooker.tf @ministryofjustice/modernisation-platform @ministryofjustice/octo-cyber-team @ministryofjustice/tvm-purple-team 
 /terraform/environments/core-shared-services/corporate-staff-rostering.tf @ministryofjustice/csr-application-support @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
 /terraform/environments/core-shared-services/dacp.tf @ministryofjustice/dts-legacy 
@@ -63,7 +63,7 @@
 /terraform/environments/core-shared-services/laa-mail-relay.tf @ministryofjustice/laa-aws-infrastructure 
 /terraform/environments/core-shared-services/laa-oem.tf @ministryofjustice/laa-ccms-migration-team 
 /terraform/environments/core-shared-services/laa-pui-secure-browser.tf @ministryofjustice/ecp-admin @ministryofjustice/laa-sre-admins 
-/terraform/environments/core-shared-services/laa-stabilisation-cdc-poc.tf @ministryofjustice/laa-stabilisation-cdc @ministryofjustice/v1-hub20-developers 
+/terraform/environments/core-shared-services/laa-stabilisation-cdc-poc.tf @ministryofjustice/laa-sre-admins @ministryofjustice/laa-stabilisation-cdc @ministryofjustice/v1-hub20-developers 
 /terraform/environments/core-shared-services/laa-workspaces.tf @ministryofjustice/laa-aws-infrastructure 
 /terraform/environments/core-shared-services/long-term-storage.tf @ministryofjustice/modernisation-platform-long-term-storage @ministryofjustice/octo-cyber-team 
 /terraform/environments/core-shared-services/maat.tf @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-crime-apps-team @ministryofjustice/laa-sre-admins @ministryofjustice/octo-cyber-team 
