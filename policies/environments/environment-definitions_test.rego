@@ -77,4 +77,3 @@ test_critical_national_infrastructure_invalid if {
     deny_message := sprintf("`%v` has invalid `critical-national-infrastructure` value: got `%v`, expected a boolean (true or false)", [test_input.filename, test_input.tags["critical-national-infrastructure"]])
     deny_message in deny_result
 }
-
