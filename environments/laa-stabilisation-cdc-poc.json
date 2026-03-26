@@ -11,6 +11,10 @@
         {
           "sso_group_name": "v1-hub20-developers",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
         }
       ],
       "nuke": "exclude"
