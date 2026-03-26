@@ -1458,6 +1458,15 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
       "s3:PutObject"
     ]
   }
+
+  statement {
+    sid       = "AllowSecretsManagerRead"
+    effect    = "Allow"
+    resources = ["arn:aws:secretsmanager:*:${local.environment_management.account_ids[terraform.workspace]}:secret:*"]
+    actions = [
+      "secretsmanager:GetSecretValue"
+    ]
+  }  
 }
 
 # Role github-actions-apply to support OIDC access from Modernisation-Platform-Environments for:
