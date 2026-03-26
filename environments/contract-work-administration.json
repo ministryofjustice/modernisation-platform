@@ -17,6 +17,11 @@
           "sso_group_name": "laa-pcuam",
           "level": "developer",
           "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "false"
         }
       ],
       "nuke": "exclude"
@@ -32,6 +37,11 @@
           "sso_group_name": "laa-cwa-developer",
           "level": "developer",
           "github_action_reviewer": "false"
+        },
+         {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "false"
         }
       ],
       "nuke": "exclude"
@@ -42,6 +52,10 @@
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
+        },
+         {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
         }
       ]
     },
@@ -50,6 +64,10 @@
       "access": [
         {
           "sso_group_name": "laa-aws-infrastructure",
+          "level": "developer"
+        },
+         {
+          "sso_group_name": "laa-sre-admins",
           "level": "developer"
         }
       ]
