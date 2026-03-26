@@ -137,3 +137,4 @@ deny contains msg if {
   not is_boolean(input.tags["critical-national-infrastructure"])
   msg := sprintf("`%v` has invalid `critical-national-infrastructure` value: got `%v`, expected a boolean (true or false)", [input.filename, input.tags["critical-national-infrastructure"]])
 }
+
