@@ -1407,7 +1407,7 @@ module "github_actions_plan" {
 }
 
 data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
-  count               = (local.account_data.account-type == "member" && (local.is-preproduction || local.is-production || terraform.workspace == "cloud-platform-live" || terraform.workspace == "cloud-platform-nonlive")) ? 1 : 0
+  count = (local.account_data.account-type == "member" && (local.is-preproduction || local.is-production || terraform.workspace == "cloud-platform-live" || terraform.workspace == "cloud-platform-nonlive")) ? 1 : 0
   statement {
     sid    = "AllowOIDCToAssumeRoles"
     effect = "Allow"
