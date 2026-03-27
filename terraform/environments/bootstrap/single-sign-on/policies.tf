@@ -571,7 +571,8 @@ data "aws_iam_policy_document" "analytics_engineering" {
       "lakeformation:GetLFTagExpression",
       "lakeformation:AddLFTagsToResource",
       "lakeformation:RemoveLFTagsFromResource",
-      "lakeformation:GetDataAccess"
+      "lakeformation:GetDataAccess",
+      "s3:ListAllMyBuckets"
     ]
     resources = ["*"]
   }
