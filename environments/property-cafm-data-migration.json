@@ -7,7 +7,7 @@
       "access": [
         {
           "sso_group_name": "property-datahub",
-          "level": "data-engineer"
+          "level": "sandbox"
         }
       ]
     },
