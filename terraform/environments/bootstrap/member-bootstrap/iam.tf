@@ -1466,7 +1466,7 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
     actions = [
       "secretsmanager:GetSecretValue"
     ]
-  }  
+  }
 }
 
 # Role github-actions-apply to support OIDC access from Modernisation-Platform-Environments for:
