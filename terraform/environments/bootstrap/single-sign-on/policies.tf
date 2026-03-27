@@ -547,11 +547,6 @@ data "aws_iam_policy_document" "analytics_engineering" {
     sid    = "AnalyticsEngineeringAllow"
     effect = "Allow"
     actions = [
-      "athena:DeleteNamedQuery",
-      "athena:StartQueryExecution",
-      "athena:StopQueryExecution",
-      "athena:List*",
-      "athena:Get*",
       "glue:Batch*Partition",
       "glue:BatchDeleteTable",
       "glue:CreateDatabase",
@@ -572,7 +567,6 @@ data "aws_iam_policy_document" "analytics_engineering" {
       "lakeformation:AddLFTagsToResource",
       "lakeformation:RemoveLFTagsFromResource",
       "lakeformation:GetDataAccess",
-      "s3:ListAllMyBuckets"
     ]
     resources = ["*"]
   }
