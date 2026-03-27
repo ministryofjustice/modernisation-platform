@@ -481,7 +481,6 @@ data "aws_iam_policy_document" "member-access-network" {
       "iam:DeleteAccountPasswordPolicy",
       "iam:DeleteGroup",
       "iam:DeleteGroupPolicy",
-      "iam:DeleteLoginProfile",
       "iam:DeleteSAMLProvider",
       "iam:DeleteUserPermissionsBoundary",
       "iam:DeleteVirtualMFADevice",
@@ -496,6 +495,18 @@ data "aws_iam_policy_document" "member-access-network" {
       "iam:UpdateUser"
     ]
     resources = ["*"]
+  }
+
+  # Deny iam:DeleteLoginProfile for all accounts except testing-test, which needs it for unit testing terraform-iam-superadmins module
+  statement {
+    effect    = "Deny"
+    actions   = ["iam:DeleteLoginProfile"]
+    resources = ["*"]
+    condition {
+      test     = "StringNotEquals"
+      variable = "aws:PrincipalAccount"
+      values   = [local.environment_management.account_ids["testing-test"]]
+    }
   }
 
   statement {
@@ -1468,17 +1479,6 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
     resources = ["arn:aws:secretsmanager:*:${local.environment_management.account_ids[terraform.workspace]}:secret:*"]
     actions = [
       "secretsmanager:GetSecretValue"
-    ]
-  }
-
-  statement {
-    sid       = "AllowGlueConnectionRead"
-    effect    = "Allow"
-    resources = [
-      "arn:aws:glue:*:${local.environment_management.account_ids[terraform.workspace]}:*"
-    ]
-    actions = [
-      "glue:GetConnection"
     ]
   }
 }
