@@ -1493,6 +1493,6 @@ module "github_actions_apply" {
   github_repositories = ["ministryofjustice/modernisation-platform-environments"]
   role_name           = "github-actions-apply"
   policy_jsons        = [data.aws_iam_policy_document.oidc_assume_role_member[0].json]
-  subject_claim       = "ref:refs/heads/main"
+  subject_claim       = "environment:${terraform.workspace}*"
   tags                = { "Name" = "github-actions-apply" }
 }
