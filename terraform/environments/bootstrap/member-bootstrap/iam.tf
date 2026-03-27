@@ -1474,7 +1474,9 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
   statement {
     sid       = "AllowGlueConnectionRead"
     effect    = "Allow"
-    resources = ["arn:aws:glue:*:${local.environment_management.account_ids[terraform.workspace]}:catalog"]
+    resources = [
+      "arn:aws:glue:*:${local.environment_management.account_ids[terraform.workspace]}:*"
+    ]
     actions = [
       "glue:GetConnection"
     ]
