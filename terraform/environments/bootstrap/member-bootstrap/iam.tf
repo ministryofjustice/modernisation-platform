@@ -104,6 +104,7 @@ module "member-access" {
     module.github-oidc[0].github_actions_role,
     try(module.github_actions_terraform_dev_test[0].role, null),
     one(data.aws_iam_roles.member-sso-admin-access.arns),
+    (local.is-production || local.is-preproduction) ? try(module.github_actions_apply[0].role, null) : null
   ])
   role_name = "MemberInfrastructureAccess"
 }
@@ -611,6 +612,7 @@ module "member-access-us-east" {
     module.github-oidc[0].github_actions_role,
     try(module.github_actions_terraform_dev_test[0].role, null),
     one(data.aws_iam_roles.member-sso-admin-access.arns),
+    (local.is-production || local.is-preproduction) ? try(module.github_actions_apply[0].role, null) : null
   ])
   policy_arn = aws_iam_policy.member-access-us-east[0].id
   role_name  = "MemberInfrastructureAccessUSEast"
@@ -920,6 +922,7 @@ module "member-access-eu-central" {
     module.github-oidc[0].github_actions_role,
     try(module.github_actions_terraform_dev_test[0].role, null),
     one(data.aws_iam_roles.member-sso-admin-access.arns),
+    (local.is-production || local.is-preproduction) ? try(module.github_actions_apply[0].role, null) : null
   ])
   policy_arn = aws_iam_policy.member-access-eu-central[0].id
   role_name  = "MemberInfrastructureBedrockEuCentral"
