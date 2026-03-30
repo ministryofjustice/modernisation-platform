@@ -1481,6 +1481,15 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
       "secretsmanager:GetSecretValue"
     ]
   }
+
+  statement {
+    sid    = "AllowOAMListTagsForResource"
+    effect = "Allow"
+    resources = ["arn:aws:oam:*:${local.environment_management.account_ids[terraform.workspace]}:*"]
+    actions = [
+      "oam:ListTagsForResource"
+    ]
+  }
 }
 
 # Role github-actions-apply to support OIDC access from Modernisation-Platform-Environments for:
