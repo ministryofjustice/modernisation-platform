@@ -1,0 +1,79 @@
+---
+owner_slack: "#modernisation-platform"
+title: Security Alarms
+last_reviewed_on: 2026-03-31
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+## Introduction
+
+A suite of security alarms are configured in the [modernisation-platform-secure-baselines](https://github.com/ministryofjustice/modernisation-platform-terraform-baselines/blob/main/modules/securityhub-alarms/main.tf) module which are recommended as part of the [CIS AWS Foundations Benchmark v1.2.0](https://docs.aws.amazon.com/securityhub/latest/userguide/cis-aws-foundations-benchmark.html#cis1v2-standard).
+
+We have adapted these slightly for our purposes, for instance we have tweaked some of the metric filter patterns to ignore changes made by knwon automation roles and we've also created new alarms for extra use cases such as monitoring use of the `AdministratorAccess` SSO role.
+
+All of these CloudWatch alarms are configured to hit various SNS topics which in turn send to PagerDuty HTTPS service endpoints and raise incidents. These PagerDuty services are associated with a number of different Slack Channels.
+
+## Alerting Overview
+
+The following table provides an overview of the configuration of these alerts to document
+
+| Alarm Name                                              | Description                                                                                                                         | Threshold / Period           | Account Scope            | SNS Topic                  | PagerDuty Service                             | Slack Channel                               |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ------------------------ | -------------------------- | --------------------------------------------- | ------------------------------------------- |
+| `unauthorised-api-calls`                                | Monitors for unauthorised API calls. Filters out known automation roles and `CortexXDRCloudApp`. (CIS 3.1)                          | ≥10 / 180s                   | MP-owned workspaces only | securityhub-alarms         | Core Alerts - Modernisation Platform          | modernisation-platform-low-priority-alarms  |
+| `sign-in-without-mfa`                                   | Monitors for AWS Console sign-in without MFA by IAM users. (CIS 3.2)                                                                | ≥1 / 300s                    | All accounts             | securityhub-alarms         | Core Alerts - Modernisation Platform          | modernisation-platform-low-priority-alarms  |
+| `root-account-usage`                                    | Monitors for root account usage. (CIS 3.3 / 1.1)                                                                                    | ≥1 / 300s                    | All accounts             | high-priority-alarms-topic | High Priority Alerts - Modernisation Platform | modernisation-platform-high-priority-alarms |
+| `iam-policy-changes`                                    | Monitors for IAM policy changes (attach/detach/create/delete) made outside of approved automation roles. (CIS 3.4)                  | ≥1 / 300s                    | All accounts             | securityhub-alarms         | Core Alerts - Modernisation Platform          | modernisation-platform-low-priority-alarms  |
+| `cloudtrail-configuration-changes`                      | Monitors for CloudTrail configuration changes (create/update/delete/start/stop logging). (CIS 3.5)                                  | ≥1 / 300s                    | All accounts             | high-priority-alarms-topic | High Priority Alerts - Modernisation Platform | modernisation-platform-high-priority-alarms |
+| `sign-in-failures`                                      | Monitors for AWS Console sign-in authentication failures. (CIS 3.6)                                                                 | ≥5 / 60s                     | All accounts             | securityhub-alarms         | Core Alerts - Modernisation Platform          | modernisation-platform-low-priority-alarms  |
+| `cmk-removal`                                           | Monitors for KMS customer-managed key (CMK) disable or scheduled deletion. (CIS 3.7)                                                | ≥1 / 300s                    | MP-owned workspaces only | securityhub-alarms         | Core Alerts - Modernisation Platform          | modernisation-platform-low-priority-alarms  |
+| `s3-bucket-policy-changes`                              | Monitors for S3 bucket policy, ACL, lifecycle, CORS, and replication changes made outside of approved automation roles. (CIS 3.8)   | ≥1 / 300s                    | MP-owned workspaces only | securityhub-alarms         | Core Alerts - Modernisation Platform          | modernisation-platform-low-priority-alarms  |
+| `config-configuration-changes`                          | Monitors for AWS Config recorder and delivery channel changes made outside of approved automation roles. (CIS 3.9)                  | ≥1 / 300s                    | All accounts             | high-priority-alarms-topic | High Priority Alerts - Modernisation Platform | modernisation-platform-high-priority-alarms |
+| `security-group-changes`                                | Monitors for EC2 Security Group rule and lifecycle changes made outside of approved automation roles. (CIS 3.10)                    | ≥1 / 300s                    | All accounts             | securityhub-alarms         | Core Alerts - Modernisation Platform          | modernisation-platform-low-priority-alarms  |
+| `nacl-changes`                                          | Monitors for Network ACL create, delete, and entry changes made outside of approved automation roles. (CIS 3.11)                    | ≥1 / 300s                    | All accounts             | high-priority-alarms-topic | High Priority Alerts - Modernisation Platform | modernisation-platform-high-priority-alarms |
+| `network-gateway-changes`                               | Monitors for internet and customer gateway create, attach, and delete changes made outside of approved automation roles. (CIS 3.12) | ≥1 / 300s                    | All accounts             | high-priority-alarms-topic | High Priority Alerts - Modernisation Platform | modernisation-platform-high-priority-alarms |
+| `route-table-changes`                                   | Monitors for route table create, replace, delete, and association changes made outside of approved automation roles. (CIS 3.13)     | ≥1 / 300s                    | All accounts             | high-priority-alarms-topic | High Priority Alerts - Modernisation Platform | modernisation-platform-high-priority-alarms |
+| `vpc-changes`                                           | Monitors for VPC create/delete/modify and peering connection changes made outside of approved automation roles. (CIS 3.14)          | ≥1 / 300s                    | All accounts             | high-priority-alarms-topic | High Priority Alerts - Modernisation Platform | modernisation-platform-high-priority-alarms |
+| `PrivateLink-NewFlowCount-AllEndpoints`                 | Monitors the total sum of new flows across all VPC endpoints.                                                                       | >100 / 60s (3 eval periods)  | All accounts             | securityhub-alarms         | Core Alerts - Modernisation Platform          | modernisation-platform-low-priority-alarms  |
+| `PrivateLink-ActiveFlowCount-AllEndpoints`              | Monitors the total average of active flows across all VPC endpoints.                                                                | >1000 / 60s (3 eval periods) | All accounts             | securityhub-alarms         | Core Alerts - Modernisation Platform          | modernisation-platform-low-priority-alarms  |
+| `PrivateLink-Service-NewConnectionCount-AllServices`    | Monitors the total sum of new connections across all VPC Endpoint Services.                                                         | >100 / 60s (3 eval periods)  | All accounts             | securityhub-alarms         | Core Alerts - Modernisation Platform          | modernisation-platform-low-priority-alarms  |
+| `PrivateLink-Service-ActiveConnectionCount-AllServices` | Monitors the total average of active connections across all VPC Endpoint Services.                                                  | >1000 / 60s (3 eval periods) | All accounts             | securityhub-alarms         | Core Alerts - Modernisation Platform          | modernisation-platform-low-priority-alarms  |
+| `admin-role-usage`                                      | Monitors for use of the `AdministratorAccess` SSO role by `modernisation-platform-engineers` GitHub team.                           | ≥1 / 300s                    | All accounts             | securityhub-alarms         | Core Alerts - Modernisation Platform          | modernisation-platform-low-priority-alarms  |
+| `orgaccess-role-usage`                                  | Monitors for human assumption of the `OrganizationAccountAccessRole` by `justice.gov.uk` users.                                     | ≥1 / 300s                    | All accounts             | securityhub-alarms         | Core Alerts - Modernisation Platform          | modernisation-platform-low-priority-alarms  |
+
+## PagerDuty Services / Slack channels
+
+- High Priority Alerts - Modernisation Platform
+
+- modernisation-platform-low-priority-alarms
+
+## Reducing False Positives
+
+Over time we have made changes to reduce the amount of flase positives and to make these security alerts more meaningful. This is an evolving process but some of the ways we have achieved this are:
+
+#### Changing the thresholds
+
+We've increased the threshold of alarms such as `unauthorised-api-calls` from `≥1 / 180s` to `≥10 / 180s`
+
+#### Filtering based on the user identity associated with the cloudtrail event
+
+For some alarms that had quite a broad list of events e.g. security group/iam policy changes etc. we have filtered out any occurences where the action was performed by a known IAM automation role e.g. `ModernisationPlatformAccess` and `MemberInfrastructureAccess`
+
+#### Limiting the accounts the alarms are deployed into
+
+For certain alarms such as `s3-bucket-policy-changes` we have decided to only deploy alarms into the "MP-owned" set of accounts as we cannot be expected to manage this on behalf of our members who know best how to configure the bucket policy for their particular infrastructure.
+
+## Links
+
+### Slack
+
+[modernisation-platform-low-priority-alarms](https://moj.enterprise.slack.com/archives/C02PFCG8M1R)
+
+[modernisation-platform-high-priority-alarms](https://moj.enterprise.slack.com/archives/C03CY6451QT)
+
+#### PagerDuty
+
+[Core Alerts - Modernisation Platform](https://moj-digital-tools.pagerduty.com/service-directory/PYDTWVM)
+
+[High Priority Alerts - Modernisation Platform]()
