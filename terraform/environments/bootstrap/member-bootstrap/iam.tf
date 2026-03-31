@@ -469,24 +469,17 @@ data "aws_iam_policy_document" "member-access-network" {
   statement {
     effect = "Deny"
     actions = [
-      "iam:AddUserToGroup",
-      "iam:AttachGroupPolicy",
       "iam:CreateAccountAlias",
-      "iam:CreateGroup",
       "iam:CreateLoginProfile",
       "iam:CreateSAMLProvider",
       "iam:CreateVirtualMFADevice",
       "iam:DeactivateMFADevice",
       "iam:DeleteAccountAlias",
       "iam:DeleteAccountPasswordPolicy",
-      "iam:DeleteGroup",
-      "iam:DeleteGroupPolicy",
       "iam:DeleteSAMLProvider",
       "iam:DeleteUserPermissionsBoundary",
       "iam:DeleteVirtualMFADevice",
-      "iam:DetachGroupPolicy",
       "iam:EnableMFADevice",
-      "iam:RemoveUserFromGroup",
       "iam:ResyncMFADevice",
       "iam:UpdateAccountPasswordPolicy",
       "iam:UpdateGroup",
@@ -497,10 +490,19 @@ data "aws_iam_policy_document" "member-access-network" {
     resources = ["*"]
   }
 
-  # Deny iam:DeleteLoginProfile for all accounts except testing-test, which needs it for unit testing terraform-iam-superadmins module
+  # Deny group/login management actions for all accounts except testing-test, which needs them for IAM user/group lifecycle testing in the terraform-iam-superadmins module
   statement {
-    effect    = "Deny"
-    actions   = ["iam:DeleteLoginProfile"]
+    effect = "Deny"
+    actions = [
+      "iam:AddUserToGroup",
+      "iam:AttachGroupPolicy",
+      "iam:CreateGroup",
+      "iam:DeleteGroup",
+      "iam:DeleteGroupPolicy",
+      "iam:DeleteLoginProfile",
+      "iam:DetachGroupPolicy",
+      "iam:RemoveUserFromGroup",
+    ]
     resources = ["*"]
     condition {
       test     = "StringNotEquals"
@@ -1483,8 +1485,8 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
   }
 
   statement {
-    sid    = "AllowOAMListTagsForResource"
-    effect = "Allow"
+    sid       = "AllowOAMListTagsForResource"
+    effect    = "Allow"
     resources = ["arn:aws:oam:*:${local.environment_management.account_ids[terraform.workspace]}:*"]
     actions = [
       "oam:ListTagsForResource"
