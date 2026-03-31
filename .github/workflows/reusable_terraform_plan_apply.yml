@@ -50,6 +50,8 @@ env:
 
 jobs:
   fetch-secrets:
+    permissions:
+      id-token: write
     uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@5b44b387694dfa249cfa2dcf289ca871abe9e3e2 # v5.0.1
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
