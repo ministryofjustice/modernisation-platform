@@ -1,6 +1,8 @@
 name: terraform plan apply
 on:
   workflow_call:
+
+permissions: {}
     inputs:
       working-directory:
         required: true
@@ -53,6 +55,9 @@ jobs:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
   plan-and-apply:
+    permissions:
+      contents: read
+      pull-requests: write
     runs-on: ubuntu-latest
     needs: fetch-secrets
     steps:
