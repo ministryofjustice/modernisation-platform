@@ -3,6 +3,8 @@ name: Reusable Scheduled Baselines Workflow
 on:
   workflow_call:
 
+permissions: {}
+
     inputs:
 
         JOB_NAME:
@@ -56,6 +58,8 @@ env:
 jobs:
 
     main:
+      permissions:
+        contents: read
       runs-on: ubuntu-latest
       name: "Job - ${{ inputs.JOB_NAME }}"
       steps:
