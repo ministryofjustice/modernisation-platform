@@ -1492,6 +1492,17 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
       "oam:ListTagsForResource"
     ]
   }
+
+  statement {
+    sid       = "AllowGlueConnectionRead"
+    effect    = "Allow"
+    resources = [
+      "arn:aws:glue:*:${local.environment_management.account_ids[terraform.workspace]}:*"
+    ]
+    actions = [
+      "glue:GetConnection"
+    ]
+  }
 }
 
 # Role github-actions-apply to support OIDC access from Modernisation-Platform-Environments for:
