@@ -29,11 +29,15 @@ on:
 
         passphrase:
             required: true
+
+permissions: {}
             
 jobs:
 
     main:
 
+      permissions:
+        contents: read
       runs-on: ubuntu-latest
       name: "Job - ${{ inputs.account_name }}"
       steps:
