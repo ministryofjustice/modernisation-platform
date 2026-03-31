@@ -2,9 +2,6 @@ name: Reusable Scheduled Baselines Workflow
 
 on:
   workflow_call:
-
-permissions: {}
-
     inputs:
 
         JOB_NAME:
@@ -52,6 +49,8 @@ permissions: {}
       PASSPHRASE:
         required: true
 
+permissions: {}
+
 env:
   STATE_FILE: ${{ inputs.working_directory }}/errored.tfstate
             
@@ -59,6 +58,7 @@ jobs:
 
     main:
       permissions:
+        id-token: write
         contents: read
       runs-on: ubuntu-latest
       name: "Job - ${{ inputs.JOB_NAME }}"
