@@ -1483,8 +1483,8 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
   }
 
   statement {
-    sid    = "AllowOAMListTagsForResource"
-    effect = "Allow"
+    sid       = "AllowOAMListTagsForResource"
+    effect    = "Allow"
     resources = ["arn:aws:oam:*:${local.environment_management.account_ids[terraform.workspace]}:*"]
     actions = [
       "oam:ListTagsForResource"
