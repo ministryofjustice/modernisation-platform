@@ -1,8 +1,6 @@
 name: terraform plan apply
 on:
   workflow_call:
-
-permissions: {}
     inputs:
       working-directory:
         required: true
@@ -42,6 +40,8 @@ permissions: {}
       PASSPHRASE:
         required: true
 
+permissions: {}
+
 env:
   TF_IN_AUTOMATION: true
   TF_DESTROY_THRESHOLD: 10 # Sets a threshold to alert if the number of resources shown to be destroyed in the plan output is equal or greater than this number.
@@ -50,12 +50,15 @@ env:
 
 jobs:
   fetch-secrets:
+    permissions:
+      id-token: write
     uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@5b44b387694dfa249cfa2dcf289ca871abe9e3e2 # v5.0.1
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
   plan-and-apply:
     permissions:
+      id-token: write
       contents: read
       pull-requests: write
     runs-on: ubuntu-latest

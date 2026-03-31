@@ -37,6 +37,7 @@ jobs:
     main:
 
       permissions:
+        id-token: write
         contents: read
       runs-on: ubuntu-latest
       name: "Job - ${{ inputs.account_name }}"
