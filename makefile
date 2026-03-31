@@ -21,6 +21,3 @@ preview:
 		--publish 4567:4567 \
 		$(TECH_DOCS_GITHUB_PAGES_PUBLISHER_IMAGE)@$(TECH_DOCS_GITHUB_PAGES_PUBLISHER_IMAGE_SHA) \
 		/usr/local/bin/preview
-
-link-check:
-	lyche --verbose --no-progress './**/*.md' './**/*.html' './**/*.erb' --config config/lychee.toml
