@@ -1,8 +1,6 @@
 name: terraform plan apply
 on:
   workflow_call:
-
-permissions: {}
     inputs:
       working-directory:
         required: true
@@ -41,6 +39,8 @@ permissions: {}
         required: true
       PASSPHRASE:
         required: true
+
+permissions: {}
 
 env:
   TF_IN_AUTOMATION: true
