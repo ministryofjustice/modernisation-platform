@@ -104,7 +104,7 @@ module "member-access" {
     module.github-oidc[0].github_actions_role,
     try(module.github_actions_terraform_dev_test[0].role, null),
     one(data.aws_iam_roles.member-sso-admin-access.arns),
-    (local.is-production || local.is-preproduction) ? try(module.github_actions_apply[0].role, null) : null
+    module.github_actions_apply[0].role
   ])
   role_name = "MemberInfrastructureAccess"
 }
@@ -625,7 +625,7 @@ module "member-access-us-east" {
     module.github-oidc[0].github_actions_role,
     try(module.github_actions_terraform_dev_test[0].role, null),
     one(data.aws_iam_roles.member-sso-admin-access.arns),
-    (local.is-production || local.is-preproduction) ? try(module.github_actions_apply[0].role, null) : null
+    module.github_actions_apply[0].role
   ])
   policy_arn = aws_iam_policy.member-access-us-east[0].id
   role_name  = "MemberInfrastructureAccessUSEast"
@@ -935,7 +935,7 @@ module "member-access-eu-central" {
     module.github-oidc[0].github_actions_role,
     try(module.github_actions_terraform_dev_test[0].role, null),
     one(data.aws_iam_roles.member-sso-admin-access.arns),
-    (local.is-production || local.is-preproduction) ? try(module.github_actions_apply[0].role, null) : null
+    module.github_actions_apply[0].role
   ])
   policy_arn = aws_iam_policy.member-access-eu-central[0].id
   role_name  = "MemberInfrastructureBedrockEuCentral"
@@ -1414,7 +1414,7 @@ data "aws_iam_policy_document" "github_actions_terraform_dev_test" {
 # - preproduction & Production member accounts with terraform plan actions
 
 module "github_actions_plan" {
-  count               = (local.account_data.account-type == "member" && (local.is-preproduction || local.is-production || terraform.workspace == "cloud-platform-live" || terraform.workspace == "cloud-platform-nonlive")) ? 1 : 0
+  count      = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
   source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
   github_repositories = ["ministryofjustice/modernisation-platform-environments"]
   role_name           = "github-actions-plan"
@@ -1423,7 +1423,7 @@ module "github_actions_plan" {
 }
 
 data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
-  count = (local.account_data.account-type == "member" && (local.is-preproduction || local.is-production || terraform.workspace == "cloud-platform-live" || terraform.workspace == "cloud-platform-nonlive")) ? 1 : 0
+  count      = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
   statement {
     sid    = "AllowOIDCToAssumeRoles"
     effect = "Allow"
@@ -1510,7 +1510,7 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
 # - preproduction & Production member accounts with terraform apply actions from main branch
 
 module "github_actions_apply" {
-  count               = (local.account_data.account-type == "member" && (local.is-preproduction || local.is-production || terraform.workspace == "cloud-platform-live" || terraform.workspace == "cloud-platform-nonlive")) ? 1 : 0
+  count      = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
   source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
   github_repositories = ["ministryofjustice/modernisation-platform-environments"]
   role_name           = "github-actions-apply"
