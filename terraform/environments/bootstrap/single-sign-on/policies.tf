@@ -749,6 +749,7 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "sts:*",
       "support:*",
       "support-console:*",
+      "sustainability:*",
       "textract:*",
       "tiros:*",
       "transfer:*",
