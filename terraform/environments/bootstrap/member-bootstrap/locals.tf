@@ -52,8 +52,6 @@ locals {
     for file in fileset("../../../../environments", "*.json") :
     replace(file, ".json", "") => jsondecode(file("../../../../environments/${file}"))
   }
-  is-production    = endswith(terraform.workspace, "-production") || endswith(terraform.workspace, "-live")
-  is-preproduction = endswith(terraform.workspace, "-preproduction") || endswith(terraform.workspace, "-nonlive")
 
   tags = {
     business-unit = "Platforms"
