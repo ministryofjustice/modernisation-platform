@@ -8,6 +8,10 @@
     {
       "name": "ccms-ebs-ssogen",
       "sso_group_name": "laa-sre-admins"
+    },
+    {
+      "name": "ccms-file-transfer",
+      "sso_group_name": "laa-sre-admins"
     }
   ],
   "environments": [
