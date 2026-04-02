@@ -1477,35 +1477,23 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
       "s3:PutObject"
     ]
   }
-
   statement {
-    sid       = "AllowSecretsManagerRead"
-    effect    = "Allow"
-    resources = ["arn:aws:secretsmanager:*:${local.environment_management.account_ids[terraform.workspace]}:secret:*"]
-    actions = [
-      "secretsmanager:GetSecretValue"
-    ]
-  }
-
-  statement {
-    sid       = "AllowOAMListTagsForResource"
-    effect    = "Allow"
-    resources = ["arn:aws:oam:*:${local.environment_management.account_ids[terraform.workspace]}:*"]
-    actions = [
-      "oam:ListTagsForResource"
-    ]
-  }
-
-  statement {
-    sid    = "AllowGlueConnectionRead"
+    sid    = "AllowAccountRestrictedAccess"
     effect = "Allow"
-    resources = [
-      "arn:aws:glue:*:${local.environment_management.account_ids[terraform.workspace]}:*"
-    ]
     actions = [
-      "glue:GetConnection"
+      "secretsmanager:GetSecretValue",
+      "oam:ListTagsForResource",
+      "glue:GetConnection",
+      "quicksight:Describe*",
+      "quicksight:ListTagsForResource"
     ]
-  }
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalAccount"
+      values   = [local.environment_management.account_ids[terraform.workspace]]
+    }
+}
 }
 
 # Role github-actions-apply to support OIDC access from Modernisation-Platform-Environments for:
