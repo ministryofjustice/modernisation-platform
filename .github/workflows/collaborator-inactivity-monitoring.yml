@@ -173,6 +173,7 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}
         run: |
+          # gh automatically uses GH_TOKEN if set — no `gh auth login` needed
           gh auth status
           bash ./scripts/check-github-api-usage.sh
 
