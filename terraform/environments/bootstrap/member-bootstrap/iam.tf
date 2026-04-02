@@ -1431,8 +1431,11 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
       format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id),
       format("arn:aws:iam::%s:role/ModernisationPlatformSSOReadOnly", local.environment_management.aws_organizations_root_account_id),
       format("arn:aws:iam::%s:role/read-log-records", local.environment_management.account_ids["core-network-services-production"]),
+      format("arn:aws:iam::%s:role/member-delegation-read-only", local.environment_management.account_ids["core-vpc-development"]),
+      format("arn:aws:iam::%s:role/member-delegation-read-only", local.environment_management.account_ids["core-vpc-test"]),
+      format("arn:aws:iam::%s:role/member-delegation-read-only", local.environment_management.account_ids["core-vpc-preproduction"]),
       format("arn:aws:iam::%s:role/member-delegation-read-only", local.environment_management.account_ids["core-vpc-production"]),
-      format("arn:aws:iam::%s:role/member-delegation-read-only", local.environment_management.account_ids["core-vpc-preproduction"])
+      format("arn:aws:iam::%s:role/member-delegation-read-only", local.environment_management.account_ids["core-vpc-sandbox"])
     ])
     condition {
       test     = "StringEquals"
