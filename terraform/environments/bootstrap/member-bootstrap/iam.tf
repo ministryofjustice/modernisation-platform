@@ -1493,7 +1493,7 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
       variable = "aws:PrincipalAccount"
       values   = [local.environment_management.account_ids[terraform.workspace]]
     }
-}
+  }
 }
 
 # Role github-actions-apply to support OIDC access from Modernisation-Platform-Environments for:
