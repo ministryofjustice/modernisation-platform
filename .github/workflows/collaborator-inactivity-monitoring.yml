@@ -184,7 +184,6 @@ jobs:
           owner: "ministryofjustice"
 
       - name: Download collaborators.json from modernisation-platform-github
-        if: ${{ inputs.download_collaborators == 'true' && inputs.set_github_app_token == 'true' }}
         run: |
           curl -H "Authorization: token ${{ steps.app.outputs.token }}" \
             -o collaborators.json \
