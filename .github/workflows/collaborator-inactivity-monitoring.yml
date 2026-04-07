@@ -75,7 +75,22 @@ jobs:
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           gov_uk_notify_api_key: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
+          mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+      - name: Create GitHub App token
+        id: app
+        uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3.0.0
+        with:
+          app-id: ${{ env.APP_ID }}               
+          private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
+          owner: "ministryofjustice"
+      
+      - name: Download collaborators.json from modernisation-platform-github
+        run: |
+          curl -H "Authorization: token ${{ steps.app.outputs.token }}" \
+            -o collaborators.json \
+            https://raw.githubusercontent.com/ministryofjustice/modernisation-platform-github/main/collaborators.json
 
       - name: Install Python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
@@ -167,7 +182,12 @@ jobs:
           app-id: ${{ env.APP_ID }}               
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
           owner: "ministryofjustice"
-          repositories: "modernisation-platform"
+
+      - name: Download collaborators.json from modernisation-platform-github
+        run: |
+          curl -H "Authorization: token ${{ steps.app.outputs.token }}" \
+            -o collaborators.json \
+            https://raw.githubusercontent.com/ministryofjustice/modernisation-platform-github/main/collaborators.json
 
       - name: Authenticate GitHub CLI as the App and Check the Rate Usage
         env:
