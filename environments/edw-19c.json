@@ -12,7 +12,8 @@
           "sso_group_name": "edw-mp-access",
           "level": "developer"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",

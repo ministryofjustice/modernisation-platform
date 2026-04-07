@@ -24,7 +24,8 @@
           "sso_group_name": "laa-sre-admins",
           "level": "developer"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",
