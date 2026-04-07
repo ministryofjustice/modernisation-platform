@@ -93,6 +93,16 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
   }
 }
 
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_analytics_engineer_athena_query_results" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_analytics_engineer.arn
+  customer_managed_policy_reference {
+    name = "analytics_engineering_athena_query_results_policy"
+    path = "/"
+  }
+}
+
 resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_data_engineer_common" {
   provider           = aws.sso-management
   instance_arn       = local.sso_admin_instance_arn

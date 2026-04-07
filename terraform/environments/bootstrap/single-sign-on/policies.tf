@@ -572,6 +572,39 @@ data "aws_iam_policy_document" "analytics_engineering" {
   }
 }
 
+# analytics engineering athena query results policy
+resource "aws_iam_policy" "analytics_engineering_athena_query_results" {
+  provider = aws.workspace
+  name     = "analytics_engineering_athena_query_results_policy"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.analytics_engineering_athena_query_results.json
+}
+
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "analytics_engineering_athena_query_results" {
+  #checkov:skip=CKV_AWS_108
+  #checkov:skip=CKV_AWS_109
+  #checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_110
+  #checkov:skip=CKV_AWS_356: Needs to access multiple resources
+  statement {
+    sid    = "AthenaQueryResultsAllow"
+    effect = "Allow"
+    actions = [
+      "s3:GetBucketLocation",
+      "s3:GetObject",
+      "s3:ListBucket",
+      "s3:ListBucketMultipartUploads",
+      "s3:ListMultipartUploadParts",
+      "s3:AbortMultipartUpload",
+      "s3:CreateBucket",
+      "s3:PutObject",
+      "s3:PutBucketPublicAccessBlock"
+    ]
+    resources = ["arn:aws:s3:::probation-query-results-*"]
+  }
+}
+
 # quicksight administrator policy (IAM permissions needed to manage QuickSight subscription)
 # ref: https://docs.aws.amazon.com/quicksight/latest/user/iam-policy-examples.html#security_iam_conosole-administration
 resource "aws_iam_policy" "quicksight_administrator" {
