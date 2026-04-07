@@ -176,6 +176,7 @@ data "aws_iam_policy_document" "member-access-compute" {
       "autoscaling:*",
       "backup:*",
       "backup-storage:MountCapsule",
+      "batch:*",
       "cloudformation:*",
       "cloudfront:*",
       "cloudwatch:*",
