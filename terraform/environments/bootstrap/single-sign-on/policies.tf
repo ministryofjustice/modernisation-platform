@@ -597,9 +597,7 @@ data "aws_iam_policy_document" "analytics_engineering_athena_query_results" {
       "s3:ListBucketMultipartUploads",
       "s3:ListMultipartUploadParts",
       "s3:AbortMultipartUpload",
-      "s3:CreateBucket",
       "s3:PutObject",
-      "s3:PutBucketPublicAccessBlock"
     ]
     resources = ["arn:aws:s3:::probation-query-results-*"]
   }
