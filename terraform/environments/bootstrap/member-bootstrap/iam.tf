@@ -1397,6 +1397,20 @@ data "aws_iam_policy_document" "github_actions_terraform_dev_test" {
   }
 }
 
+# Role github-actions-plan & policy to support OIDC access from Modernisation-Platform-Environments for:
+#
+# - preproduction & Production member accounts with terraform plan actions
+
+module "github_actions_plan" {
+  count                  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
+  source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=6dd6f177091fb1664998aa37a1d0d5cf5894c10a" # v4.2.0
+  github_repositories    = ["ministryofjustice/modernisation-platform-environments:*"]
+  role_name              = "github-actions-plan"
+  additional_permissions = data.aws_iam_policy_document.oidc_assume_plan_role_member[0].json
+  tags_common            = { "Name" = "github-actions-plan" }
+  tags_prefix            = ""
+}
+
 data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
   count = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
   statement {
