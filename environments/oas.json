@@ -20,7 +20,8 @@
           "sso_group_name": "laa-dba",
           "level": "developer"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",
