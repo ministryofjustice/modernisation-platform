@@ -570,6 +570,15 @@ data "aws_iam_policy_document" "analytics_engineering" {
     ]
     resources = ["*"]
   }
+  statement {
+    sid    = "CadetAllow"
+    effect = "Allow"
+    actions = [
+      "s3:PutObject",
+      "s3:DeleteObject",
+    ]
+    resources = ["arn:aws:s3:::probation-datalake-*"]
+  }
 }
 
 # analytics engineering athena query results policy
