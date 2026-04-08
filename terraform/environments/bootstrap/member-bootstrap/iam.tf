@@ -101,7 +101,6 @@ module "member-access" {
   source     = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
   account_id = data.aws_ssm_parameter.modernisation_platform_account_id.value
   additional_trust_roles = compact([
-    module.github-oidc[0].github_actions_role,
     try(module.github_actions_terraform_dev_test[0].role, null),
     one(data.aws_iam_roles.member-sso-admin-access.arns),
     module.github_actions_apply[0].role
@@ -623,7 +622,6 @@ module "member-access-us-east" {
   source     = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
   account_id = data.aws_ssm_parameter.modernisation_platform_account_id.value
   additional_trust_roles = compact([
-    module.github-oidc[0].github_actions_role,
     try(module.github_actions_terraform_dev_test[0].role, null),
     one(data.aws_iam_roles.member-sso-admin-access.arns),
     module.github_actions_apply[0].role
@@ -933,7 +931,6 @@ module "member-access-eu-central" {
   source     = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
   account_id = data.aws_ssm_parameter.modernisation_platform_account_id.value
   additional_trust_roles = compact([
-    module.github-oidc[0].github_actions_role,
     try(module.github_actions_terraform_dev_test[0].role, null),
     one(data.aws_iam_roles.member-sso-admin-access.arns),
     module.github_actions_apply[0].role
@@ -1043,16 +1040,6 @@ resource "aws_ssm_parameter" "modernisation_platform_account_id" {
   type  = "SecureString"
   value = local.environment_management.modernisation_platform_account_id
   tags  = local.tags
-}
-
-# Github OIDC provider
-module "github-oidc" {
-  count                  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
-  source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=5dc9bc211d10c58de4247fa751c318a3985fc87b" # v4.0.0
-  additional_permissions = data.aws_iam_policy_document.oidc_assume_role_member[0].json
-  github_repositories    = ["ministryofjustice/modernisation-platform-environments:*"]
-  tags_common            = { "Name" = format("%s-oidc", terraform.workspace) }
-  tags_prefix            = ""
 }
 
 #trivy:ignore:AVD-AWS-0345: Required for reading/writing Terraform state from S3
@@ -1408,19 +1395,6 @@ data "aws_iam_policy_document" "github_actions_terraform_dev_test" {
       "s3:DeleteObject"
     ]
   }
-}
-
-# Role github-actions-plan & policy to support OIDC access from Modernisation-Platform-Environments for:
-#
-# - preproduction & Production member accounts with terraform plan actions
-
-module "github_actions_plan" {
-  count               = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
-  source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
-  github_repositories = ["ministryofjustice/modernisation-platform-environments"]
-  role_name           = "github-actions-plan"
-  policy_jsons        = [data.aws_iam_policy_document.oidc_assume_plan_role_member[0].json]
-  tags                = { "Name" = "github-actions-plan" }
 }
 
 data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
