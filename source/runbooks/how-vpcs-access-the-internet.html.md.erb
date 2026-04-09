@@ -47,3 +47,26 @@ endpoints, [NAT Gateways](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-n
 Traffic enters from the Transit Gateway attachment, is routed through the Network Firewall where it is statefully
 inspected. HTTP traffic is permitted only where it matches a [defined list of domains](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/firewall-rules/fqdn_rules.json).
 Permitted traffic is then routed through a NAT gateway, and from there out to the internet via the Internet Gateway.
+
+### Core-network-services NAT Gateways - Outgoing Internet Addresses
+
+The NAT Gateways referenced above have the following EIP (Elastic IP) addresses assigned. These are sometimes used by other networks to filter for traffic originating from the Modernisation Platform via the Transit Gateway and so are included here for reference:
+
+| Gateway Name                    | EIP                |
+| ------------------------------- | ------------------ |
+| live_data-public-eu-west-2a     |  13.41.38.176      |
+| live_data-public-eu-west-2b     |  3.8.81.175        |
+| live_data-public-eu-west-2c     |  3.11.197.133      |
+| non_live_data-public-eu-west-2a |  13.43.9.198       |
+| non_live_data-public-eu-west-2b |  13.42.163.245     |
+| non_live_data-public-eu-west-2c |  18.132.208.127    |
+
+The following cli command can be run against `core-network-services` to obtain this list:
+
+```
+aws ec2 describe-nat-gateways \
+   --query 'NatGateways[*].{Name:Tags[?Key==`Name`]|[0].Value,GatewayId:NatGatewayId,ElasticIP:NatGatewayAddresses[0].PublicIp}' \
+   --output json \
+   | jq -r 'sort_by(.Name)[] | "\(.Name)\t\(.GatewayId)\t\(.ElasticIP)"' \
+   | column -t -s $'\t'
+```
