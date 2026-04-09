@@ -562,6 +562,7 @@ data "aws_iam_policy_document" "analytics_engineering" {
       "glue:List*",
       "glue:TagResource",
       "glue:UntagResource",
+      "glue:SearchTables",
       "lakeformation:ListLFTagExpressions",
       "lakeformation:GetLFTagExpression",
       "lakeformation:AddLFTagsToResource",
@@ -570,27 +571,18 @@ data "aws_iam_policy_document" "analytics_engineering" {
     ]
     resources = ["*"]
   }
-  statement {
-    sid    = "CadetAllow"
-    effect = "Allow"
-    actions = [
-      "s3:PutObject",
-      "s3:DeleteObject",
-    ]
-    resources = ["arn:aws:s3:::probation-datalake-*"]
-  }
 }
 
-# analytics engineering athena query results policy
-resource "aws_iam_policy" "analytics_engineering_athena_query_results" {
+# analytics engineering athena additional policy
+resource "aws_iam_policy" "analytics_engineering_athena_additional" {
   provider = aws.workspace
-  name     = "analytics_engineering_athena_query_results_policy"
+  name     = "analytics_engineering_athena_additional_policy"
   path     = "/"
-  policy   = data.aws_iam_policy_document.analytics_engineering_athena_query_results.json
+  policy   = data.aws_iam_policy_document.analytics_engineering_athena_additional.json
 }
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
-data "aws_iam_policy_document" "analytics_engineering_athena_query_results" {
+data "aws_iam_policy_document" "analytics_engineering_athena_additional" {
   #checkov:skip=CKV_AWS_108
   #checkov:skip=CKV_AWS_109
   #checkov:skip=CKV_AWS_111
@@ -609,6 +601,15 @@ data "aws_iam_policy_document" "analytics_engineering_athena_query_results" {
       "s3:PutObject",
     ]
     resources = ["arn:aws:s3:::probation-query-results-*"]
+  }
+  statement {
+    sid    = "AthenaS3Allow"
+    effect = "Allow"
+    actions = [
+      "s3:PutObject",
+      "s3:DeleteObject",
+    ]
+    resources = ["arn:aws:s3:::probation-datalake-*"]
   }
 }
 
