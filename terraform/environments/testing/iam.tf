@@ -32,7 +32,7 @@ module "github_actions_testing_role" {
   policy_jsons = [
     data.aws_iam_policy_document.github_actions_testing_role_policy.json
   ]
-  subject_claim = "ref:refs/heads/*"
+  subject_claim = "pull_request"
   tags          = { "Name" = "github-actions-testing" }
 }
 
