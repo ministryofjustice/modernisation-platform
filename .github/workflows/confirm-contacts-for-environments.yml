@@ -37,7 +37,7 @@ jobs:
 
       # ⛓️ SLSA - must run after checkout, before pip install
       - name: ⛓️ SLSA Supply Chain Security
-        uses: ministryofjustice/devsecops-actions/sca/slsa@d57d5793bf88b779875c8707e9b40a692b551b31 # main
+        uses: ministryofjustice/devsecops-actions/sca/slsa@47d07b004f821186e6e4bd97a2680eb844c5aaa6 # main
 
       # Step 1.1: Decrypt Secrets  
       - name: Decrypt Secrets

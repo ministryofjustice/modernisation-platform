@@ -190,7 +190,7 @@ jobs:
       - name: Post Warning & Check for Approval
         id: post_warning_check_approval
         if: github.event_name == 'pull_request'
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
           destroy_count: ${{ steps.get_destroy_count.outputs.destroy_count }}
           destroy_threshold: ${{ env.TF_DESTROY_THRESHOLD }}
@@ -217,7 +217,7 @@ jobs:
 
       - name: Post Comment
         if: github.event.ref != 'refs/heads/main'
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
