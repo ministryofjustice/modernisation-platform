@@ -122,9 +122,7 @@ data "aws_iam_policy_document" "github_actions_testing_role_policy" {
       "kms:GenerateDataKey"
     ]
     resources = [
-      data.aws_kms_key.s3_state_bucket_multi_region.arn,
-      data.aws_kms_key.environment_management_multi_region.arn,
-      data.aws_kms_key.pagerduty_multi_region.arn
+      "arn:aws:kms:eu-west-2:${local.environment_management.modernisation_platform_account_id}:key/*"
     ]
   }
 
@@ -137,27 +135,8 @@ data "aws_iam_policy_document" "github_actions_testing_role_policy" {
       "secretsmanager:ListSecretVersionIds"
     ]
     resources = [
-      "arn:aws:secretsmanager:eu-west-2:${data.aws_caller_identity.modernisation_platform.account_id}:secret:environment_management-??????",
-      "arn:aws:secretsmanager:eu-west-2:${data.aws_caller_identity.modernisation_platform.account_id}:secret:pagerduty_integration_keys-??????"
+      "arn:aws:secretsmanager:eu-west-2:${local.environment_management.modernisation_platform_account_id}:secret:environment_management-??????",
+      "arn:aws:secretsmanager:eu-west-2:${local.environment_management.modernisation_platform_account_id}:secret:pagerduty_integration_keys-??????"
     ]
   }
-}
-
-data "aws_caller_identity" "modernisation_platform" {
-  provider = aws.modernisation-platform
-}
-
-data "aws_kms_key" "s3_state_bucket_multi_region" {
-  provider = aws.modernisation-platform
-  key_id   = "alias/s3-state-bucket-multi-region"
-}
-
-data "aws_kms_key" "environment_management_multi_region" {
-  provider = aws.modernisation-platform
-  key_id   = "alias/environment-management-multi-region"
-}
-
-data "aws_kms_key" "pagerduty_multi_region" {
-  provider = aws.modernisation-platform
-  key_id   = "alias/pagerduty-secret-multi-region"
 }
