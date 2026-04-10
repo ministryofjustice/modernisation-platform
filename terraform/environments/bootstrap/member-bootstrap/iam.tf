@@ -616,6 +616,29 @@ resource "aws_iam_role_policy_attachment" "testing_member_infrastructure_access_
   policy_arn = aws_iam_policy.member-access-network[0].arn
 }
 
+# Bootstrap a GH Actions OIDC Provider for the testing-test account only
+module "github_actions_testing_oidc_provider" {
+  count                  = terraform.workspace == "testing-test" ? 1 : 0
+  source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=5dc9bc211d10c58de4247fa751c318a3985fc87b" # v4.0.0
+  additional_permissions = data.aws_iam_policy_document.oidc_deny_specific_actions.json
+  github_repositories = [
+    "ministryofjustice/modernisation-platform:*"
+  ]
+  tags_common = { "Name" = format("%s-oidc", terraform.workspace) }
+  tags_prefix = ""
+}
+
+data "aws_iam_policy_document" "oidc_deny_specific_actions" {
+  statement {
+    effect = "Deny"
+    actions = [
+      "iam:ChangePassword",
+      "iam:CreateLoginProfile"
+    ]
+    resources = ["*"]
+  }
+}
+
 # MemberInfrastructureAccessUSEast
 module "member-access-us-east" {
   count      = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
