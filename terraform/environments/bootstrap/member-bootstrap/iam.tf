@@ -621,6 +621,7 @@ module "github_actions_testing_oidc_provider" {
   count                  = terraform.workspace == "testing-test" ? 1 : 0
   source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=5dc9bc211d10c58de4247fa751c318a3985fc87b" # v4.0.0
   additional_permissions = data.aws_iam_policy_document.oidc_deny_specific_actions.json
+  role_name              = "github-actions-provider-role"
   github_repositories = [
     "ministryofjustice/modernisation-platform:*"
   ]
