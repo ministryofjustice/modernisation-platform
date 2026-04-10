@@ -1,47 +1,4 @@
-# OIDC Resources for testing-test account
-
-module "github-oidc" {
-  source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=5dc9bc211d10c58de4247fa751c318a3985fc87b" # v4.0.0
-  additional_permissions = data.aws_iam_policy_document.oidc_deny_specific_actions.json
-  github_repositories = [
-    "ministryofjustice/modernisation-platform-github-oidc-provider:*",
-    "ministryofjustice/modernisation-platform-github-oidc-role:*",
-    "ministryofjustice/modernisation-platform-terraform-aws-chatbot:*",
-    "ministryofjustice/modernisation-platform-terraform-aws-data-firehose:*",
-    "ministryofjustice/modernisation-platform-terraform-aws-vm-import:*",
-    "ministryofjustice/modernisation-platform-terraform-aws-waf:*",
-    "ministryofjustice/modernisation-platform-terraform-baselines:*",
-    "ministryofjustice/modernisation-platform-terraform-bastion-linux:*",
-    "ministryofjustice/modernisation-platform-terraform-certificate-dns-validations:*",
-    "ministryofjustice/modernisation-platform-terraform-cross-account-access:*",
-    "ministryofjustice/modernisation-platform-terraform-dns-certificates:*",
-    "ministryofjustice/modernisation-platform-terraform-ec2-autoscaling-group:*",
-    "ministryofjustice/modernisation-platform-terraform-ec2-instance:*",
-    "ministryofjustice/modernisation-platform-terraform-ecs-cluster:*",
-    "ministryofjustice/modernisation-platform-terraform-environments:*",
-    "ministryofjustice/modernisation-platform-terraform-iam-superadmins:*",
-    "ministryofjustice/modernisation-platform-terraform-lambda-function:*",
-    "ministryofjustice/modernisation-platform-terraform-loadbalancer:*",
-    "ministryofjustice/modernisation-platform-terraform-member-vpc:*",
-    "ministryofjustice/modernisation-platform-terraform-module-template:*",
-    "ministryofjustice/modernisation-platform-terraform-pagerduty-integration:*",
-    "ministryofjustice/modernisation-platform-terraform-s3-bucket:*",
-    "ministryofjustice/modernisation-platform-terraform-ssm-patching:*"
-  ]
-  tags_common = { "Name" = format("%s-oidc", terraform.workspace) }
-  tags_prefix = ""
-}
-
-data "aws_iam_policy_document" "oidc_deny_specific_actions" {
-  statement {
-    effect = "Deny"
-    actions = [
-      "iam:ChangePassword",
-      "iam:CreateLoginProfile"
-    ]
-    resources = ["*"]
-  }
-}
+# OIDC Role for testing-test account
 
 module "github_actions_testing_role" {
   source = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
