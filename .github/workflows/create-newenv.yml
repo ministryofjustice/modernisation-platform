@@ -191,7 +191,7 @@ jobs:
       - name: Save network setup info
         run: |
           echo "{\"pr_number\": ${{ github.event.pull_request.number }}, ISOLATED_ACCOUNT, \"app_name\": \"$APP_NAME\", \"business_unit\": \"$BUSINESS_UNIT\", \"environments\": $(echo $ENV_SELECTIONS_JSON | jq -c 'map(.name)')}" > network-setup-info.json
-      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: network-setup-info
           path: network-setup-info.json
