@@ -10,12 +10,12 @@
           "level": "sandbox"
         },
         {
-          "sso_group_name": "laa-ccms-security-testing-kpmg",
-          "level": "instance-management"
+          "sso_group_name": "laa-ccms-developers",
+          "level": "developer"
         },
         {
-          "sso_group_name": "laa-ccms-migration-team",
-          "level": "sandbox"
+          "sso_group_name": "laa-dba",
+          "level": "developer"
         }
       ],
       "nuke": "exclude"
@@ -28,11 +28,11 @@
           "level": "developer"
         },
         {
-          "sso_group_name": "laa-ccms-security-testing-kpmg",
-          "level": "instance-management"
+          "sso_group_name": "laa-ccms-developers",
+          "level": "developer"
         },
         {
-          "sso_group_name": "laa-ccms-migration-team",
+          "sso_group_name": "laa-dba",
           "level": "developer"
         }
       ]
@@ -45,11 +45,11 @@
           "level": "developer"
         },
         {
-          "sso_group_name": "laa-ccms-security-testing-kpmg",
-          "level": "instance-management"
+          "sso_group_name": "laa-ccms-developers",
+          "level": "developer"
         },
         {
-          "sso_group_name": "laa-ccms-migration-team",
+          "sso_group_name": "laa-dba",
           "level": "developer"
         }
       ]
@@ -63,11 +63,11 @@
           "github_action_reviewer": "true"
         },
         {
-          "sso_group_name": "laa-ccms-security-testing-kpmg",
-          "level": "instance-management"
+          "sso_group_name": "laa-ccms-developers",
+          "level": "developer"
         },
         {
-          "sso_group_name": "laa-ccms-migration-team",
+          "sso_group_name": "laa-dba",
           "level": "developer"
         },
         {
