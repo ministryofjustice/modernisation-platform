@@ -43,7 +43,7 @@ jobs:
 
             # ⛓️ SLSA - must run after checkout, before pip install
             - name: ⛓️ SLSA Supply Chain Security
-              uses: ministryofjustice/devsecops-actions/sca/slsa@47d07b004f821186e6e4bd97a2680eb844c5aaa6 # main
+              uses: ministryofjustice/devsecops-actions/sca/slsa@07d5768889c79128d82c07c00418df3ef66b4453 # main
 
             - name: Decrypt Secrets
               uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@5b44b387694dfa249cfa2dcf289ca871abe9e3e2 #5.0.1
@@ -53,7 +53,7 @@ jobs:
 
             - name: Create GitHub App token
               id: app
-              uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3.0.0
+              uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
               with:
                   app-id: ${{ env.APP_ID }}
                   private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
