@@ -964,6 +964,26 @@ module "observability_platform_grafana_sigv4_proxy_ecr_repo" {
   tags_common = local.tags
 }
 
+module "ebs_sftp_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "ccms-ebs-sftp"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-ebs-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-ebs-development"]}:role/modernisation-platform-oidc-cicd"
+  ]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-ebs-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-ebs-test"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-ebs-preproduction"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-ebs-production"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-ebs-development"]}:role/modernisation-platform-oidc-cicd"
+  ]
+  tags_common = local.tags
+}
+
 module "soa_admin_ecr_repo" {
   source = "../../modules/app-ecr-repo"
 
