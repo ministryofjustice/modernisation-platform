@@ -474,10 +474,6 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "lakeformation:RemoveLFTagsFromResource",
       "lakeformation:GetDataAccess",
       "lambda:PutRuntimeManagementConfig",
-      "logs:GetLogEvents",
-      "logs:FilterLogEvents",
-      "logs:DescribeLogStreams",
-      "logs:DescribeLogGroups"
       "macie2:ListManagedDataIdentifiers",
       "macie2:ListCustomDataIdentifiers",
       "macie2:GetFindings",
