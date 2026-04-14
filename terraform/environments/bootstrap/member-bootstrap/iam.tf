@@ -271,6 +271,7 @@ data "aws_iam_policy_document" "member-access-data" {
     effect = "Allow"
     actions = [
       "athena:*",
+      "batch:*",
       "datasync:*",
       "dbqms:*",
       "dlm:*",
