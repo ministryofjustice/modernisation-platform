@@ -149,6 +149,6 @@
     "owner": "donovan.artz@digital.justice.gov.uk",
     "critical-national-infrastructure": true
   },
-  "github-oidc-team-repositories": [""],
+  "github-oidc-team-repositories": ["ministryofjustice/ccms-payments-received"],
   "go-live-date": "2023-05-26"
 }
