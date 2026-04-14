@@ -101,7 +101,6 @@ module "member-access" {
   source     = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
   account_id = data.aws_ssm_parameter.modernisation_platform_account_id.value
   additional_trust_roles = compact([
-    try(module.github_actions_terraform_dev_test[0].role, null),
     one(data.aws_iam_roles.member-sso-admin-access.arns),
     module.github_actions_apply[0].role
   ])
@@ -648,7 +647,6 @@ module "member-access-us-east" {
   source     = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
   account_id = data.aws_ssm_parameter.modernisation_platform_account_id.value
   additional_trust_roles = compact([
-    try(module.github_actions_terraform_dev_test[0].role, null),
     one(data.aws_iam_roles.member-sso-admin-access.arns),
     module.github_actions_apply[0].role
   ])
@@ -958,7 +956,6 @@ module "member-access-eu-central" {
   source     = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
   account_id = data.aws_ssm_parameter.modernisation_platform_account_id.value
   additional_trust_roles = compact([
-    try(module.github_actions_terraform_dev_test[0].role, null),
     one(data.aws_iam_roles.member-sso-admin-access.arns),
     module.github_actions_apply[0].role
   ])
