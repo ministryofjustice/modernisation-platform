@@ -420,6 +420,12 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "athena:StartQueryExecution",
       "athena:StopQueryExecution",
       "apigateway:POST",
+      "batch:CancelJob",
+      "batch:Describe*",
+      "batch:List*",
+      "batch:SubmitJob",
+      "batch:TerminateJob",
+      "batch:UpdateJobQueue",
       "bedrock:PutUseCaseForModelAccess",
       "ce:CreateReport",
       "dms:StartReplicationTask",
@@ -468,6 +474,10 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "lakeformation:RemoveLFTagsFromResource",
       "lakeformation:GetDataAccess",
       "lambda:PutRuntimeManagementConfig",
+      "logs:GetLogEvents",
+      "logs:FilterLogEvents",
+      "logs:DescribeLogStreams",
+      "logs:DescribeLogGroups"
       "macie2:ListManagedDataIdentifiers",
       "macie2:ListCustomDataIdentifiers",
       "macie2:GetFindings",
@@ -516,7 +526,11 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/glue-notebook-role-tf",
       "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-test"]}:role/AWSS3BucketReplication*",
       "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-preproduction"]}:role/AWSS3BucketReplication*",
-      "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/AWSS3BucketReplication*"
+      "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/AWSS3BucketReplication*",
+      "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-development"]}:role/emds-gdpr-*",
+      "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-preproduction"]}:role/emds-gdpr-*",
+      "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/emds-gdpr-*",
+      "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-test"]}:role/emds-gdpr-*"
     ]
   }
 
