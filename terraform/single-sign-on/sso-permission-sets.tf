@@ -590,6 +590,13 @@ resource "aws_ssoadmin_managed_policy_attachment" "modernisation_platform_data_s
   permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_data_scientist.arn
 }
 
+resource "aws_ssoadmin_managed_policy_attachment" "modernisation_platform_data_scientist_athena_access" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  managed_policy_arn = "arn:aws:iam::aws:policy/AmazonAthenaFullAccess"
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_data_scientist.arn
+}
+
 resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_data_scientist" {
   provider           = aws.sso-management
   instance_arn       = local.sso_admin_instance_arn

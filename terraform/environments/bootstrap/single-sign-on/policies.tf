@@ -1786,7 +1786,7 @@ resource "aws_iam_policy" "data_scientist" {
 
 data "aws_iam_policy_document" "data_scientist" {
   #checkov:skip=CKV_AWS_111
-  #checkov:skip=CKV_AWS_356 
+  #checkov:skip=CKV_AWS_356
   statement {
     sid    = "EventBridgeAndSchedulerPermissions"
     effect = "Allow"
@@ -1857,5 +1857,51 @@ data "aws_iam_policy_document" "data_scientist" {
       "s3:ListAllMyBuckets"
     ]
     resources = ["*"]
+  }
+
+  statement {
+    sid    = "GlueReadOnlyForAthena"
+    effect = "Allow"
+    actions = [
+      "glue:Get*",
+      "glue:List*"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "LakeFormationGetDataAccess"
+    effect = "Allow"
+    actions = [
+      "lakeformation:GetDataAccess"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "ProbationAthenaQueryResultsBucketAccess"
+    effect = "Allow"
+    actions = [
+      "s3:GetBucketLocation",
+      "s3:ListBucket",
+      "s3:ListBucketMultipartUploads"
+    ]
+    resources = [
+      "arn:aws:s3:::probation-query-results-*"
+    ]
+  }
+
+  statement {
+    sid    = "ProbationAthenaQueryResultsObjectAccess"
+    effect = "Allow"
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:AbortMultipartUpload",
+      "s3:ListMultipartUploadParts"
+    ]
+    resources = [
+      "arn:aws:s3:::probation-query-results-*/*"
+    ]
   }
 }
