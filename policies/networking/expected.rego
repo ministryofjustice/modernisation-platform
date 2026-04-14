@@ -423,7 +423,6 @@ expected :=
           "data-platform-development",
           "data-platform-governance-development",
           "example-development",
-          "justice-digital-document-hub-development",
           "observability-platform-development",
           "panda-cyber-appsec-lab-development"
         ]
