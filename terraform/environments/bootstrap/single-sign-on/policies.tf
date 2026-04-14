@@ -1786,7 +1786,7 @@ resource "aws_iam_policy" "data_scientist" {
 
 data "aws_iam_policy_document" "data_scientist" {
   #checkov:skip=CKV_AWS_111
-  #checkov:skip=CKV_AWS_356 
+  #checkov:skip=CKV_AWS_356
   statement {
     sid    = "EventBridgeAndSchedulerPermissions"
     effect = "Allow"
@@ -1855,6 +1855,25 @@ data "aws_iam_policy_document" "data_scientist" {
     effect = "Allow"
     actions = [
       "s3:ListAllMyBuckets"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "GlueReadOnlyForAthena"
+    effect = "Allow"
+    actions = [
+      "glue:Get*",
+      "glue:List*"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "LakeFormationGetDataAccess"
+    effect = "Allow"
+    actions = [
+      "lakeformation:GetDataAccess"
     ]
     resources = ["*"]
   }
