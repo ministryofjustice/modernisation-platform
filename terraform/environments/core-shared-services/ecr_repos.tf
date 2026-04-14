@@ -967,7 +967,7 @@ module "observability_platform_grafana_sigv4_proxy_ecr_repo" {
 module "ebs_sftp_ecr_repo" {
   source = "../../modules/app-ecr-repo"
 
-  app_name = "ccms-ebs-sftp"
+  app_name = "ccms-financial-transfers"
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["ccms-ebs-development"]}:root",
