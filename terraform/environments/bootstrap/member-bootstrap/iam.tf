@@ -586,7 +586,7 @@ data "aws_iam_policy_document" "assume_role_policy" {
       identifiers = ["arn:aws:iam::${data.aws_ssm_parameter.modernisation_platform_account_id.value}:root",
         "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci",
         "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/github-actions-testing",
-        "module.github_actions_nuke[0].role",
+        module.github_actions_nuke[0].role,
         one(data.aws_iam_roles.member-sso-admin-access.arns)
       ]
     }
