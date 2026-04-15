@@ -102,7 +102,8 @@ module "member-access" {
   account_id = data.aws_ssm_parameter.modernisation_platform_account_id.value
   additional_trust_roles = compact([
     one(data.aws_iam_roles.member-sso-admin-access.arns),
-    module.github_actions_apply[0].role
+    module.github_actions_apply[0].role,
+    module.github_actions_nuke[0].role
   ])
   role_name = "MemberInfrastructureAccess"
 }
@@ -1068,7 +1069,7 @@ resource "aws_ssm_parameter" "modernisation_platform_account_id" {
 
 #trivy:ignore:AVD-AWS-0345: Required for reading/writing Terraform state from S3
 data "aws_iam_policy_document" "oidc_assume_role_member" {
-  count = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
+  count = (local.account_data.account-type == "member") ? 1 : 0
   statement {
     sid    = "AllowOIDCToAssumeRoles"
     effect = "Allow"
@@ -1437,4 +1438,16 @@ module "github_actions_apply" {
   policy_jsons        = [data.aws_iam_policy_document.oidc_assume_role_member[0].json]
   subject_claim       = "environment:${terraform.workspace}*"
   tags                = { "Name" = "github-actions-apply" }
+}
+
+# github-actions-nuke to support sandbox account cleanup
+
+module "github_actions_nuke" {
+  count               = (local.account_data.account-type == "member") ? 1 : 0
+  source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
+  github_repositories = ["ministryofjustice/modernisation-platform"]
+  role_name           = "github-actions-nuke"
+  policy_jsons        = [data.aws_iam_policy_document.oidc_assume_role_member[0].json]
+  subject_claim       = "ref:refs/heads/main"
+  tags                = { "Name" = "github-actions-nuke" }
 }
