@@ -11,6 +11,7 @@ locals {
 
   tags = {
     business-unit = "Platforms"
+    service-area  = "Hosting"
     application   = "Modernisation Platform"
     is-production = true
     owner         = "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
