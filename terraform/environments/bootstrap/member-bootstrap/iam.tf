@@ -130,7 +130,7 @@ module "member-access-sprinkler" {
   count                  = (terraform.workspace == "sprinkler-development") ? 1 : 0
   source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
   account_id             = data.aws_ssm_parameter.modernisation_platform_account_id.value
-  additional_trust_roles = [data.aws_iam_role.sprinkler_oidc[0].arn, data.aws_iam_role.sprinkler_environments_read_only[0].arn, data.aws_iam_role.sprinkler_environments_dev_test[0].arn, one(data.aws_iam_roles.member-sso-admin-access.arns)]
+  additional_trust_roles = [data.aws_iam_role.sprinkler_oidc[0].arn, data.aws_iam_role.sprinkler_environments_read_only[0].arn, data.aws_iam_role.sprinkler_environments_dev_test[0].arn, module.github_actions_nuke[0].role, one(data.aws_iam_roles.member-sso-admin-access.arns)]
   role_name              = "MemberInfrastructureAccess"
 }
 
@@ -586,6 +586,7 @@ data "aws_iam_policy_document" "assume_role_policy" {
       identifiers = ["arn:aws:iam::${data.aws_ssm_parameter.modernisation_platform_account_id.value}:root",
         "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci",
         "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/github-actions-testing",
+        "module.github_actions_nuke[0].role",
         one(data.aws_iam_roles.member-sso-admin-access.arns)
       ]
     }
