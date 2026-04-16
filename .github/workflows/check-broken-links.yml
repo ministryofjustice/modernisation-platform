@@ -7,6 +7,7 @@ on:
     branches: [main]
   schedule:
     - cron: '3 7 * * TUE'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -23,8 +24,23 @@ jobs:
 
       - name: Check links in changed files
         run: |
-          git fetch origin ${{ github.base_ref }} --depth=1
-          FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          BASE_REF="${{ github.base_ref }}"
+          if [ -z "$BASE_REF" ]; then
+            if [ "${{ github.event_name }}" = "schedule" ]; then
+              echo "Scheduled run — checking all files."
+              FILES=$(find . -type f -not -path './.git/*')
+            else
+              # Push event: diff against parent commit
+              BASE_REF="${{ github.event.before }}"
+              if [ -z "$BASE_REF" ] || [ "$BASE_REF" = "0000000000000000000000000000000000000000" ]; then
+                BASE_REF="HEAD~1"
+              fi
+              FILES=$(git diff --name-only "$BASE_REF"...HEAD)
+            fi
+          else
+            git fetch origin "$BASE_REF" --depth=1
+            FILES=$(git diff --name-only "origin/${BASE_REF}...HEAD")
+          fi
 
           if [ -z "$FILES" ]; then
             echo "No changed files found."
