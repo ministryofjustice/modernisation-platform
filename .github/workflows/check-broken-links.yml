@@ -1,0 +1,98 @@
+name: Check for broken links
+
+on:
+  push:
+    branches: [feature-check-links]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '3 7 * * TUE'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: Check links in changed files
+        run: |
+          git fetch origin ${{ github.base_ref }} --depth=1
+          FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+
+          if [ -z "$FILES" ]; then
+            echo "No changed files found."
+            exit 0
+          fi
+
+          # Extract URLs from changed files
+          URLS=$(grep -rEoh 'https?://[A-Za-z0-9._~:/?#\[\]@!$&'"'"'()*+,;=%{}-]+' $FILES 2>/dev/null | sort -u)
+
+          if [ -z "$URLS" ]; then
+            echo "No URLs found in changed files."
+            exit 0
+          fi
+
+          BROKEN=0
+          REPORT=""
+
+          echo "Checking $(echo "$URLS" | wc -l | tr -d ' ') unique URLs..."
+          echo ""
+
+          while IFS= read -r url; do
+            # Clean trailing punctuation that's likely not part of the URL
+            url=$(echo "$url" | sed 's/[).,;:>"'"'"']$//')
+
+            STATUS=$(curl -sSo /dev/null -w "%{http_code}" -L --max-time 30 --retry 2 --retry-delay 3 -A "Mozilla/5.0 link-checker" "$url" 2>/dev/null || echo "000")
+
+            if [ "$STATUS" -ge 400 ] || [ "$STATUS" = "000" ]; then
+              echo "❌ [$STATUS] $url"
+              REPORT="${REPORT}\n| ${STATUS} | ${url} |"
+              BROKEN=$((BROKEN + 1))
+            else
+              echo "✅ [$STATUS] $url"
+            fi
+          done <<< "$URLS"
+
+          echo ""
+
+          if [ "$BROKEN" -gt 0 ]; then
+            echo "## 🔗 Broken Links Report" > broken-links-report.md
+            echo "" >> broken-links-report.md
+            echo "| Status | URL |" >> broken-links-report.md
+            echo "|--------|-----|" >> broken-links-report.md
+            echo -e "$REPORT" >> broken-links-report.md
+            echo "" >> broken-links-report.md
+            cat broken-links-report.md
+            echo "::error::Found $BROKEN broken link(s)."
+            exit 1
+          else
+            echo "All links are valid."
+          fi
+
+      - name: Post results as PR comment
+        if: failure()
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          script: |
+            const fs = require('fs');
+            if (fs.existsSync('broken-links-report.md')) {
+              const report = fs.readFileSync('broken-links-report.md', 'utf8');
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: report
+              });
+            }
+
+
+
+
+
