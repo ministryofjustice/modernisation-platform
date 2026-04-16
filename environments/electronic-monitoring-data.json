@@ -37,7 +37,7 @@
         {
           "sso_group_name": "azure-aws-sso-electronic-monitoring-data",
           "level": "data-scientist"
-        }        
+        }
       ]
     },
     {
