@@ -54,9 +54,9 @@ jobs:
           echo "Total files: $(wc -l < /tmp/files-to-check.txt)"
           echo ""
 
-          # Extract URLs by reading file contents, -I skips binary files
+          # Extract unique URLs by reading file contents, -I skips binary files
           URLS=$(while IFS= read -r file; do
-            grep -EIoh 'https?://[A-Za-z0-9._~:/?#@!$&()*+,;=%-]+' "$file" 2>/dev/null
+            grep -EIoh 'https?://[A-Za-z0-9._~:/?#@!$&*+,;=%-]+' "$file" 2>/dev/null
           done < /tmp/files-to-check.txt | sort -u)
 
           if [ -z "$URLS" ]; then
@@ -65,21 +65,32 @@ jobs:
           fi
 
           BROKEN=0
-          REPORT=""
+          TOTAL_OCCURRENCES=0
 
           echo "Checking $(echo "$URLS" | wc -l | tr -d ' ') unique URLs..."
           echo ""
 
-          while IFS= read -r url; do
-            # Clean trailing punctuation that's likely not part of the URL
-            url=$(echo "$url" | sed 's/[).,;:>"'"'"']$//')
+          # Prepare report header
+          echo "## 🔗 Broken Links Report" > broken-links-report.md
+          echo "" >> broken-links-report.md
+          echo "| Status | URL | File | Line |" >> broken-links-report.md
+          echo "|--------|-----|------|------|" >> broken-links-report.md
 
+          while IFS= read -r url; do
             STATUS=$(curl -sSo /dev/null -w "%{http_code}" -L --max-time 30 --retry 2 --retry-delay 3 -A "Mozilla/5.0 link-checker" "$url" 2>/dev/null || echo "000")
 
             if [ "$STATUS" -ge 400 ] || [ "$STATUS" = "000" ]; then
               echo "❌ [$STATUS] $url"
-              REPORT="${REPORT}\n| ${STATUS} | ${url} |"
               BROKEN=$((BROKEN + 1))
+
+              # Find all occurrences with file and line number
+              while IFS= read -r file; do
+                grep -EIn 'https?://[A-Za-z0-9._~:/?#@!$&*+,;=%-]+' "$file" 2>/dev/null | grep -F "$url" | while IFS=: read -r line_num content; do
+                  echo "     📍 $file:$line_num"
+                  echo "| ${STATUS} | ${url} | ${file} | ${line_num} |" >> broken-links-report.md
+                  TOTAL_OCCURRENCES=$((TOTAL_OCCURRENCES + 1))
+                done
+              done < /tmp/files-to-check.txt
             else
               echo "✅ [$STATUS] $url"
             fi
@@ -88,17 +99,13 @@ jobs:
           echo ""
 
           if [ "$BROKEN" -gt 0 ]; then
-            echo "## 🔗 Broken Links Report" > broken-links-report.md
-            echo "" >> broken-links-report.md
-            echo "| Status | URL |" >> broken-links-report.md
-            echo "|--------|-----|" >> broken-links-report.md
-            echo -e "$REPORT" >> broken-links-report.md
             echo "" >> broken-links-report.md
             cat broken-links-report.md
-            echo "::error::Found $BROKEN broken link(s)."
+            echo "::error::Found $BROKEN broken unique URL(s)."
             exit 1
           else
             echo "All links are valid."
+            rm -f broken-links-report.md
           fi
 
       - name: Post results as PR comment
