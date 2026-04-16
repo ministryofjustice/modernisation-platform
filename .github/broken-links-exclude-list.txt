@@ -3,5 +3,5 @@
 # Lines starting with # are comments and will be ignored.
 # Matching is exact (the URL in the file must contain the entry).
 
-# Private repositories
-https://github.com/ministryofjustice/deployment-tgw
+# Private links or links requiring authentication
+

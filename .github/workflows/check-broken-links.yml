@@ -88,7 +88,13 @@ jobs:
           echo "|--------|-----|------|------|" >> broken-links-report.md
 
           while IFS= read -r url; do
-            STATUS=$(curl -sSo /dev/null -w "%{http_code}" -L --max-time 30 --retry 2 --retry-delay 3 -A "Mozilla/5.0 link-checker" "$url" 2>/dev/null || echo "000")
+            # Use GITHUB_TOKEN for github.com URLs to avoid false 404s on authenticated pages
+            AUTH_HEADER=""
+            if echo "$url" | grep -q "github.com"; then
+              AUTH_HEADER="-H \"Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}\""
+            fi
+
+            STATUS=$(eval curl -sSo /dev/null -w "%{http_code}" -L --max-time 30 --retry 2 --retry-delay 3 -A "Mozilla/5.0 link-checker" $AUTH_HEADER \"$url\" 2>/dev/null || echo "000")
 
             if [ "$STATUS" -ge 400 ] || [ "$STATUS" = "000" ]; then
               echo "❌ [$STATUS] $url"
