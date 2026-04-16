@@ -48,10 +48,7 @@ jobs:
       - name: Check links in files
         if: steps.files.outputs.skip != 'true'
         run: |
-          echo "📂 Files to scan:"
-          cat /tmp/files-to-check.txt
-          echo ""
-          echo "Total files: $(wc -l < /tmp/files-to-check.txt)"
+          echo "📂 Total files to scan: $(wc -l < /tmp/files-to-check.txt)"
           echo ""
 
           # Extract unique URLs by reading file contents, -I skips binary files
@@ -75,10 +72,11 @@ jobs:
             exit 0
           fi
 
+          TOTAL=$(echo "$URLS" | wc -l | tr -d ' ')
           BROKEN=0
-          TOTAL_OCCURRENCES=0
+          CHECKED=0
 
-          echo "Checking $(echo "$URLS" | wc -l | tr -d ' ') unique URLs..."
+          echo "Checking $TOTAL unique URLs..."
           echo ""
 
           # Prepare report header
@@ -88,13 +86,17 @@ jobs:
           echo "|--------|-----|------|------|" >> broken-links-report.md
 
           while IFS= read -r url; do
-            # Use GITHUB_TOKEN for github.com URLs to avoid false 404s on authenticated pages
-            AUTH_HEADER=""
-            if echo "$url" | grep -q "github.com"; then
-              AUTH_HEADER="-H \"Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}\""
-            fi
+            CHECKED=$((CHECKED + 1))
 
-            STATUS=$(eval curl -sSo /dev/null -w "%{http_code}" -L --max-time 30 --retry 2 --retry-delay 3 -A "Mozilla/5.0 link-checker" $AUTH_HEADER \"$url\" 2>/dev/null || echo "000")
+            # Use GITHUB_TOKEN for github.com URLs to avoid false 404s on authenticated pages
+            if echo "$url" | grep -q "github.com"; then
+              STATUS=$(curl -sSo /dev/null -w "%{http_code}" -L --max-time 30 --retry 2 --retry-delay 3 \
+                -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+                -A "Mozilla/5.0 link-checker" "$url" 2>/dev/null || echo "000")
+            else
+              STATUS=$(curl -sSo /dev/null -w "%{http_code}" -L --max-time 30 --retry 2 --retry-delay 3 \
+                -A "Mozilla/5.0 link-checker" "$url" 2>/dev/null || echo "000")
+            fi
 
             if [ "$STATUS" -ge 400 ] || [ "$STATUS" = "000" ]; then
               echo "❌ [$STATUS] $url"
@@ -105,7 +107,6 @@ jobs:
                 grep -EIn 'https?://[A-Za-z0-9._~:/?#@!$&*+,;=%-]+' "$file" 2>/dev/null | grep -F "$url" | while IFS=: read -r line_num content; do
                   echo "     📍 $file:$line_num"
                   echo "| ${STATUS} | ${url} | ${file} | ${line_num} |" >> broken-links-report.md
-                  TOTAL_OCCURRENCES=$((TOTAL_OCCURRENCES + 1))
                 done
               done < /tmp/files-to-check.txt
             else
@@ -114,6 +115,7 @@ jobs:
           done <<< "$URLS"
 
           echo ""
+          echo "✅ Checked $TOTAL URLs, found $BROKEN broken."
 
           if [ "$BROKEN" -gt 0 ]; then
             echo "" >> broken-links-report.md
