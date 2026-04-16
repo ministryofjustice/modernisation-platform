@@ -59,6 +59,17 @@ jobs:
             grep -EIoh 'https?://[A-Za-z0-9._~:/?#@!$&*+,;=%-]+' "$file" 2>/dev/null
           done < /tmp/files-to-check.txt | sort -u)
 
+          # Filter out excluded URLs
+          EXCLUDE_FILE=".github/broken-links-exclude-list.txt"
+          if [ -f "$EXCLUDE_FILE" ]; then
+            echo "📋 Excluding URLs listed in $EXCLUDE_FILE"
+            # Remove comments and blank lines, then filter out matching URLs
+            EXCLUDES=$(grep -v '^\s*#' "$EXCLUDE_FILE" | grep -v '^\s*$')
+            if [ -n "$EXCLUDES" ]; then
+              URLS=$(echo "$URLS" | grep -vFf <(echo "$EXCLUDES"))
+            fi
+          fi
+
           if [ -z "$URLS" ]; then
             echo "No URLs found in changed files."
             exit 0

@@ -1,0 +1,7 @@
+# Broken Links Exclude List
+# Add URLs (one per line) to skip during link checking.
+# Lines starting with # are comments and will be ignored.
+# Matching is exact (the URL in the file must contain the entry).
+
+# Private repositories
+https://github.com/ministryofjustice/deployment-tgw
