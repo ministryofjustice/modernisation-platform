@@ -41,6 +41,7 @@ jobs:
           else
             git fetch origin "$BASE_REF" --depth=1
             FILES=$(git diff --name-only "origin/${BASE_REF}...HEAD")
+            echo "$FILES"
           fi
 
           if [ -z "$FILES" ]; then
