@@ -22,34 +22,39 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Check links in changed files
+      - name: Get files to check
+        id: files
         run: |
-          BASE_REF="${{ github.base_ref }}"
-          if [ -z "$BASE_REF" ]; then
-            if [ "${{ github.event_name }}" = "schedule" ]; then
-              echo "Scheduled run — checking all files."
-              FILES=$(find . -type f -not -path './.git/*')
-            else
-              # Push event: diff against parent commit
-              BASE_REF="${{ github.event.before }}"
-              if [ -z "$BASE_REF" ] || [ "$BASE_REF" = "0000000000000000000000000000000000000000" ]; then
-                BASE_REF="HEAD~1"
-              fi
-              FILES=$(git diff --name-only "$BASE_REF"...HEAD)
-              FILES=$(find . -type f -not -path './.git/*')
-            fi
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            # For PRs, only check changed files
+            git fetch origin ${{ github.base_ref }} --depth=1
+            FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          elif [ "${{ github.event_name }}" = "push" ]; then
+            # Temporarily scan all files on push for testing
+            FILES=$(git ls-files)
           else
-            git fetch origin "$BASE_REF" --depth=1
-            FILES=$(git diff --name-only "origin/${BASE_REF}...HEAD")
-            echo "$FILES"
+            # For schedule and workflow_dispatch, check all files
+            FILES=$(git ls-files)
           fi
 
           if [ -z "$FILES" ]; then
-            echo "No changed files found."
-            exit 0
+            echo "No files found to check."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "$FILES" > /tmp/files-to-check.txt
+            echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
 
-          # Extract URLs from changed files
+      - name: Check links in files
+        if: steps.files.outputs.skip != 'true'
+        run: |
+          FILES=$(cat /tmp/files-to-check.txt)
+
+          echo "📂 Files to scan:"
+          echo "$FILES"
+          echo ""
+
+          # Extract URLs from files
           URLS=$(grep -rEoh 'https?://[A-Za-z0-9._~:/?#\[\]@!$&'"'"'()*+,;=%{}-]+' $FILES 2>/dev/null | sort -u)
 
           if [ -z "$URLS" ]; then
@@ -95,7 +100,7 @@ jobs:
           fi
 
       - name: Post results as PR comment
-        if: failure()
+        if: failure() && github.event_name == 'pull_request'
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
           script: |
