@@ -86,6 +86,7 @@ jobs:
       matrix:
         nuke_accts: ${{ fromJSON(needs.setup-prerequisites.outputs.matrix) }}
     name: Sandbox Nuke
+    if: github.ref == 'refs/heads/main'
     permissions:
       id-token: write # This is required for requesting the JWT
       contents: read # This is required for actions/checkout
