@@ -1,0 +1,130 @@
+---
+# This file is consumed by the awsnuke.yml workflow
+settings:
+  disable-deletion-protection:
+    RDSInstance: true
+    EC2Instance: true
+    CloudformationStack: true
+    force-delete-lightsail-addons:
+    enabled: true
+
+regions:
+  - "eu-west-2"
+
+blocklist:
+$account_blocklist_str
+
+resource-types:
+  # don't nuke IAM users
+  excludes:
+    - ACMCertificate
+    - CloudTrailTrail
+    - CloudWatchAlarm
+    - CloudWatchLogsLogGroup
+    - ConfigServiceConfigRule
+    - ConfigServiceConfigurationRecorder
+    - ConfigServiceDeliveryChannel
+    - EC2DHCPOption
+    - EC2InternetGateway
+    - EC2InternetGatewayAttachment
+    - EC2NetworkACL
+    - EC2RouteTable
+    - EC2Subnet
+    - EC2VPC
+    - GuardDutyDetector
+    - IAMGroup
+    - IAMGroupPolicy
+    - IAMGroupPolicyAttachment
+    - IAMInstanceProfile
+    - IAMInstanceProfileRole
+    - IAMLoginProfile
+    - IAMOpenIDConnectProvider
+    - IAMPolicy
+    - IAMRole
+    - IAMRolePolicy
+    - IAMRolePolicyAttachment
+    - IAMSAMLProvider
+    - IAMServerCertificate
+    - IAMServiceSpecificCredential
+    - IAMSigningCertificate
+    - IAMUser
+    - IAMUserAccessKey
+    - IAMUserGroupAttachment
+    - IAMUserPolicy
+    - IAMUserPolicyAttachment
+    - IAMUserSSHPublicKey
+    - IAMVirtualMFADevice
+    - Inspector2
+    - KMSAlias
+    - KMSKey
+    - OSPackage
+    - QuickSightSubscription
+    - QuickSightUser
+    - S3AccessPoint
+    - S3Bucket
+    - S3MultipartUpload
+    - S3Object
+    - SecretsManagerSecret
+    - SecurityHub
+    - SSMResourceDataSync
+    - Transfer
+    - WAFv2WebACL
+    - WAFv2IPSet
+
+accounts:
+$accounts_str
+
+presets:
+  common:
+    filters:
+      AccessAnalyzer:
+        - property: tag:component
+          value: "secure-baselines"
+      AWSBackupPlan:
+        - property: tag:component
+          value: "secure-baselines"
+      AWSBackupVault:
+        - property: tag:component
+          value: "secure-baselines"
+      ConfigServiceConfigRule:
+        - type: glob
+          value: "securityhub-*"
+        - type: glob
+          value: "FMManagedShieldConfigRule*"
+      EC2DHCPOption:
+        - property: tag:component
+          value: "secure-baselines"
+      EC2InternetGatewayAttachment:
+        - property: tag:vpc:component
+          value: "secure-baselines"
+      EC2NetworkACL:
+        - property: tag:component
+          value: "secure-baselines"
+      EC2RouteTable:
+        - property: tag:component
+          value: "secure-baselines"
+      EC2SecurityGroup:
+        - property: tag:component
+          value: "secure-baselines"
+      EC2VPC:
+        - property: tag:component
+          value: "secure-baselines"
+      KMSKey:
+        - property: tag:component
+          value: "secure-baselines"
+      RDSClusterSnapshot:
+        - property: SnapshotType
+          value: "shared"
+        - property: SnapshotType
+          value: "automated"
+      S3Bucket:
+        - property: tag:component
+          value: "secure-baselines"
+      SSMParameter:
+        - property: tag:component
+          value: "delegate-access"
+        - property: tag:component
+          value: "member-bootstrap"
+      SNSTopic:
+        - property: tag:component
+          value: "secure-baselines"

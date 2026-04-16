@@ -1,0 +1,204 @@
+---
+name: awsnuke
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/awsnuke.yml'
+  pull_request:
+    branches:
+      - main
+    types: [opened, edited, reopened, synchronize]
+    paths:
+      - '.github/workflows/awsnuke.yml'
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    # trigger every friday at 9:00pm
+    - cron: '0 21 * * 5'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Nuke mode"
+        required: true
+        type: choice
+        default: nuke-dry-run
+        options:
+          - nuke-dry-run
+          - nuke-no-dry-run
+
+env:
+  AWS_REGION: "eu-west-2"
+  TF_IN_AUTOMATION: true
+  MODERNISATION_PLATFORM_ACCOUNT_ID: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_ID }}
+  PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+
+  fetch-secrets:
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@5b44b387694dfa249cfa2dcf289ca871abe9e3e2 # v5.0.1
+    permissions:
+      id-token: write
+      contents: read
+    secrets:
+        MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_ID }}
+        PASSPHRASE: ${{ secrets.PASSPHRASE }}
+  setup-prerequisites:
+    runs-on: ubuntu-latest
+    needs: fetch-secrets
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      account_blocklist_str: ${{ steps.set-blocklist-string.outputs.account_blocklist_str }}
+    steps:
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@5b44b387694dfa249cfa2dcf289ca871abe9e3e2 # v5.0.1
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          nuke_account_ids: ${{ needs.fetch-secrets.outputs.nuke_account_ids }} 
+          nuke_account_blocklist: ${{ needs.fetch-secrets.outputs.nuke_account_blocklist }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      - id: set-matrix
+        name: Set Up Matrix
+        run: |
+          echo "matrix=$(jq -c '.nuke_accounts | sort' <<< $NUKE_ACCOUNT_IDS)" >> $GITHUB_OUTPUT
+
+      - id: set-blocklist-string
+        name: Set Up Blocklist
+        run: |
+          account_blocklist_str=""
+          while read -r account_alias _; do
+          account_number=$(jq -r -e --arg account_name "$account_alias" '.account_ids[$account_name]' <<< $ENVIRONMENT_MANAGEMENT)
+          account_blocklist_str+="  - \"${account_number}\" # ${account_alias}"
+          account_blocklist_str+=$'\n'
+          done <<< "$(jq -c -r '.blocklist[]' <<< $NUKE_ACCOUNT_BLOCKLIST)" # Taking this approach as piping (|) to a read opens a subshell and passes the variables to it by value
+          # Encoding and passing blocklist string as an output
+          echo "account_blocklist_str=$(echo -n "${account_blocklist_str}" | base64 -w 0)" >> $GITHUB_OUTPUT
+
+  nuke:
+    strategy:
+      fail-fast: false
+      matrix:
+        nuke_accts: ${{ fromJSON(needs.setup-prerequisites.outputs.matrix) }}
+    name: Sandbox Nuke
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # This is required for actions/checkout
+    runs-on: ubuntu-latest
+    needs: [setup-prerequisites, fetch-secrets]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@5b44b387694dfa249cfa2dcf289ca871abe9e3e2 # v5.0.1
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+      - name: Set Account Number
+        run: |
+          ACCOUNT_NUMBER=$(jq -r -e --arg account_name "${ACCOUNT_NAME}" '.account_ids[$account_name]' <<< $ENVIRONMENT_MANAGEMENT)
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo "ACCOUNT_NUMBER=${ACCOUNT_NUMBER}" >> $GITHUB_ENV
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@ec61189d14ec14c8efccab744f656cffd0e33f37 # v6.1.0
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-nuke"
+          role-session-name: githubactionsnukerolesession
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Nuke Account String
+        run: |
+          accounts_str=''
+          accounts_str+="  \"${ACCOUNT_NUMBER}\": # ${ACCOUNT_NAME}"
+          accounts_str+=$'\n'
+          accounts_str+="    presets:"
+          accounts_str+=$'\n'
+          accounts_str+="      - \"common\""
+          accounts_str+=$'\n'
+          echo "$accounts_str"
+          echo "ACCOUNTS_STR<<EOF" >> $GITHUB_ENV
+          echo "$accounts_str" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Setup Nuke Config
+        run: |
+          export accounts_str="$ACCOUNTS_STR"
+          export account_blocklist_str=$(echo "${{ needs.setup-prerequisites.outputs.account_blocklist_str }}" | base64 --decode)
+          cat scripts/nuke-config-template.txt | envsubst > nuke-config.yml
+
+      - name: Install AWS Nuke
+        run: |
+          echo "BEGIN: Install AWS Nuke"
+          mkdir -p $HOME/bin
+          wget -c "https://github.com/ekristen/aws-nuke/releases/download/${AWS_NUKE_VERSION}/aws-nuke-${AWS_NUKE_VERSION}-linux-amd64.tar.gz" -O - | tar -xz -C $HOME/bin
+          chmod +x $HOME/bin/aws-nuke
+          echo "END: Install AWS Nuke"
+        env:
+          AWS_NUKE_VERSION: v3.51.1
+
+      - name: Nuke Plan (Dry Run)
+        run: |
+          aws sts assume-role \
+            --role-arn "arn:aws:iam::${ACCOUNT_NUMBER}:role/MemberInfrastructureAccess" \
+            --role-session-name githubactionsgotestrolesession > creds.json || {
+              echo "Failed to assume role"
+              exit 1
+          }
+          export AWS_ACCESS_KEY_ID=$(jq -r '.Credentials.AccessKeyId' creds.json)
+          export AWS_SECRET_ACCESS_KEY=$(jq -r '.Credentials.SecretAccessKey' creds.json)
+          export AWS_SESSION_TOKEN=$(jq -r '.Credentials.SessionToken' creds.json)
+
+          echo "Verifying identity..."
+          aws sts get-caller-identity || {
+            echo "Invalid credentials"
+            exit 1
+          }
+          echo "Running AWS Nuke (dry run)..."
+          $HOME/bin/aws-nuke run \
+            --config nuke-config.yml \
+            --no-prompt
+
+      - name: Nuke Apply (Destructive)
+        if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.mode == 'nuke-no-dry-run') }}
+        run: |
+          # The environment gets reset between steps, so the role needs to be re-assumed.
+          aws sts assume-role \
+            --role-arn "arn:aws:iam::${ACCOUNT_NUMBER}:role/MemberInfrastructureAccess" \
+            --role-session-name githubactionsgoliveapply > creds.json || {
+              echo "Failed to assume role"
+              exit 1
+          }
+          export AWS_ACCESS_KEY_ID=$(jq -r '.Credentials.AccessKeyId' creds.json)
+          export AWS_SECRET_ACCESS_KEY=$(jq -r '.Credentials.SecretAccessKey' creds.json)
+          export AWS_SESSION_TOKEN=$(jq -r '.Credentials.SessionToken' creds.json)
+
+          echo "Verifying identity..."
+          aws sts get-caller-identity || {
+            echo "Invalid credentials"
+            exit 1
+          }
+          echo "Running AWS Nuke (full apply)..."
+           $HOME/bin/aws-nuke run \
+            --config nuke-config.yml \
+            --no-prompt \
+            --no-dry-run
+
+      - name: Slack failure notification
+        uses: slackapi/slack-github-action@af78098f536edbc4de71162a307590698245be95 # v3.0.1
+        with:
+          webhook-type: incoming-webhook
+          payload: |
+            {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
+        env:
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
+        if: ${{ failure() }}
+    env:
+      ACCOUNT_NAME: ${{ matrix.nuke_accts }}
