@@ -15,10 +15,10 @@
       "resolved": "ghcr.io/ministryofjustice/devcontainer-feature/static-analysis@sha256:07e194be7c48e95174486c5c817f661bc6be9159272230d8460604a2ac8ec901",
       "integrity": "sha256:07e194be7c48e95174486c5c817f661bc6be9159272230d8460604a2ac8ec901"
     },
-    "ghcr.io/ministryofjustice/devcontainer-feature/terraform:1": {
-      "version": "1.2.0",
-      "resolved": "ghcr.io/ministryofjustice/devcontainer-feature/terraform@sha256:6343878231decb72427ea2d59d98d0c4bb6f15931d86800330f7c84df8320f6c",
-      "integrity": "sha256:6343878231decb72427ea2d59d98d0c4bb6f15931d86800330f7c84df8320f6c"
+    "ghcr.io/ministryofjustice/devcontainer-feature/terraform:": {
+      "version": "1.2.1",
+      "resolved": "ghcr.io/ministryofjustice/devcontainer-feature/terraform@sha256:fe2dfc9f2d57c904c2abe6a49e4f1dc2ec27a469555fd0add7a66d2c59779991",
+      "integrity": "sha256:fe2dfc9f2d57c904c2abe6a49e4f1dc2ec27a469555fd0add7a66d2c59779991"
     }
   }
 }
