@@ -28,7 +28,7 @@ on:
           - nuke-no-dry-run
 env:
   AWS_REGION: "eu-west-2"
-  MODERNISATION_PLATFORM_ACCOUNT_ID: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_ID }}
+  MODERNISATION_PLATFORM_ACCOUNT_ID: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
   PASSPHRASE: ${{ secrets.PASSPHRASE }}
   TF_IN_AUTOMATION: true
 
@@ -45,7 +45,7 @@ jobs:
       id-token: write
       contents: read
     secrets:
-        MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_ID }}
+        MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
         PASSPHRASE: ${{ secrets.PASSPHRASE }}
         
   setup-matrix:

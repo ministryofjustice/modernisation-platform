@@ -30,7 +30,7 @@ on:
 env:
   AWS_REGION: "eu-west-2"
   TF_IN_AUTOMATION: true
-  MODERNISATION_PLATFORM_ACCOUNT_ID: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_ID }}
+  MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
   PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
 permissions: {}
@@ -47,7 +47,7 @@ jobs:
       id-token: write
       contents: read
     secrets:
-        MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_ID }}
+        MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
         PASSPHRASE: ${{ secrets.PASSPHRASE }}
   setup-prerequisites:
     runs-on: ubuntu-latest
@@ -145,6 +145,7 @@ jobs:
           AWS_NUKE_VERSION: v3.51.1
 
       - name: Nuke Plan (Dry Run)
+        if: ${{ inputs.mode == 'nuke-dry-run' }}
         run: |
           aws sts assume-role \
             --role-arn "arn:aws:iam::${ACCOUNT_NUMBER}:role/MemberInfrastructureAccess" \
