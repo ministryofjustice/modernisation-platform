@@ -48,14 +48,14 @@ jobs:
       - name: Check links in files
         if: steps.files.outputs.skip != 'true'
         run: |
+          FILES=$(cat /tmp/files-to-check.txt)
+
           echo "📂 Files to scan:"
-          cat /tmp/files-to-check.txt
-          echo ""
-          echo "Total files: $(wc -l < /tmp/files-to-check.txt)"
+          echo "$FILES"
           echo ""
 
-          # Extract URLs from files using xargs to handle large file lists
-          URLS=$(cat /tmp/files-to-check.txt | xargs grep -Eoh 'https?://[A-Za-z0-9._~:/?#\[\]@!$&'"'"'()*+,;=%{}-]+' 2>/dev/null | sort -u)
+          # Extract URLs from files
+          URLS=$(grep -rEoh 'https?://[A-Za-z0-9._~:/?#\[\]@!$&'"'"'()*+,;=%{}-]+' $FILES 2>/dev/null | sort -u)
 
           if [ -z "$URLS" ]; then
             echo "No URLs found in changed files."
