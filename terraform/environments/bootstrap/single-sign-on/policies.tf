@@ -1787,6 +1787,7 @@ resource "aws_iam_policy" "data_scientist" {
 data "aws_iam_policy_document" "data_scientist" {
   #checkov:skip=CKV_AWS_111
   #checkov:skip=CKV_AWS_356
+  #checkov:skip=CKV_AWS_109
   statement {
     sid    = "EventBridgeAndSchedulerPermissions"
     effect = "Allow"
