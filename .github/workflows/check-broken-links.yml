@@ -26,15 +26,15 @@ jobs:
         id: files
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            # For PRs, only check changed files
+            # For PRs, only check changed markdown files
             git fetch origin ${{ github.base_ref }} --depth=1
-            FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+            FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD -- '*.md' '*.md.erb')
           elif [ "${{ github.event_name }}" = "push" ]; then
-            # Temporarily scan all files on push for testing
-            FILES=$(git ls-files)
+            # Temporarily scan all markdown files on push for testing
+            FILES=$(git ls-files '*.md' '*.md.erb')
           else
-            # For schedule and workflow_dispatch, check all files
-            FILES=$(git ls-files)
+            # For schedule and workflow_dispatch, check all markdown files
+            FILES=$(git ls-files '*.md' '*.md.erb')
           fi
 
           if [ -z "$FILES" ]; then
