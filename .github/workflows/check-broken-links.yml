@@ -54,8 +54,12 @@ jobs:
           echo "Total files: $(wc -l < /tmp/files-to-check.txt)"
           echo ""
 
-          # Extract URLs from files using xargs to handle large file lists
-          URLS=$(cat /tmp/files-to-check.txt | xargs grep -Eoh 'https?://[A-Za-z0-9._~:/?#\[\]@!$&'"'"'()*+,;=%{}-]+' 2>/dev/null | sort -u)
+          # Extract URLs by reading file contents, skipping binary files
+          URLS=$(while IFS= read -r file; do
+            if file "$file" | grep -q text; then
+              grep -Eoh 'https?://[A-Za-z0-9._~:/?#\[\]@!$&'"'"'()*+,;=%{}-]+' "$file" 2>/dev/null
+            fi
+          done < /tmp/files-to-check.txt | sort -u)
 
           if [ -z "$URLS" ]; then
             echo "No URLs found in changed files."
