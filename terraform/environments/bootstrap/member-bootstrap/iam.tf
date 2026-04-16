@@ -1417,7 +1417,9 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
       "oam:ListTagsForResource",
       "glue:GetConnection",
       "quicksight:Describe*",
-      "quicksight:ListTagsForResource"
+      "quicksight:ListTagsForResource",
+      "workspaces-web:Get*",
+      "workspaces-web:List*"
     ]
     resources = ["*"]
     condition {
