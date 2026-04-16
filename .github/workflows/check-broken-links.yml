@@ -36,6 +36,7 @@ jobs:
                 BASE_REF="HEAD~1"
               fi
               FILES=$(git diff --name-only "$BASE_REF"...HEAD)
+              FILES=$(find . -type f -not -path './.git/*')
             fi
           else
             git fetch origin "$BASE_REF" --depth=1
