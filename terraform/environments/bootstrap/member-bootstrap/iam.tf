@@ -1472,10 +1472,6 @@ data "aws_iam_policy_document" "oidc_assume_nuke_role_member" {
       #read-only-roles
       format("arn:aws:iam::%s:role/read-log-records", local.environment_management.account_ids["core-network-services-production"]),
       format("arn:aws:iam::%s:role/member-delegation-read-only", local.environment_management.account_ids["core-vpc-development"]),
-      format("arn:aws:iam::%s:role/member-delegation-read-only", local.environment_management.account_ids["core-vpc-test"]),
-      format("arn:aws:iam::%s:role/member-delegation-read-only", local.environment_management.account_ids["core-vpc-preproduction"]),
-      format("arn:aws:iam::%s:role/member-delegation-read-only", local.environment_management.account_ids["core-vpc-production"]),
-      format("arn:aws:iam::%s:role/member-delegation-read-only", local.environment_management.account_ids["core-vpc-sandbox"])
       # the following are required as cooker have development accounts but are in the sandbox vpc
       local.application_name == "cooker" ? format("arn:aws:iam::%s:role/member-delegation-house-sandbox", local.environment_management.account_ids["core-vpc-sandbox"]) : format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id)
     ])
