@@ -5,6 +5,6 @@
     "ghcr.io/ministryofjustice/devcontainer-feature/aws:": {},
     "ghcr.io/ministryofjustice/devcontainer-feature/kubernetes:": {},
     "ghcr.io/ministryofjustice/devcontainer-feature/static-analysis:2": {},
-    "ghcr.io/ministryofjustice/devcontainer-feature/terraform:1": {}
+    "ghcr.io/ministryofjustice/devcontainer-feature/terraform:": {}
   }
 }
