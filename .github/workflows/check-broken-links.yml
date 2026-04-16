@@ -54,11 +54,9 @@ jobs:
           echo "Total files: $(wc -l < /tmp/files-to-check.txt)"
           echo ""
 
-          # Extract URLs by reading file contents, skipping binary files
+          # Extract URLs by reading file contents, -I skips binary files
           URLS=$(while IFS= read -r file; do
-            if file "$file" | grep -q text; then
-              grep -Eoh 'https?://[A-Za-z0-9._~:/?#\[\]@!$&'"'"'()*+,;=%{}-]+' "$file" 2>/dev/null
-            fi
+            grep -EIoh 'https?://[A-Za-z0-9._~:/?#@!$&()*+,;=%-]+' "$file" 2>/dev/null
           done < /tmp/files-to-check.txt | sort -u)
 
           if [ -z "$URLS" ]; then
