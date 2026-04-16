@@ -1877,4 +1877,31 @@ data "aws_iam_policy_document" "data_scientist" {
     ]
     resources = ["*"]
   }
+
+  statement {
+    sid    = "EMAthenaQueryResultsBucketAccess"
+    effect = "Allow"
+    actions = [
+      "s3:GetBucketLocation",
+      "s3:ListBucket",
+      "s3:ListBucketMultipartUploads"
+    ]
+    resources = [
+      "arn:aws:s3:::emds-*-athena-query-results-*"
+    ]
+  }
+
+  statement {
+    sid    = "EMAthenaQueryResultsObjectAccess"
+    effect = "Allow"
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:AbortMultipartUpload",
+      "s3:ListMultipartUploadParts"
+    ]
+    resources = [
+      "arn:aws:s3:::emds-*-athena-query-results-*/*"
+    ]
+  }
 }
