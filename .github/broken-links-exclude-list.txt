@@ -1,0 +1,27 @@
+# Broken Links Exclude List
+# Add URLs (one per line) to skip during link checking.
+# Lines starting with # are comments and will be ignored.
+# Matching is exact (the URL in the file must contain the entry).
+
+# Private links or links requiring authentication or escalated permissions
+https://github.com/ministryofjustice/deployment-tgw
+https://github-community.service.justice.gov.uk/repository-standards/modernisation-platform
+https://github.com/ministryofjustice/modernisation-platform-environments/security/code-scanning
+https://github.com/ministryofjustice/modernisation-platform-environments/settings/environments
+https://github.com/ministryofjustice/modernisation-platform-github/actions/workflows/terraform-github.yml
+https://github.com/ministryofjustice/modernisation-platform-github/actions/workflows/terraform-github.yml/badge.svg
+https://github.com/ministryofjustice/modernisation-platform-github/blob/main/collaborators.json
+https://github.com/ministryofjustice/modernisation-platform-github/blob/main/terraform/github/locals.tf
+https://github.com/ministryofjustice/modernisation-platform-github/blob/main/terraform/github/locals.tf#L118
+https://github.com/ministryofjustice/modernisation-platform-github/blob/main/terraform/github/modules/team/main.tf#L12
+https://github.com/ministryofjustice/modernisation-platform-github/blob/main/terraform/github/repositories.tf
+https://github.com/ministryofjustice/modernisation-platform-github/tree/main/terraform/github
+https://github.com/ministryofjustice/modernisation-platform-github/tree/main/terraform/github/modules/contributor
+https://github.com/ministryofjustice/modernisation-platform-security
+https://github.com/ministryofjustice/modernisation-platform-security/issues/new/choose
+https://github.com/ministryofjustice/moj-ip-addresses/
+https://github.com/ministryofjustice/octo-access/issues/new?template=github-copilot-access-request.yml
+https://github.com/orgs/ministryofjustice/security/overview
+https://github.com/orgs/ministryofjustice/security/overview?query=archived%3Afalse+tool%3Agithub+repo%3Amodernisation-platform-environments+team%3Amodernisation-platform
+https://intranet.justice.gov.uk/guidance/hr/end-change-of-employment/
+https://intranet.justice.gov.uk/guidance/security/report-a-security-incident/
