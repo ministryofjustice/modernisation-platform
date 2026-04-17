@@ -11,10 +11,10 @@ review_in: 6 months
 
 This feature automatically destroys all resources in development environments on a weekly basis, and provides a utitily to recreate resources in these environments. This is useful for environments with the sandbox permission, which allow users to provision resources directly through the AWS web console alongside infrastructure as code (IaC). In such cases, the auto-nuke will make ensure the manually created resources will be regularly removed. If requested, resources defined in terraform can then be recreated.
 
-Every Sunday:
 
-- At 22:00 the [awsnuke.yml workflow](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/.github/workflows/awsnuke.yml) is triggered. This workflow nukes all the configured development environments using the [AWS Nuke tool](https://github.com/ekristen/aws-nuke).
-- At 12:00 the [nuke-redeploy.yml workflow](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/.github/workflows/nuke-redeploy.yml) is triggered. If requested, this workflow redeploys IaC into the nuked environment using `terraform apply`.
+
+- Every Friday at 21:00 the [awsnuke.yml workflow](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/awsnuke.yml) is triggered. This workflow nukes all the configured development environments using the [AWS Nuke tool](https://github.com/ekristen/aws-nuke).
+- Every Monday at 06:00 the [nuke-redeploy.yml workflow](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/nuke-redeploy.yml) is triggered. If requested, this workflow redeploys IaC into the nuked environment using `terraform apply`.
 
 An outline of the 'nuke' algorithm is as follows:
 
@@ -33,7 +33,7 @@ Auto-nuke consumes the following dynamically generated Github secrets stored in 
 
 - `MODERNISATION_PLATFORM_AUTONUKE_REBUILD`: Accounts to be rebuilt after auto-nuke runs. This secret is consumed by the `nuke-redeploy.yml` workflow.
 
-The [`nuke-config-template.txt`](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/scripts/nuke-config-template.txt) is populated with account and blocklist information during the runtime of the `awsnuke.yml` workflow, to produce a valid aws-nuke configuration file.
+The [`nuke-config-template.txt`](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/nuke-config-template.txt) is populated with account and blocklist information during the runtime of the `awsnuke.yml` workflow, to produce a valid aws-nuke configuration file.
 
 ### When new sandbox development environment is onboarded
 
