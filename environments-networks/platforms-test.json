@@ -5,10 +5,11 @@
         "cidr": "10.26.0.0/21",
         "accounts": [
           "analytical-platform-compute-test",
-          "testing-test",
+          "data-factory-corporate-test",
           "data-factory-moj-test",
           "data-platform-test",
-          "data-platform-governance-test"
+          "data-platform-governance-test",
+          "testing-test"
         ]
       }
     }
