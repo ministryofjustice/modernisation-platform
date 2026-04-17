@@ -1,0 +1,149 @@
+name: Check for broken links
+
+on:
+  push:
+    branches: [feature-check-links]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '3 7 * * TUE'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: Get files to check
+        id: files
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            # For PRs, only check changed markdown files
+            git fetch origin ${{ github.base_ref }} --depth=1
+            FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD -- '*.md' '*.md.erb')
+          elif [ "${{ github.event_name }}" = "push" ]; then
+            # Temporarily scan all markdown files on push for testing
+            FILES=$(git ls-files '*.md' '*.md.erb')
+          else
+            # For schedule and workflow_dispatch, check all markdown files
+            FILES=$(git ls-files '*.md' '*.md.erb')
+          fi
+
+          if [ -z "$FILES" ]; then
+            echo "No files found to check."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "$FILES" > /tmp/files-to-check.txt
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check links in files
+        if: steps.files.outputs.skip != 'true'
+        run: |
+          echo "📂 Total files to scan: $(wc -l < /tmp/files-to-check.txt)"
+          echo ""
+
+          # Extract unique URLs by reading file contents, -I skips binary files
+          URLS=$(while IFS= read -r file; do
+            grep -EIoh 'https?://[A-Za-z0-9._~:/?#@!$&*+,;=%-]+' "$file" 2>/dev/null
+          done < /tmp/files-to-check.txt | sort -u)
+
+          # Filter out excluded URLs
+          EXCLUDE_FILE=".github/broken-links-exclude-list.txt"
+          if [ -f "$EXCLUDE_FILE" ]; then
+            echo "📋 Excluding URLs listed in $EXCLUDE_FILE"
+            # Remove comments and blank lines, then filter out matching URLs
+            EXCLUDES=$(grep -v '^\s*#' "$EXCLUDE_FILE" | grep -v '^\s*$')
+            if [ -n "$EXCLUDES" ]; then
+              URLS=$(echo "$URLS" | grep -vFf <(echo "$EXCLUDES"))
+            fi
+          fi
+
+          if [ -z "$URLS" ]; then
+            echo "No URLs found in changed files."
+            exit 0
+          fi
+
+          TOTAL=$(echo "$URLS" | wc -l | tr -d ' ')
+          BROKEN=0
+          CHECKED=0
+
+          echo "Checking $TOTAL unique URLs..."
+          echo ""
+
+          # Prepare report header
+          echo "## 🔗 Broken Links Report" > broken-links-report.md
+          echo "" >> broken-links-report.md
+          echo "| Status | URL | File | Line |" >> broken-links-report.md
+          echo "|--------|-----|------|------|" >> broken-links-report.md
+
+          while IFS= read -r url; do
+            CHECKED=$((CHECKED + 1))
+
+            # Use GITHUB_TOKEN for github.com URLs to avoid false 404s on authenticated pages
+            if echo "$url" | grep -q "github.com"; then
+              STATUS=$(curl -sSo /dev/null -w "%{http_code}" -L --max-time 30 --retry 2 --retry-delay 3 \
+                -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+                -A "Mozilla/5.0 link-checker" "$url" 2>/dev/null || echo "000")
+            else
+              STATUS=$(curl -sSo /dev/null -w "%{http_code}" -L --max-time 30 --retry 2 --retry-delay 3 \
+                -A "Mozilla/5.0 link-checker" "$url" 2>/dev/null || echo "000")
+            fi
+
+            if [ "$STATUS" -ge 400 ] || [ "$STATUS" = "000" ]; then
+              echo "❌ [$STATUS] $url"
+              BROKEN=$((BROKEN + 1))
+
+              # Find all occurrences with file and line number
+              while IFS= read -r file; do
+                grep -EIn 'https?://[A-Za-z0-9._~:/?#@!$&*+,;=%-]+' "$file" 2>/dev/null | grep -F "$url" | while IFS=: read -r line_num content; do
+                  echo "     📍 $file:$line_num"
+                  echo "| ${STATUS} | ${url} | ${file} | ${line_num} |" >> broken-links-report.md
+                done
+              done < /tmp/files-to-check.txt
+            else
+              echo "✅ [$STATUS] $url"
+            fi
+          done <<< "$URLS"
+
+          echo ""
+          echo "✅ Checked $TOTAL URLs, found $BROKEN broken."
+
+          if [ "$BROKEN" -gt 0 ]; then
+            echo "" >> broken-links-report.md
+            cat broken-links-report.md
+            echo "::error::Found $BROKEN broken unique URL(s)."
+            exit 1
+          else
+            echo "All links are valid."
+            rm -f broken-links-report.md
+          fi
+
+      - name: Post results as PR comment
+        if: failure() && github.event_name == 'pull_request'
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          script: |
+            const fs = require('fs');
+            if (fs.existsSync('broken-links-report.md')) {
+              const report = fs.readFileSync('broken-links-report.md', 'utf8');
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: report
+              });
+            }
+
+
+
+
+
