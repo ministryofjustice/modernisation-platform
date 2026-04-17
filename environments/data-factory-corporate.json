@@ -8,7 +8,7 @@
           "sso_group_name": "corporate-data-factory-admins",
           "level": "sandbox"
         }
-      ],
+      ]
     },
     {
       "name": "test",
