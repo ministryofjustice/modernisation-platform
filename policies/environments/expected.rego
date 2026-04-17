@@ -90,6 +90,7 @@ expected :=
     "observability-platform",
     "opg-lpa-data-store",
     "panda-cyber-appsec-lab",
+    "paul-sandbox",
     "performance-hub",
     "planetfm",
     "portal",

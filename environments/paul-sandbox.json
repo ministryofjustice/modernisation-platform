@@ -1,0 +1,27 @@
+{
+  "account-type": "member",
+  "codeowners": ", ",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "paul-sandbox",
+          "level": "sandbox"
+        }
+      ],
+      "nuke": ""
+    }
+  ],
+  "tags": {
+    "application": "paul-sandbox",
+    "business-unit": "Central Digital",
+    "service-area": "OCTO",
+    "infrastructure-support": "OCTO",
+    "owner": "Paul Haigh",
+    "slack-channel": "",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
