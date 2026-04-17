@@ -1,0 +1,34 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "corporate-data-factory-admins",
+          "level": "sandbox"
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "corporate-data-factory-admins",
+          "level": "data-engineering"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "Data Factory Corporate",
+    "business-unit": "Platforms",
+    "service-area": "Data Engineering",
+    "infrastructure-support": "DataEngineering-gg@justice.gov.uk",
+    "owner": "DataEngineering-gg@justice.gov.uk",
+    "slack-channel": "dmet-corp-notifications",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
