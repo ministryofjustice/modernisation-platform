@@ -88,6 +88,7 @@ expected :=
     "oasys",
     "oasys-national-reporting",
     "observability-platform",
+    "octo",
     "opg-lpa-data-store",
     "panda-cyber-appsec-lab",
     "performance-hub",
