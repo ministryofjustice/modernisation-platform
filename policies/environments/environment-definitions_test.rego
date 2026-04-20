@@ -31,7 +31,7 @@ test_empty_values if {
 }
 
 test_unexpected_business_units if {
-  deny["`example.json` uses an unexpected business-unit: got `incorrect-business-unit`, expected one of: HQ, HMPPS, OPG, LAA, HMCTS, CICA, Platforms, CJSE"] with input as { "filename": "example.json", "tags": { "business-unit": "incorrect-business-unit" } }
+  deny["`example.json` uses an unexpected business-unit: got `incorrect-business-unit`, expected one of: HQ, HMPPS, OPG, LAA, HMCTS, CICA, Platforms, Property, YJB, CJSE"] with input as { "filename": "example.json", "tags": { "business-unit": "incorrect-business-unit" } }
 }
 
 test_business_units_length if {
@@ -43,7 +43,7 @@ test_business_units_character if {
 }
 
 test_unexpected_access if {
-  deny["`example.json` uses an unexpected access level: got `incorrect-access`, expected one of: administrator, analytics-engineer, data-engineering, data-scientist, developer, instance-access, instance-management, migration, mwaa-user, platform-engineer-admin, read-only, reporting-operations, sandbox, security-audit, view-only, powerbi-user, fleet-manager, quicksight-admin"] with input as { "filename": "example.json", "environments": [{"access": [{"level": "incorrect-access"}]}]}
+  deny["`example.json` uses an unexpected access level: got `incorrect-access`, expected one of: administrator, analytics-engineer, data-engineering, data-scientist, developer, instance-access, instance-management, migration, mwaa-user, platform-engineer-admin, read-only, reporting-operations, sandbox, security-audit, ssm-session-access, view-only, powerbi-user, fleet-manager, quicksight-admin"] with input as { "filename": "example.json", "environments": [{"access": [{"level": "incorrect-access"}]}]}
 }
 
 test_unexpected_access_assignment if {
