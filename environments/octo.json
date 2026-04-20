@@ -16,8 +16,8 @@
     "application": "OCTO",
     "business-unit": "Platforms",
     "service-area": "Hosting",
-    "infrastructure-support": "OCTO",
-    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk",
+    "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+    "owner": "modernisation-platform@digital.justice.gov.uk",
     "slack-channel": "modernisation-platform",
     "critical-national-infrastructure": false
   },
