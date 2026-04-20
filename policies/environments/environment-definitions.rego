@@ -25,7 +25,6 @@ allowed_access := [
   "mwaa-user",
   "platform-engineer-admin",
   "read-only",
-  "read-only",
   "reporting-operations",
   "sandbox",
   "security-audit",
