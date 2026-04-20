@@ -1,20 +1,19 @@
 {
   "account-type": "member",
-  "codeowners": ", ",
   "environments": [
     {
       "name": "development",
       "access": [
         {
-          "sso_group_name": "paul-sandbox",
+          "sso_group_name": "octo",
           "level": "sandbox"
         }
       ],
-      "nuke": ""
+      "nuke": "exclude"
     }
   ],
   "tags": {
-    "application": "paul-sandbox",
+    "application": "OCTO",
     "business-unit": "Central Digital",
     "service-area": "OCTO",
     "infrastructure-support": "OCTO",
