@@ -320,7 +320,7 @@ resource "aws_ssoadmin_account_assignment" "read_only" {
   target_type = "AWS_ACCOUNT"
 }
 
-resource "aws_ssoadmin_account_assignment" "data_engineer" {
+resource "aws_ssoadmin_account_assignment" "data_engineering" {
 
   for_each = {
 
@@ -328,7 +328,7 @@ resource "aws_ssoadmin_account_assignment" "data_engineer" {
 
     "${sso_assignment.sso_group_name}-${sso_assignment.level}" => sso_assignment
 
-    if(sso_assignment.level == "data-engineer")
+    if(sso_assignment.level == "data-engineering")
   }
 
   provider = aws.sso-management

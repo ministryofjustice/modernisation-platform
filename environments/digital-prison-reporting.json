@@ -22,7 +22,7 @@
         },
         {
           "sso_group_name": "digital-prisons-reporting-development-data-engineer",
-          "level": "data-engineer"
+          "level": "data-engineering"
         }
       ],
       "nuke": "exclude"
@@ -48,7 +48,7 @@
         },
         {
           "sso_group_name": "digital-prisons-reporting-test-data-engineer",
-          "level": "data-engineer"
+          "level": "data-engineering"
         }
       ]
     },
@@ -65,7 +65,7 @@
         },
         {
           "sso_group_name": "digital-prisons-reporting-preproduction-data-engineer",
-          "level": "data-engineer"
+          "level": "data-engineering"
         }
       ]
     },
@@ -82,7 +82,7 @@
         },
         {
           "sso_group_name": "digital-prisons-reporting-production-data-engineer",
-          "level": "data-engineer"
+          "level": "data-engineering"
         }
       ]
     }

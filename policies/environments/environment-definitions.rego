@@ -10,13 +10,15 @@ allowed_business_units := [
   "HMCTS",
   "CICA",
   "Platforms",
+  "Property",
+  "YJB",
   "CJSE"
 ]
 
 allowed_access := [
   "administrator",
   "analytics-engineer",
-  "data-engineer",
+  "data-engineering",
   "data-scientist",
   "developer",
   "instance-access",
@@ -28,6 +30,7 @@ allowed_access := [
   "reporting-operations",
   "sandbox",
   "security-audit",
+  "ssm-session-access",
   "view-only",
   "powerbi-user",
   "fleet-manager",
