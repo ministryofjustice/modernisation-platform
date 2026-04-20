@@ -425,6 +425,7 @@ expected :=
           "data-platform-governance-development",
           "example-development",
           "observability-platform-development",
+          "octo-development",
           "panda-cyber-appsec-lab-development"
         ]
       }
