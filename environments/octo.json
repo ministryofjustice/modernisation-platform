@@ -14,11 +14,11 @@
   ],
   "tags": {
     "application": "OCTO",
-    "business-unit": "Central Digital",
-    "service-area": "OCTO",
+    "business-unit": "Platforms",
+    "service-area": "Hosting",
     "infrastructure-support": "OCTO",
-    "owner": "Paul Haigh",
-    "slack-channel": "",
+    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk",
+    "slack-channel": "modernisation-platform",
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [],
