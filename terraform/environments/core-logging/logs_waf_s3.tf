@@ -11,6 +11,9 @@ module "s3-bucket-modernisation-platform-waf-logs" {
   custom_kms_key             = aws_kms_key.s3_modernisation_platform_waf_logs.arn
   custom_replication_kms_key = aws_kms_key.s3_modernisation_platform_waf_logs_eu_west_1_replication.arn
 
+  log_bucket = module.s3-bucket-core-logging-s3-server-access-logs.bucket.id
+  log_prefix = "s3-access/modernisation-platform-waf-logs/"
+
   replication_enabled = true
   replication_region  = "eu-west-1"
   versioning_enabled  = true

@@ -15,6 +15,9 @@ module "s3_bucket_r53_public_dns_logs" {
   replication_region         = "eu-west-1"
   versioning_enabled         = true
 
+  log_bucket = module.s3-bucket-core-logging-s3-server-access-logs.bucket.id
+  log_prefix = "s3-access/modernisation-platform-logs-r53-public-dns-logs/"
+
   lifecycle_rule = [
     {
       id      = "main"
