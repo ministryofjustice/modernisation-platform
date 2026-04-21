@@ -99,6 +99,7 @@ expected :=
     "prison-retail",
     "property-cafm-data-migration",
     "refer-monitor",
+    "sandbox-justice-data-agent",
     "sprinkler",
     "testing",
     "tipstaff",
