@@ -16,7 +16,7 @@
       "access": [
         {
           "sso_group_name": "property-datahub",
-          "level": "data-engineering"
+          "level": "data-engineer"
         }
       ]
     },
@@ -25,7 +25,7 @@
       "access": [
         {
           "sso_group_name": "property-datahub",
-          "level": "data-engineering"
+          "level": "data-engineer"
         }
       ]
     }

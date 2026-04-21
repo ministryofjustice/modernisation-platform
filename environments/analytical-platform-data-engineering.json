@@ -14,7 +14,7 @@
         },
         {
           "sso_group_name": "analytical-platform-data-engineering-production-data-engineer",
-          "level": "data-engineering"
+          "level": "data-engineer"
         },
         {
           "sso_group_name": "analytical-platform-data-engineering-production-analytics-engineer",
@@ -47,7 +47,7 @@
         },
         {
           "sso_group_name": "analytical-platform-data-engineering-sandboxa-data-engineer",
-          "level": "data-engineering"
+          "level": "data-engineer"
         },
         {
           "sso_group_name": "analytical-platform-data-engineering-sandboxa-developer",

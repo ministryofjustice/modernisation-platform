@@ -14,7 +14,7 @@
         },
         {
           "sso_group_name": "analytical-platform-data-development-data-engineer",
-          "level": "data-engineering"
+          "level": "data-engineer"
         },
         {
           "sso_group_name": "data-platform-audit-and-security",
@@ -35,7 +35,7 @@
         },
         {
           "sso_group_name": "analytical-platform-data-production-data-engineer",
-          "level": "data-engineering"
+          "level": "data-engineer"
         },
         {
           "sso_group_name": "analytical-platform-airflow",

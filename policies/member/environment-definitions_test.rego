@@ -3,7 +3,7 @@ package policies.member
 import rego.v1
 
 test_invalid_file_name_character if {
-  deny["`exampleA.json` filename does not meet requirements"] with input as { "filename": "exampleA.json" }
+  deny["`environments/exampleA.json` filename does not meet requirements"] with input as { "filename": "environments/exampleA.json" }
 }
 
 test_invalid_file_name_length if {
