@@ -185,3 +185,156 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail_replication" {
     }
   }
 }
+
+# KMS key pair for shared S3 server access logs bucket
+resource "aws_kms_key" "s3_server_access_logs" {
+  description             = "s3-server-access-logs"
+  policy                  = data.aws_iam_policy_document.kms_s3_server_access_logs.json
+  enable_key_rotation     = true
+  deletion_window_in_days = 30
+  tags                    = local.tags
+}
+
+resource "aws_kms_alias" "s3_server_access_logs" {
+  name          = "alias/s3-server-access-logs"
+  target_key_id = aws_kms_key.s3_server_access_logs.id
+}
+
+data "aws_iam_policy_document" "kms_s3_server_access_logs" {
+  # checkov:skip=CKV_AWS_111: "policy is directly related to the resource"
+  # checkov:skip=CKV_AWS_356: "policy is directly related to the resource"
+  # checkov:skip=CKV_AWS_109: "role is resticted by limited actions in member account"
+
+  statement {
+    sid    = "Allow management access of the key to the logging account"
+    effect = "Allow"
+    actions = [
+      "kms:*"
+    ]
+    resources = [
+      "*"
+    ]
+    principals {
+      type = "AWS"
+      identifiers = [
+        data.aws_caller_identity.current.account_id
+      ]
+    }
+  }
+
+  statement {
+    sid    = "Allow use of the key including encryption"
+    effect = "Allow"
+    actions = [
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:Encrypt*",
+      "kms:Describe*",
+      "kms:Decrypt*"
+    ]
+    resources = ["*"]
+    principals {
+      type        = "Service"
+      identifiers = ["logging.s3.amazonaws.com"]
+    }
+  }
+
+  statement {
+    sid    = "Allow use of the key by the ModernisationPlatformAccess role in all MP accounts"
+    effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    actions = [
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:Encrypt*",
+      "kms:Describe*",
+      "kms:Decrypt*"
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [data.aws_organizations_organization.moj_root_account.id]
+    }
+    condition {
+      test     = "StringLike"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::*:role/ModernisationPlatformAccess"]
+    }
+  }
+
+  statement {
+    sid    = "Allow key decryption to STS bucket replication roles"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt*"
+    ]
+    resources = ["*"]
+    principals {
+      type = "AWS"
+      identifiers = [
+        "arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/AWSS3BucketReplication-s3-server-access-logs/s3-replication",
+      ]
+    }
+  }
+}
+
+resource "aws_kms_key" "s3_server_access_logs_eu-west-1_replication" {
+  provider = aws.modernisation-platform-eu-west-1
+
+  description             = "s3-server-access-logs-eu-west-1-replication"
+  policy                  = data.aws_iam_policy_document.kms_s3_server_access_logs_replication.json
+  enable_key_rotation     = true
+  deletion_window_in_days = 30
+  tags                    = local.tags
+}
+
+resource "aws_kms_alias" "s3_server_access_logs_eu-west-1_replication" {
+  provider = aws.modernisation-platform-eu-west-1
+
+  name          = "alias/s3-server-access-logs-eu-west-1-replication"
+  target_key_id = aws_kms_key.s3_server_access_logs_eu-west-1_replication.id
+}
+
+data "aws_iam_policy_document" "kms_s3_server_access_logs_replication" {
+  # checkov:skip=CKV_AWS_111: "policy is directly related to the resource"
+  # checkov:skip=CKV_AWS_356: "policy is directly related to the resource"
+  # checkov:skip=CKV_AWS_109: "role is resticted by limited actions in member account"
+
+  statement {
+    sid    = "Allow management access of the key to the logging account"
+    effect = "Allow"
+    actions = [
+      "kms:*"
+    ]
+    resources = [
+      "*"
+    ]
+    principals {
+      type = "AWS"
+      identifiers = [
+        data.aws_caller_identity.current.account_id
+      ]
+    }
+  }
+
+  statement {
+    sid    = "Allow key use to STS bucket replication roles"
+    effect = "Allow"
+    actions = [
+      "kms:ReEncrypt*",
+      "kms:Encrypt*",
+      "kms:Describe*"
+    ]
+    resources = ["*"]
+    principals {
+      type = "AWS"
+      identifiers = [
+        "arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/AWSS3BucketReplication-s3-server-access-logs/s3-replication",
+      ]
+    }
+  }
+}

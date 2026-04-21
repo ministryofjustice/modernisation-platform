@@ -9,10 +9,8 @@ module "s3-bucket-core-logging-s3-server-access-logs" {
   replication_bucket = "modernisation-platform-logs-s3-server-access-logs-replication"
   suffix_name        = "-s3-server-access-logs"
 
-  # Reuse an existing KMS key if you prefer; otherwise create a new one.
-  # This is an example using the same key as cloudtrail logging.
-  custom_kms_key             = aws_kms_key.s3_logging_cloudtrail.arn
-  custom_replication_kms_key = aws_kms_key.s3_logging_cloudtrail_eu-west-1_replication.arn
+  custom_kms_key             = aws_kms_key.s3_server_access_logs.arn
+  custom_replication_kms_key = aws_kms_key.s3_server_access_logs_eu-west-1_replication.arn
 
   ownership_controls  = "BucketOwnerEnforced"
   replication_enabled = true
@@ -45,16 +43,9 @@ data "aws_iam_policy_document" "core_logging_s3_server_access_logs_bucket_policy
       test     = "ArnEquals"
       variable = "aws:SourceArn"
       values = [
-        # WAF bucket (module-based)
         module.s3-bucket-modernisation-platform-waf-logs.bucket.arn,
-
-        # R53 public DNS bucket (module-based)
         module.s3_bucket_r53_public_dns_logs.bucket.arn,
-
-        # VPC flow logs bucket (raw aws_s3_bucket in logs_s3.tf)
         aws_s3_bucket.logging["vpc-flow-logs"].arn,
-
-        # R53 resolver logs bucket (raw aws_s3_bucket in logs_s3.tf)
         aws_s3_bucket.logging["r53-resolver-logs"].arn,
       ]
     }
