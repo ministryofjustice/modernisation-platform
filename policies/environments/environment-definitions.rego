@@ -62,13 +62,13 @@ deny contains msg if {
 }
 
 deny contains msg if {
-  environment := input.environments[_]
+  some environment in input.environments
   not has_field(environment, "name")
   msg := sprintf("`%v` has an environment that is missing a `name` value", [input.filename])
 }
 
 deny contains msg if {
-  environment := input.environments[_]
+  some environment in input.environments
   not has_field(environment, "access")
   msg := sprintf("`%v` has an environment that is missing a `access` value", [input.filename])
 }
@@ -116,10 +116,10 @@ deny contains msg if {
 }
 
 deny contains msg if {
-  access := input.environments[_].access[_].level
-  access == "powerbi-user"
   not startswith(input.filename, "environments/analytical-platform")
-  not startswith(input.filename, "environments/sprinkler") # to allow testing
+  not startswith(input.filename, "environments/sprinkler")
+  some access in input.environments[_].access[_].level
+  access == "powerbi-user"
   msg := sprintf("`%v` uses `powerbi-user` access level but is not an analytical platform or sprinkler account", [input.filename])
 }
 
