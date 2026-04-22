@@ -42,7 +42,7 @@ defaults:
 jobs:
 
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@5b44b387694dfa249cfa2dcf289ca871abe9e3e2 # v5.0.1
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@544c7bb214758a098b054014fa16ab86bad305b5 # v6.0.0
     permissions:
       id-token: write
       contents: read
@@ -57,7 +57,7 @@ jobs:
       account_blocklist_str: ${{ steps.set-blocklist-string.outputs.account_blocklist_str }}
     steps:
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@5b44b387694dfa249cfa2dcf289ca871abe9e3e2 # v5.0.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@544c7bb214758a098b054014fa16ab86bad305b5 # v6.0.0
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           nuke_account_ids: ${{ needs.fetch-secrets.outputs.nuke_account_ids }} 
@@ -97,7 +97,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@5b44b387694dfa249cfa2dcf289ca871abe9e3e2 # v5.0.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@544c7bb214758a098b054014fa16ab86bad305b5 # v6.0.0
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}

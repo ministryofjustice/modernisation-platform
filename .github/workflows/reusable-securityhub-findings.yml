@@ -54,7 +54,7 @@ jobs:
         - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
         - name: Decrypt Secrets
-          uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@5b44b387694dfa249cfa2dcf289ca871abe9e3e2 # v5.0.1
+          uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@544c7bb214758a098b054014fa16ab86bad305b5 # v6.0.0
           with:
             environment_management: ${{ inputs.environment_management }}
             securityhub_slack_webhooks: ${{ inputs.slack_webhook_url }}
