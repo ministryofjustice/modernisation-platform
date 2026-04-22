@@ -12,17 +12,17 @@ test_invalid_file_name_length if {
 
 test_valid_file_name_length_thirty_six if {
   # 36-character app name (at limit)
-  not deny[_] with input as { "filename": "environments/app-name-exactly-thirty-six-characters-long-ok.json" }
+  count(deny) == 0 with input as { "filename": "environments/app-name-exactly-36-chars-long-is-ok.json" }
 }
 
 test_valid_file_name_exception_thirty_seven if {
   # 37-character exception app name
-  not deny[_] with input as { "filename": "environments/analytical-platform-next-poc-producer.json" }
+  count(deny) == 0 with input as { "filename": "environments/analytical-platform-next-poc-producer.json" }
 }
 
 test_invalid_file_name_length_thirty_seven_non_exception if {
   # 37-character app name (over limit, not an exception - should fail)
-  deny["`environments/app-name-exactly-thirty-seven-characters-long-fail.json` filename does not meet requirements"] with input as { "filename": "environments/app-name-exactly-thirty-seven-characters-long-fail.json" }
+  deny["`environments/app-name-exactly-37-chars-long-not-ok.json` filename does not meet requirements"] with input as { "filename": "environments/app-name-exactly-37-chars-long-not-ok.json" }
 }
 
 test_unexpected_environment if {
