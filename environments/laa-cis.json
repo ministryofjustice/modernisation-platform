@@ -11,7 +11,7 @@
         {
           "sso_group_name": "laa-sre-admins",
           "level": "sandbox"
-        },
+        }
       ],
       "nuke": "exclude"
     },
