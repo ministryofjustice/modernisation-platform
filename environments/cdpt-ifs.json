@@ -9,8 +9,16 @@
           "level": "developer"
         },
         {
+          "sso_group_name": "azure-aws-sso-cdpt",
+          "level": "instance-management"
+        },
+        {
           "sso_group_name": "central-digital-product-team",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "central-digital-product-team",
+          "level": "instance-management"
         }
       ]
     },
@@ -22,8 +30,16 @@
           "level": "developer"
         },
         {
+          "sso_group_name": "azure-aws-sso-cdpt",
+          "level": "instance-management"
+        },
+        {
           "sso_group_name": "central-digital-product-team",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "central-digital-product-team",
+          "level": "instance-management"
         }
       ]
     },
@@ -35,8 +51,16 @@
           "level": "developer"
         },
         {
+          "sso_group_name": "azure-aws-sso-cdpt",
+          "level": "instance-management"
+        },
+        {
           "sso_group_name": "central-digital-product-team",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "central-digital-product-team",
+          "level": "instance-management"
         }
       ]
     }
