@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: How to Request an AMI License in an AWS Organization
-last_reviewed_on: 2025-10-22
+last_reviewed_on: 2026-04-22
 review_in: 6 months
 ---
 
@@ -38,24 +38,23 @@ Find the AMI you want to use and determine whether it requires a license. You ca
 If the AMI is published on AWS Marketplace:
 
 1. Go to the [AMI Catalog in the EC2 Console](https://console.aws.amazon.com/ec2/home?#AMICatalog) to browse available Marketplace AMIs
-2. Search for the product/AMI name.
+1. Search for the product/AMI name.
    ![Screenshot of AMI Catalog in EC2](/images/ami-cat.png)
-3. Click on the product listing.
+1. Click on the product listing.
    ![Screenshot of AMI prodlist](/images/ami-prodselect.png)
-4. Click the **Continue to Subscribe** button.
+1. Click the **Continue to Subscribe** button.
 
 ### ✉️ Step 3: Request Help for License Approval
 
 If the AMI requires a license and you do **not** have access after clicking **Subscribe**, you’ll need support from the modernisation team to get it approved on the root account.
 
 1. Gather the following information:
-
    - AMI ID
    - Source (e.g., Marketplace product name or shared account ID)
    - Purpose of use (briefly explain why you need the AMI)
    - Your AWS Account ID or Organizational Unit
 
-2. Post a request in the `#ask-modernisation` Slack channel with the above details.
+1. Post a request in the `#ask-modernisation` Slack channel with the above details.
 
 **Example message:**
 
@@ -81,9 +80,9 @@ The modernisation team will help coordinate license approvals with the appropria
 Once a request has been raised in `#ask-modernisation`, the support team or license admins should:
 
 1. Sign in to the [License Manager](https://console.aws.amazon.com/license-manager/) using the `moj-master` account.
-2. Go to **Granted licenses**.
-3. Locate the license associated with the AMI.
-4. Approve or extend the license to the **entire AWS Organization** or the specific requesting account as appropriate.
+1. Go to **Granted licenses**.
+1. Locate the license associated with the AMI.
+1. Approve or extend the license to the **entire AWS Organization** or the specific requesting account as appropriate.
    ![Screenshot of Grant screen in license manager](/images/grantscreen.png)
 
 ### ✅ Step 5: Confirm License Availability
@@ -91,7 +90,7 @@ Once a request has been raised in `#ask-modernisation`, the support team or lice
 Once the license has been granted:
 
 1. Re-check the **License Manager > Granted licenses**.
-2. Attempt to launch the AMI or subscribe via Marketplace again.
+1. Attempt to launch the AMI or subscribe via Marketplace again.
 
 ### 📌 Notes
 
