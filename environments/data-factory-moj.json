@@ -20,7 +20,7 @@
       "access": [
         {
           "sso_group_name": "data-engineering",
-          "level": "data-engineering"
+          "level": "data-engineer"
         }
       ]
     }
