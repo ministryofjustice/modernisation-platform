@@ -10,6 +10,8 @@ allowed_business_units := [
   "HMCTS",
   "CICA",
   "Platforms",
+  "Property",
+  "YJB",
   "CJSE"
 ]
 
@@ -17,15 +19,18 @@ allowed_access := [
   "administrator",
   "analytics-engineer",
   "data-engineer",
+  "data-scientist",
   "developer",
   "instance-access",
   "instance-management",
   "migration",
   "mwaa-user",
+  "platform-engineer-admin",
   "read-only",
   "reporting-operations",
   "sandbox",
   "security-audit",
+  "ssm-session-access",
   "view-only",
   "powerbi-user",
   "fleet-manager",
@@ -37,6 +42,23 @@ allowed_nuke := [
   "exclude",
   "rebuild"
 ]
+
+has_environment_missing_name if {
+  some environment in input.environments
+  not has_field(environment, "name")
+}
+
+has_environment_missing_access if {
+  some environment in input.environments
+  not has_field(environment, "access")
+}
+
+has_powerbi_user_access_level if {
+  some i
+  some j
+  access := input.environments[i].access[j].level
+  access == "powerbi-user"
+}
 
 deny contains msg if {
   without_filename := object.remove(input, ["filename"])
@@ -57,14 +79,12 @@ deny contains msg if {
 }
 
 deny contains msg if {
-  environment := input.environments[_]
-  not has_field(environment, "name")
+  has_environment_missing_name
   msg := sprintf("`%v` has an environment that is missing a `name` value", [input.filename])
 }
 
 deny contains msg if {
-  environment := input.environments[_]
-  not has_field(environment, "access")
+  has_environment_missing_access
   msg := sprintf("`%v` has an environment that is missing a `access` value", [input.filename])
 }
 
@@ -111,10 +131,9 @@ deny contains msg if {
 }
 
 deny contains msg if {
-  access := input.environments[_].access[_].level
-  access == "powerbi-user"
   not startswith(input.filename, "environments/analytical-platform")
-  not startswith(input.filename, "environments/sprinkler") # to allow testing
+  not startswith(input.filename, "environments/sprinkler")
+  has_powerbi_user_access_level
   msg := sprintf("`%v` uses `powerbi-user` access level but is not an analytical platform or sprinkler account", [input.filename])
 }
 
