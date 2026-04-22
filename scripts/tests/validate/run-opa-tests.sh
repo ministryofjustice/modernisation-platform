@@ -48,19 +48,19 @@ check-network-files-present() {
 environments() {
   line
   echo "Running Environments tests"
-  jq -n -c -r '[ inputs | . + { filename: input_filename } ]' environments/*.json | conftest test -p policies/environments -
+  jq -n -c -r '[ inputs | . + { filename: input_filename } ]' environments/*.json | conftest test --all-namespaces -p policies/environments -
 }
 
 networking() {
   line
   echo "Running Networking tests"
-  jq -n -c -r '[ inputs | . + { filename: input_filename } ]' environments-networks/*.json | conftest test -p policies/networking -
+  jq -n -c -r '[ inputs | . + { filename: input_filename } ]' environments-networks/*.json | conftest test --all-namespaces -p policies/networking -
 }
 
 member() {
   line
   echo "Running Member tests"
-  jq -n -c -r '[ inputs | . + { filename: input_filename } | select( .["account-type"] == "member" ) ]' environments/*.json | conftest test -p policies/member -
+  jq -n -c -r '[ inputs | . + { filename: input_filename } | select( .["account-type"] == "member" ) ]' environments/*.json | conftest test --all-namespaces -p policies/member -
 }
 
 

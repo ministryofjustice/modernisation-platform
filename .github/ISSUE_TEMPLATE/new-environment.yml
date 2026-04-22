@@ -94,7 +94,7 @@ body:
     - instance-access
     - security-audit
     - reporting-operations
-    - data-engineering
+    - data-engineer
     - fleet-manager
     - s3-upload
     - ssm-session-access
@@ -115,7 +115,7 @@ body:
     - instance-access
     - security-audit
     - reporting-operations
-    - data-engineering
+    - data-engineer
     - fleet-manager
     - s3-upload
     - ssm-session-access
@@ -136,7 +136,7 @@ body:
     - instance-access
     - security-audit
     - reporting-operations
-    - data-engineering
+    - data-engineer
     - fleet-manager
     - s3-upload
     - ssm-session-access
@@ -157,7 +157,7 @@ body:
     - instance-access
     - security-audit
     - reporting-operations
-    - data-engineering
+    - data-engineer
     - fleet-manager
     - s3-upload
     - ssm-session-access

@@ -11,6 +11,19 @@ allowed_environments := [
   "live"
 ]
 
+allowed_long_name_exceptions := [
+  "analytical-platform-next-poc-producer"
+]
+
+valid_filename if {
+  regex.match(`^environments\/[a-z0-9-]{1,36}\.json$`, input.filename)
+}
+
+valid_filename if {
+  some name in allowed_long_name_exceptions
+  regex.match(sprintf(`^environments\/%s\.json$`, [name]), input.filename)
+}
+
 deny contains msg if {
   some environment in input.environments
   not environment.name in allowed_environments
@@ -18,6 +31,6 @@ deny contains msg if {
 }
 
 deny contains msg if {
-  not regex.match(`^environments\/[a-z-]{1,30}\.json$`,input.filename)
+  not valid_filename
   msg := sprintf("`%v` filename does not meet requirements", [input.filename])
 }

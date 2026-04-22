@@ -57,7 +57,7 @@
 /terraform/environments/core-shared-services/hmpps-esupervision.tf @ministryofjustice/stg-pathfinders 
 /terraform/environments/core-shared-services/hmpps-oem.tf @ministryofjustice/hmpps-dba @ministryofjustice/hmpps-migration @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
 /terraform/environments/core-shared-services/laa-ccms-soa.tf @ministryofjustice/laa-sre-admins 
-/terraform/environments/core-shared-services/laa-cis.tf @ministryofjustice/v1-cis-mod 
+/terraform/environments/core-shared-services/laa-cis.tf @ministryofjustice/laa-sre-admins @ministryofjustice/v1-cis-mod 
 /terraform/environments/core-shared-services/laa-cst-security-dashboard.tf @ministryofjustice/laa-cyber-security-team 
 /terraform/environments/core-shared-services/laa-enterprise-service-bus.tf 
 /terraform/environments/core-shared-services/laa-mail-relay.tf @ministryofjustice/laa-aws-infrastructure 

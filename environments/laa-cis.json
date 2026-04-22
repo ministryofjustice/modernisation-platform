@@ -7,6 +7,10 @@
         {
           "sso_group_name": "v1-cis-mod",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "sandbox"
         }
       ],
       "nuke": "exclude"
@@ -16,6 +20,10 @@
       "access": [
         {
           "sso_group_name": "v1-cis-mod",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
           "level": "developer"
         }
       ]

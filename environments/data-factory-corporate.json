@@ -15,7 +15,7 @@
       "access": [
         {
           "sso_group_name": "corporate-data-factory-admins",
-          "level": "data-engineering"
+          "level": "data-engineer"
         }
       ]
     }
