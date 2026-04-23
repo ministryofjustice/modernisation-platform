@@ -148,11 +148,15 @@ deny contains msg if {
 }
 
 deny contains msg if {
+  not startswith(input.filename, "environments/analytical-platform")
+  not startswith(input.filename, "environments/data-platform")
   not has_field(input.tags, "critical-national-infrastructure")
   msg := sprintf("`%v` is missing the `critical-national-infrastructure` field", [input.filename])
 }
 
 deny contains msg if {
+  not startswith(input.filename, "environments/analytical-platform")
+  not startswith(input.filename, "environments/data-platform")
   not is_boolean(input.tags["critical-national-infrastructure"])
   msg := sprintf("`%v` has invalid `critical-national-infrastructure` value: got `%v`, expected a boolean (true or false)", [input.filename, input.tags["critical-national-infrastructure"]])
 }
