@@ -9,7 +9,7 @@
           "level": "sandbox"
         },
         {
-          "sso_group_name": "data-factory-security-team",
+          "sso_group_name": "data-factory-cloud-security",
           "level": "security-audit"
         }
       ]
