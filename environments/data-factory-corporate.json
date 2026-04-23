@@ -7,6 +7,10 @@
         {
           "sso_group_name": "corporate-data-factory-admins",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "data-factory-security-team",
+          "level": "security-audit"
         }
       ]
     },
