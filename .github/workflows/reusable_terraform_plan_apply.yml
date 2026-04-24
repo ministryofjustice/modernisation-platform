@@ -75,6 +75,7 @@ jobs:
           pagerduty_token: ${{ needs.fetch-secrets.outputs.pagerduty_token }}
           pagerduty_userapi_token: ${{ needs.fetch-secrets.outputs.pagerduty_userapi_token }}
           mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
+          mp_github_app_client_id: ${{ needs.fetch-secrets.outputs.mp_github_app_client_id }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
       - name: Create GitHub App token
@@ -82,7 +83,7 @@ jobs:
         id: app
         uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
         with:
-          client-id: ${{ env.APP_ID }}               
+          client-id: ${{ env.MP_GITHUB_APP_CLIENT_ID }}               
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
           owner: "ministryofjustice"
       
