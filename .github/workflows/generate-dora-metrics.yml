@@ -46,7 +46,7 @@ jobs:
               uses: ministryofjustice/devsecops-actions/sca/slsa@2dc8158ef71f7be8c00fda9a71e2ddbc27640a8b # main
 
             - name: Decrypt Secrets
-              uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d2d07632db53d17c9760c0c2c06f22a37bd3f0a1 #6.0.1
+              uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d2d07632db53d17c9760c0c2c06f22a37bd3f0a1 # v6.0.1
               with:
                   mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
                   PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -55,7 +55,7 @@ jobs:
               id: app
               uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
               with:
-                  app-id: ${{ env.APP_ID }}
+                  client-id: ${{ env.APP_ID }}
                   private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
                   owner: "ministryofjustice"
 
