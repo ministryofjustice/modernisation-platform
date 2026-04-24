@@ -25,6 +25,7 @@ env:
   TEMPLATE_ID: "1f0f5ccc-0f67-4ee2-942f-6e48804828ea"
   EXPECTED_TEMPLATE_VERSION: "1" # Update with your expected template version
   RATE_THRESHOLD: 100
+  APP_ID: 2013696
 
 permissions:
   id-token: write # This is required for requesting the JWT
@@ -60,7 +61,7 @@ jobs:
         id: app
         uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
         with:
-          client-id: ${{ env.MP_GITHUB_APP_CLIENT_ID }}               
+          client-id: ${{ env.APP_ID }}               
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
           owner: "ministryofjustice"
       - name: Authenticate GitHub CLI as the App and Check the Rate Usage
@@ -128,7 +129,7 @@ jobs:
         id: app
         uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
         with:
-          client-id: ${{ env.MP_GITHUB_APP_CLIENT_ID }}               
+          client-id: ${{ env.APP_ID }}               
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
           owner: "ministryofjustice"
       - name: Authenticate GitHub CLI as the App and Check the Rate Usage
