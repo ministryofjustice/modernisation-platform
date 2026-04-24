@@ -180,6 +180,7 @@ data "aws_iam_policy_document" "developer_additional" {
     actions = [
       "acm:ImportCertificate",
       "acm:AddTagsToCertificate",
+      "acm:ExportCertificate",
       "acm:RemoveTagsFromCertificate",
       "application-autoscaling:ListTagsForResource",
       "autoscaling:StartInstanceRefresh",
