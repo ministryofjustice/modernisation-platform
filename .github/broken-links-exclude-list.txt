@@ -25,4 +25,4 @@ https://github.com/orgs/ministryofjustice/security/overview
 https://github.com/orgs/ministryofjustice/security/overview?query=archived%3Afalse+tool%3Agithub+repo%3Amodernisation-platform-environments+team%3Amodernisation-platform
 https://intranet.justice.gov.uk/guidance/hr/end-change-of-employment/
 https://intranet.justice.gov.uk/guidance/security/report-a-security-incident/
-https://www.hashicorp.com/en/blog/terraform-1-6-adds-a-test-framework-for-enhanced-code-validation
+https://www.hashicorp.com
