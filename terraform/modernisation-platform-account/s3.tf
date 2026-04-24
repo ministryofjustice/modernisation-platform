@@ -256,21 +256,6 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
   }
 
   statement {
-    sid     = "AllowTestingCIUser"
-    effect  = "Allow"
-    actions = ["s3:PutObject"]
-    resources = [
-      "${module.state-bucket.bucket.arn}/environments/members/testing/testing-test/terraform.tfstate",
-      "${module.state-bucket.bucket.arn}/environments/members/testing/testing-test/*.tflock",
-    ]
-
-    principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["testing-test"]}:user/testing-ci"]
-    }
-  }
-
-  statement {
     sid     = "AllowGithubActionsRole"
     effect  = "Allow"
     actions = ["s3:PutObject"]
