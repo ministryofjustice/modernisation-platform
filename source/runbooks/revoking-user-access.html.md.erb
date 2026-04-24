@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Revoking User Access
-last_reviewed_on: 2026-02-24
+last_reviewed_on: 2026-04-24
 review_in: 6 month
 ---
 
@@ -36,9 +36,6 @@ to remove a collaborator (**NB** the Terraform must be run locally as a superadm
 MP team members access environments using AWS SSO and in very few circumstances via [Superadmin access](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/accessing-aws-accounts.html#superuser-account-access)
 
 Removing access for MP team members is documented [here](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/removing-a-team-member.html)
-
-We also have a `testing-ci` user, defined in code [here](https://github.com/ministryofjustice/modernisation-platform/blob/ee861412ad30edb0c1ff763b6deeb2992d139f44/terraform/github/testing-ci.tf#L4) which is used for automated tests.
-It's access is limited to the testing-test account and essential core resources. To remove this user raise a PR to remove the user or edit the access of the associated policy.
 
 ### MOJ Master Users
 
@@ -87,12 +84,26 @@ Here is a list of roles/identities that are used to manage the Modernisation Pla
 
 #### Bootstrap
 
-- [`github-actions`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf#L42) - Role for GitHub Actions
-- [`ModernisationPlatformAccess`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf#L12) - A role that lives in all accounts (except the Modernisation Platform account) and is assumable by the ModernisationPlatform account with AdministratorAccess permissions. In the case of the testing-test account, this role is also assumable by the `testing-ci` user
+- [`github-actions`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/sprinkler/iam.tf#L1) - OIDC role (via the shared OIDC module default role name) used for CI/CD from `modernisation-platform` and `modernisation-platform-environments`; can read/write specific Terraform state paths and decrypt KMS for those operations.
+- [`github-actions-plan`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/member-bootstrap/iam.tf#L1350) - OIDC role for `modernisation-platform-environments` plan workflows in member accounts; read-only Terraform state access, lock-file updates, KMS decrypt and `sts:AssumeRole` into read-only/delegation roles.
+- [`github-actions-apply`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/member-bootstrap/iam.tf#L1442) - OIDC role for `modernisation-platform-environments` apply workflows in member accounts; scoped by GitHub OIDC environment claim (`environment:${terraform.workspace}*`) and uses member apply permissions.
+- [`github-actions-testing`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/testing/iam.tf#L30) - OIDC role in `testing-test` used by multiple MP Terraform module repositories for integration tests; includes `ReadOnlyAccess` plus targeted assume-role/state/KMS permissions.
+- [`github-actions-provider-role`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/member-bootstrap/iam.tf#L627) - OIDC bootstrap role for `testing-test` used to set up GitHub OIDC provider access for automation in that account.
+- [`github-actions-dev-test`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/member-bootstrap/iam.tf#L1165) - OIDC role for development/test member environments from the `modernisation-platform` repo; has `AdministratorAccess` plus cross-account assume-role and Terraform state permissions.
+- [`github-actions-environments-read-only`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/sprinkler/iam.tf#L60) - OIDC role for `modernisation-platform-environments` with read-only style access used for sprinkler environment workflows.
+- [`github-actions-environments-dev-test`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/sprinkler/iam.tf#L118) - OIDC role for non-production sprinkler workflows with controlled write access to specific Terraform state paths.
+- [`github-actions-nuke`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/member-bootstrap/iam.tf#L1454) - OIDC role for sandbox cleanup automation from `modernisation-platform` main branch.
+- [`github-actions-securityhub-insights`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/member-bootstrap/iam.tf#L1236) - OIDC role for Security Hub insight creation/update/reporting from `modernisation-platform` main branch.
+- [`github-actions-iam-hygiene`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/member-bootstrap/iam.tf#L1277) - OIDC role used to discover and clean up IAM user credentials (for example disabling/deleting access keys and login profiles) in member/member-unrestricted accounts.
 - [`AWSSRTSupport`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf#L24) - Role to allow AWS SRT to make AWS Shield Advanced and AWS WAF API calls on your behalf and to access your AWS WAF logs.
+- [`ModernisationPlatformAccess`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf#L12) - A role that lives in all accounts (except the Modernisation Platform account) and is assumable by the ModernisationPlatform account with AdministratorAccess permissions.
 - [`MemberInfrastructureAccess`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/member-bootstrap/iam.tf#L6) - Role to define what members can manage in their environments
 - [`MemberInfrastructureAccessUSEast`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/member-bootstrap/iam.tf#L270) - As above but for US-East region
 - [`MemberInfrastructureBedrockEuCentral`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/member-bootstrap/iam.tf#L489) - Role for members to access to AWS Bedrock
+
+The `MemberInfrastructure*` and `ModernisationPlatformAccess` roles are generally assumed by Terraform [providers](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/templates/modernisation-platform/providers.tf#L5) in automated pipelines rather than directly by users. A common assume-role chain for automated deployments is:
+
+`github-actions*` -> `MemberInfrastructureAccess*` or `ModernisationPlatformAccess`
 
 #### Core Logging
 
@@ -102,6 +113,8 @@ Here is a list of roles/identities that are used to manage the Modernisation Pla
 
 - [`dns`](https://github.com/ministryofjustice/modernisation-platform/blob/576a631c80e16809b846b5a121535cb73045e910/terraform/environments/core-network-services/iam.tf#L12) - Role to allow ci/cd to update DNS records for ACM certificate validation
 - [`read-log-records`](https://github.com/ministryofjustice/modernisation-platform/blob/576a631c80e16809b846b5a121535cb73045e910/terraform/environments/core-network-services/iam.tf#L93) - Role to allow developer SSO user to read DNS records for ACM certificate validation for local plan
+- [`github-actions-vpn-environment-check`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/iam.tf#L252) - OIDC role from `modernisation-platform-environments` to read VPN connection state.
+- [`github-actions-vpn-maintenance`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/iam.tf#L273) - OIDC role from `modernisation-platform-environments` to perform VPN tunnel replacement/maintenance.
 
 #### Core Shared Services
 
@@ -119,6 +132,9 @@ Here is a list of roles/identities that are used to manage the Modernisation Pla
 - [`ModernisationPlatformGithubActionsRole`](https://github.com/ministryofjustice/aws-root-account/blob/b47c74781927ffbdb3cfba485d07b05ade7a23b9/management-account/terraform/iam-roles.tf#L161) - Modernisation Platform Github OIDC Role
 - [`modernisation-account-limited-read`](https://github.com/ministryofjustice/modernisation-platform/blob/576a631c80e16809b846b5a121535cb73045e910/terraform/modernisation-platform-account/iam.tf#L127) - Limited Read Access in MP Account for Members and CI
 - [`modernisation-account-terraform-state`](https://github.com/ministryofjustice/modernisation-platform/blob/576a631c80e16809b846b5a121535cb73045e910/terraform/modernisation-platform-account/iam.tf#L222) - Role allowing Modernisation Platform customers access to Terraform state backend resources
+- [`github-actions-plan`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/modernisation-platform-account/iam.tf#L201) - OIDC plan role in the MP account used by multiple platform repositories, with KMS/secrets access, read-state permissions and controlled cross-account assume role.
+- [`github-actions-apply`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/modernisation-platform-account/iam.tf#L260) - OIDC apply role in the MP account (main branch) with `AdministratorAccess` and explicit deny on interactive IAM login operations.
+- [`github-actions-read-secrets`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/modernisation-platform-account/iam.tf#L339) - OIDC role for selected repositories to read specific secrets used by platform automation.
 
 ### Urgent Disabling Access to IAM Roles
 
