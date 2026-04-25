@@ -15,3 +15,5 @@ tmp/
 config.txt
 execution_log.txt
 megalinter-reports
+lambda/credential_responder.zip
+
