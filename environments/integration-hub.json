@@ -1,6 +1,6 @@
 {
   "account-type": "member",
-  "codeowners": "integration-hub, ",
+  "codeowners": ["integration-hub"],
   "environments": [
     {
       "name": "development",
