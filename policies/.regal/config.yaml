@@ -8,6 +8,8 @@ rules:
   # so certainly optional
   # https://docs.styra.com/regal/category/style
   style:
+    file-length:
+      
     line-length:
       level: ignore
     opa-fmt:
