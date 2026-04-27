@@ -66,6 +66,7 @@ expected :=
     "hmpps-domain-services",
     "hmpps-esupervision",
     "hmpps-oem",
+    "integration-hub",
     "laa-ccms-soa",
     "laa-cis",
     "laa-cst-security-dashboard",
