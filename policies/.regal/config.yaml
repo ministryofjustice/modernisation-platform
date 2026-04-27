@@ -9,7 +9,7 @@ rules:
   # https://docs.styra.com/regal/category/style
   style:
     file-length:
-      
+      level: ignore
     line-length:
       level: ignore
     opa-fmt:
