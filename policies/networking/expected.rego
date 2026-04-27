@@ -424,6 +424,7 @@ expected :=
           "data-platform-development",
           "data-platform-governance-development",
           "example-development",
+          "integration-hub-development",
           "observability-platform-development",
           "octo-development",
           "panda-cyber-appsec-lab-development"
@@ -438,6 +439,7 @@ expected :=
           "data-factory-moj-test",
           "data-platform-test",
           "data-platform-governance-test",
+          "integration-hub-test",
           "testing-test"
         ]
       }
@@ -447,7 +449,8 @@ expected :=
         "cidr": "10.27.104.0/21",
         "accounts": [
           "data-platform-preproduction",
-          "data-platform-governance-preproduction"
+          "data-platform-governance-preproduction",
+          "integration-hub-preproduction"
         ]
       }
     },
@@ -460,6 +463,7 @@ expected :=
           "coat-production",
           "data-platform-production",
           "data-platform-governance-production",
+          "integration-hub-production",
           "long-term-storage-production",
           "observability-platform-production"
         ]
