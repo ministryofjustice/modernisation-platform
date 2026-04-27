@@ -1,0 +1,53 @@
+{
+  "account-type": "member",
+  "codeowners": "integration-hub, ",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "integration-hub",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "integration-hub",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "integration-hub",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "integration-hub",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "integration-hub",
+    "business-unit": "Platforms",
+    "service-area": "Data",
+    "infrastructure-support": "integration-hub@justice.gov.uk",
+    "owner": "Platforms",
+    "slack-channel": "integration-hub-team",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
