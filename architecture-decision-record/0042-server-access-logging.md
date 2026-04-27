@@ -44,14 +44,14 @@ This is generally more operationally effective for security monitoring than S3 S
 - Often high volume and noisy on busy log buckets
 - Typically require additional ingestion/querying pipelines (Athena/SIEM) to be operationally useful  
 
-Per AWS documentation, S3 Server Access Logging mainly adds HTTP-level and bucket-operation fields that are not required to satisfy the DET-19 intent in our context. These include object size and bytes transferred, request timing metrics (total time and turn-around time), detailed HTTP status codes and 
+Per AWS documentation, S3 Server Access Logging mainly adds HTTP-level and bucket-operation fields that are not required to satisfy the DET-19 intent in our context. These include object size and bytes transferred, request timing metrics (total time and turn-around time), detailed HTTP status codes and
 HTTP headers such as referrer and user agent.
 
 While S3 access logs capture **authentication failures (e.g. invalid credentials)**, these occur before identity can be established and are typically harder to investigate (for example, you may not be able to attribute them to a principal).
 
 CloudTrail does not log these authentication failures, but **does capture authorization failures (`AccessDenied`) and anonymous requests**, which are the relevant signals for detecting unauthorized access.
 
-Reference: https://docs.aws.amazon.com/AmazonS3/latest/userguide/logging-with-S3.html
+Reference: <https://docs.aws.amazon.com/AmazonS3/latest/userguide/logging-with-S3.html>
 
 ## Consequences
 
