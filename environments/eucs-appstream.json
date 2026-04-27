@@ -22,7 +22,7 @@
     }
   ],
   "tags": {
-    "application": "EUCS-AppStream",
+    "application": "eucs-appstream",
     "business-unit": "Technology Services",
     "service-area": "TechnologyServices-EUCS-VirtualDesktopServices",
     "infrastructure-support": "EUCS.CloudPlatforms@justice.gov.uk",
