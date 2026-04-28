@@ -58,6 +58,7 @@ expected :=
     "edw-19c",
     "electronic-monitoring-data",
     "equip",
+    "eucs-appstream",
     "example",
     "genesys-call-centre-data",
     "hmcts-claude-provider",
