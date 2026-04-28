@@ -173,7 +173,7 @@
           "github_action_reviewer": "false"
         },
         {
-          "sso_group_name": "version-1-sit-team",
+          "sso_group_name": "version-1-sit-team-preprod",
           "level": "developer",
           "github_action_reviewer": "false"
         },
