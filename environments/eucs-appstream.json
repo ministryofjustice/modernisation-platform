@@ -1,0 +1,35 @@
+{
+  "account-type": "member",
+  "codeowners": "mojo-vds-team, ",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "mojo-vds-team",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "mojo-vds-team",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "eucs-appstream",
+    "business-unit": "HMPPS",
+    "service-area": "TechnologyServices-EUCS-VirtualDesktopServices",
+    "infrastructure-support": "EUCS.CloudPlatforms@justice.gov.uk",
+    "owner": "EUCS.CloudPlatforms@justice.gov.uk",
+    "slack-channel": "eucs-virtual-desktop-services",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
