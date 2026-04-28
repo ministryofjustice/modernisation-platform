@@ -1,0 +1,27 @@
+{
+  "account-type": "member",
+  "codeowners": "all-org-members, all-org-members",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "all-org-members",
+          "level": "sandbox"
+        }
+      ],
+      "nuke": ""
+    }
+  ],
+  "tags": {
+    "application": "jda",
+    "business-unit": "HMPPS",
+    "service-area": "Justice Digital",
+    "infrastructure-support": "zainab.daria@justice.gov.uk",
+    "owner": "zainab.daria@justice.gov.uk",
+    "slack-channel": "public-justice-data-agent",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
