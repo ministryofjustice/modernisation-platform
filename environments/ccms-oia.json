@@ -93,7 +93,6 @@
     "business-unit": "LAA",
     "infrastructure-support": "ApplicationOperations@justice.gov.uk",
     "owner": "ApplicationOperations@justice.gov.uk",
-    "slack-channel": "",
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [
