@@ -69,6 +69,11 @@
           "sso_group_name": "octo-data-architecture",
           "level": "developer",
           "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "delius-core-development",
+          "level": "developer",
+          "github_action_reviewer": "false"
         }
       ],
       "nuke": "exclude"
@@ -135,6 +140,11 @@
         },
         {
           "sso_group_name": "octo-data-architecture",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "delius-core-test",
           "level": "developer",
           "github_action_reviewer": "false"
         }
@@ -235,6 +245,11 @@
         {
           "sso_group_name": "octo-cyber-team",
           "level": "security-audit"
+        },
+        {
+          "sso_group_name": "delius-core-production",
+          "level": "developer",
+          "github_action_reviewer": "false"
         }
       ]
     }
