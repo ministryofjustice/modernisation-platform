@@ -1,6 +1,6 @@
 {
   "account-type": "member",
-  "codeowners": "mojo-vds-team, ",
+  "codeowners": "mojo-vds-team",
   "environments": [
     {
       "name": "development",
