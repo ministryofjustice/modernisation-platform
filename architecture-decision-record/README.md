@@ -46,6 +46,7 @@ This is our architecture decision log, made during the design and build of the M
 1. ✅ [Transit Gateway Auto-Accept VPC Attachment Requests](0040-transit-gateway-auto-accept.md)
 1. 🤔 [Adopting Entra ID](0041-adopting-entra-id.md)
 1. ✅ [Monitor Object Access Without S3 Server Access Logging](0042-server-access-logging.md)
+1. 🤔 [Enforce S3 KMS Encryption with SCP Guardrails](0043-enforce-s3-kms-encryption-with-scp-guardrails.md)
 
 ## Statuses
 
