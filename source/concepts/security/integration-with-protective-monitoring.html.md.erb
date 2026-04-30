@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Platform Logging Integration With Protective Monitoring (Cortex XSIAM)
-last_reviewed_on: 2025-10-30
+last_reviewed_on: 2026-04-30
 review_in: 6 months
 ---
 
@@ -9,29 +9,29 @@ review_in: 6 months
 
 ## Introduction
 
-Modernisation Platform aim to ensure Platform Users align with Ministry of Justice (MoJ) Security Guidance to improve the MoJs security posture and enable Platform Users to focus on developing their applications in a secure environment.
+Modernisation Platform aims to ensure Platform Users align with Ministry of Justice (MoJ) Security Guidance to improve the MoJ's security posture and enable Platform Users to focus on developing their applications in a secure environment.
 
-This document outlines how the Modernisation Platform and the Applications running on it, align with [Principle 7 of the MoJs Security and Log Collection Principle: Log transmission to the MoJ Cyber Security Logging Platform](https://security-guidance.service.justice.gov.uk/security-log-collection/#7-log-transmission-to-the-moj-cyber-security-logging-platform) (Cortex XSIAM).
+This document outlines how the Modernisation Platform and the Applications running on it, align with [Principle 7 of the MoJ's Security and Log Collection Principle: Log transmission to the MoJ Cyber Security Logging Platform](https://security-guidance.service.justice.gov.uk/security-log-collection/#7-log-transmission-to-the-moj-cyber-security-logging-platform) (Cortex XSIAM).
 
-The scope of this document primarily refers to Platform responsibilities such as: Networking, Infrastructure Access, AWS Account Change Management etc. Platform Users are ultimately responsible for Application level monitoring as defined by Modernisation Platforms [Shared Responsibility Model](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/our-offer-to-you.html#shared-responsibility-diagram).
+The scope of this document primarily refers to Platform responsibilities such as: Networking, Infrastructure Access, AWS Account Change Management etc. Platform Users are ultimately responsible for application-level monitoring as defined by Modernisation Platform's [Shared Responsibility Model](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/our-offer-to-you.html#shared-responsibility-diagram).
 
 ### Audience
 
 If you are responsible for resources that are hosted via the Modernisation Platform, this document can save you time and effort when trying to comply with MoJ Security Guidance and ensure any efforts invested are not duplicating Modernisation Platform offerings.
 
-If you are responsible for MoJ Security Operations / Monitoring, this document can help in assessing the Modernisations Platforms (and the Applications running on it) compliance with MoJs Security Guidance.
+If you are responsible for MoJ Security Operations / Monitoring, this document can help in assessing the Modernisation Platform's (and the Applications running on it) compliance with MoJ's Security Guidance.
 
 ## Architecture and integration
 
 ### Overview Diagram
 
-Below is the High-Level Architectural diagram of the Modernisations Platforms integration with Cortex XSIAM.
+Below is the High-Level Architectural diagram of the Modernisation Platform's integration with Cortex XSIAM.
 
-On the left-most lane - we have the data sources such as AWS CloudTrail, Route53 etc. surrounded by information of what accounts they live in and how the resource is provisioned.
+On the left-most lane - we have the data sources such as AWS CloudTrail, Route 53 etc. surrounded by information of what accounts they live in and how the resource is provisioned.
 
-In the centre lane - there is the Modernisation Platforms `core-logging` AWS Account which is responsible for retaining, securing and sharing Platform Security Logs.
+In the centre lane - there is the Modernisation Platform's `core-logging` AWS Account which is responsible for retaining, securing and sharing Platform Security Logs.
 
-Finally on the right-most lane - the is the entry point for MoJs Cyber Security Logging Platform (Cortex XSIAM).
+Finally on the right-most lane - this is the entry point for MoJ's Cyber Security Logging Platform (Cortex XSIAM).
 
 ![Modernisation Platform to Cortex XSIAM Integration Overview Diagram](../images/mp-to-xsiam-integration.png)
 
@@ -43,13 +43,13 @@ AWS Config is a service that provides a detailed view of how AWS Resources are c
 
 Modernisation Platform ensures all CloudTrail and Config events, across all Modernisation Platform managed accounts, are stored in the `core-logging` account.
 
-This is enforced by the Modernisation Platforms [Secure Baselines Module](https://github.com/ministryofjustice/modernisation-platform-terraform-baselines?tab=readme-ov-file#modernisation-platform-terraform-baselines-module).
+This is enforced by the Modernisation Platform's [Secure Baselines Module](https://github.com/ministryofjustice/modernisation-platform-terraform-baselines?tab=readme-ov-file#modernisation-platform-terraform-baselines-module).
 
-Cortex XSIAM uses the [cortex_xsiam IAM Role](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-logging/iam_cortex.tf) to poll for new logs files via AWS SQS (Simple Queue Service).
+Cortex XSIAM uses the [cortex_xsiam IAM Role](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-logging/iam_cortex.tf) to poll for new log files via AWS SQS (Simple Queue Service).
 
 ### Application Networking (VPCs, Internal/Public DNS and Network Firewall)
 
-Modernisation Platform provide Platform Users with essential networking services for applications, such as VPCs, Private DNS and Public DNS. You can read more about this in our [Networking Approach Documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/concepts/networking/networking-approach.html#networking-approach).
+Modernisation Platform provides Platform Users with essential networking services for applications, such as VPCs, Private DNS and Public DNS. You can read more about this in our [Networking Approach Documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/concepts/networking/networking-approach.html#networking-approach).
 
 VPC Flow Logs is a feature that enables you to capture information about the IP traffic going to and from network interfaces.
 
@@ -59,7 +59,7 @@ Public DNS Query Logging captures DNS resolution activity made against Modernisa
 
 VPC Flow Logs, Resolver Query Logging (Internal DNS) and Public DNS Query Logging in Production Accounts are configured to store logs in the `core-logging` account.
 
-Cortex XSIAM uses the [cortex_xsiam IAM Role](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-logging/iam_cortex.tf) to poll for new logs files via AWS SQS (Simple Queue Service).
+Cortex XSIAM uses the [cortex_xsiam IAM Role](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-logging/iam_cortex.tf) to poll for new log files via AWS SQS (Simple Queue Service).
 
 #### Network Firewall
 
@@ -73,21 +73,21 @@ Unlike other logging sources, Network Firewall logs are sent directly to XSIAM v
 
 ### Web Application Firewalls
 
-AWS WAF is a Web Application Firewall can monitor web traffic and control access to applications.
+AWS WAF is a Web Application Firewall that can monitor web traffic and control access to applications.
 
-Platform Users can optionally use the Modernisation Platforms [shield_advanced](https://github.com/ministryofjustice/modernisation-platform-environments/tree/main/terraform/modules/shield_advanced) module or the more comprehensive [modernisation-platform-terraform-aws-waf](https://github.com/ministryofjustice/modernisation-platform-terraform-aws-waf) module.
+Platform Users can optionally use the Modernisation Platform's [shield_advanced](https://github.com/ministryofjustice/modernisation-platform-environments/tree/main/terraform/modules/shield_advanced) module or the more comprehensive [modernisation-platform-terraform-aws-waf](https://github.com/ministryofjustice/modernisation-platform-terraform-aws-waf) module.
 
 These Modernisation Platform modules ensure all WAF Alerts are stored in the `core-logging` account.
 
-Cortex XSIAM uses the [cortex_xsiam IAM Role](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-logging/iam_cortex.tf) to poll for new logs files via AWS SQS (Simple Queue Service).
+Cortex XSIAM uses the [cortex_xsiam IAM Role](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-logging/iam_cortex.tf) to poll for new log files via AWS SQS (Simple Queue Service).
 
 Custom WAFs created by Platform Users are not supported by Modernisation Platform.
 
 ### AWS Account Security
 
-XSIAMs integration with AWS Security Services such as GuardDuty, Inspector and SecurityHub etc. is predominantly managed by the AWS Organisations delegated administrator account `organisation-security`.
+XSIAM's integration with AWS Security Services such as GuardDuty, Inspector and SecurityHub is predominantly managed by the AWS Organisations delegated administrator account `organisation-security`.
 
-Modernisation Platform supports this integration by ensuring these services are configured appropriately for all account on the platform via our [Secure Baselines Module](https://github.com/ministryofjustice/modernisation-platform-terraform-baselines?tab=readme-ov-file#modernisation-platform-terraform-baselines-module).
+Modernisation Platform supports this integration by ensuring these services are configured appropriately for all accounts on the platform via our [Secure Baselines Module](https://github.com/ministryofjustice/modernisation-platform-terraform-baselines?tab=readme-ov-file#modernisation-platform-terraform-baselines-module).
 
 ## FAQs and Examples
 
@@ -108,7 +108,7 @@ The MoJ Cyber Security Operations Centre (SOC) monitors XSIAM for suspicious act
 
 ### Who can I discuss integrating application logs with Cortex XSIAM?
 
-The Protective Monitoring Team who will be managing the Cortex Xsiam platform going forward - <monitoring-and-integration-platform@justice.gov.uk>
+The Protective Monitoring Team who will be managing the Cortex XSIAM platform going forward - <monitoring-and-integration-platform@justice.gov.uk>
 
 ## Related Documents / Further Reading
 
