@@ -1902,7 +1902,6 @@ data "aws_iam_policy_document" "data_scientist" {
     sid    = "EMAthenaQueryResultsObjectAccess"
     effect = "Allow"
     actions = [
-      "s3:GetObject",
       "s3:PutObject",
       "s3:AbortMultipartUpload",
       "s3:ListMultipartUploadParts"
