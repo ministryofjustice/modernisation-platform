@@ -8,7 +8,6 @@
         {
           "sso_group_name": "mojo-vds-team",
           "level": "sandbox"
-          
         }
       ],
       "nuke": "exclude"
