@@ -1971,8 +1971,8 @@ resource "pagerduty_schedule" "dso" {
 
   layer {
     name                         = "Primary Schedule"
-    start                        = "2026-05-01T00:00:00Z"
-    rotation_virtual_start       = "2026-05-01T00:00:00Z"
+    start                        = "2026-05-12T00:00:00Z"
+    rotation_virtual_start       = "2026-05-12T00:00:00Z"
     rotation_turn_length_seconds = 86400
 
     users = [
