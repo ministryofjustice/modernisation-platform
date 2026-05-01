@@ -99,10 +99,6 @@ jobs:
           export accounts_str="$ACCOUNTS_STR"
           cat scripts/nuke-config-template.txt | envsubst > nuke-config.yml
 
-      - name: Setup Nuke Config
-        run: |
-          cat scripts/nuke-config-template.txt | envsubst > nuke-config.yml
-
       - name: Install AWS Nuke
         run: |
           echo "BEGIN: Install AWS Nuke"
