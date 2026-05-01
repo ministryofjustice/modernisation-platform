@@ -1855,6 +1855,7 @@ locals {
     "antony.gowland"   = local.digital_email_suffix
     "dominic.robinson" = local.digital_email_suffix
     "george.hill2"     = local.justice_email_suffix
+    "annesa.mariyam"   = local.justice_email_suffix
   }
   # repeat users, e.g. for a 3 day stint of concierge
   dso_schedule_user_order = [
@@ -1864,6 +1865,9 @@ locals {
     "george.hill2",
     "george.hill2",
     "george.hill2",
+    "annesa.mariyam",
+    "annesa.mariyam",
+    "annesa.mariyam",
     "dominic.robinson",
     "dominic.robinson",
     "dominic.robinson",
@@ -1967,8 +1971,8 @@ resource "pagerduty_schedule" "dso" {
 
   layer {
     name                         = "Primary Schedule"
-    start                        = "2025-11-04T00:00:00Z"
-    rotation_virtual_start       = "2025-11-04T00:00:00Z"
+    start                        = "2026-05-12T00:00:00Z"
+    rotation_virtual_start       = "2026-05-12T00:00:00Z"
     rotation_turn_length_seconds = 86400
 
     users = [
