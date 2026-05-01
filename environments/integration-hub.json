@@ -11,7 +11,7 @@
     {
       "name": "managed-file-transfer"
     }
-  ]
+  ],
   "environments": [
     {
       "name": "development",
