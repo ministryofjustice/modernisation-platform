@@ -154,8 +154,8 @@ module "s3-software-bucket" {
   replication_enabled = false
   versioning_enabled  = true
   force_destroy       = false
-  custom_kms_key       = aws_kms_key.software_bucket.arn
-  sse_algorithm        = "aws:kms"
+  custom_kms_key      = aws_kms_key.software_bucket.arn
+  sse_algorithm       = "aws:kms"
   lifecycle_rule = [
     {
       id      = "main"
@@ -210,7 +210,7 @@ data "aws_iam_policy_document" "software_bucket_kms_key_policy" {
     effect = "Allow"
 
     principals {
-      type        = "AWS"
+      type = "AWS"
       identifiers = [
         "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
       ]
