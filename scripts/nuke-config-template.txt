@@ -10,7 +10,8 @@ settings:
 
 regions:
   - "eu-west-2"
-
+blocklist:
+  - "999999999999"
 resource-types:
   # don't nuke IAM users
   excludes:
