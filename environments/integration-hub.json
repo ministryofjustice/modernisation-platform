@@ -1,6 +1,17 @@
 {
   "account-type": "member",
   "codeowners": ["integration-hub"],
+  "components": [
+    {
+      "name": "api-platform"
+    },
+    {
+      "name": "events-platform"
+    },
+    {
+      "name": "managed-file-transfer"
+    }
+  ],
   "environments": [
     {
       "name": "development",

@@ -54,6 +54,9 @@
     "owner": "probation-webops@digital.justice.gov.uk",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": ["ministryofjustice/hmpps-vcms"],
+  "github-oidc-team-repositories": [
+    "ministryofjustice/hmpps-vcms",
+    "ministryofjustice/hmpps-engineering-tools"
+  ],
   "go-live-date": ""
 }
