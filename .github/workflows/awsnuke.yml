@@ -49,49 +49,15 @@ jobs:
     secrets:
         MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
         PASSPHRASE: ${{ secrets.PASSPHRASE }}
-  setup-prerequisites:
-    runs-on: ubuntu-latest
-    needs: fetch-secrets
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-      account_blocklist_str: ${{ steps.set-blocklist-string.outputs.account_blocklist_str }}
-    steps:
-      - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d2d07632db53d17c9760c0c2c06f22a37bd3f0a1 # v6.0.1
-        with:
-          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
-          nuke_account_ids: ${{ needs.fetch-secrets.outputs.nuke_account_ids }} 
-          nuke_account_blocklist: ${{ needs.fetch-secrets.outputs.nuke_account_blocklist }}
-          PASSPHRASE: ${{ secrets.PASSPHRASE }}
-      - id: set-matrix
-        name: Set Up Matrix
-        run: |
-          echo "matrix=$(jq -c '.nuke_accounts | sort' <<< $NUKE_ACCOUNT_IDS)" >> $GITHUB_OUTPUT
-
-      - id: set-blocklist-string
-        name: Set Up Blocklist
-        run: |
-          account_blocklist_str=""
-          while read -r account_alias _; do
-          account_number=$(jq -r -e --arg account_name "$account_alias" '.account_ids[$account_name]' <<< $ENVIRONMENT_MANAGEMENT)
-          account_blocklist_str+="  - \"${account_number}\" # ${account_alias}"
-          account_blocklist_str+=$'\n'
-          done <<< "$(jq -c -r '.blocklist[]' <<< $NUKE_ACCOUNT_BLOCKLIST)" # Taking this approach as piping (|) to a read opens a subshell and passes the variables to it by value
-          # Encoding and passing blocklist string as an output
-          echo "account_blocklist_str=$(echo -n "${account_blocklist_str}" | base64 -w 0)" >> $GITHUB_OUTPUT
 
   nuke:
-    strategy:
-      fail-fast: false
-      matrix:
-        nuke_accts: ${{ fromJSON(needs.setup-prerequisites.outputs.matrix) }}
     name: Sandbox Nuke
     if: github.ref == 'refs/heads/main'
     permissions:
       id-token: write # This is required for requesting the JWT
       contents: read # This is required for actions/checkout
     runs-on: ubuntu-latest
-    needs: [setup-prerequisites, fetch-secrets]
+    needs: [fetch-secrets]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -105,7 +71,7 @@ jobs:
 
       - name: Set Account Number
         run: |
-          ACCOUNT_NUMBER=$(jq -r -e --arg account_name "${ACCOUNT_NAME}" '.account_ids[$account_name]' <<< $ENVIRONMENT_MANAGEMENT)
+          ACCOUNT_NUMBER=$(jq -r -e '.account_ids["cooker-development"]' <<< $ENVIRONMENT_MANAGEMENT)
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "ACCOUNT_NUMBER=${ACCOUNT_NUMBER}" >> $GITHUB_ENV
       - name: configure aws credentials
