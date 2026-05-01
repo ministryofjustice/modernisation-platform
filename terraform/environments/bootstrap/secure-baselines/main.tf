@@ -6,7 +6,7 @@ data "aws_kms_key" "cloudtrail_key" {
 
 #trivy:ignore:AVD-AWS-0136
 module "baselines" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=3da0ee788c6008d9f411e9307e810bdfcf29eac5" # Testing
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=041a58819b46427d58dfe10f3d202650a819c6eb" # Testing
   providers = {
     # Default and replication regions
     aws                    = aws.workspace-eu-west-2
