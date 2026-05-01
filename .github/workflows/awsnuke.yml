@@ -52,7 +52,6 @@ jobs:
 
   nuke:
     name: Sandbox Nuke
-    if: github.ref == 'refs/heads/main'
     permissions:
       id-token: write # This is required for requesting the JWT
       contents: read # This is required for actions/checkout
@@ -119,7 +118,7 @@ jobs:
             --no-prompt
 
       - name: Nuke Apply (Destructive)
-        if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.mode == 'nuke-no-dry-run') }}
+        if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'nuke-no-dry-run') }}
         run: |
           # The environment gets reset between steps, so the role needs to be re-assumed.
           aws sts assume-role \
