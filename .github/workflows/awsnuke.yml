@@ -79,6 +79,25 @@ jobs:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-nuke"
           role-session-name: githubactionsnukerolesession
           aws-region: ${{ env.AWS_REGION }}
+          
+      - name: Setup Nuke Account String
+        run: |
+          accounts_str=''
+          accounts_str+="  \"${ACCOUNT_NUMBER}\": # ${ACCOUNT_NAME}"
+          accounts_str+=$'\n'
+          accounts_str+="    presets:"
+          accounts_str+=$'\n'
+          accounts_str+="      - \"common\""
+          accounts_str+=$'\n'
+          echo "$accounts_str"
+          echo "ACCOUNTS_STR<<EOF" >> $GITHUB_ENV
+          echo "$accounts_str" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Setup Nuke Config
+        run: |
+          export accounts_str="$ACCOUNTS_STR"
+          cat scripts/nuke-config-template.txt | envsubst > nuke-config.yml
 
       - name: Setup Nuke Config
         run: |

@@ -11,9 +11,6 @@ settings:
 regions:
   - "eu-west-2"
 
-blocklist:
-$account_blocklist_str
-
 resource-types:
   # don't nuke IAM users
   excludes:
