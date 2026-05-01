@@ -1,10 +1,11 @@
 module "s3-bucket-cloudtrail" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=9facf9fc8f8b8e3f93ffbda822028534b9a75399" # v9.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=479b926"
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
   bucket_policy              = [data.aws_iam_policy_document.cloudtrail_bucket_policy.json]
   bucket_name                = "modernisation-platform-logs-cloudtrail"
+  sse_algorithm              = "aws:kms"
   replication_bucket         = "modernisation-platform-logs-cloudtrail-replication"
   suffix_name                = "-cloudtrail"
   custom_kms_key             = aws_kms_key.s3_logging_cloudtrail.arn

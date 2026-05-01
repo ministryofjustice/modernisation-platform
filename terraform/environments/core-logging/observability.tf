@@ -62,12 +62,13 @@ resource "aws_iam_role_policy_attachment" "grafana_athena_attachment" {
 
 # S3 bucket for CUR Reports
 module "s3_moj_cur_reports_modplatform" {
-  source              = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=9facf9fc8f8b8e3f93ffbda822028534b9a75399" # v9.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=479b926"
   bucket_prefix       = "moj-cur-reports-modplatform-"
   versioning_enabled  = true
   ownership_controls  = "BucketOwnerEnforced"
   replication_enabled = false
   custom_kms_key      = aws_kms_alias.moj_cur_reports.arn
+  sse_algorithm       = "aws:kms"
   bucket_policy       = [data.aws_iam_policy_document.moj_cur_bucket_replication_policy.json]
   providers = {
     aws.bucket-replication = aws

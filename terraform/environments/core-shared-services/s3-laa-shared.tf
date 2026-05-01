@@ -17,12 +17,13 @@ locals {
 
 
 module "laa-shared-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=9facf9fc8f8b8e3f93ffbda822028534b9a75399" # v9.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=479b926"
 
   providers = {
     aws.bucket-replication = aws.bucket-replication
   }
   bucket_prefix       = "modernisation-platform-laa-shared"
+  sse_algorithm       = "aws:kms"
   bucket_policy       = [data.aws_iam_policy_document.laa_shared_bucket_policy.json]
   replication_enabled = false
   versioning_enabled  = true
