@@ -1,5 +1,8 @@
+data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}
+
 module "s3-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=9facf9fc8f8b8e3f93ffbda822028534b9a75399" # v9.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=479b926"
 
   providers = {
     aws.bucket-replication = aws.bucket-replication
@@ -10,6 +13,8 @@ module "s3-bucket" {
   versioning_enabled  = true
   force_destroy       = false
   ownership_controls  = "BucketOwnerEnforced"
+  custom_kms_key      = aws_kms_key.s3.arn
+  sse_algorithm       = "aws:kms"
   lifecycle_rule = [
     {
       id      = "main"
@@ -45,6 +50,69 @@ module "s3-bucket" {
   ]
 
   tags = local.tags
+}
+
+resource "aws_kms_key" "s3" {
+  description             = "KMS key for S3 bucket encryption"
+  deletion_window_in_days = 7
+  enable_key_rotation     = true
+  policy                  = data.aws_iam_policy_document.s3_kms_key_policy.json
+}
+
+data "aws_iam_policy_document" "s3_kms_key_policy" {
+
+  # Root account full access (standard)
+  statement {
+    sid    = "EnableIAMPermissions"
+    effect = "Allow"
+
+    principals {
+      type = "AWS"
+      identifiers = [
+        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+      ]
+    }
+
+    actions   = ["kms:*"]
+    resources = ["*"]
+  }
+
+  # Allow org users to use the key via S3
+  statement {
+    sid    = "AllowS3UseOfKey"
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    actions = [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey"
+    ]
+
+    resources = ["*"]
+
+    # Match your bucket policy org restriction
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values = [
+        "${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"
+      ]
+    }
+
+    # Only allow usage via S3
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.${data.aws_region.current.name}.amazonaws.com"]
+    }
+  }
 }
 
 data "aws_iam_policy_document" "bucket_policy" {
@@ -77,8 +145,9 @@ data "aws_iam_policy_document" "bucket_policy" {
 
 }
 
+
 module "s3-software-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=9facf9fc8f8b8e3f93ffbda822028534b9a75399" # v9.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=479b926"
 
   providers = {
     aws.bucket-replication = aws.bucket-replication
@@ -88,6 +157,8 @@ module "s3-software-bucket" {
   replication_enabled = false
   versioning_enabled  = true
   force_destroy       = false
+  custom_kms_key       = aws_kms_key.software_bucket.arn
+  sse_algorithm        = "aws:kms"
   lifecycle_rule = [
     {
       id      = "main"
@@ -126,6 +197,65 @@ module "s3-software-bucket" {
   ]
 
   tags = local.tags
+}
+
+resource "aws_kms_key" "software_bucket" {
+  description             = "KMS key for software S3 bucket encryption"
+  deletion_window_in_days = 7
+  enable_key_rotation     = true
+  policy                  = data.aws_iam_policy_document.software_bucket_kms_key_policy.json
+}
+
+
+data "aws_iam_policy_document" "software_bucket_kms_key_policy" {
+  statement {
+    sid    = "EnableIAMPermissions"
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = [
+        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+      ]
+    }
+
+    actions   = ["kms:*"]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "AllowS3UseOfKey"
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    actions = [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey"
+    ]
+
+    resources = ["*"]
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values = [
+        "${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"
+      ]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.${data.aws_region.current.name}.amazonaws.com"]
+    }
+  }
 }
 
 
