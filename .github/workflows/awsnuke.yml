@@ -81,24 +81,8 @@ jobs:
           role-session-name: githubactionsnukerolesession
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Setup Nuke Account String
-        run: |
-          accounts_str=''
-          accounts_str+="  \"${ACCOUNT_NUMBER}\": # ${ACCOUNT_NAME}"
-          accounts_str+=$'\n'
-          accounts_str+="    presets:"
-          accounts_str+=$'\n'
-          accounts_str+="      - \"common\""
-          accounts_str+=$'\n'
-          echo "$accounts_str"
-          echo "ACCOUNTS_STR<<EOF" >> $GITHUB_ENV
-          echo "$accounts_str" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-
       - name: Setup Nuke Config
         run: |
-          export accounts_str="$ACCOUNTS_STR"
-          export account_blocklist_str=$(echo "${{ needs.setup-prerequisites.outputs.account_blocklist_str }}" | base64 --decode)
           cat scripts/nuke-config-template.txt | envsubst > nuke-config.yml
 
       - name: Install AWS Nuke
@@ -158,15 +142,3 @@ jobs:
             --config nuke-config.yml \
             --no-prompt \
             --no-dry-run
-
-      - name: Slack failure notification
-        uses: slackapi/slack-github-action@03ea5433c137af7c0495bc0cad1af10403fc800c # v3.0.2
-        with:
-          webhook-type: incoming-webhook
-          payload: |
-            {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
-        env:
-          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
-        if: ${{ failure() }}
-    env:
-      ACCOUNT_NAME: ${{ matrix.nuke_accts }}
