@@ -53,6 +53,10 @@
           "level": "developer"
         },
         {
+          "sso_group_name": "laa-ccms-security-testing-kpmg",
+          "level": "developer"
+        },
+        {
           "sso_group_name": "laa-sre-admins",
           "level": "instance-management"
         },
