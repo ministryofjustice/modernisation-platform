@@ -22,6 +22,10 @@
         {
           "sso_group_name": "laa-dba",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-soa-developers",
+          "level": "developer"
         }
       ],
       "nuke": "exclude"
@@ -44,6 +48,10 @@
         {
           "sso_group_name": "laa-dba",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-soa-developers",
+          "level": "developer"
         }
       ]
     },
@@ -64,6 +72,10 @@
         },
         {
           "sso_group_name": "laa-dba",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-soa-developers",
           "level": "developer"
         }
       ]

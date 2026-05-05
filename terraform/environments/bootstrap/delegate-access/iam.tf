@@ -10,7 +10,7 @@ module "cross-account-access" {
     [
       "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions"
     ],
-    terraform.workspace == "testing-test" ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci", "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/github-actions-testing"] : [],
+    terraform.workspace == "testing-test" ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/github-actions-testing"] : [],
     terraform.workspace == "core-vpc-sandbox" ? [
       "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions-dev-test",
       "arn:aws:iam::${local.environment_management.account_ids["cooker-development"]}:role/github-actions-dev-test"

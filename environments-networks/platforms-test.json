@@ -9,6 +9,7 @@
           "data-factory-moj-test",
           "data-platform-test",
           "data-platform-governance-test",
+          "integration-hub-test",
           "testing-test"
         ]
       }

@@ -138,26 +138,27 @@ expected :=
       "general": {
         "cidr": "10.26.24.0/21",
         "accounts": [
-          "delius-alfresco-development",
-          "delius-core-development",
-          "delius-iaps-development",
-          "delius-jitbit-development",
-          "delius-mis-development",    
-          "digital-prison-reporting-development",
-          "electronic-monitoring-data-development",
-          "equip-development",
-          "hmpps-court-data-ingestion-api-development",
-          "hmpps-domain-services-development",
-          "hmpps-esupervision-development",
-          "hmpps-oem-development",
-          "nomis-data-hub-development",
-          "nomis-development",
-          "oasys-development",
-          "performance-hub-development",
-          "ppud-development",
-          "refer-monitor-development",
-          "vcms-development"
-        ]
+              "delius-alfresco-development",
+              "delius-core-development",
+              "delius-iaps-development",
+              "delius-jitbit-development",
+              "delius-mis-development",
+              "digital-prison-reporting-development",
+              "electronic-monitoring-data-development",
+              "equip-development",
+              "eucs-appstream-development",
+              "hmpps-court-data-ingestion-api-development",
+              "hmpps-domain-services-development",
+              "hmpps-esupervision-development",
+              "hmpps-oem-development",
+              "nomis-data-hub-development",
+              "nomis-development",
+              "oasys-development",
+              "performance-hub-development",
+              "ppud-development",
+              "refer-monitor-development",
+              "vcms-development"
+            ]
       }
     },
     "hmpps-test": {
@@ -210,31 +211,32 @@ expected :=
       "general": {
         "cidr": "10.27.8.0/21",
         "accounts": [
-          "corporate-staff-rostering-production",
-          "delius-alfresco-production",
-          "delius-core-production",
-          "delius-core-training-production",
-          "delius-iaps-production",
-          "delius-jitbit-production",
-          "delius-mis-production",
-          "digital-prison-reporting-production",
-          "electronic-monitoring-data-production",
-          "equip-production",
-          "hmpps-court-data-ingestion-api-production",
-          "hmpps-domain-services-production",
-          "hmpps-esupervision-production",
-          "hmpps-oem-production",
-          "nomis-combined-reporting-production",
-          "nomis-data-hub-production",
-          "nomis-production",
-          "oasys-production",
-          "oasys-national-reporting-production",
-          "performance-hub-production",
-          "planetfm-production",
-          "ppud-production",
-          "prison-retail-production",
-          "vcms-production"
-        ]
+              "corporate-staff-rostering-production",
+              "delius-alfresco-production",
+              "delius-core-production",
+              "delius-core-training-production",
+              "delius-iaps-production",
+              "delius-jitbit-production",
+              "delius-mis-production",
+              "digital-prison-reporting-production",
+              "electronic-monitoring-data-production",
+              "equip-production",
+              "eucs-appstream-production",
+              "hmpps-court-data-ingestion-api-production",
+              "hmpps-domain-services-production",
+              "hmpps-esupervision-production",
+              "hmpps-oem-production",
+              "nomis-combined-reporting-production",
+              "nomis-data-hub-production",
+              "nomis-production",
+              "oasys-national-reporting-production",
+              "oasys-production",
+              "performance-hub-production",
+              "planetfm-production",
+              "ppud-production",
+              "prison-retail-production",
+              "vcms-production"
+            ]
       }
     },
     "hq-development": {
@@ -424,6 +426,7 @@ expected :=
           "data-platform-development",
           "data-platform-governance-development",
           "example-development",
+          "integration-hub-development",
           "observability-platform-development",
           "octo-development",
           "panda-cyber-appsec-lab-development"
@@ -438,6 +441,7 @@ expected :=
           "data-factory-moj-test",
           "data-platform-test",
           "data-platform-governance-test",
+          "integration-hub-test",
           "testing-test"
         ]
       }
@@ -447,7 +451,8 @@ expected :=
         "cidr": "10.27.104.0/21",
         "accounts": [
           "data-platform-preproduction",
-          "data-platform-governance-preproduction"
+          "data-platform-governance-preproduction",
+          "integration-hub-preproduction"
         ]
       }
     },
@@ -460,6 +465,7 @@ expected :=
           "coat-production",
           "data-platform-production",
           "data-platform-governance-production",
+          "integration-hub-production",
           "long-term-storage-production",
           "observability-platform-production"
         ]

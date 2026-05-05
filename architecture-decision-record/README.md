@@ -45,6 +45,7 @@ This is our architecture decision log, made during the design and build of the M
 1. ✅ [AWS CloudTrail Multi-Region and Organization Trail Implementation](0039-cloudtrail-multi-region-org-trail.md)
 1. ✅ [Transit Gateway Auto-Accept VPC Attachment Requests](0040-transit-gateway-auto-accept.md)
 1. 🤔 [Adopting Entra ID](0041-adopting-entra-id.md)
+1. ✅ [Monitor Object Access Without S3 Server Access Logging](0042-server-access-logging.md)
 
 ## Statuses
 

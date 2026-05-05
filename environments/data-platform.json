@@ -16,6 +16,9 @@
     },
     {
       "name": "cluster"
+    },
+    {
+      "name": "ai-gateway"
     }
   ],
   "environments": [

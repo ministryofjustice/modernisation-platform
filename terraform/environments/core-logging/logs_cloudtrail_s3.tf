@@ -19,7 +19,9 @@ module "s3-bucket-cloudtrail" {
     "log_bucket_policy" : module.s3-bucket-cloudtrail-logging.bucket_policy.policy,
   })
   log_prefix = ""
-  tags       = local.tags
+  tags = merge(local.tags, {
+    backup = "false"
+  })
 }
 
 data "aws_iam_policy_document" "cloudtrail_bucket_policy" {

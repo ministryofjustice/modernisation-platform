@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Testing Strategy
-last_reviewed_on: 2026-01-26
+last_reviewed_on: 2026-04-24
 review_in: 6 months
 ---
 
@@ -9,11 +9,11 @@ review_in: 6 months
 
 ## Introduction
 
-We want to test as much of our infrastructure and code as possible. We should endevour to write a test for all new features and changes to existing features.
+We want to test as much of our infrastructure and code as possible. We should endeavour to write a test for all new features and changes to existing features.
 
 ## Core Platform vs Member testing
 
-This strategy is currently focussed on core platform testing, however members may follow the same principles and use the testing-test environment if they wish.
+This strategy is currently focussed on core platform testing, however members may follow the same principles and consider following a similar approach.
 
 ## Testing tools
 
@@ -28,9 +28,7 @@ When creating a new repo with the `module` type, empty unit tests and workflow w
 
 Run tests locally using the testing-test account Admin SSO credentials.
 
-Tests running in GitHub actions use the `testing-ci` user.
-
-To minimise securty risks around using static credentials, aws keys for `testing-ci` user are automatically rotated every 7 days.
+Tests running in GitHub actions use the `github-actions-testing` OIDC role.
 
 ## Testing areas
 

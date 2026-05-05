@@ -34,7 +34,7 @@
 /terraform/environments/core-shared-services/cooker.tf @ministryofjustice/modernisation-platform @ministryofjustice/octo-cyber-team @ministryofjustice/tvm-purple-team 
 /terraform/environments/core-shared-services/corporate-staff-rostering.tf @ministryofjustice/csr-application-support @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops @ministryofjustice/syscon-devs 
 /terraform/environments/core-shared-services/dacp.tf @ministryofjustice/dts-legacy 
-/terraform/environments/core-shared-services/data-factory-corporate.tf @ministryofjustice/corporate-data-factory-admins 
+/terraform/environments/core-shared-services/data-factory-corporate.tf @ministryofjustice/corporate-data-factory-admins @ministryofjustice/data-factory-cloud-security 
 /terraform/environments/core-shared-services/data-factory-laa.tf @ministryofjustice/laa-data-factory-engineering 
 /terraform/environments/core-shared-services/data-factory-moj.tf @ministryofjustice/data-engineering @ministryofjustice/data-factory-security-team 
 /terraform/environments/core-shared-services/data-platform-governance.tf @ministryofjustice/data-platform-engineering 
@@ -49,6 +49,7 @@
 /terraform/environments/core-shared-services/edw-19c.tf @ministryofjustice/edw-mp-access @ministryofjustice/laa-aws-infrastructure 
 /terraform/environments/core-shared-services/electronic-monitoring-data.tf @ministryofjustice/hmpps-electronic-monitoring-data-no-sc @ministryofjustice/hmpps-electronic-monitoring-data-store 
 /terraform/environments/core-shared-services/equip.tf @ministryofjustice/modernisation-platform-engineers 
+/terraform/environments/core-shared-services/eucs-appstream.tf @ministryofjustice/mojo-vds-team 
 /terraform/environments/core-shared-services/example.tf @ministryofjustice/green-ops @ministryofjustice/modernisation-platform @ministryofjustice/octo-cyber-team 
 /terraform/environments/core-shared-services/genesys-call-centre-data.tf 
 /terraform/environments/core-shared-services/hmcts-claude-provider.tf @ministryofjustice/modernisation-platform 
@@ -56,6 +57,7 @@
 /terraform/environments/core-shared-services/hmpps-domain-services.tf @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
 /terraform/environments/core-shared-services/hmpps-esupervision.tf @ministryofjustice/stg-pathfinders 
 /terraform/environments/core-shared-services/hmpps-oem.tf @ministryofjustice/hmpps-dba @ministryofjustice/hmpps-migration @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
+/terraform/environments/core-shared-services/integration-hub.tf @ministryofjustice/integration-hub 
 /terraform/environments/core-shared-services/laa-ccms-soa.tf @ministryofjustice/laa-sre-admins 
 /terraform/environments/core-shared-services/laa-cis.tf @ministryofjustice/laa-sre-admins @ministryofjustice/v1-cis-mod 
 /terraform/environments/core-shared-services/laa-cst-security-dashboard.tf @ministryofjustice/laa-cyber-security-team 

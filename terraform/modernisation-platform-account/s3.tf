@@ -83,6 +83,19 @@ data "aws_iam_policy_document" "kms_state_bucket" {
       values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
     }
   }
+  statement {
+    sid    = "AllowAWSBackupDecrypt"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey"
+    ]
+    resources = ["*"]
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/AWSBackup"]
+    }
+  }
 }
 
 # State bucket KMS Destination
@@ -129,9 +142,6 @@ module "state-bucket" {
         {
           days          = 90
           storage_class = "STANDARD_IA"
-          }, {
-          days          = 700
-          storage_class = "GLACIER"
         }
       ]
       expiration = {
@@ -141,9 +151,6 @@ module "state-bucket" {
         {
           days          = 90
           storage_class = "STANDARD_IA"
-          }, {
-          days          = 700
-          storage_class = "GLACIER"
         }
       ]
       noncurrent_version_expiration = {
@@ -252,21 +259,6 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
       test     = "ForAnyValue:StringLike"
       variable = "aws:PrincipalOrgPaths"
       values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
-    }
-  }
-
-  statement {
-    sid     = "AllowTestingCIUser"
-    effect  = "Allow"
-    actions = ["s3:PutObject"]
-    resources = [
-      "${module.state-bucket.bucket.arn}/environments/members/testing/testing-test/terraform.tfstate",
-      "${module.state-bucket.bucket.arn}/environments/members/testing/testing-test/*.tflock",
-    ]
-
-    principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["testing-test"]}:user/testing-ci"]
     }
   }
 

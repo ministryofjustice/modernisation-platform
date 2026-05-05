@@ -180,6 +180,7 @@ data "aws_iam_policy_document" "developer_additional" {
     actions = [
       "acm:ImportCertificate",
       "acm:AddTagsToCertificate",
+      "acm:ExportCertificate",
       "acm:RemoveTagsFromCertificate",
       "application-autoscaling:ListTagsForResource",
       "autoscaling:StartInstanceRefresh",
@@ -1901,7 +1902,6 @@ data "aws_iam_policy_document" "data_scientist" {
     sid    = "EMAthenaQueryResultsObjectAccess"
     effect = "Allow"
     actions = [
-      "s3:GetObject",
       "s3:PutObject",
       "s3:AbortMultipartUpload",
       "s3:ListMultipartUploadParts"
