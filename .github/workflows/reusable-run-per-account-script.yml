@@ -99,7 +99,7 @@ jobs:
           echo "account-id=$ACCOUNT_ID" >> "$GITHUB_OUTPUT"
 
       - name: Configure AWS Credentials (member account OIDC role)
-        uses: aws-actions/configure-aws-credentials@ec61189d14ec14c8efccab744f656cffd0e33f37
+        uses: aws-actions/configure-aws-credentials@d979d5b3a71173a29b74b5b88418bfda9437d885
         with:
           role-to-assume: arn:aws:iam::${{ steps.account.outputs.account-id }}:role/${{ inputs.ASSUME_ROLE_NAME }}
           role-session-name: githubactionsrolesession
@@ -108,8 +108,15 @@ jobs:
 
       - name: Install GOV.UK Notify client
         run: |
-          python3 -m pip install --upgrade pip
-          pip3 install notifications-python-client
+          set -euo pipefail
+          NOTIFY_VERSION="9.1.0"
+          NOTIFY_SHA256="43b8f738dfa81ae3aa656d91e361dbc51316194f8b9a430706b03347fa7a01bc"
+          WHEEL_DIR="$(mktemp -d)"
+
+          python3 -m pip download --no-deps --only-binary=:all: --dest "$WHEEL_DIR" "notifications-python-client==${NOTIFY_VERSION}"
+          WHEEL_PATH="$(ls "$WHEEL_DIR"/notifications_python_client-"${NOTIFY_VERSION}"-py3-none-any.whl)"
+          echo "${NOTIFY_SHA256}  ${WHEEL_PATH}" | sha256sum -c -
+          python3 -m pip install "$WHEEL_PATH"
 
       - name: Run script in member account
         env:
