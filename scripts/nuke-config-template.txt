@@ -16,6 +16,7 @@ resource-types:
   # don't nuke IAM users
   excludes:
     - ACMCertificate
+    - AWSBackupSelection
     - CloudTrailTrail
     - CloudWatchAlarm
     - CloudWatchLogsLogGroup
