@@ -1,6 +1,6 @@
 ## S3 Bucket Module for AWS Route 53 Public DNS Query Logs
 module "s3_bucket_r53_public_dns_logs" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=9facf9fc8f8b8e3f93ffbda822028534b9a75399" # v9.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=479b926"
 
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
@@ -8,6 +8,7 @@ module "s3_bucket_r53_public_dns_logs" {
   bucket_policy              = [data.aws_iam_policy_document.r53_public_dns_logs_bucket_policy.json]
   bucket_name                = "modernisation-platform-logs-r53-public-dns-logs"
   replication_bucket         = "modernisation-platform-logs-r53-public-dns-logs-replication"
+  sse_algorithm              = "aws:kms"
   suffix_name                = "-r53-public-dns-logs"
   custom_kms_key             = aws_kms_key.r53_public_dns_logs.arn
   custom_replication_kms_key = aws_kms_key.r53_public_dns_logs_replication.arn
