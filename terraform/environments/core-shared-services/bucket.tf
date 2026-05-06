@@ -1,6 +1,6 @@
 # tfsec:ignore:aws-s3-enable-versioning tfsec:ignore:aws-s3-encryption-customer-key
 module "imagebuilder_log_bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=479b926"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=9fc34b5c0035480b70dc133aead32af2e1462a33"
 
   providers = {
     aws.bucket-replication = aws.bucket-replication
