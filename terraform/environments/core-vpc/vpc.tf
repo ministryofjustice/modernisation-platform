@@ -214,6 +214,12 @@ module "dns_zone_extend_private" {
   vpc_id    = module.vpc[each.key].vpc_id
 }
 
+locals {
+  member_delegation_additional_accounts = {
+    "laa-workspaces-development" = [local.environment_management.account_ids["laa-workspaces-development"]]
+  }
+}
+
 resource "aws_iam_role" "member-delegation" {
   for_each = local.vpcs[terraform.workspace]
 
@@ -226,6 +232,7 @@ resource "aws_iam_role" "member-delegation" {
         Principal = {
           AWS = concat(
             local.expanded_account_numbers_with_keys[each.key],
+            lookup(local.member_delegation_additional_accounts, each.key, []),
             tolist([data.aws_caller_identity.modernisation-platform.account_id])
           )
         }
