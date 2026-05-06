@@ -1,6 +1,6 @@
 ## S3 Bucket Module for AWS Config Logs
 module "s3_bucket_config_logs" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=9facf9fc8f8b8e3f93ffbda822028534b9a75399" # v9.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=479b926"
 
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
@@ -11,6 +11,7 @@ module "s3_bucket_config_logs" {
   suffix_name                = "-config"
   custom_kms_key             = aws_kms_key.config_logs.arn
   custom_replication_kms_key = aws_kms_key.config_logs_replication.arn
+  sse_algorithm              = "AES256"
   replication_enabled        = true
   replication_region         = "eu-west-1"
   versioning_enabled         = true
