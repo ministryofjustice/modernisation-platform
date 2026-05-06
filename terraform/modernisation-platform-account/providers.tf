@@ -91,12 +91,6 @@ provider "aws" {
 }
 
 provider "aws" {
-  region = "us-east-2"
-  alias  = "modernisation-platform-us-east-2"
-  default_tags { tags = local.tags }
-}
-
-provider "aws" {
   region = "us-west-1"
   alias  = "modernisation-platform-us-west-1"
   default_tags { tags = local.tags }
