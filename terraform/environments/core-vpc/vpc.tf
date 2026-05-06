@@ -234,7 +234,7 @@ resource "aws_iam_role" "member-delegation" {
         Principal = {
           AWS = concat(
             local.expanded_account_numbers_with_keys[each.key],
-            try(local.member_delegation_additional_accounts[terraform.workspace][each.key], [])
+            try(local.member_delegation_additional_accounts[terraform.workspace][each.key], []),
             tolist([data.aws_caller_identity.modernisation-platform.account_id])
           )
         }
