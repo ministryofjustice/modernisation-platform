@@ -35,6 +35,7 @@
   "tags": {
     "application": "modernisation-platform",
     "business-unit": "Platforms",
+    "service-area": "Hosting",
     "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
     "securityhub-slack-channel": "modernisation-platform",
     "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk",
