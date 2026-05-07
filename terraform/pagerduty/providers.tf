@@ -4,6 +4,7 @@ provider "pagerduty" {
 }
 provider "aws" {
   region = "eu-west-2"
+  default_tags { tags = local.tags }
 }
 
 
@@ -11,4 +12,5 @@ provider "aws" {
 provider "aws" {
   alias  = "modernisation-platform-eu-west-1"
   region = "eu-west-1"
+  default_tags { tags = local.tags }
 }
