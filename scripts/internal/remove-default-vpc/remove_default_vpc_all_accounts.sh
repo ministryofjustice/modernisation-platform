@@ -21,14 +21,12 @@ getAssumeRoleCfg() {
 empty_and_delete_bucket() {
     bucket=$1
 
-    echo "======================================="
     echo "Processing bucket: $bucket"
-    echo "======================================="
 
-    # Remove current objects
+    # Delete all objects (non-versioned)
     aws s3 rm "s3://$bucket" --recursive || true
 
-    # Remove all versions + delete markers
+    # Handle versioned objects
     while true; do
         versions_json=$(aws s3api list-object-versions \
             --bucket "$bucket" \
@@ -47,8 +45,6 @@ empty_and_delete_bucket() {
             | @tsv
         ' | while IFS=$'\t' read -r key version_id; do
 
-            echo "Deleting object version: $key ($version_id)"
-
             aws s3api delete-object \
                 --bucket "$bucket" \
                 --key "$key" \
@@ -56,41 +52,37 @@ empty_and_delete_bucket() {
         done
     done
 
-    echo "Bucket emptied: $bucket"
-
-    # Delete bucket
-    echo "Deleting bucket: $bucket"
+    echo "Empty bucket done: $bucket"
 
     aws s3api delete-bucket --bucket "$bucket"
-
-    echo "Bucket deleted: $bucket"
+    echo "Deleted bucket: $bucket"
 }
 
-for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< "$ENVIRONMENT_MANAGEMENT"); do
+# -----------------------------
+# SINGLE ACCOUNT MODE
+# -----------------------------
 
-    echo ""
-    echo "#######################################"
-    echo "Account: $account_id"
-    echo "#######################################"
+ACCOUNT_ID=$1
 
-    getAssumeRoleCfg "$account_id"
+echo "Running for account: $ACCOUNT_ID"
 
-    buckets=$(aws s3api list-buckets \
-        --query "Buckets[?starts_with(Name, 'config-')].Name" \
-        --output text)
+getAssumeRoleCfg "$ACCOUNT_ID"
 
-    if [ -z "$buckets" ]; then
-        echo "No config-* buckets found"
-    else
-        for bucket in $buckets; do
-            empty_and_delete_bucket "$bucket"
-        done
-    fi
+buckets=$(aws s3api list-buckets \
+    --query "Buckets[?starts_with(Name, 'config-')].Name" \
+    --output text)
 
-    # Restore original credentials
-    export AWS_ACCESS_KEY_ID=$ROOT_AWS_ACCESS_KEY_ID
-    export AWS_SECRET_ACCESS_KEY=$ROOT_AWS_SECRET_ACCESS_KEY
-    export AWS_SESSION_TOKEN=$ROOT_AWS_SESSION_TOKEN
+if [ -z "$buckets" ]; then
+    echo "No config-* buckets found"
+else
+    for bucket in $buckets; do
+        empty_and_delete_bucket "$bucket"
+    done
+fi
 
-    rm -f credentials.json
-done
+# restore root creds
+export AWS_ACCESS_KEY_ID=$ROOT_AWS_ACCESS_KEY_ID
+export AWS_SECRET_ACCESS_KEY=$ROOT_AWS_SECRET_ACCESS_KEY
+export AWS_SESSION_TOKEN=$ROOT_AWS_SESSION_TOKEN
+
+rm -f credentials.json

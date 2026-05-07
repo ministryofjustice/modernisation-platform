@@ -19,11 +19,6 @@ on:
             type: string
             description: "The Account List"
 
-        slack_webhook_url:
-            required: true
-            type: string
-            description: "Slack Webhook URL"
-
         TF_WORKSPACE:
             required: true
             type: string
@@ -33,17 +28,6 @@ on:
             required: true
             type: string
             description: "The terraform working directory"
-
-        aws_account_id_name:
-            required: true
-            type: string
-            description: "the name of the account id to use"
-
-        aws_role:
-            required: true
-            type: string
-            description: "The AWS role to assume for the terraform actions"
-
     secrets:
 
       PASSPHRASE:
@@ -76,36 +60,18 @@ jobs:
         - name: Set Account Number
           run: |
             ACCOUNT_NUMBER=$(jq -r -e '.${{ inputs.aws_account_id_name }}' <<< "$ENVIRONMENT_MANAGEMENT")
+            ACCOUNT_ID=$(jq -r -e --arg ws "$TF_WORKSPACE" '.[$ws]' <<< "$ENVIRONMENT_MANAGEMENT")
             echo "::add-mask::$ACCOUNT_NUMBER"
             echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+            echo ACCOUNT_ID=$ACCOUNT_ID >> $GITHUB_ENV
         - name: Configure AWS Credentials
           uses: aws-actions/configure-aws-credentials@d979d5b3a71173a29b74b5b88418bfda9437d885 # v6.1.1
           with:
-            role-to-assume: arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/${{ inputs.aws_role }}
+            role-to-assume: arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions
             role-session-name: githubactionsrolesession
             aws-region: ${{ inputs.AWS_REGION }}
-        - uses: hashicorp/setup-terraform@5e8dbf3c6d9deaf4193ca7a8fb23f2ac83bb6c85 # v4.0.0
-          with:
-            terraform_version: "~1"
-            terraform_wrapper: false
-        - run: bash scripts/terraform-init.sh "${{ inputs.working_directory }}"
-        - run: bash scripts/terraform-apply.sh "${{ inputs.working_directory }}"
-        - name: Persist terraform state to backend
-          if: ${{ failure() && hashFiles(env.STATE_FILE) != '' }}
-          run: |
-            bash scripts/terraform-state-push.sh "${{ inputs.working_directory }}"
-            if [ $? -eq 0 ]; then
-              echo "STATE_PUSH_SUCCESSFUL=true" >> $GITHUB_ENV
-            fi
-        - name: Slack failure notification
-          uses: slackapi/slack-github-action@45a88b9581bfab2566dc881e2cd66d334e621e2c # v3.0.3
-          with:
-            webhook-type: incoming-webhook
-            payload: |
-              {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
-          env:
-            SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
-          if: ${{ failure() }}
+        - name: Remove Default VPC
+          run: bash ./scripts/internal/remove-default-vpc/remove_default_vpc_all_accounts.sh ${{ env.ACCOUNT_ID }}
       env:
         TF_WORKSPACE: ${{ inputs.TF_WORKSPACE }}
         STATE_PUSH_SUCCESSFUL: false
