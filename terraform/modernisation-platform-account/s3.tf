@@ -575,6 +575,10 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
         local.environment_management.account_ids["data-platform-preproduction"],
         local.environment_management.account_ids["data-platform-production"],
         local.environment_management.account_ids["data-platform-test"],
+        local.environment_management.account_ids["data-platform-governance-development"],
+        local.environment_management.account_ids["data-platform-governance-preproduction"],
+        local.environment_management.account_ids["data-platform-governance-production"],
+        local.environment_management.account_ids["data-platform-governance-test"],
       ]
     }
   }
@@ -607,6 +611,10 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
         local.environment_management.account_ids["data-platform-preproduction"],
         local.environment_management.account_ids["data-platform-production"],
         local.environment_management.account_ids["data-platform-test"],
+        local.environment_management.account_ids["data-platform-governance-development"],
+        local.environment_management.account_ids["data-platform-governance-preproduction"],
+        local.environment_management.account_ids["data-platform-governance-production"],
+        local.environment_management.account_ids["data-platform-governance-test"],
       ]
     }
   }
