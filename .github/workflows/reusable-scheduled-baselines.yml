@@ -59,7 +59,7 @@ jobs:
             PASSPHRASE: ${{ secrets.PASSPHRASE }}
         - name: Set Account Number
           run: |
-            ACCOUNT_NUMBER=$(jq -r -e '.${{ inputs.aws_account_id_name }}' <<< "$ENVIRONMENT_MANAGEMENT")
+            ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
             ACCOUNT_ID=$(jq -r -e --arg ws "$TF_WORKSPACE" '.[$ws]' <<< "$ENVIRONMENT_MANAGEMENT")
             echo "::add-mask::$ACCOUNT_NUMBER"
             echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
