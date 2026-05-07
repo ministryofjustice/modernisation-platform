@@ -60,7 +60,7 @@ jobs:
         - name: Set Account Number
           run: |
             ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
-            ACCOUNT_ID=$(jq -r -e '.account_ids[$TF_WORKSPACE]' <<< "$ENVIRONMENT_MANAGEMENT")
+            ACCOUNT_ID=$(jq -r -e --arg workspace "$TF_WORKSPACE" '.account_ids[$workspace]' <<< "$ENVIRONMENT_MANAGEMENT")
             echo "::add-mask::$ACCOUNT_NUMBER"
             echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
             echo ACCOUNT_ID=$ACCOUNT_ID >> $GITHUB_ENV
