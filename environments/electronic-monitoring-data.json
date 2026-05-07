@@ -54,6 +54,10 @@
         {
           "sso_group_name": "azure-aws-sso-electronic-monitoring-data",
           "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-electronic-monitoring-data-athena-read-only",
+          "level": "data-scientist"
         }
       ]
     },
