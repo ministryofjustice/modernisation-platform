@@ -931,6 +931,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "lakeformation:*",
       "lambda:*",
       "logs:*",
+      "macie2:*",
       "mgh:*",
       "mgn:*",
       "organizations:Describe*",
