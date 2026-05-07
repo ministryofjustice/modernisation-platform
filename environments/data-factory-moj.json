@@ -11,9 +11,14 @@
         {
           "sso_group_name": "data-factory-security-team",
           "level": "security-audit"
+        },
+        {
+          "sso_group_name": "data-platform-engineering",
+          "level": "platform-engineer-admin",
+          "github_action_reviewer": "true"
         }
       ],
-      "nuke": "rebuild"
+      "nuke": "exclude"
     },
     {
       "name": "test",
