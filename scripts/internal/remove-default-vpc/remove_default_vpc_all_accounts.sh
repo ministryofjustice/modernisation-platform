@@ -9,7 +9,7 @@ getAssumeRoleCfg() {
     account_id=$1
 
     aws sts assume-role \
-        --role-arn "arn:aws:iam::${account_id}:role/ModernisationPlatformAccess" \
+        --role-arn "arn:aws:iam::${account_id}:role/MemberInfrastructureAccess" \
         --role-session-name "delete-config-buckets" \
         --output json > credentials.json
 
