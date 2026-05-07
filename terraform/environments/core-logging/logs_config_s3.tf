@@ -1,6 +1,6 @@
 ## S3 Bucket Module for AWS Config Logs
 module "s3_bucket_config_logs" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=479b926"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=479b92623954a75f96a6da8ebb4070a8581c227e"
 
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
