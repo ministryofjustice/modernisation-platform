@@ -1,6 +1,7 @@
 # AWS provider (default): the Modernisation Platform account, which this Terraform configuration should be called using.
 provider "aws" {
   region = "eu-west-2"
+  default_tags { tags = local.environments }
 }
 
 # AWS provider (modernisation-secrets-read): Required for assuming a role into modernisation platform account to read secrets
@@ -19,6 +20,7 @@ provider "aws" {
   assume_role {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess"
   }
+  default_tags { tags = local.environments }
 }
 
 # Region specific providers for the workspace. Required for bootstrapping resources in enabled regions.
@@ -30,6 +32,7 @@ provider "aws" {
   assume_role {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess"
   }
+  default_tags { tags = local.environments }
 }
 
 provider "aws" {
@@ -40,6 +43,7 @@ provider "aws" {
   assume_role {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess"
   }
+  default_tags { tags = local.environments }
 }
 
 provider "aws" {
@@ -50,6 +54,7 @@ provider "aws" {
   assume_role {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess"
   }
+  default_tags { tags = local.environments }
 }
 
 provider "aws" {
@@ -60,6 +65,7 @@ provider "aws" {
   assume_role {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess"
   }
+  default_tags { tags = local.environments }
 }
 
 provider "aws" {
@@ -70,6 +76,7 @@ provider "aws" {
   assume_role {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess"
   }
+  default_tags { tags = local.environments }
 }
 
 # AWS provider for core-logging
@@ -79,4 +86,5 @@ provider "aws" {
   assume_role {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids["core-logging-production"]}:role/ModernisationPlatformAccess"
   }
+  default_tags { tags = local.environments }
 }
