@@ -36,7 +36,7 @@
 /terraform/environments/core-shared-services/dacp.tf @ministryofjustice/dts-legacy 
 /terraform/environments/core-shared-services/data-factory-corporate.tf @ministryofjustice/corporate-data-factory-admins @ministryofjustice/data-factory-cloud-security 
 /terraform/environments/core-shared-services/data-factory-laa.tf @ministryofjustice/laa-data-factory-engineering 
-/terraform/environments/core-shared-services/data-factory-moj.tf @ministryofjustice/data-engineering @ministryofjustice/data-factory-security-team 
+/terraform/environments/core-shared-services/data-factory-moj.tf @ministryofjustice/data-engineering @ministryofjustice/data-platform-engineering 
 /terraform/environments/core-shared-services/data-platform-governance.tf @ministryofjustice/data-platform-engineering 
 /terraform/environments/core-shared-services/data-platform.tf @ministryofjustice/data-platform-engineering 
 /terraform/environments/core-shared-services/delius-alfresco.tf @ministryofjustice/hosting-migrations 
