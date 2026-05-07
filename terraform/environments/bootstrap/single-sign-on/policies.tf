@@ -421,6 +421,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "athena:StartQueryExecution",
       "athena:StopQueryExecution",
       "apigateway:POST",
+      "batch:*",
       "bedrock:PutUseCaseForModelAccess",
       "ce:CreateReport",
       "dms:StartReplicationTask",
