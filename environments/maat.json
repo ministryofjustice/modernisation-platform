@@ -65,7 +65,7 @@
         },
         {
           "sso_group_name": "laa-sre-admins",
-          "level": "sandbox",
+          "level": "developer",
           "github_action_reviewer": "true"
         },
         {
@@ -89,7 +89,7 @@
         },
         {
           "sso_group_name": "laa-sre-admins",
-          "level": "sandbox",
+          "level": "developer",
           "github_action_reviewer": "true"
         },
         {
