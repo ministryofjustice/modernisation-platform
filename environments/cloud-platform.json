@@ -23,6 +23,10 @@
         {
           "sso_group_name": "cloud-platform-engineers",
           "level": "platform-engineer-admin"
+        },
+        {
+          "sso_group_name": "container-platform-aws",
+          "level": "platform-engineer-admin"
         }
       ]
     },
@@ -31,6 +35,10 @@
       "access": [
         {
           "sso_group_name": "cloud-platform-engineers",
+          "level": "platform-engineer-admin"
+        },
+        {
+          "sso_group_name": "container-platform-aws",
           "level": "platform-engineer-admin"
         }
       ]
