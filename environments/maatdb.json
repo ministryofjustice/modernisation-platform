@@ -4,6 +4,7 @@
     "laa-aws-infrastructure",
     "laa-crime-apps-team",
     "laa-maat-migrations",
+    "laa-sre-admins",
     "laa-dba"
   ],
   "environments": [

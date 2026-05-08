@@ -15,12 +15,13 @@
           "github_action_reviewer": "true"
         },
         {
-          "sso_group_name": "laa-crime-apps-team",
-          "level": "instance-management"
+          "sso_group_name": "laa-sre-admins",
+          "level": "sandbox",
+          "github_action_reviewer": "true"
         },
         {
-          "sso_group_name": "laa-sre-admins",
-          "level": "sandbox"
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
         }
       ],
       "nuke": "exclude"
@@ -39,12 +40,13 @@
           "github_action_reviewer": "true"
         },
         {
-          "sso_group_name": "laa-crime-apps-team",
-          "level": "instance-management"
+          "sso_group_name": "laa-sre-admins",
+          "level": "sandbox",
+          "github_action_reviewer": "true"
         },
         {
-          "sso_group_name": "laa-sre-admins",
-          "level": "developer"
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
         }
       ]
     },
@@ -62,12 +64,13 @@
           "github_action_reviewer": "true"
         },
         {
-          "sso_group_name": "laa-crime-apps-team",
-          "level": "instance-management"
+          "sso_group_name": "laa-sre-admins",
+          "level": "sandbox",
+          "github_action_reviewer": "true"
         },
         {
-          "sso_group_name": "laa-sre-admins",
-          "level": "developer"
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
         }
       ]
     },
@@ -85,12 +88,13 @@
           "github_action_reviewer": "true"
         },
         {
-          "sso_group_name": "laa-crime-apps-team",
-          "level": "instance-management"
+          "sso_group_name": "laa-sre-admins",
+          "level": "sandbox",
+          "github_action_reviewer": "true"
         },
         {
-          "sso_group_name": "laa-sre-admins",
-          "level": "developer"
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
         },
         {
           "sso_group_name": "octo-cyber-team",
