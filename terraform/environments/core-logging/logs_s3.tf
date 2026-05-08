@@ -4,7 +4,6 @@ locals {
 
 resource "aws_s3_bucket" "logging" {
   # checkov:skip=CKV_AWS_18:  Access logs not presently required
-  # checkov:skip=CKV_AWS_21:  Versioning of log objects not required
   # checkov:skip=CKV_AWS_144: Replication of log objects not required
   # checkov:skip=CKV2_AWS_6:  Public access blocked with for_each
   # checkov:skip=CKV2_AWS_61: Lifecycle configuration present with for_each
@@ -12,6 +11,15 @@ resource "aws_s3_bucket" "logging" {
   for_each      = local.cortex_logging_buckets
   bucket_prefix = "${local.application_name}-${each.key}"
   tags          = local.tags
+}
+
+resource "aws_s3_bucket_versioning" "logging" {
+  for_each = local.cortex_logging_buckets
+  bucket   = aws_s3_bucket.logging[each.key].id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "logging" {
