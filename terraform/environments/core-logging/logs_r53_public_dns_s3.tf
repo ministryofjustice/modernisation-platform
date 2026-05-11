@@ -1,6 +1,6 @@
 ## S3 Bucket Module for AWS Route 53 Public DNS Query Logs
 module "s3_bucket_r53_public_dns_logs" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=479b926"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=c67758cd6d263bec9c225b99b6f76d6074514159"
 
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
