@@ -50,7 +50,6 @@ module "imagebuilder_log_bucket" {
   tags = local.tags
 }
 
-# Customer-managed KMS key for Image Builder log bucket
 resource "aws_kms_key" "imagebuilder_logs" {
   description             = "KMS key for EC2 Image Builder log bucket"
   deletion_window_in_days = 30
@@ -69,15 +68,16 @@ resource "aws_kms_key" "imagebuilder_logs" {
         Resource = "*"
       },
       {
-        Sid    = "AllowS3UseOfTheKey"
+        Sid    = "AllowImageBuilderRoleToUseKey"
         Effect = "Allow"
         Principal = {
-          Service = "s3.amazonaws.com"
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/ImageBuilder"
         }
         Action = [
-          "kms:Decrypt",
           "kms:Encrypt",
+          "kms:Decrypt",
           "kms:GenerateDataKey",
+          "kms:GenerateDataKeyWithoutPlaintext",
           "kms:DescribeKey"
         ]
         Resource = "*"
