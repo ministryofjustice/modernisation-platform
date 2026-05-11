@@ -11,7 +11,7 @@ resource "aws_s3_bucket" "logging" {
   # checkov:skip=CKV2_AWS_62: Notifications present with for_each
   for_each      = local.cortex_logging_buckets
   bucket_prefix = "${local.application_name}-${each.key}"
-  tags          = local.tags
+  tags          = merge(local.tags, { backup = "false" })
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "logging" {
