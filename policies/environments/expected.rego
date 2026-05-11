@@ -106,6 +106,7 @@ expected :=
     "tribunals",
     "vcms",
     "wardship",
+    "xhibit-portal",
     "youth-justice-app-framework",
     "youth-justice-networking"
     ]
