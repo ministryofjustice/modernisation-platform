@@ -176,5 +176,5 @@
     "owner": "LAACrimeApps-Core@justice.gov.uk",
     "critical-national-infrastructure": true
   },
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": []
 }
