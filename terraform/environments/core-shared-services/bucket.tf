@@ -8,6 +8,7 @@ module "imagebuilder_log_bucket" {
 
   bucket_prefix               = "ec2-image-builder-logs-"
   sse_algorithm               = "aws:kms"
+  custom_kms_key              = aws_kms_key.imagebuilder_logs.arn
   enforce_kms_request_headers = false
   versioning_enabled          = false
   replication_enabled         = false
@@ -47,6 +48,49 @@ module "imagebuilder_log_bucket" {
 
 
   tags = local.tags
+}
+
+# Customer-managed KMS key for Image Builder log bucket
+resource "aws_kms_key" "imagebuilder_logs" {
+  description             = "KMS key for EC2 Image Builder log bucket"
+  deletion_window_in_days = 30
+  enable_key_rotation     = true
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "EnableRootPermissions"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        }
+        Action   = "kms:*"
+        Resource = "*"
+      },
+      {
+        Sid    = "AllowS3UseOfTheKey"
+        Effect = "Allow"
+        Principal = {
+          Service = "s3.amazonaws.com"
+        }
+        Action = [
+          "kms:Decrypt",
+          "kms:Encrypt",
+          "kms:GenerateDataKey",
+          "kms:DescribeKey"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+
+  tags = local.tags
+}
+
+resource "aws_kms_alias" "imagebuilder_logs" {
+  name          = "alias/imagebuilder-log-bucket"
+  target_key_id = aws_kms_key.imagebuilder_logs.key_id
 }
 
 output "imagebuilder_log_bucket_id" {
