@@ -95,7 +95,6 @@ expected :=
               "tipstaff-development",
               "tribunals-development",
               "wardship-development",
-              "xhibit-portal-development"
             ]
       }
     },
@@ -110,7 +109,6 @@ expected :=
       "general": {
         "cidr": "10.27.24.0/21",
         "accounts": [
-          "xhibit-portal-preproduction",
           "tipstaff-preproduction",
           "tribunals-preproduction",
           "dacp-preproduction",
@@ -124,7 +122,6 @@ expected :=
       "general": {
         "cidr": "10.27.16.0/21",
         "accounts": [
-          "xhibit-portal-production",
           "tipstaff-production",
           "tribunals-production",
           "dacp-production",
@@ -301,7 +298,6 @@ expected :=
               "mlra-development",
               "mojfin-development",
               "oas-development",
-              "portal-development"
             ]
       }
     },
@@ -328,7 +324,6 @@ expected :=
               "mlra-test",
               "mojfin-test",
               "oas-test",
-              "portal-test"
             ]
       }
     },
@@ -354,7 +349,6 @@ expected :=
               "mlra-preproduction",
               "mojfin-preproduction",
               "oas-preproduction",
-              "portal-preproduction"
             ]
       }
     },
@@ -381,7 +375,6 @@ expected :=
               "mlra-production",
               "mojfin-production",
               "oas-production",
-              "portal-production"
             ]
       }
     },

@@ -22,8 +22,7 @@
           "maatdb-production",
           "mlra-production",
           "mojfin-production",
-          "oas-production",
-          "portal-production"
+          "oas-production"
         ]
       }
     }
@@ -38,7 +37,9 @@
       "com.amazonaws.eu-west-2.sns",
       "com.amazonaws.eu-west-2.sqs"
     ],
-    "additional_private_zones": ["aws.prd.legalservices.gov.uk"],
+    "additional_private_zones": [
+      "aws.prd.legalservices.gov.uk"
+    ],
     "additional_vpcs": [],
     "dns_zone_extend": []
   }
