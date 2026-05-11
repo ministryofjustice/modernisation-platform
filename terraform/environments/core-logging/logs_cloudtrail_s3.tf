@@ -1,5 +1,5 @@
 module "s3-bucket-cloudtrail" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=479b92623954a75f96a6da8ebb4070a8581c227e"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=c67758cd6d263bec9c225b99b6f76d6074514159"
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
