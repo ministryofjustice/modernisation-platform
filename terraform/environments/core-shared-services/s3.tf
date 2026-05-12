@@ -78,59 +78,6 @@ data "aws_iam_policy_document" "bucket_policy" {
 }
 
 module "s3-software-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=9facf9fc8f8b8e3f93ffbda822028534b9a75399" # v9.0.0
-
-  providers = {
-    aws.bucket-replication = aws.bucket-replication
-  }
-  bucket_prefix       = "modernisation-platform-software"
-  bucket_policy       = [data.aws_iam_policy_document.software_bucket_policy.json]
-  sse_algorithm       = "aws:kms"
-  custom_kms_key      = aws_kms_key.software_bucket.arn
-  replication_enabled = false
-  versioning_enabled  = true
-  force_destroy       = false
-  lifecycle_rule = [
-    {
-      id      = "main"
-      enabled = "Enabled"
-      prefix  = ""
-
-      tags = {
-        rule      = "log"
-        autoclean = "true"
-      }
-
-      transition = [
-        {
-          days          = 90
-          storage_class = "STANDARD_IA"
-          }, {
-          days          = 365
-          storage_class = "GLACIER"
-        }
-      ]
-
-      noncurrent_version_transition = [
-        {
-          days          = 90
-          storage_class = "STANDARD_IA"
-          }, {
-          days          = 365
-          storage_class = "GLACIER"
-        }
-      ]
-
-      noncurrent_version_expiration = {
-        days = 730
-      }
-    }
-  ]
-
-  tags = local.tags
-}
-
-module "s3-software-bucket" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=c67758cd6d263bec9c225b99b6f76d6074514159"
 
   providers = {
@@ -184,6 +131,51 @@ module "s3-software-bucket" {
       }
     }
   ]
+
+  tags = local.tags
+}
+
+resource "aws_kms_key" "software_bucket" {
+  description             = "KMS key for Modernisation Platform software bucket"
+  deletion_window_in_days = 30
+  enable_key_rotation     = true
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "EnableRootPermissions"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        }
+        Action   = "kms:*"
+        Resource = "*"
+      },
+      {
+        Sid    = "AllowOrganisationPrincipalsToUseKey"
+        Effect = "Allow"
+        Principal = {
+          AWS = "*"
+        }
+        Action = [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:GenerateDataKey",
+          "kms:GenerateDataKeyWithoutPlaintext",
+          "kms:DescribeKey"
+        ]
+        Resource = "*"
+        Condition = {
+          "ForAnyValue:StringLike" = {
+            "aws:PrincipalOrgPaths" = [
+              "${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"
+            ]
+          }
+        }
+      }
+    ]
+  })
 
   tags = local.tags
 }
