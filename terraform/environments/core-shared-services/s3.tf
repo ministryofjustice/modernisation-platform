@@ -15,7 +15,7 @@ module "s3-bucket" {
   force_destroy       = false
   ownership_controls  = "BucketOwnerEnforced"
   sse_algorithm       = "aws:kms"
-  custom_kms_key      = data.aws_kms_alias.general_hmpps.arn
+  custom_kms_key      = data.aws_kms_alias.general_hmpps.target_key_arn
   lifecycle_rule = [
     {
       id      = "main"
