@@ -1,5 +1,9 @@
+data "aws_kms_alias" "general_hmpps" {
+  name = "alias/general-hmpps"
+}
+
 module "s3-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=9facf9fc8f8b8e3f93ffbda822028534b9a75399" # v9.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=c67758cd6d263bec9c225b99b6f76d6074514159"
 
   providers = {
     aws.bucket-replication = aws.bucket-replication
@@ -10,6 +14,8 @@ module "s3-bucket" {
   versioning_enabled  = true
   force_destroy       = false
   ownership_controls  = "BucketOwnerEnforced"
+  sse_algorithm       = "aws:kms"
+  custom_kms_key      = data.aws_kms_alias.general_hmpps.arn
   lifecycle_rule = [
     {
       id      = "main"
