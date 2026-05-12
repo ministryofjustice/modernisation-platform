@@ -85,7 +85,7 @@ module "s3-software-bucket" {
   }
   bucket_prefix       = "modernisation-platform-software"
   bucket_policy       = [data.aws_iam_policy_document.software_bucket_policy.json]
-  sse_algorithm               = "aws:kms"
+  sse_algorithm       = "aws:kms"
   custom_kms_key      = aws_kms_key.software_bucket.arn
   replication_enabled = false
   versioning_enabled  = true
