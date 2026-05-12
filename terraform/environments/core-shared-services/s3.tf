@@ -108,7 +108,7 @@ module "s3-software-bucket" {
         {
           days          = 90
           storage_class = "STANDARD_IA"
-        }, {
+          }, {
           days          = 365
           storage_class = "GLACIER"
         }
@@ -118,7 +118,7 @@ module "s3-software-bucket" {
         {
           days          = 90
           storage_class = "STANDARD_IA"
-        }, {
+          }, {
           days          = 365
           storage_class = "GLACIER"
         }
