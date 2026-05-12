@@ -8,6 +8,7 @@ on:
 
 env:
   AWS_REGION: "eu-west-2"
+  TF_IN_AUTOMATION: true
 
 permissions:
   id-token: write # This is required for requesting the JWT
@@ -25,31 +26,141 @@ jobs:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
-  remove-default-vpc:
+  setup-prerequisites:
     runs-on: ubuntu-latest
     needs: fetch-secrets
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      aws-region: ${{ steps.setup-aws-region.outputs.aws-region }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-
+        with: 
+          fetch-depth: 0
       - name: Decrypt Secrets
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d2d07632db53d17c9760c0c2c06f22a37bd3f0a1 # v6.0.1
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
-
       - name: Set Account Number
         run: |
-          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
-        
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@d979d5b3a71173a29b74b5b88418bfda9437d885 # v6.1.1
         with:
-          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-apply"
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
+      - uses: hashicorp/setup-terraform@5e8dbf3c6d9deaf4193ca7a8fb23f2ac83bb6c85 # v4.0.0
+        with:
+          terraform_version: "~1"
+          terraform_wrapper: false
+      - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
+      - id: set-matrix
+        name: Set Up Matrix
+        run: echo "matrix=$(terraform -chdir=terraform/environments/bootstrap/delegate-access workspace list | sed -e "s/*//" -e "s/^[[:space:]]*//" -e "/default/d" -e "/^$/d" | sort -u | jq -ncR '[inputs]')" >> $GITHUB_OUTPUT
+      - id: setup-aws-region
+        name: Setup AWS Region # required to pass the aws-region as an input to the reusable workflow from the global env var
+        run: |
+          echo "aws-region=$AWS_REGION" >> "$GITHUB_OUTPUT"
+    
+  define-jobs:
+    runs-on: ubuntu-latest
+    needs: setup-prerequisites
+    env:
+      account_list: ${{ needs.setup-prerequisites.outputs.matrix }}
+    outputs:
+      block_1: ${{ steps.split.outputs.block_1 }}
+      block_2: ${{ steps.split.outputs.block_2 }}
+      block_3: ${{ steps.split.outputs.block_3 }}
+      block_4: ${{ steps.split.outputs.block_4 }}
+    steps:
+      - id: split
+        run: |
+          BLOCK_COUNT=4
+          sorted=$(echo "$account_list" | jq -c 'sort')
+          total=$(echo "$sorted" | jq 'length')
+          base=$(( total / BLOCK_COUNT ))
+          remainder=$(( total % BLOCK_COUNT ))
+          start=0
+          for i in $(seq 1 $BLOCK_COUNT); do
+            key="block_$i"
+            # Distribute remainder
+            extra=0
+            if [ "$i" -le "$remainder" ]; then
+              extra=1
+            fi
+            end=$(( start + base + extra ))
+            block=$(echo "$sorted" | jq ".[$start:$end]")
+            compact=$(echo "$block" | jq -c '.')
+            echo "::group::$key"
+            echo "$block" | jq .
+            echo "::endgroup::"
+            echo "$key=$compact" >> "$GITHUB_OUTPUT"
+            start=$end
+          done
 
-      - name: Remove Default VPC
-        run: bash ./scripts/internal/remove-default-vpc/remove_default_vpc_all_accounts.sh
-        
+  remove-default-vpc-1:
+    needs: [fetch-secrets, setup-prerequisites, define-jobs]
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_1) }}
+    uses: ./.github/workflows/reusable-scheduled-baselines.yml
+    with:
+      JOB_NAME: "remove-default-vpc-1"
+      AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      TF_WORKSPACE: "${{ matrix.workspaces }}"
+      working_directory: "terraform/environments/bootstrap/secure-baselines"
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  remove-default-vpc-2:
+    needs: [fetch-secrets, setup-prerequisites, define-jobs]
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_2) }}
+    uses: ./.github/workflows/reusable-scheduled-baselines.yml
+    with:
+      JOB_NAME: "remove-default-vpc-2"
+      AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      TF_WORKSPACE: "${{ matrix.workspaces }}"
+      working_directory: "terraform/environments/bootstrap/secure-baselines"
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  remove-default-vpc-3:
+    needs: [fetch-secrets, setup-prerequisites, define-jobs]
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_3) }}
+    uses: ./.github/workflows/reusable-scheduled-baselines.yml
+    with:
+      JOB_NAME: "remove-default-vpc-3"
+      AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      TF_WORKSPACE: "${{ matrix.workspaces }}"
+      working_directory: "terraform/environments/bootstrap/secure-baselines"
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  remove-default-vpc-4:
+    needs: [fetch-secrets, setup-prerequisites, define-jobs]
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_4) }}
+    uses: ./.github/workflows/reusable-scheduled-baselines.yml
+    with:
+      JOB_NAME: "remove-default-vpc-1"
+      AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      TF_WORKSPACE: "${{ matrix.workspaces }}"
+      working_directory: "terraform/environments/bootstrap/secure-baselines"
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
