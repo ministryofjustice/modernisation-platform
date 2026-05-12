@@ -86,7 +86,6 @@
 /terraform/environments/core-shared-services/panda-cyber-appsec-lab.tf @ministryofjustice/octo-cyber-team 
 /terraform/environments/core-shared-services/performance-hub.tf @ministryofjustice/performance-hub-developers 
 /terraform/environments/core-shared-services/planetfm.tf @ministryofjustice/csr-application-support @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
-/terraform/environments/core-shared-services/portal.tf @ministryofjustice/laa-aws-infrastructure 
 /terraform/environments/core-shared-services/ppud.tf @ministryofjustice/modernisation-platform @ministryofjustice/ppud-replacement-devs 
 /terraform/environments/core-shared-services/pra-register.tf @ministryofjustice/dts-legacy 
 /terraform/environments/core-shared-services/prison-retail.tf @ministryofjustice/csr-application-support @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
