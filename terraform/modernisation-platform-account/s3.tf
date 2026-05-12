@@ -734,14 +734,16 @@ data "aws_iam_policy_document" "allow-state-access-for-root-account-sso-admins" 
 }
 
 module "cost-management-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=9facf9fc8f8b8e3f93ffbda822028534b9a75399" # v9.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=c67758cd6d263bec9c225b99b6f76d6074514159"
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
-  bucket_policy       = [data.aws_iam_policy_document.cost_management_bucket_policy.json]
-  bucket_name         = "mp-cost-explorer-reports"
-  custom_kms_key      = aws_kms_key.s3_state_bucket_multi_region.arn
-  replication_enabled = false
+  bucket_policy               = [data.aws_iam_policy_document.cost_management_bucket_policy.json]
+  bucket_name                 = "mp-cost-explorer-reports"
+  custom_kms_key              = aws_kms_key.s3_state_bucket_multi_region.arn
+  sse_algorithm               = "aws:kms"
+  enforce_kms_request_headers = false
+  replication_enabled         = false
   lifecycle_rule = [
     {
       id      = "main"
@@ -771,14 +773,16 @@ data "aws_iam_policy_document" "cost_management_bucket_policy" {
 }
 
 module "member_information_bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=9facf9fc8f8b8e3f93ffbda822028534b9a75399" # v9.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=c67758cd6d263bec9c225b99b6f76d6074514159"
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
-  bucket_policy       = [data.aws_iam_policy_document.member_information_bucket_policy.json]
-  bucket_name         = "modernisation-member-information"
-  custom_kms_key      = aws_kms_key.s3_state_bucket_multi_region.arn
-  replication_enabled = false
+  bucket_policy               = [data.aws_iam_policy_document.member_information_bucket_policy.json]
+  bucket_name                 = "modernisation-member-information"
+  custom_kms_key              = aws_kms_key.s3_state_bucket_multi_region.arn
+  sse_algorithm               = "aws:kms"
+  enforce_kms_request_headers = false
+  replication_enabled         = false
   lifecycle_rule = [
     {
       id      = "main"
