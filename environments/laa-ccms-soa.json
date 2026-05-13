@@ -26,6 +26,10 @@
         {
           "sso_group_name": "laa-soa-developers",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-soa-dba-temp",
+          "level": "sandbox"
         }
       ],
       "nuke": "exclude"
