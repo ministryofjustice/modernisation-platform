@@ -300,8 +300,7 @@ expected :=
               "maatdb-development",
               "mlra-development",
               "mojfin-development",
-              "oas-development",
-              "portal-development"
+              "oas-development"
             ]
       }
     },
@@ -327,8 +326,7 @@ expected :=
               "maatdb-test",
               "mlra-test",
               "mojfin-test",
-              "oas-test",
-              "portal-test"
+              "oas-test"
             ]
       }
     },
@@ -353,8 +351,7 @@ expected :=
               "maatdb-preproduction",
               "mlra-preproduction",
               "mojfin-preproduction",
-              "oas-preproduction",
-              "portal-preproduction"
+              "oas-preproduction"
             ]
       }
     },
@@ -380,8 +377,7 @@ expected :=
               "maatdb-production",
               "mlra-production",
               "mojfin-production",
-              "oas-production",
-              "portal-production"
+              "oas-production"
             ]
       }
     },

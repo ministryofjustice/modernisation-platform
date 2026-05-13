@@ -95,7 +95,6 @@ expected :=
     "panda-cyber-appsec-lab",
     "performance-hub",
     "planetfm",
-    "portal",
     "ppud",
     "pra-register",
     "prison-retail",

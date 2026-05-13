@@ -22,8 +22,7 @@
           "maatdb-production",
           "mlra-production",
           "mojfin-production",
-          "oas-production",
-          "portal-production"
+          "oas-production"
         ]
       }
     }

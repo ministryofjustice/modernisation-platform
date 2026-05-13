@@ -21,8 +21,7 @@
           "maatdb-preproduction",
           "mlra-preproduction",
           "mojfin-preproduction",
-          "oas-preproduction",
-          "portal-preproduction"
+          "oas-preproduction"
         ]
       }
     }

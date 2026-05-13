@@ -15,7 +15,7 @@
 /terraform/environments/core-shared-services/apex.tf @ministryofjustice/laa-apex-developer @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-sre-admins 
 /terraform/environments/core-shared-services/bichard7.tf @ministryofjustice/cjse-bichard7-next 
 /terraform/environments/core-shared-services/ccms-ebs-upgrade.tf @ministryofjustice/laa-ccms-migration-team @ministryofjustice/laa-sre-admins 
-/terraform/environments/core-shared-services/ccms-ebs.tf @ministryofjustice/laa-ccms-developers @ministryofjustice/laa-ccms-instance-access @ministryofjustice/laa-ccms-migration-team @ministryofjustice/laa-ccms-security-testing-kpmg @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-security @ministryofjustice/octo-cyber-team 
+/terraform/environments/core-shared-services/ccms-ebs.tf @ministryofjustice/laa-ccms-developers @ministryofjustice/laa-ccms-ebs-developers @ministryofjustice/laa-ccms-instance-access @ministryofjustice/laa-ccms-migration-team @ministryofjustice/laa-ccms-security-testing-kpmg @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-security @ministryofjustice/octo-cyber-team 
 /terraform/environments/core-shared-services/ccms-edrms.tf @ministryofjustice/laa-sre-admins 
 /terraform/environments/core-shared-services/ccms-oia.tf @ministryofjustice/laa-ccms-developers @ministryofjustice/laa-dba @ministryofjustice/laa-sre-admins @ministryofjustice/octo-cyber-team 
 /terraform/environments/core-shared-services/ccms-pui-internal.tf @ministryofjustice/laa-sre-admins 
@@ -86,7 +86,6 @@
 /terraform/environments/core-shared-services/panda-cyber-appsec-lab.tf @ministryofjustice/octo-cyber-team 
 /terraform/environments/core-shared-services/performance-hub.tf @ministryofjustice/performance-hub-developers 
 /terraform/environments/core-shared-services/planetfm.tf @ministryofjustice/csr-application-support @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
-/terraform/environments/core-shared-services/portal.tf @ministryofjustice/laa-aws-infrastructure 
 /terraform/environments/core-shared-services/ppud.tf @ministryofjustice/modernisation-platform @ministryofjustice/ppud-replacement-devs 
 /terraform/environments/core-shared-services/pra-register.tf @ministryofjustice/dts-legacy 
 /terraform/environments/core-shared-services/prison-retail.tf @ministryofjustice/csr-application-support @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
