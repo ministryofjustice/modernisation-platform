@@ -22,14 +22,14 @@ module "laa-shared-bucket" {
   providers = {
     aws.bucket-replication = aws.bucket-replication
   }
-  bucket_prefix       = "modernisation-platform-laa-shared"
-  bucket_policy       = [data.aws_iam_policy_document.laa_shared_bucket_policy.json]
-  replication_enabled = false
-  versioning_enabled  = true
-  force_destroy       = false
-  ownership_controls  = "BucketOwnerEnforced"
-  sse_algorithm       = "aws:kms"
-  custom_kms_key      = local.laa_general_kms_arn
+  bucket_prefix               = "modernisation-platform-laa-shared"
+  bucket_policy               = [data.aws_iam_policy_document.laa_shared_bucket_policy.json]
+  replication_enabled         = false
+  versioning_enabled          = true
+  force_destroy               = false
+  ownership_controls          = "BucketOwnerEnforced"
+  sse_algorithm               = "aws:kms"
+  custom_kms_key              = local.laa_general_kms_arn
   enforce_kms_request_headers = false
 
   lifecycle_rule = [
