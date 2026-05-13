@@ -228,6 +228,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "ec2:DescribeInstanceTypes",
       "ec2:DescribeSnapshots",
       "ec2:DescribeVolumes",
+      "ec2:DetachVolume",
       "ec2:ImportImage",
       "ec2:ImportSnapshot",
       "ec2:RegisterImage",
