@@ -6,7 +6,7 @@
       "access": [
         {
           "sso_group_name": "xhibit-portal-dev",
-          "level": "administrator"
+          "level": "sandbox"
         },
         {
           "sso_group_name": "octo-cyber-team",
@@ -24,7 +24,8 @@
           "sso_group_name": "cjse-xhibit-portal-discovery",
           "level": "developer"
         }
-      ]
+      ],
+        "nuke": "exclude"
     },
     {
       "name": "preproduction",
