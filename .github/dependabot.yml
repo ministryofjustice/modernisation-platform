@@ -11,14 +11,10 @@ updates:
     commit-message:
       prefix: ":dependabot: devcontainers"
       include: "scope"
-    cooldown:
-      default-days: 7
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "daily"
-    cooldown:
-      default-days: 7
     groups:
       action-dependencies:
         patterns:
@@ -28,16 +24,12 @@ updates:
       - "terraform/**/*"
     schedule:
       interval: "daily"
-    cooldown:
-      default-days: 7
   - package-ecosystem: "gomod"
     directories:
       - "scripts/**/*"
       - "terraform/**/*"
     schedule:
       interval: "daily"
-    cooldown:
-      default-days: 7
     groups:
       gomod-dependencies:
         patterns:
