@@ -1512,8 +1512,7 @@ data "aws_iam_policy_document" "reporting-operations" {
       "lambda:InvokeFunction",
       "events:PutRule",
       "events:PutTargets",
-      "events:RemoveTargets",
-      "events:DeleteRule"
+      "events:RemoveTargets"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
