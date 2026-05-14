@@ -29,7 +29,7 @@
     "infrastructure-support": "EUCS.CloudPlatforms@justice.gov.uk",
     "owner": "EUCS.CloudPlatforms@justice.gov.uk",
     "slack-channel": "eucs-virtual-desktop-services",
-    "critical-national-infrastructure": false
+    "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": [],
   "go-live-date": ""
