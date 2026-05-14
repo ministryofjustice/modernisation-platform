@@ -121,18 +121,18 @@ module "state-bucket" {
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
-  bucket_policy              = [data.aws_iam_policy_document.allow-state-access-from-root-account.json, data.aws_iam_policy_document.allow-state-access-for-root-account-sso-admins.json]
-  bucket_name                = "modernisation-platform-terraform-state"
-  replication_bucket         = "modernisation-platform-terraform-state-replication"
-  suffix_name                = "-terraform-state"
-  sse_algorithm              = "aws:kms"
+  bucket_policy               = [data.aws_iam_policy_document.allow-state-access-from-root-account.json, data.aws_iam_policy_document.allow-state-access-for-root-account-sso-admins.json]
+  bucket_name                 = "modernisation-platform-terraform-state"
+  replication_bucket          = "modernisation-platform-terraform-state-replication"
+  suffix_name                 = "-terraform-state"
+  sse_algorithm               = "aws:kms"
   enforce_kms_request_headers = false
-  replication_enabled        = true
-  replication_region         = "eu-west-1"
-  custom_kms_key             = aws_kms_key.s3_state_bucket_multi_region.arn
-  custom_replication_kms_key = aws_kms_replica_key.s3_state_bucket_multi_region_replica.arn
-  ownership_controls         = "BucketOwnerEnforced"
-  tags                       = local.tags
+  replication_enabled         = true
+  replication_region          = "eu-west-1"
+  custom_kms_key              = aws_kms_key.s3_state_bucket_multi_region.arn
+  custom_replication_kms_key  = aws_kms_replica_key.s3_state_bucket_multi_region_replica.arn
+  ownership_controls          = "BucketOwnerEnforced"
+  tags                        = local.tags
 
   lifecycle_rule = [
     {
