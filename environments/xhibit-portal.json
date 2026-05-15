@@ -25,7 +25,7 @@
           "level": "developer"
         }
       ],
-        "nuke": "exclude"
+      "nuke": "exclude"
     },
     {
       "name": "preproduction",
