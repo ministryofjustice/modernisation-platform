@@ -1133,25 +1133,25 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
     ]
   }
 
-  dynamic "statement" {
-    for_each = can(regex("^observability-platform-", terraform.workspace)) ? [1] : []
-    content {
-      sid    = "AllowAccountRestrictedGrafana"
-      effect = "Allow"
-      actions = [
-        "grafana:ListWorkspaceServiceAccounts",
-        "grafana:ListWorkspaceServiceAccountTokens",
-        "grafana:CreateWorkspaceServiceAccount",
-        "grafana:DeleteWorkspaceServiceAccount",
-        "grafana:CreateWorkspaceServiceAccountToken",
-        "grafana:DeleteWorkspaceServiceAccountToken"
+  statement {
+    sid    = "AllowAccountRestrictedGrafana"
+    effect = "Allow"
+    actions = [
+      "grafana:ListWorkspaceServiceAccounts",
+      "grafana:ListWorkspaceServiceAccountTokens",
+      "grafana:CreateWorkspaceServiceAccount",
+      "grafana:DeleteWorkspaceServiceAccount",
+      "grafana:CreateWorkspaceServiceAccountToken",
+      "grafana:DeleteWorkspaceServiceAccountToken"
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalAccount"
+      values = [
+        local.environment_management.account_ids["observability-platform-development"],
+        local.environment_management.account_ids["observability-platform-production"],
       ]
-      resources = ["*"]
-      condition {
-        test     = "StringEquals"
-        variable = "aws:PrincipalAccount"
-        values   = [local.environment_management.account_ids[terraform.workspace]]
-      }
     }
   }
 }
@@ -1452,21 +1452,21 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
     }
   }
 
-  dynamic "statement" {
-    for_each = can(regex("^observability-platform-", terraform.workspace)) ? [1] : []
-    content {
-      sid    = "AllowAccountRestrictedGrafana"
-      effect = "Allow"
-      actions = [
-        "grafana:ListWorkspaceServiceAccounts",
-        "grafana:ListWorkspaceServiceAccountTokens"
+  statement {
+    sid    = "AllowAccountRestrictedGrafana"
+    effect = "Allow"
+    actions = [
+      "grafana:ListWorkspaceServiceAccounts",
+      "grafana:ListWorkspaceServiceAccountTokens"
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalAccount"
+      values = [
+        local.environment_management.account_ids["observability-platform-development"],
+        local.environment_management.account_ids["observability-platform-production"],
       ]
-      resources = ["*"]
-      condition {
-        test     = "StringEquals"
-        variable = "aws:PrincipalAccount"
-        values   = [local.environment_management.account_ids[terraform.workspace]]
-      }
     }
   }
 }
