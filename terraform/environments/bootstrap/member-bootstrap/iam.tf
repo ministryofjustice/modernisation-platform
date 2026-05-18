@@ -1132,6 +1132,28 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
       "s3:DeleteObject"
     ]
   }
+
+  statement {
+    sid    = "AllowAccountRestrictedGrafana"
+    effect = "Allow"
+    actions = [
+      "grafana:ListWorkspaceServiceAccounts",
+      "grafana:ListWorkspaceServiceAccountTokens",
+      "grafana:CreateWorkspaceServiceAccount",
+      "grafana:DeleteWorkspaceServiceAccount",
+      "grafana:CreateWorkspaceServiceAccountToken",
+      "grafana:DeleteWorkspaceServiceAccountToken"
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalAccount"
+      values = [
+        local.environment_management.account_ids["observability-platform-development"],
+        local.environment_management.account_ids["observability-platform-production"],
+      ]
+    }
+  }
 }
 
 # AWS Shield Advanced SRT (Shield Response Team) support role
@@ -1427,6 +1449,24 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
       test     = "StringEquals"
       variable = "aws:PrincipalAccount"
       values   = [local.environment_management.account_ids[terraform.workspace]]
+    }
+  }
+
+  statement {
+    sid    = "AllowAccountRestrictedGrafana"
+    effect = "Allow"
+    actions = [
+      "grafana:ListWorkspaceServiceAccounts",
+      "grafana:ListWorkspaceServiceAccountTokens"
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalAccount"
+      values = [
+        local.environment_management.account_ids["observability-platform-development"],
+        local.environment_management.account_ids["observability-platform-production"],
+      ]
     }
   }
 }
