@@ -1524,6 +1524,15 @@ data "aws_iam_policy_document" "reporting-operations" {
   }
 
   statement {
+    sid    = "allowAssumeRedshiftServerlessServiceRole"
+    effect = "Allow"
+    actions = [
+      "sts:AssumeRole"
+    ]
+    resources = ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/Redshift-Serverless-Service:Role"]
+  }
+
+  statement {
     effect = "Allow"
     actions = [
       "secretsmanager:CreateSecret",
