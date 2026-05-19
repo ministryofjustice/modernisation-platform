@@ -41,10 +41,6 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-            # ⛓️ SLSA - must run after checkout, before pip install
-            - name: ⛓️ SLSA Supply Chain Security
-              uses: ministryofjustice/devsecops-actions/sca/slsa@2dc8158ef71f7be8c00fda9a71e2ddbc27640a8b # main
-
             - name: Decrypt Secrets
               uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d2d07632db53d17c9760c0c2c06f22a37bd3f0a1 # v6.0.1
               with:
