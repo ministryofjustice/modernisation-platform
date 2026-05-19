@@ -10,6 +10,15 @@
         }
       ],
       "nuke": "rebuild"
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "laa-data-factory-engineering",
+          "level": "developer"
+        }
+      ]
     }
   ],
   "tags": {
