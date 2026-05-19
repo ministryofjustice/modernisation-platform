@@ -29,6 +29,5 @@
     "slack-channel": "laa_data_engineering",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [],
-  "go-live-date": ""
+  "github-oidc-team-repositories": []
 }
