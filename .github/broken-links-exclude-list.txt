@@ -18,6 +18,7 @@ https://github.com/ministryofjustice/modernisation-platform-github/blob/main/ter
 https://github.com/ministryofjustice/modernisation-platform-github/tree/main/terraform/github
 https://github.com/ministryofjustice/modernisation-platform-github/tree/main/terraform/github/modules/contributor
 https://github.com/ministryofjustice/modernisation-platform-security
+https://github.com/ministryofjustice/modernisation-platform/security/code-scanning
 https://github.com/ministryofjustice/modernisation-platform-security/issues/new/choose
 https://github.com/ministryofjustice/moj-ip-addresses/
 https://github.com/ministryofjustice/octo-access/issues/new?template=github-copilot-access-request.yml
