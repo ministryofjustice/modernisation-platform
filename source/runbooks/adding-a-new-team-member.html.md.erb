@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Adding a new team member to the Modernisation Platform
-last_reviewed_on: 2025-11-20
+last_reviewed_on: 2026-05-21
 review_in: 6 months
 ---
 
@@ -38,6 +38,7 @@ To add them to our GitHub team, update the file at [terraform/github/locals.tf](
 If they are a GitHub organisation owner, add them to the `maintainers` list too. This is because GitHub will return their role as a `maintainer`, because GitHub organisation owners always have those permissions.
 
 > You can view a [sample PR](https://github.com/ministryofjustice/modernisation-platform/pull/382) in case you get stuck. Please note that the sample PR is on the modernisation-platform repository, but the change needs to be made on the modernisation-platform-github repository.
+
 ## Adding them as a superadmin in our AWS landing zone
 
 To add them as a superadmin in our AWS landing zone, add their `firstname.lastname` in the [modernisation-platform-terraform-iam-superadmins](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins) `main.tf` file.
