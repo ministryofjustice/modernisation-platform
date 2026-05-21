@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Backups
-last_reviewed_on: 2025-11-21
+last_reviewed_on: 2026-05-21
 review_in: 6 months
 ---
 
@@ -50,12 +50,16 @@ If the above built in backup plans are not suitable, you can create your own bac
 
 ## On-Demand backups
 
-We had added, to the developer role, the ability to take on-demand backups of resources for those occasions where a one-off backup required. This can be done via the AWS Backup console or via the AWS CLI. As with other backups, these can be costly if long rention periods are used.
+We have added, to the developer role, the ability to take on-demand backups of resources for those occasions where a one-off backup is required. This can be done via the AWS Backup console or via the AWS CLI. As with other backups, these can be costly if long retention periods are used.
 
 Note that when using this feature, the backup IAM role AWSBackup must be selected.
 
 ## How to find your backups
 
-You can view your backups my navigating to AWS Backup in the AWS console and clicking "Backup vaults".
+You can view your backups by navigating to AWS Backup in the AWS console and clicking "Backup vaults".
 
 You can also view backups via the normal methods for viewing snapshots and AMIs (eg. EC2, Elastic Block Store, Snapshots).
+
+## Backup Validation & Restore Testing
+
+<%= warning_text('The Modernisation Platform does not monitor the success of the default backup strategy deployed in accounts, and cannot validate whether your resources can be successfully restored from the backups made by this service. Backup validation and restore testing is the responsibility of application teams.') %>
