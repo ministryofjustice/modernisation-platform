@@ -34,6 +34,10 @@
         {
           "sso_group_name": "cica-mp-tariff",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
@@ -46,6 +50,8 @@
     "critical-national-infrastructure": true,
     "securityhub-slack-channel": "cica-devops"
   },
-  "github-oidc-team-repositories": [""],
+  "github-oidc-team-repositories": [
+    ""
+  ],
   "go-live-date": "2025-11-29"
 }

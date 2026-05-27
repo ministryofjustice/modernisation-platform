@@ -16,7 +16,9 @@
           "github_action_reviewer": "true"
         }
       ],
-      "instance_scheduler_skip": ["true"],
+      "instance_scheduler_skip": [
+        "true"
+      ],
       "nuke": "exclude"
     },
     {
@@ -28,7 +30,9 @@
           "github_action_reviewer": "true"
         }
       ],
-      "instance_scheduler_skip": ["true"]
+      "instance_scheduler_skip": [
+        "true"
+      ]
     },
     {
       "name": "preproduction",
@@ -39,7 +43,9 @@
           "github_action_reviewer": "true"
         }
       ],
-      "instance_scheduler_skip": ["true"]
+      "instance_scheduler_skip": [
+        "true"
+      ]
     },
     {
       "name": "production",
@@ -48,6 +54,10 @@
           "sso_group_name": "data-platform-engineering",
           "level": "platform-engineer-admin",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
