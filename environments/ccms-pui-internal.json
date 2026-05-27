@@ -41,6 +41,10 @@
         {
           "sso_group_name": "laa-sre-admins",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
@@ -53,6 +57,8 @@
     "slack-channel": "",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": ["ministryofjustice/laa-ccms-provider-ui"],
+  "github-oidc-team-repositories": [
+    "ministryofjustice/laa-ccms-provider-ui"
+  ],
   "go-live-date": ""
 }

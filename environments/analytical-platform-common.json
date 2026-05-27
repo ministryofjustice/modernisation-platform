@@ -1,6 +1,8 @@
 {
   "account-type": "member",
-  "codeowners": ["analytical-platform-engineers"],
+  "codeowners": [
+    "analytical-platform-engineers"
+  ],
   "environments": [
     {
       "name": "production",
@@ -25,6 +27,10 @@
         {
           "sso_group_name": "data-platform-audit-and-security",
           "level": "security-audit"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
@@ -35,5 +41,7 @@
     "infrastructure-support": "analytical_platform@digital.justice.gov.uk",
     "owner": "Analytical Platform: analytical_platform@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": [
+    ""
+  ]
 }

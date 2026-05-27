@@ -64,6 +64,10 @@
         {
           "sso_group_name": "azure-aws-sso-csr-access",
           "level": "instance-access"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }

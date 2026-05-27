@@ -69,6 +69,10 @@
         {
           "sso_group_name": "laa-sre-admins",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
@@ -80,6 +84,8 @@
     "owner": "laa_ops@digital.justice.gov.uk",
     "critical-national-infrastructure": true
   },
-  "github-oidc-team-repositories": [""],
+  "github-oidc-team-repositories": [
+    ""
+  ],
   "go-live-date": ""
 }

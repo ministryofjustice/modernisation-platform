@@ -55,6 +55,10 @@
         {
           "sso_group_name": "cloud-platform-engineers",
           "level": "platform-engineer-admin"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }

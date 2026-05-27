@@ -61,6 +61,10 @@
         {
           "sso_group_name": "central-digital-product-team",
           "level": "instance-management"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
@@ -72,6 +76,8 @@
     "owner": "central-digital-product-team@digital.justice.gov.uk",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": ["ministryofjustice/integrated-fraud"],
+  "github-oidc-team-repositories": [
+    "ministryofjustice/integrated-fraud"
+  ],
   "go-live-date": "02-04-2024"
 }

@@ -25,6 +25,10 @@
         {
           "sso_group_name": "dts-legacy",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
@@ -36,6 +40,8 @@
     "owner": "dts-legacy-apps-support-team@HMCTS.NET",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": ["ministryofjustice/Dacp"],
+  "github-oidc-team-repositories": [
+    "ministryofjustice/Dacp"
+  ],
   "go-live-date": "2023-10-04"
 }

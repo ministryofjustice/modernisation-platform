@@ -68,6 +68,10 @@
         {
           "sso_group_name": "laa-apex-developer",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
@@ -79,6 +83,8 @@
     "owner": "laa_ops@digital.justice.gov.uk",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": ["ministryofjustice/laa-apex"],
+  "github-oidc-team-repositories": [
+    "ministryofjustice/laa-apex"
+  ],
   "go-live-date": "2024-11-27"
 }

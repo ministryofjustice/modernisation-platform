@@ -6,7 +6,9 @@
       "sso_group_name": "analytical-platform"
     }
   ],
-  "codeowners": ["analytical-platform-engineers"],
+  "codeowners": [
+    "analytical-platform-engineers"
+  ],
   "isolated-network": "true",
   "environments": [
     {
@@ -34,7 +36,9 @@
           "level": "read-only"
         }
       ],
-      "instance_scheduler_skip": ["true"],
+      "instance_scheduler_skip": [
+        "true"
+      ],
       "nuke": "exclude"
     },
     {
@@ -60,6 +64,10 @@
         {
           "sso_group_name": "analytical-platform-ingestion-readonly",
           "level": "read-only"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
