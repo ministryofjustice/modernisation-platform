@@ -35,9 +35,7 @@
       "name": "next"
     }
   ],
-  "codeowners": [
-    "analytical-platform-engineers"
-  ],
+  "codeowners": ["analytical-platform-engineers"],
   "environments": [
     {
       "name": "development",
@@ -72,9 +70,7 @@
           "level": "security-audit"
         }
       ],
-      "instance_scheduler_skip": [
-        "true"
-      ],
+      "instance_scheduler_skip": ["true"],
       "nuke": "exclude"
     },
     {
@@ -110,9 +106,7 @@
           "level": "security-audit"
         }
       ],
-      "instance_scheduler_skip": [
-        "true"
-      ]
+      "instance_scheduler_skip": ["true"]
     },
     {
       "name": "production",
@@ -159,8 +153,6 @@
     "infrastructure-support": "analytical-platform@digital.justice.gov.uk",
     "owner": "Analytical Platform: analytical-platform@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": [
-    ""
-  ],
+  "github-oidc-team-repositories": [""],
   "go-live-date": ""
 }

@@ -1,8 +1,6 @@
 {
   "account-type": "member",
-  "codeowners": [
-    "analytical-platform-engineers"
-  ],
+  "codeowners": ["analytical-platform-engineers"],
   "environments": [
     {
       "name": "production",
@@ -41,7 +39,5 @@
     "infrastructure-support": "analytical_platform@digital.justice.gov.uk",
     "owner": "Analytical Platform: analytical_platform@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": [
-    ""
-  ]
+  "github-oidc-team-repositories": [""]
 }
