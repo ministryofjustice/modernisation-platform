@@ -886,6 +886,8 @@ data "aws_iam_policy_document" "policy" {
       "logs:DescribeLogGroups",
       "logs:DescribeResourcePolicies",
       "logs:GetLogEvents",
+      "redshift-data:DescribeStatement",
+      "redshift-data:ExecuteStatement",
       "rds:*Tag*",
       "rds:*Snapshot*",
       "rds:StartDBInstance",
