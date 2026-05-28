@@ -13,9 +13,7 @@
           "level": "developer"
         }
       ],
-      "additional_reviewers": [
-        "jemnery"
-      ]
+      "additional_reviewers": ["jemnery"]
     },
     {
       "name": "preproduction",

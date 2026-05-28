@@ -16,9 +16,7 @@
           "github_action_reviewer": "true"
         }
       ],
-      "instance_scheduler_skip": [
-        "true"
-      ],
+      "instance_scheduler_skip": ["true"],
       "nuke": "exclude"
     },
     {
@@ -30,9 +28,7 @@
           "github_action_reviewer": "true"
         }
       ],
-      "instance_scheduler_skip": [
-        "true"
-      ]
+      "instance_scheduler_skip": ["true"]
     },
     {
       "name": "preproduction",
@@ -43,9 +39,7 @@
           "github_action_reviewer": "true"
         }
       ],
-      "instance_scheduler_skip": [
-        "true"
-      ]
+      "instance_scheduler_skip": ["true"]
     },
     {
       "name": "production",

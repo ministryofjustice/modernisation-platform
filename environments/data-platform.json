@@ -1,8 +1,6 @@
 {
   "account-type": "member",
-  "codeowners": [
-    "data-platform-engineering"
-  ],
+  "codeowners": ["data-platform-engineering"],
   "components": [
     {
       "name": "dns"
@@ -33,9 +31,7 @@
           "github_action_reviewer": "true"
         }
       ],
-      "instance_scheduler_skip": [
-        "true"
-      ],
+      "instance_scheduler_skip": ["true"],
       "nuke": "exclude"
     },
     {
@@ -47,9 +43,7 @@
           "github_action_reviewer": "true"
         }
       ],
-      "instance_scheduler_skip": [
-        "true"
-      ]
+      "instance_scheduler_skip": ["true"]
     },
     {
       "name": "preproduction",
@@ -60,9 +54,7 @@
           "github_action_reviewer": "true"
         }
       ],
-      "instance_scheduler_skip": [
-        "true"
-      ]
+      "instance_scheduler_skip": ["true"]
     },
     {
       "name": "production",
@@ -85,7 +77,5 @@
     "infrastructure-support": "dataplatform@digital.justice.gov.uk",
     "owner": "dataplatform@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": [
-    "ministryofjustice/data-platform"
-  ]
+  "github-oidc-team-repositories": ["ministryofjustice/data-platform"]
 }
