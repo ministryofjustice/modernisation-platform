@@ -62,7 +62,7 @@
 /terraform/environments/core-shared-services/laa-cis.tf @ministryofjustice/laa-sre-admins @ministryofjustice/v1-cis-mod 
 /terraform/environments/core-shared-services/laa-cst-security-dashboard.tf @ministryofjustice/laa-cyber-security-team 
 /terraform/environments/core-shared-services/laa-enterprise-service-bus.tf 
-/terraform/environments/core-shared-services/laa-mail-relay.tf @ministryofjustice/laa-aws-infrastructure 
+/terraform/environments/core-shared-services/laa-mail-relay.tf @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-sre-admins 
 /terraform/environments/core-shared-services/laa-oem.tf @ministryofjustice/laa-ccms-migration-team 
 /terraform/environments/core-shared-services/laa-pui-secure-browser.tf @ministryofjustice/ecp-admin @ministryofjustice/laa-sre-admins 
 /terraform/environments/core-shared-services/laa-stabilisation-cdc-poc.tf @ministryofjustice/laa-sre-admins @ministryofjustice/laa-stabilisation-cdc @ministryofjustice/v1-hub20-developers 
