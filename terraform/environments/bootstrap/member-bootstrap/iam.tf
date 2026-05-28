@@ -1444,7 +1444,8 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
       "workspaces-web:Get*",
       "workspaces-web:List*",
       "airflow:Get*",
-      "airflow:List*"
+      "airflow:List*",
+      "redshift-data:Describe*"
     ]
     resources = ["*"]
     condition {
