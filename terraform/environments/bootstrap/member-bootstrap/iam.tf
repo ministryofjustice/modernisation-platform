@@ -395,6 +395,7 @@ data "aws_iam_policy_document" "member-access-network" {
       "sso:PutApplicationAssignmentConfiguration",
       "sso:PutApplicationAuthenticationMethod",
       "sso:PutApplicationGrant",
+      "sso:UpdateApplication",
       "sso-directory:DescribeUser",
       "sso-directory:DescribeGroup",
       "states:*",
