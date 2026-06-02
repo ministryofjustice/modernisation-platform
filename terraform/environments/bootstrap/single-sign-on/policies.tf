@@ -866,6 +866,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "ds:AccessDSData",
       "ds:CancelSchemaExtension",
       "ds:CheckAlias",
+      "ds:ConnectDirectory",
       "ds:CreateAlias",
       "ds:CreateComputer",
       "ds:CreateDirectory",
