@@ -27,7 +27,7 @@
     "business-unit": "LAA",
     "service-area": "Hosting",
     "infrastructure-support": "laa_ops@digital.justice.gov.uk",
-    "owner": "LAA-Ops:laa_ops@digital.justice.gov.uk",
+    "owner": "laa_ops@digital.justice.gov.uk",
     "slack-channel": "",
     "critical-national-infrastructure": false
   },
