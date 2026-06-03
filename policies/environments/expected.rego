@@ -72,6 +72,7 @@ expected :=
     "laa-cst-security-dashboard",
     "laa-enterprise-service-bus",
     "laa-mail-relay",
+    "laa-new-workspaces",
     "laa-oem",
     "laa-pui-secure-browser",
     "laa-stabilisation-cdc-poc",
