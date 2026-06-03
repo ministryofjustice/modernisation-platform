@@ -13,6 +13,10 @@
           "level": "developer"
         },
         {
+          "sso_group_name": "laa-oia-developers",
+          "level": "developer"
+        },
+        {
           "sso_group_name": "laa-dba",
           "level": "developer"
         }
