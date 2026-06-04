@@ -316,6 +316,7 @@ expected :=
               "ccms-pui-internal-test",
               "ccms-pui-test",
               "contract-work-administration-test",
+              "data-factory-laa-test",
               "edw-19c-test",
               "laa-ccms-soa-test",
               "laa-enterprise-service-bus-test",

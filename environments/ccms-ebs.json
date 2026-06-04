@@ -157,6 +157,9 @@
     "owner": "ApplicationOperations@justice.gov.uk",
     "critical-national-infrastructure": true
   },
-  "github-oidc-team-repositories": ["ministryofjustice/ccms-payments-received"],
+  "github-oidc-team-repositories": [
+    "ministryofjustice/ccms-payments-received",
+    "ministryofjustice/ccms-financial-transfers"
+  ],
   "go-live-date": "2023-05-26"
 }

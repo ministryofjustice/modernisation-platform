@@ -38,6 +38,10 @@
         {
           "sso_group_name": "central-digital-product-team",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
