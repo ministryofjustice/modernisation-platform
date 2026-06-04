@@ -111,12 +111,12 @@ Output a clear summary grouped by status:
 
 #### Outdated Actions
 ```
-🔴 OUTDATED  owner/repo
-   Current : v1.2.3
-   Latest  : v1.4.0
-   Release : https://github.com/owner/repo/releases/tag/v1.4.0
-   Files   : .github/workflows/foo.yml
-             .github/workflows/bar.yml
+🔴 OUTDATED  actions/checkout
+   Current : v6.0.2
+   Latest  : v6.0.3
+   Release : https://github.com/actions/checkout/releases/tag/v6.0.3
+   Files   : .github/workflows/terraform-static-analysis.yml
+             .github/workflows/scorecards.yml
 ```
 
 #### Up to Date
@@ -172,9 +172,9 @@ For each outdated action, in every workflow file that references it:
 
 For major version bumps, warn the user before applying:
 ```
-⚠️  Major version bump detected: owner/repo v2 → v3
+⚠️  Major version bump detected: aws-actions/setup-sam v2 → v3
     Please review the release notes before proceeding:
-    https://github.com/owner/repo/releases/tag/v3
+    https://github.com/aws-actions/setup-sam/releases/tag/v3
     Apply anyway? (yes/no)
 ```
 Wait for explicit confirmation before applying major version changes.
