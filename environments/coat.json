@@ -17,6 +17,10 @@
         {
           "sso_group_name": "cloud-optimisation-and-accountability",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
@@ -24,8 +28,8 @@
   "tags": {
     "application": "coat",
     "business-unit": "Platforms",
-    "infrastructure-support": "CloudOptimisationAndAccountability@justice.gov.uk",
-    "owner": "CloudOptimisationAndAccountability@justice.gov.uk",
+    "infrastructure-support": "CloudOptimisationandAccountabilityTeam@justice.gov.uk",
+    "owner": "CloudOptimisationandAccountabilityTeam@justice.gov.uk",
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [],

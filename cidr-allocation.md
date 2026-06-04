@@ -44,7 +44,7 @@
 | 10.26.112.0 | /21  | cica-test - general                                  |
 | 10.26.120.0 | /21  | hq-test - general                                    |
 | 10.26.128.0 | /23  | analytical-platform-ingestion-development - isolated |
-| 10.26.130.0 | /23  | -                                                    |
+| 10.26.130.0 | /23  | laa non-prod workspaces - isolated                   |
 | 10.26.132.0 | /22  | -                                                    |
 | 10.26.136.0 | /21  | -                                                    |
 | 10.26.144.0 | /21  | yjb-development - general                            |
@@ -84,7 +84,7 @@
 | 10.27.112.0 | /21  | cjse production - general                           |
 | 10.27.120.0 | /21  | cjse preproduction - general                        |
 | 10.27.128.0 | /23  | analytical-platform-ingestion-production - isolated |
-| 10.27.130.0 | /23  | -                                                   |
+| 10.27.130.0 | /23  | laa production workspaces - isolated                |
 | 10.27.132.0 | /22  | -                                                   |
 | 10.27.136.0 | /21  | core-shared-services live_data                      |
 | 10.27.144.0 | /21  | yjb-preproduction - general                         |

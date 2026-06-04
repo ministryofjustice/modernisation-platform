@@ -68,6 +68,10 @@
         {
           "sso_group_name": "laa-apex-developer",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }

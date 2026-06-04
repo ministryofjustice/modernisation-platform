@@ -201,6 +201,10 @@
           "sso_group_name": "delius-core-preproduction",
           "level": "developer",
           "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "probation-de",
+          "level": "developer"
         }
       ],
       "instance_scheduler_skip": ["true"]

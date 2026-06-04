@@ -68,7 +68,7 @@ jobs:
             echo "Job Name: " ${{ inputs.JOB_NAME }}
         - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         - name: Decrypt Secrets
-          uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d2d07632db53d17c9760c0c2c06f22a37bd3f0a1 # v6.0.1
+          uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8 # v6.1.1
           with:
             environment_management: ${{ inputs.environment_management }}
             slack_webhook_url: ${{ inputs.slack_webhook_url }}
@@ -79,7 +79,7 @@ jobs:
             echo "::add-mask::$ACCOUNT_NUMBER"
             echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
         - name: Configure AWS Credentials
-          uses: aws-actions/configure-aws-credentials@d979d5b3a71173a29b74b5b88418bfda9437d885 # v6.1.1
+          uses: aws-actions/configure-aws-credentials@99214aa6889fcddfa57764031d71add364327e59 # v6.1.3
           with:
             role-to-assume: arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/${{ inputs.aws_role }}
             role-session-name: githubactionsrolesession

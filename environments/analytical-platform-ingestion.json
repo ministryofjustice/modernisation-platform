@@ -60,6 +60,10 @@
         {
           "sso_group_name": "analytical-platform-ingestion-readonly",
           "level": "read-only"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
