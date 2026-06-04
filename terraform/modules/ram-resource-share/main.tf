@@ -10,8 +10,8 @@ resource "aws_ram_resource_share" "default" {
 }
 
 resource "aws_ram_resource_association" "default" {
-  for_each = toset(var.resource_arns)
+  for_each = can(toset(var.resource_arns)) ? toset(var.resource_arns) : var.resource_arns
 
-  resource_arn       = each.value
+  resource_arn       = can(toset(var.resource_arns)) ? each.value : each.value
   resource_share_arn = aws_ram_resource_share.default.arn
 }

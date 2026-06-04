@@ -1,0 +1,26 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "octo",
+          "level": "sandbox"
+        }
+      ],
+      "nuke": "exclude"
+    }
+  ],
+  "tags": {
+    "application": "OCTO",
+    "business-unit": "Platforms",
+    "service-area": "Hosting",
+    "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+    "owner": "modernisation-platform@digital.justice.gov.uk",
+    "slack-channel": "modernisation-platform",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}

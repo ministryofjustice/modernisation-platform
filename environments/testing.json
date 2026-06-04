@@ -5,8 +5,16 @@
       "name": "test",
       "access": [
         {
-          "github_slug": "modernisation-platform",
+          "sso_group_name": "modernisation-platform",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "security-audit"
         }
       ]
     }
@@ -14,8 +22,10 @@
   "tags": {
     "application": "testing",
     "business-unit": "Platforms",
+    "service-area": "Hosting",
     "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
-    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
+    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""]
 }

@@ -1,0 +1,89 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "laa-aws-infrastructure",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-cwa-developer",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "laa-pcuam",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "sandbox",
+          "github_action_reviewer": "false"
+        }
+      ],
+      "nuke": "exclude"
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "laa-aws-infrastructure",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-cwa-developer",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        }
+      ],
+      "nuke": "exclude"
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "laa-aws-infrastructure",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "laa-aws-infrastructure",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "contract-work-administration",
+    "business-unit": "LAA",
+    "infrastructure-support": "laa_ops@digital.justice.gov.uk",
+    "owner": "laa_ops@digital.justice.gov.uk",
+    "critical-national-infrastructure": true
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
+}

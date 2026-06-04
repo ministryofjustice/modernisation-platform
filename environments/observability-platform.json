@@ -5,7 +5,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "observability-platform",
+          "sso_group_name": "observability-platform",
           "level": "developer"
         }
       ]
@@ -14,7 +14,7 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "observability-platform",
+          "sso_group_name": "observability-platform",
           "level": "developer"
         }
       ]
@@ -23,8 +23,12 @@
   "tags": {
     "application": "observability-platform",
     "business-unit": "Platforms",
-    "infrastructure-support": "hosting-leads@digital.justice.gov.uk",
-    "owner": "hosting-leads@digital.justice.gov.uk"
+    "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk",
+    "slack-channel": "modernisation-platform",
+    "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": [
+    "ministryofjustice/observability-platform-grafana-api-key-rotator"
+  ]
 }

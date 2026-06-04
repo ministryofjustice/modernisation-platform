@@ -3,6 +3,7 @@
 Terraform module for creating Transit Gateway EC2 attachments.
 
 ## Looking for issues?
+
 If you're looking to raise an issue with this module, please create a new issue in the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform/issues).
 
 <!-- BEGIN_TF_DOCS -->
@@ -11,15 +12,15 @@ If you're looking to raise an issue with this module, please create a new issue 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.0 |
 | <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.9.1 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws.transit-gateway-host"></a> [aws.transit-gateway-host](#provider\_aws.transit-gateway-host) | ~> 5.0 |
-| <a name="provider_aws.transit-gateway-tenant"></a> [aws.transit-gateway-tenant](#provider\_aws.transit-gateway-tenant) | ~> 5.0 |
+| <a name="provider_aws.transit-gateway-host"></a> [aws.transit-gateway-host](#provider\_aws.transit-gateway-host) | ~> 6.0 |
+| <a name="provider_aws.transit-gateway-tenant"></a> [aws.transit-gateway-tenant](#provider\_aws.transit-gateway-tenant) | ~> 6.0 |
 | <a name="provider_time"></a> [time](#provider\_time) | >= 0.9.1 |
 
 ## Modules

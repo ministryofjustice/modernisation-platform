@@ -1,0 +1,197 @@
+name: Environment Request
+
+on:
+  issues:
+    types: [opened]
+
+permissions: read-all
+
+jobs:
+  handle-request:
+    permissions:
+      contents: write
+      issues: write 
+      pull-requests: write
+    if: contains(github.event.issue.labels.*.name, 'New Account')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.x'
+
+      - name: Save issue body to file
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          echo "$ISSUE_BODY" > issue_body.txt
+          echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_ENV
+
+      - name: Extract fields from issue
+        run: |
+          # Function to extract and sanitize field values
+          extract_field() {
+            local key="$1"
+            local value=$(awk -v k="$key" '$0==k {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
+            # Sanitize: remove newlines/carriage returns, limit to 200 chars
+            echo "$value" | tr -d '\n\r' | head -c 200
+          }
+          
+          # Extract all fields
+          EXISTING_ACCOUNT=$(extract_field "### Is this an existing AWS account?")
+          APP_NAME=$(extract_field "### Application Name")
+          APP_TAG=$(extract_field "### application")
+          BUSINESS_UNIT=$(extract_field "### business-unit")
+          SERVICE_AREA=$(extract_field "### service-area")
+          INFRA_SUPPORT=$(extract_field "### infrastructure-support")
+          OWNER=$(extract_field "### owner")
+          SSO_GROUP=$(extract_field "### SSO Group Name")
+          ISOLATED_ACCOUNT=$(extract_field "### Do you require isolated networking?")
+          SLACK=$(extract_field "### Slack Channel")
+          GITHUB_OWNERS=$(extract_field "### GitHub code owner team slug")
+          GITHUB_REVIEWERS=$(extract_field "### GitHub actions reviewer team slug")
+          
+          
+          # Write to GITHUB_ENV
+          {
+            echo "EXISTING_ACCOUNT=$EXISTING_ACCOUNT"
+            echo "APP_NAME=$APP_NAME"
+            echo "APP_TAG=$APP_TAG"
+            echo "BUSINESS_UNIT=$BUSINESS_UNIT"
+            echo "SERVICE_AREA=$SERVICE_AREA"
+            echo "INFRA_SUPPORT=$INFRA_SUPPORT"
+            echo "OWNER=$OWNER"
+            echo "SSO_GROUP=$SSO_GROUP"
+            echo "ISOLATED_ACCOUNT=$ISOLATED_ACCOUNT"
+            echo "SLACK=$SLACK"
+            echo "GITHUB_OWNERS=$GITHUB_OWNERS"
+            echo "GITHUB_REVIEWERS=$GITHUB_REVIEWERS"
+          } >> $GITHUB_ENV
+
+      - name: Validate Slack field (no #)
+        run: |
+          if [[ "${SLACK}" == *"#"* ]]; then
+            echo "::error title=Invalid Slack Channel::SLACK must not include '#'. Please enter the channel name without the leading hash (e.g. 'my-channel' not '#my-channel'). Value: '${SLACK}'"
+            exit 1
+          fi
+
+      - name: Extract environment selections
+        run: |
+          ENVIRONMENTS=""
+
+          # Development
+          DEV_SELECTED=$(awk '/- \[x\] Development/ {print "true"}' issue_body.txt)
+          DEV_ACCESS=$(awk -v key="### Environment access level Development" '
+            $0==key {found=1; next}
+            found && /^### / {exit}
+            found && NF && $0!="_No response_" {print $0}
+          ' issue_body.txt | paste -sd, -)
+          if [ "$DEV_SELECTED" = "true" ]; then
+            ENVIRONMENTS="${ENVIRONMENTS}{\"name\": \"development\", \"access_level\": \"$DEV_ACCESS\"},"
+          fi
+
+          # Test
+          TEST_SELECTED=$(awk '/- \[x\] test/ {print "true"}' issue_body.txt)
+          TEST_ACCESS=$(awk -v key="### Environment access level Test" '
+            $0==key {found=1; next}
+            found && /^### / {exit}
+            found && NF && $0!="_No response_" {print $0}
+          ' issue_body.txt | paste -sd, -)
+          if [ "$TEST_SELECTED" = "true" ]; then
+            ENVIRONMENTS="${ENVIRONMENTS}{\"name\": \"test\", \"access_level\": \"$TEST_ACCESS\"},"
+          fi
+
+          # Preproduction
+          PREPROD_SELECTED=$(awk '/- \[x\] Preproduction/ {print "true"}' issue_body.txt)
+          PREPROD_ACCESS=$(awk -v key="### Environment access level Preproduction" '
+            $0==key {found=1; next}
+            found && /^### / {exit}
+            found && NF && $0!="_No response_" {print $0}
+          ' issue_body.txt | paste -sd, -)
+          if [ "$PREPROD_SELECTED" = "true" ]; then
+            ENVIRONMENTS="${ENVIRONMENTS}{\"name\": \"preproduction\", \"access_level\": \"$PREPROD_ACCESS\"},"
+          fi
+
+          # Production
+          PROD_SELECTED=$(awk '/- \[x\] Production/ {print "true"}' issue_body.txt)
+          PROD_ACCESS=$(awk -v key="### Environment access level Production" '
+            $0==key {found=1; next}
+            found && /^### / {exit}
+            found && NF && $0!="_No response_" {print $0}
+          ' issue_body.txt | paste -sd, -)
+          if [ "$PROD_SELECTED" = "true" ]; then
+            ENVIRONMENTS="${ENVIRONMENTS}{\"name\": \"production\", \"access_level\": \"$PROD_ACCESS\"},"
+          fi
+
+          # Remove trailing comma and wrap in brackets
+          ENV_SELECTIONS_JSON="[$(echo $ENVIRONMENTS | sed 's/,$//')]"
+          echo "ENV_SELECTIONS_JSON=$ENV_SELECTIONS_JSON" >> $GITHUB_ENV
+
+      - name: Create and checkout branch for environment request
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run create-account.py for new accounts
+        if: env.EXISTING_ACCOUNT == 'No'
+        run: |
+          ls -l scripts
+          python scripts/create-account.py "$APP_NAME" "$APP_TAG" "$GITHUB_OWNERS" "$GITHUB_REVIEWERS" "$BUSINESS_UNIT" "$SERVICE_AREA" "$INFRA_SUPPORT" "$OWNER" "$SLACK" "false" "$SSO_GROUP" "" "$ENV_SELECTIONS_JSON"
+
+      - name: Run amend-accounts.py for existing accounts
+        if: env.EXISTING_ACCOUNT == 'Yes'
+        run: |
+          python scripts/amend-accounts.py \
+            "$APP_NAME" \
+            "$SSO_GROUP" \
+            "$ENV_SELECTIONS_JSON"
+            # Add other arguments as needed for your amend script
+
+      - name: remove issue template files
+        run: rm -f issue_body.txt
+
+      - name: Install GitHub CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install gh
+  
+      - name: Create a signed commit for new accounts
+        if: env.EXISTING_ACCOUNT == 'No'
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8 # v6.1.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pr_title: "Automated environment request for $APP_NAME"
+          pr_body: "This PR was created automatically to update generated files. Linked to #${{ github.event.issue.number }}"
+
+
+      - name: Commit changes for existing accounts
+        if: env.EXISTING_ACCOUNT == 'Yes'
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8 # v6.1.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pr_title: "Automated environment amendment request for $APP_NAME"
+          pr_body: "This PR was created automatically to update generated files. Linked to #${{ github.event.issue.number }}"
+
+
+      - name: Comment on issue with PR link
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_TITLE="Automated environment amendment request for $APP_NAME"
+          PR_URL=$(gh pr list --state open --search "$pr_title in:title" --json url -q '.[0].url')
+          echo "PR URL: $PR_URL"
+          REPO="${{ github.repository }}"
+          gh issue comment $ISSUE_NUMBER --repo "$REPO" --body "A pull request has been created for your environment request: $PR_URL"
+      
+      - name: Save network setup info
+        run: |
+          echo "{\"pr_number\": ${{ github.event.pull_request.number }}, ISOLATED_ACCOUNT, \"app_name\": \"$APP_NAME\", \"business_unit\": \"$BUSINESS_UNIT\", \"environments\": $(echo $ENV_SELECTIONS_JSON | jq -c 'map(.name)')}" > network-setup-info.json
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: network-setup-info
+          path: network-setup-info.json

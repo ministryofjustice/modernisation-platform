@@ -1,0 +1,355 @@
+---
+owner_slack: "#modernisation-platform"
+title: IAM Access Key Hygiene Script
+last_reviewed_on: 2026-01-07
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+This section describes how IAM Access Key & User Hygiene script is used and managed within the Modernisation Platform.
+
+# IAM Access Key & User Hygiene (Extended Matrix)
+
+This documentation describes the IAM hygiene automation consisting of:
+
+- A scheduled GitHub Actions workflow that runs across multiple AWS accounts
+- A reusable workflow that assumes a role into each account and executes a script
+- A bash script that audits and enforces IAM user and access key hygiene
+- An IAM role deployed to each member account to permit the required actions
+
+---
+
+## High-level architecture
+
+- A **controller workflow** builds a matrix of AWS accounts
+- Accounts are split into multiple blocks to limit concurrency
+- Each account invokes a **reusable workflow**
+- The reusable workflow:
+  - Assumes an IAM role in the target account via OIDC
+  - Executes the IAM hygiene script
+- The script:
+  - Discovers IAM users and access keys
+  - Classifies inactivity
+  - Optionally enforces lifecycle actions
+  - Optionally sends GOV.UK Notify emails
+
+---
+
+## 1. Workflow: IAM Access Key & User Hygiene – Extended Matrix
+
+**File:** `.github/workflows/iam-access-key-hygiene-extended-matrix.yml`
+
+### Purpose
+
+Runs the IAM hygiene script across all eligible member AWS accounts using a matrix strategy.
+
+### Triggers
+
+- Scheduled:
+  - `cron: "30 9 1-7 * 1"`
+  - Runs at **09:30 UTC**
+  - Only on days **1–7 of the month**
+  - Only when the day is **Monday**
+  - Effectively: the first Monday of the month (when it falls within days 1–7)
+- Manual:
+  - `workflow_dispatch`
+
+### AWS region
+
+- Default region: `eu-west-2`
+
+### Permissions
+
+- `id-token: write` – required for GitHub OIDC role assumption
+- `contents: read` – required for repository checkout
+
+### Concurrency
+
+- Concurrency group: workflow name
+- In-progress runs are **not cancelled**
+
+---
+
+## Account matrix construction
+
+The workflow:
+
+1. Decrypts the `ENVIRONMENT_MANAGEMENT` secret
+2. Reads `account_ids` from the decrypted JSON
+3. Builds a sorted list of account names
+4. Applies hard exclusions
+
+### Excluded accounts
+
+The following accounts are excluded by name or prefix:
+
+- `core-*`
+- `modernisation-*`
+- `bichard7-*`
+- `analytical-platform-*`
+- `moj-network-operations-centre*`
+- `testing-test`
+
+---
+
+## Workload splitting
+
+To reduce execution time and avoid API throttling:
+
+- The account list is split into **4 blocks**
+- Each block runs as a separate job:
+  - `iam-hygiene-1`
+  - `iam-hygiene-2`
+  - `iam-hygiene-3`
+  - `iam-hygiene-4`
+- Each job:
+  - Uses a matrix of accounts
+  - Has `max-parallel: 5`
+  - Uses `fail-fast: false`
+
+---
+
+## Script execution
+
+Each matrix job invokes the reusable workflow and passes the script command:
+
+    bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run 
+
+### Important notes
+
+- The current configuration runs in **dry-run mode**
+- No IAM resources are modified
+- No GOV.UK Notify emails are sent
+- Output files are still generated for review
+
+To enable live enforcement, remove `--dry-run`.
+
+---
+
+## 2. Reusable workflow: Run Script Per Account
+
+**File:** `.github/workflows/reusable-run-per-account-script.yml`
+
+### Purpose
+
+Provides a reusable wrapper that:
+
+1. Checks out the repository
+2. Decrypts secrets
+3. Resolves the AWS account ID for a workspace
+4. Assumes an IAM role via OIDC
+5. Installs dependencies
+6. Executes a provided script
+
+---
+
+### Inputs
+
+Required:
+
+- `JOB_NAME` – label shown in GitHub Actions
+- `AWS_REGION` – AWS region
+- `environment_management` – encrypted environment management JSON
+- `TF_WORKSPACE` – account name used to resolve account ID
+- `ASSUME_ROLE_NAME` – IAM role name to assume
+- `SCRIPT_COMMAND` – shell command to execute
+
+Optional:
+
+- `GOV_UK_NOTIFY_API_KEY`
+- `TEMPLATE_ID`
+- `EXPECTED_TEMPLATE_VERSION`
+- `KEY_NOTIFY_DAYS`
+- `KEY_DISABLE_DAYS`
+- `KEY_DELETE_DAYS`
+- `USER_NOTIFY_DAYS`
+- `USER_DISABLE_DAYS`
+- `USER_DELETE_DAYS`
+
+Secrets:
+
+- `PASSPHRASE` – required to decrypt secrets
+
+---
+
+### AWS authentication
+
+- Uses `aws-actions/configure-aws-credentials`
+- Authenticates via GitHub OIDC
+- Assumes the role:
+
+    arn:aws:iam::<account-id>:role/<ASSUME_ROLE_NAME>
+
+---
+
+### Execution behaviour
+
+Before running the script, the workflow prints the caller identity:
+
+    aws sts get-caller-identity
+
+It then executes the provided script command verbatim.
+
+---
+
+## 3. IAM Hygiene Script
+
+**File:**  
+`scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh`
+
+### Purpose
+
+Audits IAM users and access keys in the current AWS account and classifies them based on inactivity.
+
+Depending on configuration, it can:
+
+- Notify users
+- Disable access keys
+- Delete access keys
+- Disable console login
+- Delete IAM users
+- Send GOV.UK Notify emails
+
+---
+
+## Dry-run mode
+
+Dry-run is enabled when:
+
+- The first argument is `--dry-run` or `dry-run`, OR
+
+In dry-run mode:
+
+- No IAM write operations are performed
+- No GOV.UK Notify emails are sent
+- Output files are still generated
+
+---
+
+## Inactivity thresholds
+
+Defaults (in days):
+
+### Access keys
+
+- Notify: `KEY_NOTIFY_DAYS=30`
+- Disable: `KEY_DISABLE_DAYS=60`
+- Delete: `KEY_DELETE_DAYS=90`
+
+### Users
+
+- Notify: `USER_NOTIFY_DAYS=30`
+- Disable: `USER_DISABLE_DAYS=60`
+- Delete: `USER_DELETE_DAYS=90`
+
+Thresholds can be overridden via environment variables.
+
+---
+
+## Inactivity calculation
+
+### Access keys
+
+- If the key has been used:
+  - Inactivity = days since last use
+- If the key has never been used:
+  - Inactivity = days since creation
+
+### Users
+
+Priority order:
+
+1. Console password last used
+2. Most recently used access key
+3. User creation date
+
+---
+
+## Output files
+
+The script generates the following files:
+
+- `iam_hygiene.json` – full structured output
+- `keys_notify.list`
+- `keys_disable.list`
+- `keys_delete.list`
+- `users_notify.list`
+- `users_disable.list`
+- `users_delete.list`
+
+All list files are deduplicated.
+
+---
+
+## GOV.UK Notify integration
+
+Notify is only used when:
+
+- Not in dry-run mode
+- `GOV_UK_NOTIFY_API_KEY` is set
+- `TEMPLATE_ID` is set
+
+### Recipient resolution
+
+- The script reads an IAM user tag
+- Default tag key: `infrastructure-support`
+- Tag value must be an email address
+
+If no email tag is present, no email is sent.
+
+---
+
+## 4. IAM Role: github-actions-iam-hygiene
+
+### Purpose
+
+Allows GitHub Actions to perform IAM hygiene actions in member accounts via OIDC.
+
+### Deployment
+
+- Deployed only to:
+  - `member`
+  - `member-unrestricted` accounts
+- Created using the Modernisation Platform OIDC role module
+
+---
+
+### Permissions
+
+#### Discovery (read-only)
+
+- `iam:ListUsers`
+- `iam:ListUserTags`
+- `iam:ListAccessKeys`
+- `iam:GetAccessKeyLastUsed`
+- `iam:ListAttachedUserPolicies`
+- `iam:ListUserPolicies`
+- `iam:ListGroupsForUser`
+
+#### Key lifecycle
+
+- `iam:UpdateAccessKey`
+- `iam:DeleteAccessKey`
+
+#### Console access
+
+- `iam:DeleteLoginProfile`
+
+#### User deletion cleanup
+
+- `iam:DetachUserPolicy`
+- `iam:DeleteUserPolicy`
+- `iam:RemoveUserFromGroup`
+- `iam:DeleteUser`
+
+All permissions are currently scoped to `*`.
+
+---
+
+## Operational guidance
+
+- Always run in **dry-run mode first**
+- Review `iam_hygiene.json` before enabling enforcement
+- Ensure Notify templates and IAM user tags are correctly configured
+- User deletion is destructive and should be enabled with caution

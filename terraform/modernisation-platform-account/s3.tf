@@ -1,14 +1,32 @@
-# State bucket KMS Source
-resource "aws_kms_key" "s3_state_bucket" {
-  description             = "s3-state-bucket"
+# State bucket KMS multi-Region
+resource "aws_kms_key" "s3_state_bucket_multi_region" {
+  description             = "s3-state-bucket-multi-region"
   policy                  = data.aws_iam_policy_document.kms_state_bucket.json
   enable_key_rotation     = true
   deletion_window_in_days = 30
+  multi_region            = true
+}
+
+resource "aws_kms_alias" "s3_state_bucket_multi_region" {
+  name          = "alias/s3-state-bucket-multi-region"
+  target_key_id = aws_kms_key.s3_state_bucket_multi_region.id
 }
 
 resource "aws_kms_alias" "s3_state_bucket" {
   name          = "alias/s3-state-bucket"
-  target_key_id = aws_kms_key.s3_state_bucket.id
+  target_key_id = aws_kms_key.s3_state_bucket_multi_region.id
+}
+
+resource "aws_kms_replica_key" "s3_state_bucket_multi_region_replica" {
+  description             = "AWS S3 bucket replica key"
+  deletion_window_in_days = 30
+  primary_key_arn         = aws_kms_key.s3_state_bucket_multi_region.arn
+  provider                = aws.modernisation-platform-eu-west-1
+}
+
+resource "aws_kms_alias" "s3_state_bucket_multi_region_replica" {
+  name          = "alias/s3-state-bucket-multi-region-replica"
+  target_key_id = aws_kms_replica_key.s3_state_bucket_multi_region_replica.id
 }
 
 data "aws_iam_policy_document" "kms_state_bucket" {
@@ -28,7 +46,7 @@ data "aws_iam_policy_document" "kms_state_bucket" {
       type = "AWS"
       identifiers = concat(
         ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"],
-        local.root_users_with_state_access
+        local.root_role_with_state_access
       )
     }
   }
@@ -65,6 +83,19 @@ data "aws_iam_policy_document" "kms_state_bucket" {
       values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
     }
   }
+  statement {
+    sid    = "AllowAWSBackupDecrypt"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey"
+    ]
+    resources = ["*"]
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/AWSBackup"]
+    }
+  }
 }
 
 # State bucket KMS Destination
@@ -84,41 +115,35 @@ resource "aws_kms_alias" "s3_state_bucket_eu-west-1_replication" {
   target_key_id = aws_kms_key.s3_state_bucket_eu-west-1_replication.id
 }
 
-module "state-bucket-s3-replication-role" {
-  source             = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role?ref=3b8a2945c1d266cc0ec2b21edb7f186b6574bda7" # v4.0.0
-  buckets            = [module.state-bucket.bucket.arn]
-  replication_bucket = "modernisation-platform-terraform-state-replication"
-  suffix_name        = "-terraform-state"
-  tags               = local.tags
-}
-
 module "state-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=8688bc15a08fbf5a4f4eef9b7433c5a417df8df1" # v7.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=f72f8d5bcf3081f6de0ef16d1017b53c81e16457" # v10.0.0
 
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
-  bucket_policy              = [data.aws_iam_policy_document.allow-state-access-from-root-account.json]
-  bucket_name                = "modernisation-platform-terraform-state"
-  replication_role_arn       = module.state-bucket-s3-replication-role.role.arn
-  replication_enabled        = true
-  replication_region         = "eu-west-1"
-  custom_kms_key             = aws_kms_key.s3_state_bucket.arn
-  custom_replication_kms_key = aws_kms_key.s3_state_bucket_eu-west-1_replication.arn
-  tags                       = local.tags
+  bucket_policy               = [data.aws_iam_policy_document.allow-state-access-from-root-account.json, data.aws_iam_policy_document.allow-state-access-for-root-account-sso-admins.json]
+  bucket_name                 = "modernisation-platform-terraform-state"
+  replication_bucket          = "modernisation-platform-terraform-state-replication"
+  suffix_name                 = "-terraform-state"
+  sse_algorithm               = "aws:kms"
+  enforce_kms_request_headers = false
+  replication_enabled         = true
+  replication_region          = "eu-west-1"
+  custom_kms_key              = aws_kms_key.s3_state_bucket_multi_region.arn
+  custom_replication_kms_key  = aws_kms_replica_key.s3_state_bucket_multi_region_replica.arn
+  ownership_controls          = "BucketOwnerEnforced"
+  tags                        = local.tags
 
   lifecycle_rule = [
     {
       id      = "main"
       enabled = "Enabled"
+      prefix  = ""
       tags    = {}
       transition = [
         {
           days          = 90
           storage_class = "STANDARD_IA"
-          }, {
-          days          = 700
-          storage_class = "GLACIER"
         }
       ]
       expiration = {
@@ -128,9 +153,6 @@ module "state-bucket" {
         {
           days          = 90
           storage_class = "STANDARD_IA"
-          }, {
-          days          = 700
-          storage_class = "GLACIER"
         }
       ]
       noncurrent_version_expiration = {
@@ -152,37 +174,34 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
 
     principals {
       type        = "AWS"
-      identifiers = local.root_users_with_state_access
+      identifiers = local.root_role_with_state_access
     }
   }
 
   statement {
-    sid       = "AllowGetObjectsFromRootAccount"
-    effect    = "Allow"
-    actions   = ["s3:GetObject"]
+    sid    = "AllowGetandPutObjectFromRootAccount"
+    effect = "Allow"
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject"
+    ]
     resources = ["${module.state-bucket.bucket.arn}/*"]
 
     principals {
       type        = "AWS"
-      identifiers = local.root_users_with_state_access
+      identifiers = local.root_role_with_state_access
     }
   }
 
   statement {
-    sid       = "AllowPutObjectsFromRootAccounts"
+    sid       = "AllowDeleteLockFromRootAccounts"
     effect    = "Allow"
-    actions   = ["s3:PutObject"]
-    resources = ["${module.state-bucket.bucket.arn}/*"]
+    actions   = ["s3:DeleteObject"]
+    resources = ["${module.state-bucket.bucket.arn}/*.tflock"]
 
     principals {
       type        = "AWS"
-      identifiers = local.root_users_with_state_access
-    }
-
-    condition {
-      test     = "StringEquals"
-      variable = "s3:x-amz-acl"
-      values   = ["bucket-owner-full-control"]
+      identifiers = local.root_role_with_state_access
     }
   }
 
@@ -217,6 +236,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
       type        = "AWS"
       identifiers = ["*"]
     }
+
     condition {
       test     = "ForAnyValue:StringLike"
       variable = "aws:PrincipalOrgPaths"
@@ -225,16 +245,22 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
   }
 
   statement {
-    sid     = "AllowTestingCIUser"
+    sid     = "DeleteLockFromModernisationPlatformOU"
     effect  = "Allow"
-    actions = ["s3:PutObject"]
+    actions = ["s3:DeleteObject", "s3:GetObject", "s3:PutObject"]
     resources = [
-      "${module.state-bucket.bucket.arn}/environments/members/testing/testing-test/terraform.tfstate",
+      "${module.state-bucket.bucket.arn}/*.tflock",
     ]
 
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["testing-test"]}:user/testing-ci"]
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
     }
   }
 
@@ -260,7 +286,59 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     condition {
       test     = "ForAnyValue:StringLike"
       variable = "aws:PrincipalArn"
-      values   = ["arn:aws:iam::*:role/github-actions"]
+      values   = ["arn:aws:iam::*:role/github-actions-apply", "arn:aws:iam::*:role/github-actions-environments-dev-test", "arn:aws:iam::*:role/github-actions-nuke"]
+    }
+  }
+
+  statement {
+    sid     = "AllowGithubActionsTerraformReadOnlyPutLock"
+    effect  = "Allow"
+    actions = ["s3:PutObject"]
+    resources = [
+      "${module.state-bucket.bucket.arn}/*/*.tflock",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::*:role/github-actions-environments-read-only"]
+    }
+  }
+
+  statement {
+    sid     = "AllowGithubActionsRoleDeleteLock"
+    effect  = "Allow"
+    actions = ["s3:DeleteObject"]
+    resources = [
+      "${module.state-bucket.bucket.arn}/*/*.tflock",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::*:role/github-actions", "arn:aws:iam::*:role/github-actions-environments-read-only", "arn:aws:iam::*:role/github-actions-environments-dev-test"]
     }
   }
 
@@ -289,6 +367,30 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
   }
 
   statement {
+    sid       = "AllowAdministratorAccessRoleDeleteLock"
+    effect    = "Allow"
+    actions   = ["s3:DeleteObject"]
+    resources = ["${module.state-bucket.bucket.arn}/environments/members/*.tflock"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_AdministratorAccess_*"]
+    }
+  }
+
+  statement {
     sid       = "AllowMPAdministratorAccessRole"
     effect    = "Allow"
     actions   = ["s3:PutObject"]
@@ -297,6 +399,416 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     principals {
       type        = "AWS"
       identifiers = tolist(data.aws_iam_roles.sso-admin-access.arns)
+    }
+  }
+
+  statement {
+    sid       = "AllowMPAdministratorAccessRoleDeleteLock"
+    effect    = "Allow"
+    actions   = ["s3:DeleteObject"]
+    resources = ["${module.state-bucket.bucket.arn}/environments/accounts/*.tflock", ]
+
+    principals {
+      type        = "AWS"
+      identifiers = tolist(data.aws_iam_roles.sso-admin-access.arns)
+    }
+  }
+
+  statement {
+    sid    = "AllowSprinklerGithubActionRole"
+    effect = "Allow"
+    actions = [
+      "s3:PutObject",
+      "s3:GetObject"
+    ]
+    resources = [
+      "arn:aws:s3:::modernisation-platform-terraform-state/single-sign-on/*",
+      "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*/sprinkler-development/*"
+    ]
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions", "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions-environments-dev-test"]
+    }
+  }
+
+  statement {
+    sid    = "AllowSprinklerGithubActionRoleDeleteLock"
+    effect = "Allow"
+    actions = [
+      "s3:DeleteObject"
+    ]
+    resources = [
+      "arn:aws:s3:::modernisation-platform-terraform-state/single-sign-on/*.tflock",
+      "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*/sprinkler-development/*.tflock"
+    ]
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions", "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions-environments-dev-test"]
+    }
+  }
+
+  statement {
+    sid    = "AllowAnalyticalPlatformEngineersAccess"
+    effect = "Allow"
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject"
+    ]
+    resources = ["${module.state-bucket.bucket.arn}/environments/members/analytical-platform-*/*"]
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_platform-engineer-admin_*"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalAccount"
+      values = [
+        # Analytical Platform's member account IDs
+        local.environment_management.account_ids["analytical-platform-common-production"],
+        local.environment_management.account_ids["analytical-platform-compute-development"],
+        local.environment_management.account_ids["analytical-platform-compute-test"],
+        local.environment_management.account_ids["analytical-platform-compute-production"],
+        local.environment_management.account_ids["analytical-platform-ingestion-development"],
+        local.environment_management.account_ids["analytical-platform-ingestion-production"],
+        local.environment_management.account_ids["analytical-platform-next-poc-hub-development"],
+        local.environment_management.account_ids["analytical-platform-next-poc-producer-development"]
+      ]
+    }
+  }
+
+  statement {
+    sid       = "AllowAnalyticalPlatformEngineersDeleteLock"
+    effect    = "Allow"
+    actions   = ["s3:DeleteObject"]
+    resources = ["${module.state-bucket.bucket.arn}/environments/members/analytical-platform-*/*.tflock"]
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_platform-engineer-admin_*"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalAccount"
+      values = [
+        # Analytical Platform's member account IDs
+        local.environment_management.account_ids["analytical-platform-common-production"],
+        local.environment_management.account_ids["analytical-platform-compute-development"],
+        local.environment_management.account_ids["analytical-platform-compute-test"],
+        local.environment_management.account_ids["analytical-platform-compute-production"],
+        local.environment_management.account_ids["analytical-platform-ingestion-development"],
+        local.environment_management.account_ids["analytical-platform-ingestion-production"],
+        local.environment_management.account_ids["analytical-platform-next-poc-hub-development"],
+        local.environment_management.account_ids["analytical-platform-next-poc-producer-development"]
+      ]
+    }
+  }
+
+  statement {
+    sid    = "AllowDevTestGithubActionsRole"
+    effect = "Allow"
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject"
+    ]
+    resources = ["${module.state-bucket.bucket.arn}/environments/accounts/*"]
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::*:role/github-actions-dev-test"]
+    }
+  }
+
+  statement {
+    sid    = "AllowDataPlatformEngineersAccess"
+    effect = "Allow"
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject"
+    ]
+    resources = ["${module.state-bucket.bucket.arn}/environments/members/data-platform*/*"]
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_platform-engineer-admin_*"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalAccount"
+      values = [
+        # Data Platform's member account IDs
+        local.environment_management.account_ids["data-platform-development"],
+        local.environment_management.account_ids["data-platform-preproduction"],
+        local.environment_management.account_ids["data-platform-production"],
+        local.environment_management.account_ids["data-platform-test"],
+        local.environment_management.account_ids["data-platform-governance-development"],
+        local.environment_management.account_ids["data-platform-governance-preproduction"],
+        local.environment_management.account_ids["data-platform-governance-production"],
+        local.environment_management.account_ids["data-platform-governance-test"],
+      ]
+    }
+  }
+
+  statement {
+    sid       = "AllowDataPlatformEngineersDeleteLock"
+    effect    = "Allow"
+    actions   = ["s3:DeleteObject"]
+    resources = ["${module.state-bucket.bucket.arn}/environments/members/data-platform*/*.tflock"]
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_platform-engineer-admin_*"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalAccount"
+      values = [
+        # Data Platform's member account IDs
+        local.environment_management.account_ids["data-platform-development"],
+        local.environment_management.account_ids["data-platform-preproduction"],
+        local.environment_management.account_ids["data-platform-production"],
+        local.environment_management.account_ids["data-platform-test"],
+        local.environment_management.account_ids["data-platform-governance-development"],
+        local.environment_management.account_ids["data-platform-governance-preproduction"],
+        local.environment_management.account_ids["data-platform-governance-production"],
+        local.environment_management.account_ids["data-platform-governance-test"],
+      ]
+    }
+  }
+  statement {
+    sid    = "AllowCloudPlatformEngineersAccess"
+    effect = "Allow"
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:DeleteObject"
+    ]
+
+    resources = ["${module.state-bucket.bucket.arn}/environments/members/cloud-platform*/*"]
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_platform-engineer-admin_*"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalAccount"
+      values = [
+        # Cloud Platform's member account IDs
+        local.environment_management.account_ids["cloud-platform-development"],
+        local.environment_management.account_ids["cloud-platform-preproduction"],
+        local.environment_management.account_ids["cloud-platform-nonlive"],
+        local.environment_management.account_ids["cloud-platform-live"]
+      ]
+    }
+  }
+  statement {
+    sid    = "AllowCloudPlatformDevelopmentClusterAccess"
+    effect = "Allow"
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:DeleteObject"
+    ]
+
+    resources = ["${module.state-bucket.bucket.arn}/environments/members/cloud-platform*/*"]
+    principals {
+      type = "AWS"
+      identifiers = [
+        "arn:aws:iam::${local.environment_management.account_ids["cloud-platform-development"]}:role/github-actions-development-cluster"
+      ]
+    }
+  }
+}
+
+# Allow access to the bucket for SSO admins from the MoJ root account
+data "aws_iam_policy_document" "allow-state-access-for-root-account-sso-admins" {
+  statement {
+    sid       = "AllowListBucketForRootAccountSSOAdmins"
+    effect    = "Allow"
+    actions   = ["s3:ListBucket"]
+    resources = [module.state-bucket.bucket.arn]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "ArnEquals"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::${data.aws_organizations_organization.root_account.master_account_id}:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_AdministratorAccess_*"]
+    }
+  }
+
+  statement {
+    sid    = "AllowGetAndPutObjectForRootAccountSSOAdmins"
+    effect = "Allow"
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+    ]
+    resources = ["${module.state-bucket.bucket.arn}/*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "ArnEquals"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::${data.aws_organizations_organization.root_account.master_account_id}:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_AdministratorAccess_*"]
+    }
+  }
+
+  statement {
+    sid       = "AllowDeleteLockForRootAccountSSOAdmins"
+    effect    = "Allow"
+    actions   = ["s3:DeleteObject"]
+    resources = ["${module.state-bucket.bucket.arn}/*.tflock"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "ArnEquals"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::${data.aws_organizations_organization.root_account.master_account_id}:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_AdministratorAccess_*"]
+    }
+  }
+}
+
+module "cost-management-bucket" {
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=f72f8d5bcf3081f6de0ef16d1017b53c81e16457" # v10.0.0
+  providers = {
+    aws.bucket-replication = aws.modernisation-platform-eu-west-1
+  }
+  bucket_policy               = [data.aws_iam_policy_document.cost_management_bucket_policy.json]
+  bucket_name                 = "mp-cost-explorer-reports"
+  custom_kms_key              = aws_kms_key.s3_state_bucket_multi_region.arn
+  sse_algorithm               = "aws:kms"
+  enforce_kms_request_headers = false
+  replication_enabled         = false
+  lifecycle_rule = [
+    {
+      id      = "main"
+      enabled = "Disabled"
+      prefix  = ""
+    }
+  ]
+  tags = local.tags
+}
+
+
+data "aws_iam_policy_document" "cost_management_bucket_policy" {
+  statement {
+    sid    = "AllowAdministratorAccessRole"
+    effect = "Allow"
+    actions = [
+      "s3:PutObject",
+      "s3:GetObject"
+    ]
+    resources = ["${module.cost-management-bucket.bucket.arn}/*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${local.environment_management.modernisation_platform_account_id}:role/github-actions"]
+    }
+  }
+}
+
+module "member_information_bucket" {
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=f72f8d5bcf3081f6de0ef16d1017b53c81e16457" # v10.0.0
+  providers = {
+    aws.bucket-replication = aws.modernisation-platform-eu-west-1
+  }
+  bucket_policy               = [data.aws_iam_policy_document.member_information_bucket_policy.json]
+  bucket_name                 = "modernisation-member-information"
+  custom_kms_key              = aws_kms_key.s3_state_bucket_multi_region.arn
+  sse_algorithm               = "aws:kms"
+  enforce_kms_request_headers = false
+  replication_enabled         = false
+  lifecycle_rule = [
+    {
+      id      = "main"
+      enabled = "Disabled"
+      prefix  = ""
+    }
+  ]
+  tags = local.tags
+}
+
+
+data "aws_iam_policy_document" "member_information_bucket_policy" {
+  statement {
+    sid    = "AllowAdministratorAccessRole"
+    effect = "Allow"
+    actions = [
+      "s3:PutObject",
+      "s3:GetObject"
+    ]
+    resources = ["${module.member_information_bucket.bucket.arn}/*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${local.environment_management.modernisation_platform_account_id}:role/github-actions"]
     }
   }
 }

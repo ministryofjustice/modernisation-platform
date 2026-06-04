@@ -1,16 +1,20 @@
 {
   "account-type": "member",
+  "codeowners": ["hmpps-migration", "hosting-migrations"],
   "environments": [
     {
       "name": "development",
       "access": [
         {
-          "github_slug": "hmpps-migration",
-          "level": "sandbox",
-          "nuke": "include"
+          "sso_group_name": "hmpps-migration",
+          "level": "developer"
         },
         {
-          "github_slug": "hmpps-dba",
+          "sso_group_name": "hosting-migrations",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "hmpps-dba",
           "level": "instance-management"
         }
       ]
@@ -19,12 +23,24 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
           "level": "developer"
         },
         {
-          "github_slug": "hmpps-dba",
+          "sso_group_name": "hosting-migrations",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "hmpps-dba",
           "level": "instance-management"
+        },
+        {
+          "sso_group_name": "hmpps-accredited-programmes-manage-and-deliver-devs",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "security-audit"
         }
       ]
     },
@@ -32,12 +48,20 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
           "level": "developer"
         },
         {
-          "github_slug": "hmpps-dba",
+          "sso_group_name": "hosting-migrations",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "hmpps-dba",
           "level": "instance-management"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "security-audit"
         }
       ]
     }
@@ -46,8 +70,11 @@
     "application": "delius-iaps",
     "business-unit": "HMPPS",
     "infrastructure-support": "probation-webops@digital.justice.gov.uk",
-    "owner": "probation-webops@digital.justice.gov.uk"
+    "owner": "probation-webops@digital.justice.gov.uk",
+    "critical-national-infrastructure": true
   },
-  "github-oidc-team-repositories": [""],
+  "github-oidc-team-repositories": [
+    "ministryofjustice/hmpps-delius-operational-automation"
+  ],
   "go-live-date": "2023-05-15"
 }

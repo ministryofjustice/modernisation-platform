@@ -1,0 +1,64 @@
+name: "Delete Expired AWS Backup Recovery Points"
+
+on:
+  schedule:
+    - cron: '0 5 * * 1' # trigger every Monday at 05:00am
+
+env:
+  AWS_REGION: "eu-west-2"
+permissions:
+  id-token: write 
+  contents: read 
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+
+  fetch-secrets:
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8 # v6.1.1
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  delete-expired-recovery-points:
+    runs-on: ubuntu-latest
+    needs: fetch-secrets
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8 # v6.1.1
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }} 
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+      - name: Set Account Number
+        run: |
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@99214aa6889fcddfa57764031d71add364327e59 # v6.1.3
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Run AWS Backup Vault Monitoring Script
+        run: bash ./scripts/delete-expired-backup-recovery-points.sh
+
+      - name: Slack failure notification
+        uses: slackapi/slack-github-action@45a88b9581bfab2566dc881e2cd66d334e621e2c # v3.0.3
+        with:
+          webhook-type: incoming-webhook
+          payload: |
+            {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
+        env:
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
+        if: ${{ failure() }}

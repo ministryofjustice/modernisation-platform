@@ -5,8 +5,8 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "dts-legacy",
-          "level": "sandbox"
+          "sso_group_name": "dts-legacy",
+          "level": "developer"
         }
       ]
     },
@@ -14,7 +14,7 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "dts-legacy",
+          "sso_group_name": "dts-legacy",
           "level": "developer"
         }
       ]
@@ -23,7 +23,7 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "dts-legacy",
+          "sso_group_name": "dts-legacy",
           "level": "developer"
         }
       ]
@@ -33,7 +33,9 @@
     "application": "ncas",
     "business-unit": "HMCTS",
     "infrastructure-support": "dts-legacy-apps-support-team@hmcts.net",
-    "owner": "dts-legacy-apps-support-team@hmcts.net"
+    "owner": "dts-legacy-apps-support-team@hmcts.net",
+    "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": ["ministryofjustice/ncas"]
+  "github-oidc-team-repositories": ["ministryofjustice/ncas"],
+  "go-live-date": "2023-11-07"
 }

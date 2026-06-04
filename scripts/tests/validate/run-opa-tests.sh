@@ -1,7 +1,13 @@
 #!/bin/bash
 
 set -e
+set -x
 set -o pipefail
+
+line(){
+  echo ""
+  echo "------------------------------------------------------------------------------------------"
+}
 
 get-diff() {
   diff=`comm <(tr ' ' '\n' <<<"$1" | sort) <(tr ' ' '\n' <<<"$2" | sort)`
@@ -9,7 +15,7 @@ get-diff() {
 }
 
 check-environment-files-present() {
-  test_data=`cat policies/environments/expected.rego | sed '1,3d'`
+  test_data=`cat policies/environments/expected.rego | sed '1,5d'`
   accounts=`jq -rn --argjson DATA "${test_data}" '$DATA.accounts[]' | sort | tr -s '\n' ' '`
   files=`ls -d environments/*.json | sed 's/environments\///g' | sed 's/.json//g' | sort | tr -s '\n' ' '`
   
@@ -24,7 +30,7 @@ check-environment-files-present() {
 }
 
 check-network-files-present() {
-  test_data=`cat policies/networking/expected.rego | sed '1,3d'`
+  test_data=`cat policies/networking/expected.rego | sed '1,5d'`
   business_units=`jq -rn --argjson DATA "${test_data}" '$DATA.subnet_sets | keys | .[]' | sort | tr -s '\n' ' '`
   files=`ls -d environments-networks/*.json | sed 's/environments-networks\///g' | sed 's/.json//g' | sort | tr -s '\n' ' '`
 
@@ -40,32 +46,49 @@ check-network-files-present() {
 
 # Run OPA tests with conftest
 environments() {
-  jq -n -c -r '[ inputs | . + { filename: input_filename } ]' environments/*.json | conftest test -p policies/environments -
+  line
+  echo "Running Environments tests"
+  jq -n -c -r '[ inputs | . + { filename: input_filename } ]' environments/*.json | conftest test --all-namespaces -p policies/environments -
 }
 
 networking() {
-  jq -n -c -r '[ inputs | . + { filename: input_filename } ]' environments-networks/*.json | conftest test -p policies/networking -
+  line
+  echo "Running Networking tests"
+  jq -n -c -r '[ inputs | . + { filename: input_filename } ]' environments-networks/*.json | conftest test --all-namespaces -p policies/networking -
 }
 
 member() {
-  jq -n -c -r '[ inputs | . + { filename: input_filename } | select( .["account-type"] == "member" ) ]' environments/*.json | conftest test -p policies/member -
+  line
+  echo "Running Member tests"
+  jq -n -c -r '[ inputs | . + { filename: input_filename } | select( .["account-type"] == "member" ) ]' environments/*.json | conftest test --all-namespaces -p policies/member -
 }
 
-collaborators(){
-    jq -n -c -r '[ inputs | . + { filename: input_filename } ]' collaborators.json | conftest test -p policies/collaborators -
+
+# Verify OPA tests
+
+verify-tests(){
+  line
+  echo "Verify OPA tests"
+  conftest verify -p policies/environments
+  conftest verify -p policies/networking
+  conftest verify -p policies/member
 }
 
 main() {
+  line
+  echo "Checking files"
   check-environment-files-present
   check-network-files-present
+  verify-tests & verify_tests_outcome=$!
+  wait $verify_tests_outcome
   environments & environments_outcome=$!
-  networking & networking_outcome=$!
-  member & member_outcome=$!
-  collaborators & collaborators_outcome=$!
   wait $environments_outcome
+  networking & networking_outcome=$!
   wait $networking_outcome
+  member & member_outcome=$!
   wait $member_outcome
-  wait $collaborators_outcome
+  line
 }
 
 main
+

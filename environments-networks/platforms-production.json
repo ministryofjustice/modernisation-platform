@@ -4,9 +4,14 @@
       "general": {
         "cidr": "10.27.96.0/21",
         "accounts": [
-          "long-term-storage-production",
-          "data-platform-apps-and-tools-production",
+          "analytical-platform-common-production",
+          "analytical-platform-compute-production",
+          "analytical-platform-ingestion-production",
+          "coat-production",
           "data-platform-production",
+          "data-platform-governance-production",
+          "integration-hub-production",
+          "long-term-storage-production",
           "observability-platform-production"
         ]
       }

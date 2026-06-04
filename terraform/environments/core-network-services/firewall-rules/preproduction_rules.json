@@ -13,20 +13,6 @@
     "destination_port": "80",
     "protocol": "TCP"
   },
-  "gp_to_hmpps_preproduction_http": {
-    "action": "PASS",
-    "source_ip": "${global-protect}",
-    "destination_ip": "${hmpps-preproduction}",
-    "destination_port": "80",
-    "protocol": "TCP"
-  },
-  "gp_to_hmpps_preproduction_https": {
-    "action": "PASS",
-    "source_ip": "${global-protect}",
-    "destination_ip": "${hmpps-preproduction}",
-    "destination_port": "443",
-    "protocol": "TCP"
-  },
   "psn_to_mp_hmpps_preproduction_https": {
     "action": "PASS",
     "source_ip": "${psn}",
@@ -34,32 +20,102 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
-  "moj-core-azure-1_to_mp_hmpps_preproduction_https": {
-    "action": "PASS",
-    "source_ip": "${moj-core-azure-1}",
-    "destination_ip": "${hmpps-preproduction}",
-    "destination_port": "443",
-    "protocol": "TCP"
-  },
-  "moj-core-azure-2_to_mp_hmpps_preproduction_https": {
-    "action": "PASS",
-    "source_ip": "${moj-core-azure-2}",
-    "destination_ip": "${hmpps-preproduction}",
-    "destination_port": "443",
-    "protocol": "TCP"
-  },
-  "laa_shared_services_to_mp_laa_preproduction": {
+  "laa_shared_services_ws_to_mp_laa_preproduction": {
     "action": "PASS",
     "source_ip": "${laa-lz-shared-services-nonprod}",
     "destination_ip": "${laa-preproduction}",
-    "destination_port": "ANY",
+    "destination_port": "$LAA_APPSTREAM_TCP",
     "protocol": "TCP"
   },
-  "laa_staging_to_mp_laa_preproduction": {
+  "mp_laa_preproduction_to_laa_shared_services_ws": {
+    "action": "PASS",
+    "source_ip": "${laa-preproduction}",
+    "destination_ip": "${laa-lz-shared-services-nonprod}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_mp_laa_preproduction_ccms": {
     "action": "PASS",
     "source_ip": "${laa-lz-staging}",
     "destination_ip": "${laa-preproduction}",
-    "destination_port": "ANY",
+    "destination_port": "$LAA_CCMS_TCP",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_mp_laa_preproduction_oem": {
+    "action": "PASS",
+    "source_ip": "${laa-lz-staging}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "$LAA_OEM_TCP",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_mp_laa_preproduction_oas": {
+    "action": "PASS",
+    "source_ip": "${laa-lz-staging}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "$LAA_OAS_TCP",
+    "protocol": "TCP"
+  },
+  "mojo_to_mp_laa_preproduction_oas": {
+    "action": "PASS",
+    "source_ip": "${mojo-end-user-devices}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "$LAA_OAS_TCP",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_mp_laa_preproduction_edw": {
+    "action": "PASS",
+    "source_ip": "${laa-lz-staging}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "$LAA_EDW_TCP",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_mp_laa_preproduction_maat": {
+    "action": "PASS",
+    "source_ip": "${laa-lz-staging}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "$LAA_MAAT_TCP",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_laa_preproduction_ccms_mp": {
+    "action": "PASS",
+    "source_ip": "${laa-preproduction}",
+    "destination_ip": "${laa-lz-staging}",
+    "destination_port": "$LAA_CCMS_TCP",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_laa_preproduction_oem_mp": {
+    "action": "PASS",
+    "source_ip": "${laa-preproduction}",
+    "destination_ip": "${laa-lz-staging}",
+    "destination_port": "$LAA_OEM_TCP",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_laa_preproduction_oas_mp": {
+    "action": "PASS",
+    "source_ip": "${laa-preproduction}",
+    "destination_ip": "${laa-lz-staging}",
+    "destination_port": "$LAA_OAS_TCP",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_laa_preproduction_edw_mp": {
+    "action": "PASS",
+    "source_ip": "${laa-preproduction}",
+    "destination_ip": "${laa-lz-staging}",
+    "destination_port": "$LAA_EDW_TCP",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_laa_preproduction_maat_mp": {
+    "action": "PASS",
+    "source_ip": "${laa-preproduction}",
+    "destination_ip": "${laa-lz-staging}",
+    "destination_port": "$LAA_MAAT_TCP",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_webgate_mp_to_laa_development_lz": {
+    "action": "PASS",
+    "source_ip": "${laa-preproduction}",
+    "destination_ip": "${laa-lz-staging}",
+    "destination_port": "$LAA_PORTAL_WEBGATE_TCP",
     "protocol": "TCP"
   },
   "laa_mgmt_production_to_mp_laa_preproduction": {
@@ -69,6 +125,22 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
+  "nec_nonprod_to_mp_laa_preproduction": {
+    "action": "PASS",
+    "source_ip": "${nec-nonprod}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "$NEC_TCP",
+    "protocol": "TCP"
+  },
+
+  "mp_laa_preproduction_to_nec_nonprod": {
+    "action": "PASS",
+    "source_ip": "${laa-preproduction}",
+    "destination_ip": "${nec-nonprod}",
+    "destination_port": "$NEC_TCP",
+    "protocol": "TCP"
+  },
+
   "i2n_to_mp_hmpps_preproduction": {
     "action": "PASS",
     "source_ip": "${i2n}",
@@ -76,86 +148,72 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
-  "nomisapi_preprod_root_to_mp_hmpps_preproduction_oracledb": {
-    "action": "PASS",
-    "source_ip": "${nomisapi-preprod-root-vnet}",
-    "destination_ip": "${hmpps-preproduction}",
-    "destination_port": "1521",
-    "protocol": "TCP"
-  },
   "noms_live_to_mp_hmpps_preproduction": {
     "action": "PASS",
     "source_ip": "${noms-live-vnet}",
     "destination_ip": "${hmpps-preproduction}",
-    "destination_port": "ANY",
+    "destination_port": "$AZURE_FIXNGO_MP_TCP",
     "protocol": "TCP"
   },
   "mp_hmpps_preproduction_to_noms_live": {
     "action": "PASS",
     "source_ip": "${hmpps-preproduction}",
     "destination_ip": "${noms-live-vnet}",
-    "destination_port": "ANY",
-    "protocol": "TCP"
-  },
-  "noms_live_dr_to_mp_hmpps_preproduction": {
-    "action": "PASS",
-    "source_ip": "${noms-live-dr-vnet}",
-    "destination_ip": "${hmpps-preproduction}",
-    "destination_port": "ANY",
-    "protocol": "TCP"
-  },
-  "mp_hmpps_preproduction_to_noms_live_dr": {
-    "action": "PASS",
-    "source_ip": "${hmpps-preproduction}",
-    "destination_ip": "${noms-live-dr-vnet}",
-    "destination_port": "ANY",
+    "destination_port": "$AZURE_FIXNGO_MP_TCP",
     "protocol": "TCP"
   },
   "noms_mgmt_live_to_mp_hmpps_preproduction": {
     "action": "PASS",
     "source_ip": "${noms-mgmt-live-vnet}",
     "destination_ip": "${hmpps-preproduction}",
-    "destination_port": "ANY",
+    "destination_port": "$AZURE_FIXNGO_MP_TCP",
     "protocol": "TCP"
   },
   "mp_hmpps_preproduction_to_noms_mgmt_live": {
     "action": "PASS",
     "source_ip": "${hmpps-preproduction}",
     "destination_ip": "${noms-mgmt-live-vnet}",
-    "destination_port": "ANY",
+    "destination_port": "$AZURE_FIXNGO_MP_TCP",
     "protocol": "TCP"
   },
-  "noms_mgmt_live_dr_to_mp_hmpps_preproduction": {
-    "action": "PASS",
-    "source_ip": "${noms-mgmt-live-dr-vnet}",
-    "destination_ip": "${hmpps-preproduction}",
-    "destination_port": "ANY",
-    "protocol": "TCP"
-  },
-  "mp_hmpps_preproduction_to_noms_mgmt_live_dr": {
+  "mp_hmpps_preproduction_to_dom1_dcs_TCP": {
     "action": "PASS",
     "source_ip": "${hmpps-preproduction}",
-    "destination_ip": "${noms-mgmt-live-dr-vnet}",
-    "destination_port": "ANY",
+    "destination_ip": "${dom1-dcs}",
+    "destination_port": "$DOMAIN_CONTROLLER_TCP",
     "protocol": "TCP"
   },
-  "aks_studio_hosting_live_1_to_mp_hmpps_preproduction_oracledb": {
+  "mp_hmpps_preproduction_to_dom1_dcs_UDP": {
     "action": "PASS",
-    "source_ip": "${aks-studio-hosting-live-1-vnet}",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${dom1-dcs}",
+    "destination_port": "$DOMAIN_CONTROLLER_UDP",
+    "protocol": "UDP"
+  },
+  "mojo_to_mp_hmpps_preproduction_csr_tcp": {
+    "action": "PASS",
+    "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${hmpps-preproduction}",
-    "destination_port": "1521",
+    "destination_port": "$CSR_EUC_TCP",
     "protocol": "TCP"
   },
-  "aks_studio_hosting_live_1_to_mp_hmpps_preproduction_https": {
+  "mojo_to_mp_hmpps_preproduction_planetfm_tcp": {
     "action": "PASS",
-    "source_ip": "${aks-studio-hosting-live-1-vnet}",
+    "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${hmpps-preproduction}",
-    "destination_port": "443",
+    "destination_port": "$PLANETFM_EUC_TCP",
     "protocol": "TCP"
   },
-  "nomisapi_prod_root_to_mp_hmpps_preproduction_oracledb": {
+  "mojo_to_mp_hmpps_preproduction_planetfm_udp": {
     "action": "PASS",
-    "source_ip": "${nomisapi-prod-root-vnet}",
+    "source_ip": "${mojo-end-user-devices}",
+    "destination_ip": "${hmpps-preproduction}",
+    "destination_port": "$PLANETFM_EUC_UDP",
+    "protocol": "UDP"
+  },
+  "xsiam_prod_to_mp_hmpps_preproduction_oracledb": {
+    "action": "PASS",
+    "source_ip": "${xsiam-prod-vpc}",
     "destination_ip": "${hmpps-preproduction}",
     "destination_port": "1521",
     "protocol": "TCP"
@@ -174,30 +232,16 @@
     "destination_port": "5432",
     "protocol": "TCP"
   },
-  "atos_arkc_ras_to_mp_hmpps_preproduction_https": {
-    "action": "PASS",
-    "source_ip": "${atos_arkc_ras}",
-    "destination_ip": "${hmpps-preproduction}",
-    "destination_port": "443",
-    "protocol": "TCP"
-  },
-  "atos_arkf_ras_to_mp_hmpps_preproduction_https": {
-    "action": "PASS",
-    "source_ip": "${atos_arkf_ras}",
-    "destination_ip": "${hmpps-preproduction}",
-    "destination_port": "443",
-    "protocol": "TCP"
-  },
-  "vodafone_wan_nicts_aggregate_to_mp_hmpps_preproduction_https": {
-    "action": "PASS",
-    "source_ip": "${vodafone_wan_nicts_aggregate}",
-    "destination_ip": "${hmpps-preproduction}",
-    "destination_port": "443",
-    "protocol": "TCP"
-  },
   "hmpps_preproduction_to_pgres_tcp": {
     "action": "PASS",
     "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${cloud-platform}",
+    "destination_port": "5432",
+    "protocol": "TCP"
+  },
+  "platforms_preproduction_to_cloud_platform_pgres": {
+    "action": "PASS",
+    "source_ip": "${platforms-preproduction}",
     "destination_ip": "${cloud-platform}",
     "destination_port": "5432",
     "protocol": "TCP"
@@ -237,6 +281,62 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
+  "hmpps_preproduction_to_delius_preprod_oracledb_1521": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${delius-pre-prod}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "hmpps_preproduction_to_delius_preprod_oracledb_1522": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${delius-pre-prod}",
+    "destination_port": "1522",
+    "protocol": "TCP"
+  },
+  "delius_preprod_to_hmpps_preproduction_oracledb_1521": {
+    "action": "PASS",
+    "source_ip": "${delius-pre-prod}",
+    "destination_ip": "${hmpps-preproduction}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "delius_preprod_to_hmpps_preproduction_oracledb_1522": {
+    "action": "PASS",
+    "source_ip": "${delius-pre-prod}",
+    "destination_ip": "${hmpps-preproduction}",
+    "destination_port": "1522",
+    "protocol": "TCP"
+  },
+  "hmpps_preproduction_to_delius_stage_oracledb_1521": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${delius-stage}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "hmpps_preproduction_to_delius_stage_oracledb_1522": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${delius-stage}",
+    "destination_port": "1522",
+    "protocol": "TCP"
+  },
+  "delius_stage_to_hmpps_preproduction_oracledb_1521": {
+    "action": "PASS",
+    "source_ip": "${delius-stage}",
+    "destination_ip": "${hmpps-preproduction}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "delius_stage_to_hmpps_preproduction_oracledb_1522": {
+    "action": "PASS",
+    "source_ip": "${delius-stage}",
+    "destination_ip": "${hmpps-preproduction}",
+    "destination_port": "1522",
+    "protocol": "TCP"
+  },
   "hmpps_preproduction_to_delius_eng_prod_oracledb": {
     "action": "PASS",
     "source_ip": "${hmpps-preproduction}",
@@ -265,7 +365,28 @@
     "destination_port": "389",
     "protocol": "TCP"
   },
-  "rfc_10-0-0-0-8_to_ppud_preproduction_https": {
+  "cp_to_mp_hmpps_preproduction_ldap": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${hmpps-preproduction}",
+    "destination_port": "389",
+    "protocol": "TCP"
+  },
+  "cp_to_mp_hmpps_preproduction_ldaps": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${hmpps-preproduction}",
+    "destination_port": "636",
+    "protocol": "TCP"
+  },
+  "rfc1918_10-0-0-0-8_to_mp_hmpp_preproduction_http": {
+    "action": "PASS",
+    "source_ip": "10.0.0.0/8",
+    "destination_ip": "${hmpps-preproduction}",
+    "destination_port": "80",
+    "protocol": "TCP"
+  },
+  "rfc1918_10-0-0-0-8_to_mp_hmpps_preproduction_https": {
     "action": "PASS",
     "source_ip": "10.0.0.0/8",
     "destination_ip": "${hmpps-preproduction}",
@@ -279,179 +400,158 @@
     "destination_port": "5439",
     "protocol": "TCP"
   },
-  "mp_hmpps_preproduction_to_noms_mgmt_vnet_ntp": {
-    "action": "PASS",
-    "source_ip": "${hmpps-preproduction}",
-    "destination_ip": "${noms-mgmt-vnet}",
-    "destination_port": "123",
-    "protocol": "UDP"
-  },
-  "mp_hmpps_preproduction_to_noms_mgmt_vnet_ldap": {
-    "action": "PASS",
-    "source_ip": "${hmpps-preproduction}",
-    "destination_ip": "${noms-mgmt-vnet}",
-    "destination_port": "389",
-    "protocol": "UDP"
-  },
-  "mp_hmpps_preproduction_to_noms_mgmg_vnet_ldap_ssl": {
-    "action": "PASS",
-    "source_ip": "${hmpps-preproduction}",
-    "destination_ip": "${noms-mgmt-vnet}",
-    "destination_port": "636",
-    "protocol": "UDP"
-  },
-  "mp_hmpps_preproduction_to_noms_mgmt_vnet_kerberos": {
-    "action": "PASS",
-    "source_ip": "${hmpps-preproduction}",
-    "destination_ip": "${noms-mgmt-vnet}",
-    "destination_port": "88",
-    "protocol": "UDP"
-  },
-  "mp_hmpps_preproduction_to_noms_mgmt_vnet_kerberos_password_change": {
-    "action": "PASS",
-    "source_ip": "${hmpps-preproduction}",
-    "destination_ip": "${noms-mgmt-vnet}",
-    "destination_port": "464",
-    "protocol": "UDP"
-  },
-  "mp_hmpps_preproduction_to_noms_mgmt_vnet_smb": {
-    "action": "PASS",
-    "source_ip": "${hmpps-preproduction}",
-    "destination_ip": "${noms-mgmt-vnet}",
-    "destination_port": "445",
-    "protocol": "UDP"
-  },
-  "mp_hmpps_preproduction_to_noms_mgmt_vnet_global_catalog_3268": {
-    "action": "PASS",
-    "source_ip": "${hmpps-preproduction}",
-    "destination_ip": "${noms-mgmt-vnet}",
-    "destination_port": "3268",
-    "protocol": "UDP"
-  },
-  "mp_hmpps_preproduction_to_noms_mgmt_vnet_global_catalog_3269": {
-    "action": "PASS",
-    "source_ip": "${hmpps-preproduction}",
-    "destination_ip": "${noms-mgmt-vnet}",
-    "destination_port": "3269",
-    "protocol": "UDP"
-  },
-  "mp_hmpps_preproduction_to_noms_mgmt_vnet_netbios_137": {
-    "action": "PASS",
-    "source_ip": "${hmpps-preproduction}",
-    "destination_ip": "${noms-mgmt-vnet}",
-    "destination_port": "137",
-    "protocol": "UDP"
-  },
-  "mp_hmpps_preproduction_to_noms_mgmt_vnet_netbios_138": {
-    "action": "PASS",
-    "source_ip": "${hmpps-preproduction}",
-    "destination_ip": "${noms-mgmt-vnet}",
-    "destination_port": "138",
-    "protocol": "UDP"
-  },
-  "mojo_to_csr_preproduction_http": {
-    "action": "PASS",
-    "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${ hmpps-preproduction-general-private-subnets}",
-    "destination_port": "80",
-    "protocol": "TCP"
-  },
-  "mojo_to_csr_preproduction_app_core_7770": {
-    "action": "PASS",
-    "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${ hmpps-preproduction-general-private-subnets}",
-    "destination_port": "7770",
-    "protocol": "TCP"
-  },
-  "mojo_to_csr_preproduction_app_core_7771": {
-    "action": "PASS",
-    "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${ hmpps-preproduction-general-private-subnets}",
-    "destination_port": "7771",
-    "protocol": "TCP"
-  },
-  "mojo_to_csr_preproduction_app_custom_7780": {
-    "action": "PASS",
-    "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${ hmpps-preproduction-general-private-subnets}",
-    "destination_port": "7780",
-    "protocol": "TCP"
-  },
-  "mojo_to_csr_preproduction_app_custom_7781": {
-    "action": "PASS",
-    "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${ hmpps-preproduction-general-private-subnets}",
-    "destination_port": "7781",
-    "protocol": "TCP"
-  },
-  "mojo_to_csr_preproduction_2109": {
-    "action": "PASS",
-    "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${ hmpps-preproduction-general-private-subnets}",
-    "destination_port": "2109",
-    "protocol": "TCP"
-  },
-  "mojo_to_csr_preproduction_45054": {
-    "action": "PASS",
-    "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${ hmpps-preproduction-general-private-subnets}",
-    "destination_port": "45054",
-    "protocol": "TCP"
-  },
-  "noms_mgmt_live_to_planetfm_preproduction_sql_1434_udp": {
-    "action": "PASS",
-    "source_ip": "${noms-mgmt-live-vnet}",
-    "destination_ip": "${hmpps-preproduction-general-private-subnets}",
-    "destination_port": "1434",
-    "protocol": "UDP"
-  },
-  "mojo_to_planetfm_preproduction_netbios_137_udp": {
-    "action": "PASS",
-    "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${hmpps-preproduction-general-private-subnets}",
-    "destination_port": "137",
-    "protocol": "UDP"
-  },
-  "mojo_to_planetfm_preproduction_smb_445_tcp": {
-    "action": "PASS",
-    "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${hmpps-preproduction-general-private-subnets}",
-    "destination_port": "445",
-    "protocol": "TCP"
-  },
-  "mojo_to_planetfm_preproduction_sql_1433_tcp": {
-    "action": "PASS",
-    "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${hmpps-preproduction-general-private-subnets}",
-    "destination_port": "1433",
-    "protocol": "TCP"
-  },
-  "mojo_to_planetfm_preproduction_sql_1434_udp": {
-    "action": "PASS",
-    "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${hmpps-preproduction-general-private-subnets}",
-    "destination_port": "1434",
-    "protocol": "UDP"
-  },
-  "mojo_to_planetfm_preproduction_cfam_scheduling_7071_tcp": {
-    "action": "PASS",
-    "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${hmpps-preproduction-general-private-subnets}",
-    "destination_port": "7071",
-    "protocol": "TCP"
-  },
-  "mojo_to_planetfm_preproduction_cafm_licensing_7073_tcp": {
-    "action": "PASS",
-    "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${hmpps-preproduction-general-private-subnets}",
-    "destination_port": "7073",
-    "protocol": "TCP"
-  },
   "cp_to_mp_laa_preproduction": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
     "destination_ip": "${laa-preproduction}",
     "destination_port": "1522",
+    "protocol": "TCP"
+  },
+  "cp_to_mp_laa_preproduction_oracledb": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "cp_to_mp_laa_preproduction_soa": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "$LAA_CCMS_SOA",
+    "protocol": "TCP"
+  },
+  "mp_laa_preproduction_to_cp": {
+    "action": "PASS",
+    "source_ip": "${laa-preproduction}",
+    "destination_ip": "${cloud-platform}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "gp_to_laa_preproduction_mp_https": {
+    "action": "PASS",
+    "source_ip": "${global-protect}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
+  "data_engineering_to_hmpps_preproduction_oracledb": {
+    "action": "PASS",
+    "source_ip": "${data-engineering-stage}",
+    "destination_ip": "${hmpps-preproduction}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "laa_appstream_ld_to_mp_laa_preproduction": {
+    "action": "PASS",
+    "source_ip": "${laa-appstream-vpc}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
+    "protocol": "TCP"
+  },
+  "laa_appstream_additional_ld_to_mp_laa_preproduction": {
+    "action": "PASS",
+    "source_ip": "${laa-appstream-vpc_additional}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
+    "protocol": "TCP"
+  },
+  "mp_laa_preproduction_to_laa_appstream_ld": {
+    "action": "PASS",
+    "source_ip": "${laa-preproduction}",
+    "destination_ip": "${laa-appstream-vpc}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_mp_laa_appstream_additional_ld": {
+    "action": "PASS",
+    "source_ip": "${laa-preproduction}",
+    "destination_ip": "${laa-appstream-vpc_additional}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
+    "protocol": "TCP"
+  },
+  "youth_justice_networking_to_yjb_preproduction_tcp": {
+    "action": "PASS",
+    "source_ip": "${youth-justice-networking-production}",
+    "destination_ip": "${yjb-preproduction}",
+    "destination_port": "$YJB_TCP",
+    "protocol": "TCP"
+  },
+  "yjb_preproduction_to_youth_justice_networking_production_tcp": {
+    "action": "PASS",
+    "source_ip": "${yjb-preproduction}",
+    "destination_ip": "${youth-justice-networking-production}",
+    "destination_port": "$YJB_TCP",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_cmseft_xerox_ssh_ssh-a": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-preproduction-general-private-subnets-a}",
+    "destination_ip": "13.17.132.44",
+    "destination_port": "22",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_cmseft_xerox_ssh_ssh-b": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-preproduction-general-private-subnets-b}",
+    "destination_ip": "13.17.132.44",
+    "destination_port": "22",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_cmseft_xerox_ssh_ssh-c": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-preproduction-general-private-subnets-c}",
+    "destination_ip": "13.17.132.44",
+    "destination_port": "22",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_data_a_ses": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-preproduction-general-data-subnets-a}",
+    "destination_ip": "$AWS_SMTP_EU_WEST_2",
+    "destination_port": "587",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_data_b_ses": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-preproduction-general-data-subnets-b}",
+    "destination_ip": "$AWS_SMTP_EU_WEST_2",
+    "destination_port": "587",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_data_c_ses": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-preproduction-general-data-subnets-c}",
+    "destination_ip": "$AWS_SMTP_EU_WEST_2",
+    "destination_port": "587",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_ftp": {
+    "action": "PASS",
+    "source_ip": "$LAA_PRIVATE_DATA_SUBNETS_PREPROD",
+    "destination_ip": "$LAA_FTP_ENDPOINTS",
+    "destination_port": "$LAA_FTP_TCP",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_laa_preproduction_ccms_soa_mp": {
+    "action": "PASS",
+    "source_ip": "${laa-preproduction}",
+    "destination_ip": "${laa-lz-staging}",
+    "destination_port": "$LAA_CCMS_SOA",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_ccms_soa_mp_to_laa_preproduction": {
+    "action": "PASS",
+    "source_ip": "${laa-lz-staging}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "$LAA_CCMS_SOA",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_cloud_platform_https": {
+    "action": "PASS",
+    "source_ip": "${laa-preproduction}",
+    "destination_ip": "${cloud-platform}",
+    "destination_port": "443",
     "protocol": "TCP"
   }
 }

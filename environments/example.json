@@ -5,8 +5,20 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "modernisation-platform",
+          "sso_group_name": "modernisation-platform",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "green-ops",
+          "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "security-audit"
         }
       ]
     }
@@ -14,9 +26,15 @@
   "tags": {
     "application": "example",
     "business-unit": "Platforms",
+    "service-area": "Hosting",
     "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
-    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
+    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk",
+    "slack-channel": "modernisation-platform",
+    "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": ["ministryofjustice/modernisation-platform"],
+  "github-oidc-team-repositories": [
+    "ministryofjustice/modernisation-platform",
+    "ministryofjustice/modernisation-platform-configuration-management"
+  ],
   "go-live-date": ""
 }

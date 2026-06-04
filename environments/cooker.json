@@ -5,18 +5,43 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "modernisation-platform",
+          "sso_group_name": "modernisation-platform",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "tvm-purple-team",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "security-audit"
         }
       ],
-      "additional_reviewers": ["astrobinson"]
+      "additional_reviewers": ["astrobinson"],
+      "instance_scheduler_skip": ["true"],
+      "nuke": "rebuild"
     }
   ],
   "tags": {
     "application": "modernisation-platform",
     "business-unit": "Platforms",
+    "service-area": "Hosting",
     "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
-    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
+    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk",
+    "slack-channel": "modernisation-platform",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""],
   "go-live-date": ""

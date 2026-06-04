@@ -18,7 +18,7 @@ All user and team guidance should be stored in the open in our user guidance [he
 
 Guidance or documentation directly relating to code should be stored in a `README.MD` next to the code.
 
-The exception to this is any sensitive information, or information on users of the platform which should be stored in [Google Drive](https://drive.google.com/drive/folders/1FaYhbFK68o_W4doGX7mZqR4dU3OrhuOl)
+The exception to this is any sensitive information, or information on users of the platform which should be stored in [SharePoint](https://justiceuk.sharepoint.com/sites/msteams_480621/Shared%20Documents/Forms/AllItems.aspx?viewid=4e2b6c4e%2D4cac%2D4077%2D8b80%2D966ec3bcb23f)
 
 ### Maintenance
 

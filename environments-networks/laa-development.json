@@ -7,14 +7,26 @@
           "apex-development",
           "ccms-ebs-development",
           "ccms-ebs-upgrade-development",
-          "laa-ccms-infra-azure-ad-sso-development",
+          "ccms-edrms-development",
+          "ccms-oia-development",
+          "ccms-pui-development",
+          "ccms-pui-internal-development",
+          "contract-work-administration-development",
+          "data-factory-laa-development",
+          "edw-19c-development",
+          "laa-ccms-soa-development",
+          "laa-cis-development",
+          "laa-cst-security-dashboard-development",
+          "laa-enterprise-service-bus-development",
+          "laa-mail-relay-development",
           "laa-oem-development",
+          "laa-pui-secure-browser-development",
+          "laa-stabilisation-cdc-poc-development",
           "maat-development",
           "maatdb-development",
           "mlra-development",
-          "oas-development",
-          "portal-development",
-          "mojfin-development"
+          "mojfin-development",
+          "oas-development"
         ]
       }
     }
@@ -25,7 +37,9 @@
     "additional_endpoints": [
       "com.amazonaws.eu-west-2.xray",
       "com.amazonaws.eu-west-2.secretsmanager",
-      "com.amazonaws.eu-west-2.email-smtp"
+      "com.amazonaws.eu-west-2.email-smtp",
+      "com.amazonaws.eu-west-2.sns",
+      "com.amazonaws.eu-west-2.sqs"
     ],
     "additional_private_zones": [],
     "additional_vpcs": [],

@@ -1,12 +1,170 @@
 {
   "account-type": "member",
+  "codeowners": [
+    "laa-aws-infrastructure",
+    "laa-crime-apps-team",
+    "laa-maat-migrations",
+    "laa-sre-admins",
+    "laa-dba"
+  ],
   "environments": [
     {
       "name": "development",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
-          "level": "developer"
+          "sso_group_name": "laa-aws-infrastructure",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "sandbox",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "instance-management",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-maat-migrations",
+          "level": "sandbox",
+          "github_action_reviewer": "true"
+        }
+      ],
+      "nuke": "exclude"
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "laa-aws-infrastructure",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "instance-management",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-maat-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "laa-aws-infrastructure",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "instance-management",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-maat-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "laa-aws-infrastructure",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "instance-management",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-maat-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "security-audit"
         }
       ]
     }
@@ -14,8 +172,9 @@
   "tags": {
     "application": "maatdb",
     "business-unit": "LAA",
-    "infrastructure-support": "aws-webops-laa@digital.justice.gov.uk",
-    "owner": "laa-crime-apps@digital.justice.gov.uk"
+    "infrastructure-support": "laa-crime-assess-apps-core@justice.gov.uk",
+    "owner": "LAACrimeApps-Core@justice.gov.uk",
+    "critical-national-infrastructure": true
   },
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": []
 }

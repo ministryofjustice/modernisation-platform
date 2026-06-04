@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Changing environment (AWS account) details
-last_reviewed_on: 2023-11-03
+last_reviewed_on: 2026-05-06
 review_in: 6 months
 ---
 
@@ -21,14 +21,16 @@ to
 `environments/sprinkler-attachment.json`
 
 ### Outcome
+
 - A new set of environments for the application `sprinkler-attachment` created as defined in the json file
 - The existing `sprinkler` environment would be destroyed
 
-(This action would fail though as AWS accounts can only be [manually deleted](deleting-an-environment.html))
+(This action would fail though, as AWS accounts can only be [manually deleted](deleting-an-environment.html).)
 
 ### Takeaway
+
 You can't change the file name for an application.
-The only way to do this theoretically is to remove the application from the Terraform state, then import it under the new name.  This has not yet been tested.
+The only way to do this theoretically is to remove the application from the Terraform state, then import it under the new name. This has not yet been tested.
 
 ## Change the name of an environment within the environments file
 
@@ -40,7 +42,7 @@ The only way to do this theoretically is to remove the application from the Terr
     "name": "development",
     "access": [
       {
-        "github_slug": "modernisation-platform",
+        "sso_group_name": "modernisation-platform",
         "level": "developer"
       }
     ]
@@ -56,7 +58,7 @@ to
     "name": "test",
     "access": [
       {
-        "github_slug": "modernisation-platform",
+        "sso_group_name": "modernisation-platform",
         "level": "developer"
       }
     ]
@@ -65,14 +67,16 @@ to
 ```
 
 ### Outcome
+
 - A new environment for `sandbox` created
 - The existing `development` environment would be destroyed
 
-(This action would fail though as AWS accounts can only be [manually deleted](deleting-an-environment.html))
+(This action would fail though, as AWS accounts can only be [manually deleted](deleting-an-environment.html).)
 
 ### Takeaway
+
 You can't change the name for an environment.
-The only way to do this theoretically is to remove the environment from the Terraform state, then import it under the new name.  This has not yet been tested.
+The only way to do this theoretically is to remove the environment from the Terraform state, then import it under the new name. This has not yet been tested.
 
 ## Change the github slug for an environment
 
@@ -83,7 +87,7 @@ The only way to do this theoretically is to remove the environment from the Terr
   "name": "development",
   "access": [
     {
-      "github_slug": "modernisation-platform",
+      "sso_group_name": "modernisation-platform",
       "level": "developer"
     }
   ]
@@ -97,7 +101,7 @@ to
   "name": "development",
   "access": [
     {
-      "github_slug": "application-team",
+      "sso_group_name": "application-team",
       "level": "developer"
     }
   ]
@@ -105,10 +109,12 @@ to
 ```
 
 ### Outcome
+
 - SSO would update giving the new team access and removing access for the old team
 - For member accounts the github environments would be amended so that the new team is the reviewer and the old team is removed.
 
 ### Takeaway
+
 Changing the github slug is fine.
 
 ## Change the access level for a team in an environment
@@ -120,7 +126,7 @@ Changing the github slug is fine.
   "name": "development",
   "access": [
     {
-      "github_slug": "modernisation-platform",
+      "sso_group_name": "modernisation-platform",
       "level": "developer"
     }
   ]
@@ -134,19 +140,21 @@ to
   "name": "development",
   "access": [
     {
-      "github_slug": "modernisation-platform",
-      "level": "sandbox",
-      "nuke": "rebuild"
+      "sso_group_name": "modernisation-platform",
+      "level": "sandbox"
     }
-  ]
+  ],
+  "nuke": "rebuild"
 }
 ```
 
 ### Outcome
+
 - SSO would update giving the new access level
 - Nuke run would be updated clear the account and rebuild it
 
 ### Takeaway
+
 Changing the access level is fine.
 
 ## Change the tags for an application
@@ -157,6 +165,7 @@ Changing the access level is fine.
 "tags": {
   "application": "modernisation-platform",
   "business-unit": "Platforms",
+  "infrastructure-support": "app-team@digital.justice.gov.uk",
   "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
 }
 ```
@@ -167,15 +176,18 @@ to
 "tags": {
   "application": "application-team",
   "business-unit": "Platforms",
+  "infrastructure-support": "app-team@digital.justice.gov.uk",
   "owner": "Application Team: app-team@email-address.com"
 }
 ```
 
 ### Outcome
+
 - Tags for account creation will be updated with the tagging changes
 - Tags for application infrastructure are generated dynamically from this data in Terraform using a data source. Any updates to the tags would be made the next time the infrastructure code for that account is run.
 
 Note changing the business unit here is also fine as this is only used for tagging. The business unit in the environments-networking json file name and the data within that file is used for assigning networking to accounts.
 
 ### Takeaway
+
 Changing the tags is fine.

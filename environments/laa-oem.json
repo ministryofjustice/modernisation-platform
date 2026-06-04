@@ -5,16 +5,17 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "laa-ccms-migration-team",
-          "level": "developer"
+          "sso_group_name": "laa-ccms-migration-team",
+          "level": "sandbox"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",
       "access": [
         {
-          "github_slug": "laa-ccms-migration-team",
+          "sso_group_name": "laa-ccms-migration-team",
           "level": "developer"
         }
       ]
@@ -23,7 +24,7 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "laa-ccms-migration-team",
+          "sso_group_name": "laa-ccms-migration-team",
           "level": "developer"
         }
       ]
@@ -32,7 +33,7 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "laa-ccms-migration-team",
+          "sso_group_name": "laa-ccms-migration-team",
           "level": "developer"
         }
       ]
@@ -42,7 +43,8 @@
     "application": "laa-oem",
     "business-unit": "LAA",
     "infrastructure-support": "donovan.artz@digital.justice.gov.uk",
-    "owner": "donovan.artz@digital.justice.gov.uk"
+    "owner": "donovan.artz@digital.justice.gov.uk",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""]
 }

@@ -5,8 +5,12 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "dts-legacy",
-          "level": "sandbox"
+          "sso_group_name": "dts-legacy",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "dts-legacy",
+          "level": "migration"
         }
       ]
     },
@@ -14,8 +18,12 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "dts-legacy",
+          "sso_group_name": "dts-legacy",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "dts-legacy",
+          "level": "migration"
         }
       ]
     },
@@ -23,8 +31,12 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "dts-legacy",
+          "sso_group_name": "dts-legacy",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "dts-legacy",
+          "level": "migration"
         }
       ]
     }
@@ -33,7 +45,8 @@
     "application": "tribunals",
     "business-unit": "HMCTS",
     "infrastructure-support": "dts-legacy-apps-support-team@hmcts.net",
-    "owner": "dts-legacy-apps-support-team@hmcts.net"
+    "owner": "dts-legacy-apps-support-team@hmcts.net",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [
     "ministryofjustice/AdministrativeAppeals",
@@ -45,6 +58,8 @@
     "ministryofjustice/InformationTribunal",
     "ministryofjustice/HMLandsRegistry",
     "ministryofjustice/LandsChamberTribunal",
-    "ministryofjustice/Transport"
+    "ministryofjustice/Transport",
+    "ministryofjustice/AsylumSupport",
+    "ministryofjustice/dts-legacy-tribunals-ftp"
   ]
 }

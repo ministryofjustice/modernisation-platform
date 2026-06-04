@@ -5,16 +5,25 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "performance-hub-developers",
-          "level": "developer"
+          "sso_group_name": "performance-hub-developers",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-performancehub",
+          "level": "sandbox"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "performance-hub-developers",
+          "sso_group_name": "performance-hub-developers",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-performancehub",
           "level": "developer"
         }
       ]
@@ -23,7 +32,11 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "performance-hub-developers",
+          "sso_group_name": "performance-hub-developers",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-performancehub",
           "level": "developer"
         }
       ]
@@ -33,7 +46,8 @@
     "application": "performance-hub",
     "business-unit": "HMPPS",
     "infrastructure-support": "performance-hub@digital.justice.gov.uk",
-    "owner": "hubusers@justice.gov.uk"
+    "owner": "hubusers@justice.gov.uk",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": ["ministryofjustice/performance-hub"],
   "go-live-date": "2021-11-10"

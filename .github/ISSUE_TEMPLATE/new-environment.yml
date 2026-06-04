@@ -1,209 +1,301 @@
 name: New Modernisation Platform Environment
 description: Request a new Modernisation Platform Environment
-labels: ["onboarding", "member request"]
+labels: [ "onboarding", "member request", "kanban", "New Account" ]
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Please complete the following details and submit the new issue.
-  - type: textarea
-    id: environment-details
-    attributes:
-      label: Environment details
-      value:
-    validations:
-      required: true
-  - type: input
-    id: app-name
-    attributes: 
-      label: Application Name
-      description: Name of the application being created. The name must be in lowercase and a maximum of 30 characters and also follow MoJ guidance for naming things https://ministryofjustice.github.io/technical-guidance/documentation/standards/naming-things.html#naming-things
-      value:
-    validations:
-      required: true
-  - type: textarea
-    id: app-description
-    attributes:
-      label: Description of application
-      description: Brief description of the application and what it looks like. What does the application do?, What technologies does it use?
-      value:
-    validations:
-      required: true
-  - type: input
-    id: github-slug
-    attributes:
-      label: GitHub team slug
-      description: The name of your GitHub team for environment access, this github team must be part of the ministryofjustice github organisation. You can have multiple GitHub teams with different access levels if required.
-      value:
-    validations:
-      required: true
-  - type: checkboxes
-    id: environment
-    attributes:
-      label: Environments
-      description: Which environments would you like for your application, (we recommend production and one non production environment if possible),The access level determines what actions you can do in the AWS console, see here for more information see https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#access. Choose one access level per environment.
-      options: 
-        - label: Development
-        - label: test
-        - label: Preproduction
-        - label: Production
-    validations:
-      required: true
-  - type: dropdown
-    id: environment-access-dev
-    attributes:
-      label: Environment access level Development
-      description:
-      multiple: true 
-      options:
-        - view-only
-        - developer
-        - sandbox
-    validations:
-      required: false
-  - type: dropdown
-    id: environment-access-test
-    attributes:
-      label: Environment access level Test
-      description:
-      multiple: true 
-      options:
-        - view-only
-        - developer
-        - sandbox
-    validations:
-      required: false
-  - type: dropdown
-    id: environment-access-preprod
-    attributes:
-      label: Environment access level Preproduction
-      description:
-      multiple: true 
-      options:
-        - view-only
-        - developer
-        - sandbox
-    validations:
-      required: false
-  - type: dropdown
-    id: environment-access-production
-    attributes:
-      label: Environment access level Production
-      description:
-      multiple: true
-      options:
-        - view-only
-        - developer
-        - sandbox
-    validations:
-      required: false
-  - type: markdown
-    attributes:
-      value: |
-        ## Tags
-        These will be used to tag your AWS resources, for further details on tagging please see here 
-        https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tags-you-should-use
+- type: markdown
+  attributes:
+    value: |
+      Please complete the following details and submit the new issue.
+- type: dropdown
+  id: existing-account
+  attributes:
+    label: Is this an existing AWS account?
+    description: Select 'Yes' if this request is for an account that already exists in AWS, otherwise select 'No' to request a new account.
+    options:
+      - 'No'
+      - 'Yes'
+  validations:
+    required: true
+- type: textarea
+  id: environment-details
+  attributes:
+    label: Environment details
+    value:
+  validations:
+    required: true
+- type: input
+  id: app-name
+  attributes:
+    label: Application Name
+    description: Name of the application being created. The name must be in lowercase and a maximum of 30 characters and also follow MoJ guidance for naming things https://ministryofjustice.github.io/technical-guidance/documentation/standards/naming-things.html#naming-things
+    value:
+  validations:
+    required: true
+- type: textarea
+  id: app-description
+  attributes:
+    label: Description of application
+    description: Brief description of the application and what it looks like. What does the application do?, What technologies does it use?
+    value:
+  validations:
+    required: true
+- type: input
+  id: sso-group-name
+  attributes:
+    label: SSO Group Name
+    description: The Identity Center group name used for SSO, which can be a GitHub team name. This github team must be part of the ministryofjustice github organisation. You can have multiple GitHub teams with different access levels if required.
+    value:
+  validations:
+    required: true
+- type: input
+  id: codeowners
+  attributes:
+    label: GitHub code owner team slug
+    description: By default members of the github team/s specified can both access the aws environments and approve pull requests to release changes. If you would like to seperate the permissions so that a different github team acts as a code owner to review changes before they are released then specify this here.
+    value:
+  validations:
+    required: false
+- type: input
+  id: github_action_reviewers
+  attributes:
+    label: GitHub actions reviewer team slug
+    description: By default members of the github team/s specified can both access the aws environments and approve Github action runs. If you would like to seperate the permissions so that a different github team can review these, then specify this here.
+    value:
+  validations:
+    required: false
+- type: checkboxes
+  id: environment
+  attributes:
+    label: Environments
+    description: Which environments would you like for your application, (we recommend production and one non production environment if possible),The access level determines what actions you can do in the AWS console, see here for more information see https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#access. Choose one access level per environment.
+    options:
+    - label: Development
+    - label: test
+    - label: Preproduction
+    - label: Production
+  validations:
+    required: true
+- type: markdown
+  attributes:
+    value: |
+      For a detailed explanation of platform user roles and what each access level means, please see [Platform User Roles documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/platform-user-roles.html#platform-user-roles).
+- type: dropdown
+  id: environment-access-dev
+  attributes:
+    label: Environment access level Development
+    description:
+    multiple: true
+    options:
+    - view-only
+    - developer
+    - sandbox
+    - migration
+    - instance-management
+    - instance-access
+    - security-audit
+    - reporting-operations
+    - data-engineer
+    - fleet-manager
+    - s3-upload
+    - ssm-session-access
+    - data-scientist
+  validations:
+    required: false
+- type: dropdown
+  id: environment-access-test
+  attributes:
+    label: Environment access level Test
+    description:
+    multiple: true
+    options:
+    - view-only
+    - developer
+    - migration
+    - instance-management
+    - instance-access
+    - security-audit
+    - reporting-operations
+    - data-engineer
+    - fleet-manager
+    - s3-upload
+    - ssm-session-access
+    - data-scientist
+  validations:
+    required: false
+- type: dropdown
+  id: environment-access-preprod
+  attributes:
+    label: Environment access level Preproduction
+    description:
+    multiple: true
+    options:
+    - view-only
+    - developer
+    - migration
+    - instance-management
+    - instance-access
+    - security-audit
+    - reporting-operations
+    - data-engineer
+    - fleet-manager
+    - s3-upload
+    - ssm-session-access
+    - data-scientist
+  validations:
+    required: false
+- type: dropdown
+  id: environment-access-production
+  attributes:
+    label: Environment access level Production
+    description:
+    multiple: true
+    options:
+    - view-only
+    - developer
+    - migration
+    - instance-management
+    - instance-access
+    - security-audit
+    - reporting-operations
+    - data-engineer
+    - fleet-manager
+    - s3-upload
+    - ssm-session-access
+    - data-scientist
+  validations:
+    required: false
+- type: markdown
+  attributes:
+    value: |
+      ## Tags
+      These will be used to tag your AWS resources, for further details on tagging please see here 
+      https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tags-you-should-use
 
-        The is-production tag will be inferred from the environment and is not needed here
-  - type: input
-    id: tag1
-    attributes:
-      label: application 
-      value: 
-    validations:
-      required: true
-  - type: input
-    id: tag2
-    attributes:
-      label: business-unit 
-      value: 
-    validations:
-      required: true
-  - type: input
-    id: tag3
-    attributes:
-      label: infrastructure-support 
-      value: 
-    validations:
-      required: true
-  - type: input
-    id: tag4
-    attributes:
-      label: owner 
-      value: 
-    validations:
-      required: true
-  - type: markdown
-    attributes:
-      value: "Valid business-unit values | HQ,HMPPS,OPG,LAA,HMCTS,CICA,Platforms,CJSE | The infrastructure-support tag should be an email address which will receive AWS Health Operations emails."
-  - type: markdown
-    attributes:
-      value: "## Networking options"
-  - type: checkboxes
-    id: subnet-sets
-    attributes:
-      label: Subnet sets
-      description: Please choose one of the below, most applications will use the general subnet set for their business unit. This means that they will benefit from out of the box connectivity to other applications, most applications will use the general subnet.  If an application has highly sensitive data it may need to go into a subnet with limited connectivity.
-      options:
-        - label: General
-        - label: Isolated
-    validations:    
-      required: true
-  - type: dropdown
-    id: app-connect
-    attributes:
-      label: How do users connect to the application
-      description: 
-      multiple: false
-      options:
-        - Over the public internet
-        - With a purple cabled device (please give details)
-        - With a MoJ Official device
-    validations:
-      required: true
-  - type: markdown
-    attributes:
-      value: "### Connectivity to other applications or external parties"
-  - type: markdown
-    attributes:
-      value: Please detail here and connectivity that your application needs, eg to other applications or external parties
-  - type: textarea
-    id: add-feat
-    attributes:
-      label: Additional features
-      description: For more information see here https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-networking.html#certificate-services If you are not sure you can leave these blank and they can be added at a later date
-      value:
+      The is-production tag will be inferred from the environment and is not needed here
+      
+- type: input
+  id: tag1
+  attributes:
+    label: application
+    value:
+  validations:
+    required: true
+- type: dropdown
+  id: tag2
+  attributes:
+    label: business-unit
+    options:
+    - Central Digital
+    - HMPPS
+    - OPG
+    - LAA
+    - HMCTS
+    - CICA
+    - Platforms
+    - Technology Services
+  validations:
+    required: true
+- type: input
+  id: tag3
+  attributes:
+    label: service-area
+    description: The service area tag should be used to indicate  Should be the full name of the Service Area in which your team is based e.g. Education Skills & Work, Manage a Workforce, Hosting.
+    value:
+  validations:
+    required: true
+- type: input
+  id: tag4
+  attributes:
+    label: infrastructure-support
+    value:
+  validations:
+    required: true
+- type: input
+  id: tag5
+  attributes:
+    label: owner
+    value:
+  validations:
+    required: true
+- type: markdown
+  attributes:
+    value: "Valid business-unit values | HQ,HMPPS,OPG,LAA,HMCTS,CICA,Platforms,CJSE | The infrastructure-support tag should be an email address which will receive AWS Health Operations emails."
+- type: input
+  id: slack-channel-placeholder
+  attributes:
+    label: Slack Channel
+    description: Please provide the name of the Slack channel you will use for operational communication about this application but without the leading "#" character, e.g. my-app-support. This is important so that we can ensure you receive relevant notifications from AWS.
+    value:
+- type: markdown
+  attributes:
+    value: |
+      ## Networking options
+      If your application requires supplementary AWS VPC Endpoints please see our guidance [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/adding-vpc-endpoints.)
+- type: dropdown
+  id: subnet-sets
+  attributes:
+    label: Do you require isolated networking?
+    description: Do you require isolated networking? Please choose one of the below, most applications will use the general subnet set for their business unit. This means that they will benefit from out of the box connectivity to other applications, most applications will use the general subnet.  If an application has highly sensitive data it may need to go into a subnet with limited connectivity.
+    options:
+      - 'No'
+      - 'Yes'
+  validations:
+    required: true
+- type: dropdown
+  id: app-connect
+  attributes:
+    label: How do users connect to the application
+    description:
+    multiple: false
+    options:
+    - Over the public internet
+    - With a purple cabled device (please give details)
+    - With a MoJ Official device
+  validations:
+    required: true
+- type: markdown
+  attributes:
+    value: "### Connectivity to other applications or external parties"
+- type: markdown
+  attributes:
+    value: Please detail here and connectivity that your application needs, eg to other applications or external parties
+- type: textarea
+  id: add-feat
+  attributes:
+    label: Additional features
+    description: For more information see here https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-networking.html#certificate-services If you are not sure you can leave these blank and they can be added at a later date
+    value:
 
-        Please check any additional features required 
+      Please check any additional features required
 
-        - [ ] Additional VPC Endpoints
+      - [ ] Additional VPC Endpoints
 
-        - [ ] Extended DNS Zones
+      - [ ] Extended DNS Zones
 
-        - [ ] Other - please specify
+      - [ ] Other - please specify
 
-    validations:
-      required: true
-  - type: textarea
-    id: other-info
-    attributes:
-      label: Other information
-      description: Any other information you feel is relevant, please remember this is a public repository
-      value:
-    validations:
-      required: 
-  - type: textarea
-    id: dod
-    attributes:
-      description: Please clearly and concisely detail the Definition of Done.
-      label: Definition of Done
-      value:
-        
-        Definition of Done
-        
-        - [ ] account created
+  validations:
+    required: true
+- type: textarea
+  id: other-info
+  attributes:
+    label: Other information
+    description: Any other information you feel is relevant, please remember this is a public repository
+    value:
+  validations:
+    required: false
+- type: textarea
+  id: dod
+  attributes:
+    description: Please clearly and concisely detail the Definition of Done.
+    label: Definition of Done
+    value:
 
-        - [ ] customer informed
+      Definition of Done
 
-    validations:
-      required: true
+      - [ ] account created
+
+      - [ ] customer informed
+
+  validations:
+    required: true

@@ -1,0 +1,129 @@
+name: Cleanup of Stale Branches
+
+on:
+  workflow_dispatch:
+  schedule:
+  - cron: '0 0 * * 0'
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
+env:
+  RATE_THRESHOLD: 100
+  APP_ID: 2013696
+
+jobs:
+  fetch-secrets:
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8 # v6.1.1
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  cleanup:
+    name: Cleanup Stale Branches in Modernisation Platform Repos
+    runs-on: ubuntu-latest
+    needs: fetch-secrets
+
+
+    env:
+      DEBUG: false
+      DRY_RUN: false
+      ORG: ministryofjustice
+      PREFIX: modernisation-platform
+      SKIP_BRANCHES: main
+      INACTIVE_DAYS: 90
+
+    steps:
+
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 1
+
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8 # v6.1.1
+        with:
+          mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+      - name: Ensure CLI Tools Are Installed
+        run: |
+          for tool in gh jq; do
+            if ! command -v "$tool" &> /dev/null; then
+              echo "❌ Required tool '$tool' is not installed."
+              exit 1
+            fi
+          done
+
+      - name: Create GitHub App token
+        id: app
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ env.APP_ID }}               
+          private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
+          owner: "ministryofjustice"
+
+      - name: Authenticate GitHub CLI as the App and Check the Rate Usage
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+        run: |
+          # gh automatically uses GH_TOKEN if set — no `gh auth login` needed
+          gh auth status
+          bash ./scripts/check-github-api-usage.sh
+
+      - name: Cleanup Stale Branches
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+        run: |
+          set -euo pipefail
+
+          threshold_ts=$(date -d "$INACTIVE_DAYS days ago" +%s)
+          repos=$(gh repo list "$ORG" --limit 1000 --json name,isArchived \
+                   --jq ".[] | select(.name | startswith(\"$PREFIX\")) | select(.isArchived == false) | .name")
+
+          for repo in $repos; do
+            echo -e "\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "🔍 Processing repository: $ORG/$repo"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+            summary="| Branch | Status | Reason |\n|--------|--------|--------|"
+            branches=$(gh api --paginate "repos/$ORG/$repo/branches" --jq '.[].name' || echo "")
+
+            for branch in $branches; do
+              if [[ "$SKIP_BRANCHES" == *"$branch"* ]]; then
+                summary+="\n| \`$branch\` | ⏭️ Skipped | Protected branch |"
+                continue
+              fi
+
+              # Get latest commit date
+              last_commit_date=$(gh api "repos/$ORG/$repo/commits?sha=$branch" --jq '.[0].commit.committer.date' 2>/dev/null || echo "")
+              last_commit_ts=$(date -d "$last_commit_date" +%s 2>/dev/null || echo 0)
+
+              if [[ "$last_commit_ts" -eq 0 ]]; then
+                summary+="\n| \`$branch\` | ⚠️ Unknown | Failed to get latest commit |"
+                continue
+              fi
+
+              if [[ "$last_commit_ts" -ge "$threshold_ts" ]]; then
+                summary+="\n| \`$branch\` | ✅ Active | Recent commit |"
+                continue
+              fi
+
+              echo "🗑️ Stale branch: $branch (inactive > $INACTIVE_DAYS days)"
+              if [[ "$DRY_RUN" == "true" ]]; then
+                echo "💡 Dry Run: Not deleting $branch"
+                summary+="\n| \`$branch\` | 📝 Dry Run | No commits in $INACTIVE_DAYS+ days |"
+              else
+                if gh api -X DELETE "repos/$ORG/$repo/git/refs/heads/$branch"; then
+                  summary+="\n| \`$branch\` | 🔥 Deleted | No commits in $INACTIVE_DAYS+ days |"
+                else
+                  summary+="\n| \`$branch\` | ⚠️ Failed | GitHub deletion failed |"
+                fi
+              fi
+            done
+
+            echo -e "$summary"
+            echo "✅ Finished $ORG/$repo"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          done

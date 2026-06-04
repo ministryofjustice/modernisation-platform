@@ -3,13 +3,14 @@
     "subnet_sets": {
       "general": {
         "cidr": "10.26.112.0/21",
-        "accounts": []
+        "accounts": ["cica-tariff-test"]
       }
     }
   },
   "options": {
     "bastion_linux": true,
     "additional_cidrs": [],
+    "secondary_cidr_blocks": [],
     "additional_endpoints": [],
     "additional_private_zones": [],
     "additional_vpcs": [],

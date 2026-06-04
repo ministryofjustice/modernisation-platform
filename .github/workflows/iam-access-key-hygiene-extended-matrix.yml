@@ -1,0 +1,205 @@
+name: "IAM Access Key & User Hygiene - Extended Matrix"
+
+on:
+  schedule:
+    - cron: "30 9 1-7 * 1"
+  workflow_dispatch:
+
+env:
+  AWS_REGION: "eu-west-2"
+
+permissions:
+  id-token: write
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  fetch-secrets:
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  setup-prerequisites:
+    runs-on: ubuntu-latest
+    needs: fetch-secrets
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      aws-region: ${{ steps.setup-aws-region.outputs.aws-region }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          fetch-depth: 0
+
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+      - id: set-matrix
+        name: Build account matrix (from ENVIRONMENT_MANAGEMENT.account_ids)
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${ENVIRONMENT_MANAGEMENT:-}" ]]; then
+            echo "ENVIRONMENT_MANAGEMENT not set after decrypt-secrets" >&2
+            exit 1
+          fi
+
+          # Build list of account names from the environment_management secret
+          # Apply hard exclusions by prefix/name.
+          matrix="$(jq -r '
+            .account_ids
+            | keys[]
+            | select(
+                (startswith("core-") | not) and
+                (startswith("modernisation-") | not) and
+                (startswith("bichard7-") | not) and
+                (startswith("analytical-platform-") | not) and
+                (startswith("moj-network-operations-centre") | not) and
+                (. != "testing-test")
+              )
+          ' <<< "$ENVIRONMENT_MANAGEMENT" | sort -u | jq -ncR '[inputs]')"
+
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+
+      - id: setup-aws-region
+        name: Setup AWS Region output
+        run: |
+          set -euo pipefail
+          echo "aws-region=$AWS_REGION" >> "$GITHUB_OUTPUT"
+
+  define-jobs:
+    runs-on: ubuntu-latest
+    needs: setup-prerequisites
+    env:
+      account_list: ${{ needs.setup-prerequisites.outputs.matrix }}
+    outputs:
+      block_1: ${{ steps.split.outputs.block_1 }}
+      block_2: ${{ steps.split.outputs.block_2 }}
+      block_3: ${{ steps.split.outputs.block_3 }}
+      block_4: ${{ steps.split.outputs.block_4 }}
+    steps:
+      - id: split
+        run: |
+          set -euo pipefail
+          BLOCK_COUNT=4
+          sorted=$(echo "$account_list" | jq -c 'sort')
+          total=$(echo "$sorted" | jq 'length')
+          base=$(( total / BLOCK_COUNT ))
+          remainder=$(( total % BLOCK_COUNT ))
+          start=0
+          for i in $(seq 1 $BLOCK_COUNT); do
+            key="block_$i"
+            extra=0
+            if [ "$i" -le "$remainder" ]; then extra=1; fi
+            end=$(( start + base + extra ))
+            block=$(echo "$sorted" | jq ".[$start:$end]")
+            compact=$(echo "$block" | jq -c '.')
+            echo "$key=$compact" >> "$GITHUB_OUTPUT"
+            start=$end
+          done
+
+  iam-hygiene-1:
+    needs: [fetch-secrets, setup-prerequisites, define-jobs]
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_1) }}
+    uses: ./.github/workflows/reusable-run-per-account-script.yml
+    with:
+      JOB_NAME: iam-hygiene-1
+      AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      TF_WORKSPACE: ${{ matrix.workspaces }}
+      ASSUME_ROLE_NAME: github-actions-iam-hygiene
+
+      GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
+      TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
+      EXPECTED_TEMPLATE_VERSION: "2"
+
+      SCRIPT_COMMAND: |
+        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh 
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  iam-hygiene-2:
+    needs: [fetch-secrets, setup-prerequisites, define-jobs]
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_2) }}
+    uses: ./.github/workflows/reusable-run-per-account-script.yml
+    with:
+      JOB_NAME: iam-hygiene-2
+      AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      TF_WORKSPACE: ${{ matrix.workspaces }}
+      ASSUME_ROLE_NAME: github-actions-iam-hygiene
+
+      GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
+      TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
+      EXPECTED_TEMPLATE_VERSION: "2"
+
+      SCRIPT_COMMAND: |
+        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh 
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  iam-hygiene-3:
+    needs: [fetch-secrets, setup-prerequisites, define-jobs]
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_3) }}
+    uses: ./.github/workflows/reusable-run-per-account-script.yml
+    with:
+      JOB_NAME: iam-hygiene-3
+      AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      TF_WORKSPACE: ${{ matrix.workspaces }}
+      ASSUME_ROLE_NAME: github-actions-iam-hygiene
+
+      GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
+      TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
+      EXPECTED_TEMPLATE_VERSION: "2"
+
+      SCRIPT_COMMAND: |
+        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh 
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  iam-hygiene-4:
+    needs: [fetch-secrets, setup-prerequisites, define-jobs]
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_4) }}
+    uses: ./.github/workflows/reusable-run-per-account-script.yml
+    with:
+      JOB_NAME: iam-hygiene-4
+      AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      TF_WORKSPACE: ${{ matrix.workspaces }}
+      ASSUME_ROLE_NAME: github-actions-iam-hygiene
+
+      GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
+      TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
+      EXPECTED_TEMPLATE_VERSION: "2"
+
+      SCRIPT_COMMAND: |
+        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh 
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}

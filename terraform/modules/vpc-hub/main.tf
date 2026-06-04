@@ -12,8 +12,11 @@ data "aws_availability_zones" "available" {
 }
 
 locals {
-  az    = sort(data.aws_availability_zones.available.names)
-  cidrs = cidrsubnets(var.vpc_cidr, 9, 9, 9, 4, 4, 4, 4, 4, 4, 4, 4, 4)
+  az = sort(data.aws_availability_zones.available.names)
+  cidrs = (can(regex("/20$", var.vpc_cidr)) ?
+    cidrsubnets(var.vpc_cidr, 8, 8, 8, 4, 4, 4, 4, 4, 4, 4, 4, 4) :
+    cidrsubnets(var.vpc_cidr, 9, 9, 9, 4, 4, 4, 4, 4, 4, 4, 4, 4)
+  )
   types = ["transit-gateway", "data", "private", "public"]
 
   # SAMPLE OUTPUT OF: types_and_az_and_cidrs
@@ -58,41 +61,9 @@ locals {
     }
   }
 
-  # NACLs
-  nacl_rules = [
-    { egress = false, action = "allow", protocol = -1, from_port = 80, to_port = 80, rule_num = 910, cidr = "0.0.0.0/0" },
-    { egress = false, action = "allow", protocol = -1, from_port = 443, to_port = 443, rule_num = 920, cidr = "0.0.0.0/0" },
-    { egress = false, action = "allow", protocol = -1, from_port = 1024, to_port = 65535, rule_num = 930, cidr = "0.0.0.0/0" },
-    { egress = true, action = "allow", protocol = -1, from_port = 80, to_port = 80, rule_num = 910, cidr = "0.0.0.0/0" },
-    { egress = true, action = "allow", protocol = -1, from_port = 443, to_port = 443, rule_num = 920, cidr = "0.0.0.0/0" },
-    { egress = true, action = "allow", protocol = -1, from_port = 1024, to_port = 65535, rule_num = 930, cidr = "0.0.0.0/0" }
-  ]
+  # Custom VPC flow log statement
+  custom_flow_log_format = "$${version} $${account-id} $${interface-id} $${srcaddr} $${dstaddr} $${srcport} $${dstport} $${protocol} $${packets} $${bytes} $${start} $${end} $${action} $${log-status} $${vpc-id} $${subnet-id} $${instance-id} $${tcp-flags} $${type} $${pkt-srcaddr} $${pkt-dstaddr} $${region} $${az-id} $${sublocation-type} $${sublocation-id} $${pkt-src-aws-service} $${pkt-dst-aws-service} $${flow-direction} $${traffic-path}"
 
-  # NACL rules with keys
-  nacl_rules_expanded = {
-    for rule in local.nacl_rules : join("-", values(rule)) => rule
-  }
-
-  # Private NACLs. Do not allow communicating with public internet addresses except for outgoing https.
-  private_nacl_rules = [
-    { egress = false, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 510, cidr = "10.0.0.0/8" },
-    { egress = false, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 520, cidr = "172.16.0.0/12" },
-    { egress = false, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 530, cidr = "192.168.0.0/16" },
-    { egress = true, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 510, cidr = "10.0.0.0/8" },
-    { egress = true, action = "allow", protocol = -1, from_port = 80, to_port = 80, rule_num = 520, cidr = "172.16.0.0/12" },
-    { egress = true, action = "allow", protocol = -1, from_port = 443, to_port = 443, rule_num = 530, cidr = "172.16.0.0/12" },
-    { egress = true, action = "allow", protocol = -1, from_port = 1024, to_port = 65535, rule_num = 540, cidr = "172.16.0.0/12" },
-    { egress = true, action = "allow", protocol = -1, from_port = 80, to_port = 80, rule_num = 550, cidr = "192.168.0.0/16" },
-    { egress = true, action = "allow", protocol = -1, from_port = 443, to_port = 443, rule_num = 560, cidr = "192.168.0.0/16" },
-    { egress = true, action = "allow", protocol = -1, from_port = 1024, to_port = 65535, rule_num = 570, cidr = "192.168.0.0/16" },
-    { egress = false, action = "allow", protocol = 6, from_port = 1024, to_port = 65535, rule_num = 910, cidr = "0.0.0.0/0" },
-    { egress = true, action = "allow", protocol = 6, from_port = 443, to_port = 443, rule_num = 910, cidr = "0.0.0.0/0" }
-  ]
-
-  # Private NACL rules with keys
-  private_nacl_rules_expanded = {
-    for rule in local.private_nacl_rules : join("-", values(rule)) => rule
-  }
 }
 
 #######
@@ -161,7 +132,7 @@ resource "aws_default_security_group" "default" {
 #################
 # TF sec exclusions
 # - Ignore warnings regarding log groups not encrypted using customer-managed KMS keys - following cost/benefit discussion and longer term plans for logging solution
-#tfsec:ignore:AWS089
+#trivy:ignore:AVD-AWS-0017
 resource "aws_cloudwatch_log_group" "default" {
   #checkov:skip=CKV_AWS_158:Temporarily skip KMS encryption check while logging solution is being updated
   name              = "${var.tags_prefix}-vpc-flow-logs"
@@ -172,8 +143,9 @@ resource "aws_cloudwatch_log_group" "default" {
 resource "aws_flow_log" "cloudwatch" {
   iam_role_arn             = var.vpc_flow_log_iam_role
   log_destination          = aws_cloudwatch_log_group.default.arn
-  traffic_type             = "ALL"
   log_destination_type     = "cloud-watch-logs"
+  log_format               = local.custom_flow_log_format
+  traffic_type             = "ALL"
   max_aggregation_interval = "60"
   vpc_id                   = aws_vpc.default.id
 
@@ -181,6 +153,23 @@ resource "aws_flow_log" "cloudwatch" {
     var.tags_common,
     {
       Name = "${var.tags_prefix}-vpc-flow-logs"
+    }
+  )
+}
+
+resource "aws_flow_log" "s3" {
+  for_each                 = var.flow_log_s3_destination_arn != "" ? toset([var.flow_log_s3_destination_arn]) : toset([])
+  log_destination          = each.key
+  log_destination_type     = "s3"
+  log_format               = local.custom_flow_log_format
+  max_aggregation_interval = "60"
+  traffic_type             = "ALL"
+  vpc_id                   = aws_vpc.default.id
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-vpc-flow-logs-s3"
     }
   )
 }
@@ -234,40 +223,21 @@ resource "aws_network_acl" "public" {
 }
 
 # Public NACLs rules
-#tfsec:ignore:aws-vpc-no-public-ingress-acl tfsec:ignore:aws-vpc-no-excessive-port-access
+#trivy:ignore:AVD-AWS-0102
+#trivy:ignore:AVD-AWS-0105
 resource "aws_network_acl_rule" "public" {
   # checkov:skip=CKV_AWS_352:Ports need to be open
-  for_each = local.nacl_rules_expanded
+  #checkov:skip=CKV_AWS_231:Ports 0.0.0.0 needs to be open
+  for_each = local.public_access_acl_rules
 
   network_acl_id = aws_network_acl.public.id
-  rule_number    = each.value.rule_num
+  rule_number    = each.value.rule_number
   egress         = each.value.egress
   protocol       = each.value.protocol
-  rule_action    = each.value.action
-  cidr_block     = each.value.cidr
+  rule_action    = each.value.rule_action
+  cidr_block     = each.value.cidr_block
   from_port      = each.value.from_port
   to_port        = each.value.to_port
-}
-
-#tfsec:ignore:aws-vpc-no-excessive-port-access
-resource "aws_network_acl_rule" "public-local-ingress" {
-  #checkov:skip=CKV_AWS_352: Open as intra vpc traffic
-  network_acl_id = aws_network_acl.public.id
-  rule_number    = 210
-  egress         = false
-  protocol       = "-1"
-  rule_action    = "allow"
-  cidr_block     = var.vpc_cidr
-}
-
-#tfsec:ignore:aws-vpc-no-excessive-port-access
-resource "aws_network_acl_rule" "public-local-egress" {
-  network_acl_id = aws_network_acl.public.id
-  rule_number    = 210
-  egress         = true
-  protocol       = "-1"
-  rule_action    = "allow"
-  cidr_block     = var.vpc_cidr
 }
 
 # Public route table
@@ -353,39 +323,21 @@ resource "aws_network_acl" "private" {
 }
 
 # Private NACLs rules
-#tfsec:ignore:aws-vpc-no-public-ingress-acl
+#trivy:ignore:AVD-AWS-0102
+#trivy:ignore:AVD-AWS-0105
 resource "aws_network_acl_rule" "private" {
-  for_each = local.private_nacl_rules_expanded
+  #checkov:skip=CKV_AWS_352:Ports need to be open
+  #checkov:skip=CKV_AWS_231:Ports 0.0.0.0 needs to be open
+  for_each = local.static_acl_rules
 
   network_acl_id = aws_network_acl.private.id
-  rule_number    = each.value.rule_num
+  rule_number    = each.value.rule_number
   egress         = each.value.egress
   protocol       = each.value.protocol
-  rule_action    = each.value.action
-  cidr_block     = each.value.cidr
+  rule_action    = each.value.rule_action
+  cidr_block     = each.value.cidr_block
   from_port      = each.value.from_port
   to_port        = each.value.to_port
-}
-
-#tfsec:ignore:aws-vpc-no-excessive-port-access
-resource "aws_network_acl_rule" "private-local-ingress" {
-  #checkov:skip=CKV_AWS_352: Open as intra vpc traffic
-  network_acl_id = aws_network_acl.private.id
-  rule_number    = 210
-  egress         = false
-  protocol       = "-1"
-  rule_action    = "allow"
-  cidr_block     = var.vpc_cidr
-}
-
-#tfsec:ignore:aws-vpc-no-excessive-port-access
-resource "aws_network_acl_rule" "private-local-egress" {
-  network_acl_id = aws_network_acl.private.id
-  rule_number    = 210
-  egress         = true
-  protocol       = "-1"
-  rule_action    = "allow"
-  cidr_block     = var.vpc_cidr
 }
 
 # Private route table
@@ -445,39 +397,21 @@ resource "aws_network_acl" "data" {
 }
 
 # Data NACLs rules
-#tfsec:ignore:aws-vpc-no-public-ingress-acl
+#trivy:ignore:AVD-AWS-0102
+#trivy:ignore:AVD-AWS-0105
 resource "aws_network_acl_rule" "data" {
-  for_each = local.private_nacl_rules_expanded
+  #checkov:skip=CKV_AWS_352:Ports need to be open
+  #checkov:skip=CKV_AWS_231:Ports 0.0.0.0 needs to be open
+  for_each = local.static_acl_rules
 
   network_acl_id = aws_network_acl.data.id
-  rule_number    = each.value.rule_num
+  rule_number    = each.value.rule_number
   egress         = each.value.egress
   protocol       = each.value.protocol
-  rule_action    = each.value.action
-  cidr_block     = each.value.cidr
+  rule_action    = each.value.rule_action
+  cidr_block     = each.value.cidr_block
   from_port      = each.value.from_port
   to_port        = each.value.to_port
-}
-
-#tfsec:ignore:aws-vpc-no-excessive-port-access
-resource "aws_network_acl_rule" "data-local-ingress" {
-  #checkov:skip=CKV_AWS_352: Open as intra vpc traffic
-  network_acl_id = aws_network_acl.data.id
-  rule_number    = 210
-  egress         = false
-  protocol       = "-1"
-  rule_action    = "allow"
-  cidr_block     = var.vpc_cidr
-}
-
-#tfsec:ignore:aws-vpc-no-excessive-port-access
-resource "aws_network_acl_rule" "data-local-egress" {
-  network_acl_id = aws_network_acl.data.id
-  rule_number    = 210
-  egress         = true
-  protocol       = "-1"
-  rule_action    = "allow"
-  cidr_block     = var.vpc_cidr
 }
 
 # Data route table
@@ -537,39 +471,24 @@ resource "aws_network_acl" "transit-gateway" {
 }
 
 # Transit Gateway NACLs rules
-#tfsec:ignore:aws-vpc-no-public-ingress-acl
+#trivy:ignore:AVD-AWS-0102
+#trivy:ignore:AVD-AWS-0105
 resource "aws_network_acl_rule" "transit-gateway" {
-  for_each = local.nacl_rules_expanded
+  # checkov:skip=CKV_AWS_229:Transit Gateway subnet NACL open by design
+  # checkov:skip=CKV_AWS_230:Transit Gateway subnet NACL open by design
+  # checkov:skip=CKV_AWS_231:Transit Gateway subnet NACL open by design
+  # checkov:skip=CKV_AWS_232:Transit Gateway subnet NACL open by design
+  # checkov:skip=CKV_AWS_352:Transit Gateway subnet NACL open by design
+  for_each = local.transit_gateway_acl_rules
 
   network_acl_id = aws_network_acl.transit-gateway.id
-  rule_number    = each.value.rule_num
+  rule_number    = each.value.rule_number
   egress         = each.value.egress
   protocol       = each.value.protocol
-  rule_action    = each.value.action
-  cidr_block     = each.value.cidr
+  rule_action    = each.value.rule_action
+  cidr_block     = each.value.cidr_block
   from_port      = each.value.from_port
   to_port        = each.value.to_port
-}
-
-#tfsec:ignore:aws-vpc-no-excessive-port-access
-resource "aws_network_acl_rule" "transit-gateway-local-ingress" {
-  #checkov:skip=CKV_AWS_352: Open as intra vpc traffic
-  network_acl_id = aws_network_acl.transit-gateway.id
-  rule_number    = 210
-  egress         = false
-  protocol       = "-1"
-  rule_action    = "allow"
-  cidr_block     = var.vpc_cidr
-}
-
-#tfsec:ignore:aws-vpc-no-excessive-port-access
-resource "aws_network_acl_rule" "transit-gateway-local-egress" {
-  network_acl_id = aws_network_acl.transit-gateway.id
-  rule_number    = 210
-  egress         = true
-  protocol       = "-1"
-  rule_action    = "allow"
-  cidr_block     = var.vpc_cidr
 }
 
 # Transit Gateway route table

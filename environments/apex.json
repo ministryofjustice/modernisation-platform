@@ -5,20 +5,33 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
-          "level": "migration"
+          "sso_group_name": "laa-sre-admins",
+          "level": "sandbox"
         },
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-aws-infrastructure",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-apex-developer",
           "level": "developer"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-aws-infrastructure",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-apex-developer",
           "level": "developer"
         }
       ]
@@ -27,7 +40,15 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-aws-infrastructure",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-apex-developer",
           "level": "developer"
         }
       ]
@@ -36,8 +57,21 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-apex-developer",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
@@ -45,8 +79,10 @@
   "tags": {
     "application": "apex",
     "business-unit": "LAA",
-    "infrastructure-support": "aws-webops-laa@digital.justice.gov.uk",
-    "owner": "aws-webops-laa@digital.justice.gov.uk"
+    "infrastructure-support": "laa_ops@digital.justice.gov.uk",
+    "owner": "laa_ops@digital.justice.gov.uk",
+    "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": ["ministryofjustice/laa-apex"]
+  "github-oidc-team-repositories": ["ministryofjustice/laa-apex"],
+  "go-live-date": "2024-11-27"
 }

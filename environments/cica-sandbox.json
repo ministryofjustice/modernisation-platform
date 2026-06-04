@@ -1,0 +1,28 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "cica-review-case-documents",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "cica-external-developers",
+          "level": "developer"
+        }
+      ],
+      "nuke": "exclude"
+    }
+  ],
+  "tags": {
+    "application": "cica-development-sandbox",
+    "business-unit": "CICA",
+    "infrastructure-support": "infrastructure@cica.gov.uk",
+    "owner": "CICA: infrastructure@cica.gov.uk",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
+}

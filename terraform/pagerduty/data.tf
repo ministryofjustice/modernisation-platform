@@ -65,3 +65,10 @@ data "aws_iam_policy_document" "pagerduty_kms" {
     }
   }
 }
+
+# default priority for DSO pagerduty slack integration
+# If ["*"] is set as elsewhere services with alarms don't change the dashboards in PagerDuty UI
+# Can be over-ridden manually later when someone's taken a look at the actual alert
+data "pagerduty_priority" "p5" {
+  name = "P5"
+}

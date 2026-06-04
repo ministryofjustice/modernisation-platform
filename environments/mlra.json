@@ -5,25 +5,38 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         },
         {
-          "github_slug": "laa-crime-apps-team",
-          "level": "developer"
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         },
         {
-          "github_slug": "laa-crime-apps-team",
-          "level": "developer"
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
         }
       ]
     },
@@ -31,12 +44,16 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         },
         {
-          "github_slug": "laa-crime-apps-team",
-          "level": "developer"
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
         }
       ]
     },
@@ -44,12 +61,20 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         },
         {
-          "github_slug": "laa-crime-apps-team",
-          "level": "developer"
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "security-audit"
         }
       ]
     }
@@ -58,7 +83,8 @@
     "application": "mlra",
     "business-unit": "LAA",
     "infrastructure-support": "aws-webops-laa@digital.justice.gov.uk",
-    "owner": "laa-crime-apps@digital.justice.gov.uk"
+    "owner": "laacrimeapps@justice.gov.uk",
+    "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": ["ministryofjustice/laa-mlra-application"],
   "go-live-date": "2023-08-28"

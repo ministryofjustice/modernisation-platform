@@ -4,21 +4,26 @@
       "general": {
         "cidr": "10.27.0.0/21",
         "accounts": [
-          "performance-hub-preproduction",
-          "nomis-preproduction",
-          "oasys-preproduction",
-          "ppud-preproduction",
+          "corporate-staff-rostering-preproduction",
+          "delius-alfresco-preproduction",
+          "delius-core-preproduction",
           "delius-iaps-preproduction",
           "delius-jitbit-preproduction",
           "delius-mis-preproduction",
+          "digital-prison-reporting-preproduction",
+          "electronic-monitoring-data-preproduction",
+          "hmpps-court-data-ingestion-api-preproduction",
+          "hmpps-domain-services-preproduction",
+          "hmpps-oem-preproduction",
+          "nomis-preproduction",
           "nomis-combined-reporting-preproduction",
           "nomis-data-hub-preproduction",
-          "digital-prison-reporting-preproduction",
-          "corporate-staff-rostering-preproduction",
+          "oasys-preproduction",
+          "oasys-national-reporting-preproduction",
+          "performance-hub-preproduction",
           "planetfm-preproduction",
-          "hmpps-oem-preproduction",
-          "hmpps-domain-services-preproduction",
-          "electronic-monitoring-data-preproduction"
+          "ppud-preproduction",
+          "vcms-preproduction"
         ]
       }
     }
@@ -27,11 +32,20 @@
     "bastion_linux": true,
     "additional_cidrs": [],
     "additional_endpoints": [
-      "com.amazonaws.eu-west-2.email-smtp",
+      "com.amazonaws.eu-west-2.athena",
       "com.amazonaws.eu-west-2.execute-api",
+      "com.amazonaws.eu-west-2.dms",
+      "com.amazonaws.eu-west-2.email-smtp",
+      "com.amazonaws.eu-west-2.glue",
       "com.amazonaws.eu-west-2.kinesis-streams",
+      "com.amazonaws.eu-west-2.kms",
+      "com.amazonaws.eu-west-2.lambda",
+      "com.amazonaws.eu-west-2.lakeformation",
+      "com.amazonaws.eu-west-2.monitoring",
       "com.amazonaws.eu-west-2.secretsmanager",
-      "com.amazonaws.eu-west-2.transfer.server"
+      "com.amazonaws.eu-west-2.transfer.server",
+      "com.amazonaws.eu-west-2.sns",
+      "com.amazonaws.eu-west-2.sqs"
     ],
     "additional_private_zones": [],
     "additional_vpcs": [],

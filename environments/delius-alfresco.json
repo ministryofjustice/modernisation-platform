@@ -1,0 +1,60 @@
+{
+  "account-type": "member",
+  "codeowners": ["hosting-migrations"],
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "hosting-migrations",
+          "level": "sandbox",
+          "github_action_reviewer": "true"
+        }
+      ],
+      "nuke": "exclude"
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "hosting-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "hosting-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "hosting-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "security-audit"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "delius-alfresco",
+    "business-unit": "HMPPS",
+    "infrastructure-support": "team.migrations@digital.justice.gov.uk",
+    "owner": "team.migrations@digital.justice.gov.uk",
+    "critical-national-infrastructure": true
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}

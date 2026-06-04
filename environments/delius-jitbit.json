@@ -1,29 +1,40 @@
 {
   "account-type": "member",
+  "codeowners": ["hmpps-migration", "hosting-migrations"],
   "environments": [
     {
       "name": "development",
       "access": [
         {
-          "github_slug": "hmpps-migration",
-          "level": "sandbox",
-          "nuke": "exclude"
+          "sso_group_name": "hmpps-migration",
+          "level": "developer"
         },
         {
-          "github_slug": "hmpps-delius-jitbit-devs",
+          "sso_group_name": "hosting-migrations",
+          "level": "sandbox",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "hmpps-delius-jitbit-devs",
           "level": "instance-management"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",
       "access": [
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
           "level": "developer"
         },
         {
-          "github_slug": "hmpps-delius-jitbit-devs",
+          "sso_group_name": "hosting-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "hmpps-delius-jitbit-devs",
           "level": "instance-management"
         }
       ]
@@ -32,11 +43,16 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
           "level": "developer"
         },
         {
-          "github_slug": "hmpps-delius-jitbit-devs",
+          "sso_group_name": "hosting-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "hmpps-delius-jitbit-devs",
           "level": "instance-management"
         }
       ]
@@ -45,12 +61,21 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
           "level": "developer"
         },
         {
-          "github_slug": "hmpps-delius-jitbit-devs",
+          "sso_group_name": "hosting-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "hmpps-delius-jitbit-devs",
           "level": "instance-management"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "security-audit"
         }
       ]
     }
@@ -59,7 +84,8 @@
     "application": "delius-jitbit",
     "business-unit": "HMPPS",
     "infrastructure-support": "probation-webops@digital.justice.gov.uk",
-    "owner": "Probation WebOps: probation-webops@digital.justice.gov.uk"
+    "owner": "Probation WebOps: probation-webops@digital.justice.gov.uk",
+    "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": [
     "ministryofjustice/hmpps-cr-ancillary-jitbit-app"

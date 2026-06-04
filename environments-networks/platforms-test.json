@@ -3,7 +3,15 @@
     "subnet_sets": {
       "general": {
         "cidr": "10.26.0.0/21",
-        "accounts": ["testing-test", "data-platform-test"]
+        "accounts": [
+          "analytical-platform-compute-test",
+          "data-factory-corporate-test",
+          "data-factory-moj-test",
+          "data-platform-test",
+          "data-platform-governance-test",
+          "integration-hub-test",
+          "testing-test"
+        ]
       }
     }
   },

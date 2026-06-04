@@ -1,32 +1,259 @@
 {
   "account-type": "member",
-  "codeowners": ["hmpps-migration"],
+  "codeowners": ["hmpps-migration", "hosting-migrations", "hmpps-dba"],
   "environments": [
     {
       "name": "development",
       "access": [
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
           "level": "sandbox",
-          "nuke": "exclude"
+          "github_action_reviewer": "true"
         },
         {
-          "github_slug": "hmpps-dba",
+          "sso_group_name": "hosting-migrations",
           "level": "sandbox",
-          "nuke": "exclude"
+          "github_action_reviewer": "true"
         },
         {
-          "github_slug": "unilink",
-          "level": "instance-management"
+          "sso_group_name": "hmpps-dba",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "hmpps-dba",
+          "level": "sandbox",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "hmpps-dba",
+          "level": "reporting-operations",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "unilink",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "zaizi-devs",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "probation-integration",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "version-1-sit-team",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "hmpps-community-payback-devs",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "hmpps-manage-people-on-probation",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "hmpps-manage-people-on-probation-dev",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "octo-data-architecture",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "delius-core-development",
+          "level": "developer",
+          "github_action_reviewer": "false"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",
       "access": [
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "hosting-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "hmpps-dba",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "hmpps-dba",
+          "level": "reporting-operations"
+        },
+        {
+          "sso_group_name": "unilink",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "zaizi-devs",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "probation-integration",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "version-1-sit-team",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "hmpps-community-payback-devs",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "probation-de",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "hmpps-manage-people-on-probation",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "hmpps-manage-people-on-probation-dev",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "octo-data-architecture",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "delius-core-test",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "hmpps-migration",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "hosting-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "hmpps-dba",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "unilink",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "zaizi-devs",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "probation-integration",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "version-1-sit-team-preprod",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "hmpps-manage-people-on-probation",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "hmpps-manage-people-on-probation-dev",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "delius-core-preproduction",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "probation-de",
+          "level": "developer"
+        }
+      ],
+      "instance_scheduler_skip": ["true"]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "hmpps-migration",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "hosting-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "hmpps-dba",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "unilink",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "probation-integration",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "hmpps-manage-people-on-probation",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "hmpps-manage-people-on-probation-dev",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "delius-core-production",
+          "level": "developer",
+          "github_action_reviewer": "false"
         }
       ]
     }
@@ -35,10 +262,18 @@
     "application": "delius",
     "business-unit": "HMPPS",
     "infrastructure-support": "probation-webops@digital.justice.gov.uk",
-    "owner": "probation-webops@digital.justice.gov.uk"
+    "owner": "probation-webops@digital.justice.gov.uk",
+    "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": [
     "ministryofjustice/hmpps-delius-operational-automation",
-    "ministryofjustice/hmpps-openldap-container"
+    "ministryofjustice/hmpps-ldap-automation-cli",
+    "ministryofjustice/hmpps-openldap-container",
+    "ministryofjustice/hmpps-delius-docker-images",
+    "ministryofjustice/hmpps-pwm",
+    "ministryofjustice/ndelius-um",
+    "ministryofjustice/delius-pdm-uplift-scripts",
+    "ministryofjustice/dso-modernisation-platform-automation",
+    "ministryofjustice/hmpps-probation-integration-services"
   ]
 }

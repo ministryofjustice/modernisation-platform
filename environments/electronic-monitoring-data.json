@@ -5,9 +5,42 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "hmpps-electronic-monitoring-data-store",
-          "level": "sandbox",
-          "nuke": "exclude"
+          "sso_group_name": "hmpps-electronic-monitoring-data-store",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-electronic-monitoring-data",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-electronic-monitoring-data-non-prod",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "hmpps-electronic-monitoring-data-no-sc",
+          "level": "sandbox"
+        }
+      ],
+      "nuke": "exclude"
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "hmpps-electronic-monitoring-data-store",
+          "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-electronic-monitoring-data",
+          "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-electronic-monitoring-data",
+          "level": "data-scientist"
+        },
+        {
+          "sso_group_name": "hmpps-electronic-monitoring-data-store",
+          "level": "data-scientist"
         }
       ]
     },
@@ -15,8 +48,20 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "hmpps-electronic-monitoring-data-store",
-          "level": "developer"
+          "sso_group_name": "hmpps-electronic-monitoring-data-store",
+          "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-electronic-monitoring-data",
+          "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-electronic-monitoring-data-athena-read-only",
+          "level": "data-scientist"
+        },
+        {
+          "sso_group_name": "hmpps-electronic-monitoring-data-store-read-only",
+          "level": "data-scientist"
         }
       ]
     },
@@ -24,8 +69,12 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "hmpps-electronic-monitoring-data-store",
-          "level": "developer"
+          "sso_group_name": "hmpps-electronic-monitoring-data-store",
+          "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-electronic-monitoring-data",
+          "level": "data-engineer"
         }
       ]
     }
@@ -33,9 +82,15 @@
   "tags": {
     "application": "electronic-monitoring-data",
     "business-unit": "HMPPS",
-    "infrastructure-support": "dataengineering@digital.justice.gov.uk",
-    "owner": "Data engineering: dataengineering@digital.justice.gov.uk"
+    "infrastructure-support": "EMDataEngineering@justice.gov.uk",
+    "owner": "EM Data Engineering: EMDataEngineering@justice.gov.uk",
+    "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [""],
+  "github-oidc-team-repositories": [
+    "ministryofjustice/electronic-monitoring-data-lambda-functions",
+    "ministryofjustice/electronic-monitoring-ear-sars",
+    "ministryofjustice/electronic-monitoring-data-gdpr",
+    "moj-analytical-services/airflow-export-em-data-p1"
+  ],
   "go-live-date": ""
 }

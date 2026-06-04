@@ -32,3 +32,9 @@ variable "vpc_flow_log_iam_role" {
   description = "VPC Flow Log IAM role ARN for VPC Flow Logs to CloudWatch"
   type        = string
 }
+
+variable "flow_log_s3_destination_arn" {
+  description = "Optionally supply an ARN of an S3 bucket to send flow logs to"
+  default     = ""
+  type        = string
+}

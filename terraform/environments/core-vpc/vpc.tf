@@ -1,3 +1,5 @@
+data "aws_organizations_organization" "current" {}
+
 # lookups for DNS
 
 data "aws_route53_zone" "public" {
@@ -68,6 +70,7 @@ locals {
     data.key => data.account_nos
   }
 
+  # Primary subnets (lists) - for backward compatibility with existing state
   non-tgw-vpc-subnet = flatten([
     for key, vpc in module.vpc : [
       for set in keys(module.vpc[key].non_tgw_subnet_arns_by_subnetset) : {
@@ -78,23 +81,41 @@ locals {
     ]
   ])
 
+  # Secondary subnets (maps) - allows single-apply deployment
+  secondary-vpc-subnet = flatten([
+    for key, vpc in module.vpc : [
+      length(module.vpc[key].secondary_subnet_arns_with_keys) > 0 ? {
+        key  = key
+        set  = "general-secondary"
+        arns = module.vpc[key].secondary_subnet_arns_with_keys
+      } : null
+    ] if module.vpc[key].secondary_subnet_arns_with_keys != null
+  ])
+
+  # Combined list for RAM sharing
+  all-vpc-subnets = concat(local.non-tgw-vpc-subnet, [for s in local.secondary-vpc-subnet : s if s != null])
+
   modernisation-platform-domain          = "modernisation-platform.service.justice.gov.uk"
   modernisation-platform-internal-domain = "modernisation-platform.internal"
 }
 
 module "vpc" {
-  for_each = local.vpcs[terraform.workspace]
-
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=e8447fc0906270e0e67bf329e8355cd306ef9fef" #v2.2.0
-
-  subnet_sets = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
-
+  providers = {
+    aws.transit-gateway-host = aws.core-network-services
+  }
+  for_each             = local.vpcs[terraform.workspace]
+  source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=410bd64f9a9eab204390822a46bf5ccca6fea12b" # v5.1.0
   additional_endpoints = each.value.options.additional_endpoints
+  subnet_sets          = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
+  transit_gateway_id   = data.aws_ec2_transit_gateway.transit-gateway.id
+  type                 = local.is-live_data ? "live_data" : "non_live_data"
 
-  transit_gateway_id = data.aws_ec2_transit_gateway.transit-gateway.id
+  # Secondary CIDR blocks for additional subnet capacity
+  secondary_cidr_blocks = lookup(each.value.options, "secondary_cidr_blocks", [])
 
   # VPC Flow Logs
-  vpc_flow_log_iam_role = data.aws_iam_role.vpc-flow-log.arn
+  vpc_flow_log_iam_role       = aws_iam_role.vpc_flow_log.arn
+  flow_log_s3_destination_arn = local.is-production ? local.core_logging_bucket_arns["vpc-flow-logs"] : ""
 
   # Tags
   tags_common = local.tags
@@ -109,14 +130,6 @@ module "vpc_nacls" {
   tags             = local.tags
   tags_prefix      = each.key
   vpc_name         = each.key
-}
-
-module "route_53_resolver_logs" {
-  source      = "../../modules/r53-resolver-logs"
-  for_each    = { for key, value in module.vpc : key => value["vpc_id"] }
-  tags_common = local.tags
-  vpc_id      = each.value
-  vpc_name    = each.key
 }
 
 locals {
@@ -134,11 +147,12 @@ locals {
 module "resource-share" {
   source = "../../modules/ram-resource-share"
   for_each = {
-    for vpc in local.non-tgw-vpc-subnet : "${vpc.key}-${vpc.set}" => vpc
+    for vpc in local.all-vpc-subnets : "${vpc.key}-${vpc.set}" => vpc
   }
 
   # Subnet ARNs to attach to a resource share
-  resource_arns = [for key, subnet in each.value.arns : subnet]
+  # Lists for primary subnets (backward compatible), maps for secondary subnets (single-apply)
+  resource_arns = each.value.arns
 
   # Tags
   tags_common = local.tags
@@ -200,26 +214,38 @@ module "dns_zone_extend_private" {
   vpc_id    = module.vpc[each.key].vpc_id
 }
 
+locals {
+  member_delegation_additional_accounts = {
+    "core-vpc-development" = {
+      "laa-development" = [local.environment_management.account_ids["laa-workspaces-development"]]
+    }
+  }
+}
+
 resource "aws_iam_role" "member-delegation" {
   for_each = local.vpcs[terraform.workspace]
 
   name = "member-delegation-${each.key}"
-  assume_role_policy = jsonencode(
-    {
-      "Version" : "2012-10-17",
-      "Statement" : [
-        {
-          "Effect" : "Allow",
-          "Principal" : {
-            "AWS" : concat(
-              local.expanded_account_numbers_with_keys[each.key],
-              tolist([data.aws_caller_identity.modernisation-platform.account_id])
-            )
-          },
-          "Action" : "sts:AssumeRole",
-          "Condition" : {}
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          AWS = concat(
+            local.expanded_account_numbers_with_keys[each.key],
+            try(local.member_delegation_additional_accounts[terraform.workspace][each.key], []),
+            tolist([data.aws_caller_identity.modernisation-platform.account_id])
+          )
         }
-      ]
+        Action = "sts:AssumeRole"
+        Condition = {
+          StringEquals = {
+            "aws:PrincipalOrgID" = data.aws_organizations_organization.current.id
+          }
+        }
+      }
+    ]
   })
 
   tags = merge(
@@ -327,8 +353,7 @@ resource "aws_iam_role_policy" "member-delegation" {
 
 # Read only role for developer sso plans and for viewing via the console
 resource "aws_iam_role" "member_delegation_read_only" {
-  name                = "member-delegation-read-only"
-  managed_policy_arns = ["arn:aws:iam::aws:policy/ReadOnlyAccess"]
+  name = "member-delegation-read-only"
   assume_role_policy = jsonencode( # checkov:skip=CKV_AWS_60: "the policy is secured with the condition"
     {
       "Version" : "2012-10-17",
@@ -354,4 +379,21 @@ resource "aws_iam_role" "member_delegation_read_only" {
       Name = "member-delegation-read-only"
     },
   )
+}
+
+resource "aws_iam_role_policy_attachments_exclusive" "member_delegation_read_only" {
+  policy_arns = ["arn:aws:iam::aws:policy/ReadOnlyAccess"]
+  role_name   = aws_iam_role.member_delegation_read_only.name
+}
+
+# R53 Resolver DNS Firewall
+module "r53_dns_firewall" {
+  for_each = local.vpcs[terraform.workspace]
+  source   = "../../modules/r53-dns-firewall"
+
+  vpc_id                    = module.vpc[each.key].vpc_id
+  pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
+
+  tags_prefix = each.key
+  tags_common = local.tags
 }

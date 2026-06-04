@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Environments (AWS accounts) architecture
-last_reviewed_on: 2023-12-13
+last_reviewed_on: 2026-01-26
 review_in: 6 months
 ---
 
@@ -23,11 +23,11 @@ The Modernisation Platform has its own organization unit, which all applications
 
 Under the Modernisation Platform OU, we have 3 child OUs -
 
-|Organization Unit | Description
-|---|---|
-|Modernisation Platform Core | This contains all of our core platform AWS accounts.
-|Modernisation Platform Member | This contains all of our member OUs and accounts.
-|Modernisation Platform Member Unrestricted | This is a legacy OU which will be removed as we move unrestricted AWS accounts across to member accounts.
+| Organization Unit                          | Description                                                                                               |
+| ------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
+| Modernisation Platform Core                | This contains all of our core platform AWS accounts.                                                      |
+| Modernisation Platform Member              | This contains all of our member OUs and accounts.                                                         |
+| Modernisation Platform Member Unrestricted | This is a legacy OU which will be removed as we move unrestricted AWS accounts across to member accounts. |
 
 When a [new environment is created](../../user-guide/creating-environments.html), the Modernisation Platform automatically creates a new OU for the application which holds all of the environments (AWS accounts), and it sits within the Modernisation Platform Member OU.
 

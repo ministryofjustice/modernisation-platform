@@ -5,9 +5,8 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "dts-legacy",
-          "level": "sandbox",
-          "nuke": "rebuild"
+          "sso_group_name": "dts-legacy",
+          "level": "developer"
         }
       ]
     },
@@ -15,7 +14,7 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "dts-legacy",
+          "sso_group_name": "dts-legacy",
           "level": "developer"
         }
       ]
@@ -24,7 +23,7 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "dts-legacy",
+          "sso_group_name": "dts-legacy",
           "level": "developer"
         }
       ]
@@ -33,8 +32,10 @@
   "tags": {
     "application": "tipstaff",
     "business-unit": "HMCTS",
-    "infrastructure-support": "DTS-ITServiceDesk@justice.gov.uk",
-    "owner": "DTS-ITServiceDesk@justice.gov.uk"
+    "infrastructure-support": "dts-legacy-apps-support-team@HMCTS.NET",
+    "owner": "dts-legacy-apps-support-team@HMCTS.NET",
+    "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": ["ministryofjustice/Tipstaff"]
+  "github-oidc-team-repositories": ["ministryofjustice/Tipstaff"],
+  "go-live-date": "2023-08-09"
 }

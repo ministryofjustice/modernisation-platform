@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Modifying Service Control Policies (SCPs)
-last_reviewed_on: 2023-09-13
+last_reviewed_on: 2026-03-19
 review_in: 6 months
 ---
 
@@ -9,10 +9,23 @@ review_in: 6 months
 
 We use the following SCPs for the Modernisation Platform to restrict certain actions at an account level.
 
-SCP | Location                                                                                                                                                                                                                             | Description
----|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---|
-Modernisation Platform Member | [`aws-root-account/management-account/terraform/organizations-policy-service-control.tf`](https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/organizations-policy-service-control.tf#L288) | SCP for accounts with the account type of "member"
+| Policy | Type | Location | Description |
+| --- | --- | --- | --- |
+| Modernisation Platform Member OU SCP | SCP | [`aws-root-account/management-account/terraform/organizations-policy-service-control.tf`](https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/organizations-policy-service-control.tf) | Baseline SCP attached to the Modernisation Platform Member OU. |
+| Modernisation Platform RDS Guardrails SCP | SCP | [`aws-root-account/management-account/terraform/organizations-policy-service-control-modernisation-platform.tf`](https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/organizations-policy-service-control-modernisation-platform.tf) | Prevents publicly accessible RDS, unencrypted RDS, and public snapshot sharing (Modernisation Platform Member OU scope). |
+| Modernisation Platform S3 Block Public Access | S3 org policy | [`aws-root-account/management-account/terraform/organizations-policy-service-control-modernisation-platform.tf`](https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/organizations-policy-service-control-modernisation-platform.tf) | Enforces S3 Block Public Access for accounts in the Modernisation Platform Member OU. |
+| Modernisation Platform Deny CloudTrail Delete Stop Update | SCP | [`aws-root-account/management-account/terraform/organizations-policy-service-control-modernisation-platform.tf`](https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/organizations-policy-service-control-modernisation-platform.tf) | Denies `DeleteTrail` and `StopLogging` on the `cloudtrail` trail, and denies `UpdateTrail` except for `ModernisationPlatformAccess` (Modernisation Platform OU scope). |
+| Modernisation Platform Protect Core S3 Buckets | SCP | [`aws-root-account/management-account/terraform/organizations-policy-service-control-modernisation-platform.tf`](https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/organizations-policy-service-control-modernisation-platform.tf) | Denies deletion and policy/lifecycle tampering for core S3 buckets (state + core logging) (Modernisation Platform OU scope). |
+| Modernisation Platform Protect Secure Baselines | SCP | [`aws-root-account/management-account/terraform/organizations-policy-service-control-modernisation-platform.tf`](https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/organizations-policy-service-control-modernisation-platform.tf) | Denies deletion/disabling of secure-baselines tagged resources, except AWS SSO admin roles (Modernisation Platform OU scope). |
 
-The SCPs are modified in the `management-account` Terraform of the [aws-root-account](https://github.com/ministryofjustice/aws-root-account).
+The SCPs and organization policies above are modified in the `management-account` Terraform of the [aws-root-account](https://github.com/ministryofjustice/aws-root-account) repository.
+
+## Alerting
+
+Changes to Modernisation Platform SCPs are monitored via EventBridge rules that publish to an SNS topic:
+
+- [`aws-root-account/management-account/terraform/alerting-modernisation-platform-scp.tf`](https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/alerting-modernisation-platform-scp.tf)
+
+Alerts are sent to the [#modernisation-platform-low-priority-alarms](https://mojdt.slack.com/archives/C02PFCG8M1R) Slack channel.
 
 To make changes to these SCPs please raise a pull request against the [aws-root-account](https://github.com/ministryofjustice/aws-root-account) repository.

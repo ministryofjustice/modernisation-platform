@@ -1,0 +1,92 @@
+name: Confirm Contacts for Environments
+on:
+  # Runs on the first day of each month at 9am
+  schedule:
+    - cron: '0 9 1 * *'
+  # Allows for manual exec
+  workflow_dispatch:
+env:
+    GITHUB_REPO: ${{ github.repository }}
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
+    TEMPLATE_ID: "1f0f5ccc-0f67-4ee2-942f-6e48804828ea"
+    EXPECTED_TEMPLATE_VERSION: 1 # Set the expected template version here
+    PERIOD: "12" # This variable determines the number of months we look back for created dates.
+permissions:
+    id-token: write
+defaults:
+  run:
+    shell: bash
+jobs:
+  fetch-secrets:
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8 # v6.1.1
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}  
+  confirm-contacts-for-environments:
+    runs-on: ubuntu-latest
+    needs: fetch-secrets
+    permissions:
+      issues: write     
+      contents: read
+      repository-projects: read
+ 
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      # Step 1.1: Decrypt Secrets  
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8 # v6.1.1
+        with:
+          gov_uk_notify_api_key: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      # Step 2: Setup Python
+      - name: Install Python
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.10' # Note - we need a means to check these python versions and keep them current.
+      - name: Install the Notifications Client
+        run: pip install notifications-python-client
+        
+      # Step 3: Validate Notify Template Version
+      - name: Validate Notify Template Version
+        env:
+          API_KEY: ${{ env.GOV_UK_NOTIFY_API_KEY }}
+          TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
+          EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
+        run: |
+          python <<EOF
+          from notifications_python_client.notifications import NotificationsAPIClient
+          import sys
+          api_key = "${{ env.GOV_UK_NOTIFY_API_KEY }}"
+          template_id = "${{ env.TEMPLATE_ID }}"
+          expected_version = int("${{ env.EXPECTED_TEMPLATE_VERSION }}")
+          client = NotificationsAPIClient(api_key)
+          try:
+              template_details = client.get_template(template_id)
+              actual_version = template_details.get("version")
+              if actual_version != expected_version:
+                  print(f"Error: Template version mismatch! Expected: {expected_version}, Actual: {actual_version}")
+                  sys.exit(1)
+              print(f"Template version {actual_version} validated successfully.")
+          except Exception as e:
+              print(f"Failed to fetch template details: {e}")
+              sys.exit(1)
+          EOF
+      # Step 4: Get Environment Owners
+      - name: Get Environment Owners         
+        run: |
+          cd $GITHUB_WORKSPACE
+          pwd
+          ./scripts/confirm-environment-owner/get-environment-owners.sh
+      # Step 5: Create GitHub Issue and Notify Owners
+      - name: Create Issue and Notify Owner  
+        env:
+          API_KEY: ${{ env.GOV_UK_NOTIFY_API_KEY }}
+          TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
+        run: |
+          cd $GITHUB_WORKSPACE
+          pwd
+          chmod +x scripts/confirm-environment-owner/create-confirm-owner-issue.sh
+          ./scripts/confirm-environment-owner/create-confirm-owner-issue.sh

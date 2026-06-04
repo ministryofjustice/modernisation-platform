@@ -45,8 +45,11 @@ locals {
     ]
   }
 
+  core_logging_bucket_arns = jsondecode(data.aws_ssm_parameter.core_logging_bucket_arns.insecure_value)
+
   tags = {
     business-unit = "Platforms"
+    service-area  = "Hosting"
     application   = "Modernisation Platform: ${terraform.workspace}"
     is-production = local.is-production
     owner         = "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"

@@ -1,0 +1,34 @@
+{
+  "account-type": "member",
+  "isolated-network": "true",
+  "codeowners": [""],
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "genesys-call-centre-data",
+          "level": "sandbox"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "genesys-call-centre-data",
+          "level": "view-only"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "genesys-call-centre-data",
+    "business-unit": "Platforms",
+    "infrastructure-support": "DataandAnalyticsEngineering@justice.gov.uk",
+    "owner": "DataandAnalyticsEngineering@justice.gov.uk",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
+}

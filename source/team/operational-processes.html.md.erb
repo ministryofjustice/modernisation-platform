@@ -2,41 +2,124 @@
 owner_slack: "#modernisation-platform"
 title: Operational Processes
 weight: 1
-last_reviewed_on: 2023-09-06
-review_in: 6 months
+last_reviewed_on: 2026-03-11
+review_in: 3 months
 ---
 
 # <%= current_page.data.title %>
 
-### Hours of support
-Our hours of providing support are 9am - 4pm. During this time we will work on support requests from teams and make sure someone is available to answer questions in Slack channel [#ask-modernisation-platform](https://mojdt.slack.com/archives/C013RM6MFFW).
+## Support Hours and Responsibilities
 
-Outside of these hours we will respond to high priority incidents as per our [on call](#our-on-call-process) process.
+### Regular Support
 
-*During support hours (9AM - 4PM)*
+On ordinary working days from 9AM to 4PM, at least one engineer will:
 
-At least one engineer to:
+- Monitor and respond to queries in [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1)
+- Monitor [#modernisation-platform-high-priority-alarms](https://mojdt.slack.com/archives/C03CY6451QT) for incidents
+- Check [#modernisation-platform-notifications](https://moj.enterprise.slack.com/archives/C01A44RL0TC) for build notifications and Dependabot PRs
+- Triage new user support requests on the board
 
-- Actively participate in [#ask-modernisation-platform](https://mojdt.slack.com/archives/C013RM6MFFW) to field support requests, triage, prioritise and fix
-- Monitor [#modernisation-platform-high-priority-alarms](https://mojdt.slack.com/archives/C03CY6451QT) for incidents, triage, prioritise and fix
-- Monitor [#modernisation-platform-notifications](https://mojdt.slack.com/archives/C01A44RL0TC) for Modernisation Platform build notifications and Dependabot PRs
-- Monitor user support requests being added to the board and triage them for priority
+The whole support team will:
 
-The whole support team to:
+- Manage ongoing incidents
+- Work on larger user requests and support backlog stories
 
-- Manage incident process for incidents in progress
-- Work on user requests for larger work
-- Work on support backlog stories
+Before ending the day (4PM), an engineer will hand over information about planned work or high-priority incidents to the on-call engineer.
 
-*Before ending the day (4PM)*
+## Out-of-Hours Planned Changes Support
 
-At least one engineer to:
+This process ensures that planned maintenance and updates are executed smoothly with appropriate support during out-of-hours periods.
 
-- Handover information about any planned work or in progress high priority incidents to on call engineer
+### Requesting Out-of-Hours Support
 
-### `#ask-modernisation-platform` slack channel
+#### Advance Notice
 
-The [#ask-modernisation-platform](https://mojdt.slack.com/archives/C013RM6MFFW) channel is our main entry point for support.
+Teams must provide a minimum of 48 hours notice for any planned changes requiring out-of-hours support.
+
+#### Submission Process
+
+- Submit requests by creating a GitHub issue using the provided template. Use [this link](https://github.com/ministryofjustice/modernisation-platform/issues/new?template=out-of-hours-support-request.yml) to access the template.
+
+- Once complete please notify the team via the [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1) Slack channel once the issue is created.
+
+#### Information to Include
+
+- Change Details: A comprehensive description of the planned change.
+- Scheduled Time: Proposed date and time for the change.
+- Impact Assessment: Analysis of potential effects on services and users.
+- Rollback Plan: A clear strategy for reverting changes if necessary.
+
+#### Review Process
+
+The Modernisation Platform team will assess the request, considering factors such as potential risks, resource availability, and alignment with ongoing activities.
+
+#### Confirmation
+
+Upon approval, confirmation will be communicated, including the assigned support personnel and any specific instructions.
+
+### Execution of Planned Change
+
+#### Pre-Change Preparation
+
+- Ensure all relevant stakeholders are informed.
+- Verify that backup and rollback procedures are in place.
+
+#### During Change Implementation
+
+- The assigned support engineer will be available to assist as needed.
+- Maintain open communication via a designated Slack channel for real-time updates.
+
+#### Post-Change
+
+- Confirm the success of the change in the designated Slack channel and monitor for any issues.
+
+## On-Call Support and Processes
+
+Our on-call support is crucial for addressing critical issues outside of regular hours.
+
+### On-Call Hours
+
+- Weekdays: 7AM–9AM and 4PM–10PM
+- Weekends and Bank Holidays: 7AM-10PM
+- On-Call support is not available outside of these hours
+
+### On-Call Rota
+
+- Provided through [Pagerduty](https://moj-digital-tools.pagerduty.com/)
+- Managed through [code](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/pagerduty)
+- Consists of a primary engineer and a secondary engineer
+- The primary engineer is the first point of contact
+- The secondary engineer provides support to the primary as required
+
+### Responsibilities
+
+On-call engineers will:
+
+- Respond to high-priority incidents during on-call hours
+- Work to resolve these incidents
+
+If unable to resolve an issue, they will:
+
+- Inform the affected team
+- Develop a plan for resolution during normal working hours
+
+### Critical Incidents Procedure
+
+For critical incidents outside of regular hours:
+
+- Email [contact-on-call-email-address-email.lj5otm6u@moj-digital-tools.pagerduty.com](mailto:contact-on-call-email-address-email.lj5otm6u@moj-digital-tools.pagerduty.com)
+- Include:
+  - Known facts about the incident
+  - Slack channel for further communication
+- The on-call person will respond via the specified Slack channel as soon as possible
+
+**Note:** This process is ONLY for critical incidents and not for routine out-of-hours application or development support.
+
+## Communication Channels
+
+### #ask-modernisation-platform
+
+The [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1) channel is our main entry point for support.
 The main purpose of the channel is to discuss the problems that people are having and help them to solve them.
 
 We encourage people to ask questions and report problems in this channel and we’ll do the best we can to help.
@@ -45,32 +128,28 @@ This channel can also be used to communicate to other Modernisation Platform use
 
 One of the Modernisation Platform team will be available to answer questions throughout the hours of support (9AM - 4PM).
 
-### `#modernisation-platform-update` slack channel
+### #modernisation-platform-update
 
 [#modernisation-platform-update](https://mojdt.slack.com/archives/C02L5MCJ12N) is a low-volume channel for broadcast communications.
 
 Examples include:
 
-- To announce future scheduled work (e.g. “we will be upgrading our AMI builder on … no downtime is expected”)
-- When there is planned work on a service (e.g. “we are doing some maintenance work on an RDS instance in prod”)
-- When there is an incident in progress (e.g “there is a problem with Github Actions, no one can access it right now”)
+- Announcements of future scheduled work
+- Information about planned maintenance
+- Updates on ongoing incidents
 
 In these situations:
 
-- Try not to use notifiers like @here and @channel unless absolutely necessary
-- Perhaps use visual clues in your message to show it is an announcement
-- Commit to a time when you will update on the situation and keep that commitment
+When posting announcements:
 
-So for example:
+- Use @here and @channel sparingly
+- Consider using visual cues to highlight announcements
+- Commit to and maintain regular update schedules
 
->
-ANNOUNCEMENT: As agreed with the relevant teams, the Modernisation Platform team will be upgrading the AWS Terraform provider to version 4 on the example service today.
+Posts in this channel should also be forwarded to [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1).
 
->
-We will be doing this work between 10AM and 11AM
-
-Posts in this channel should also be forwarded to [#ask-modernisation-platform](https://mojdt.slack.com/archives/C013RM6MFFW)
 ### Our on call process
+
 Team members who are on call manage an on call rota in [PagerDuty](https://www.pagerduty.com/). The on call rota consists of a primary engineer and a secondary engineer. The primary engineer is the first point of contact. The Modernisation Platform is complex so we have a secondary engineer on call. Their role is to provide support to the primary if this is required.
 Team members that are new to the rota should ensure that they have a secondary who has enough knowledge and experience of the process to support them.
 
@@ -84,7 +163,7 @@ If the engineer is not able to resolve the issue they will:
 
 ### Critical incidents only - contact the out-of-hours on-call person
 
-In the event of a ‘Critical incident’ to the Modernisation Platform infrastructure affecting applications (out of support hours), please email [contact-on-call-modernisation-platform@digital.justice.gov.uk](mailto:contact-on-call-modernisation-platform@digital.justice.gov.uk), stating:
+In the event of a ‘Critical incident’ to the Modernisation Platform infrastructure affecting applications (out of support hours), please email [contact-on-call-email-address-email.lj5otm6u@moj-digital-tools.pagerduty.com](mailto:contact-on-call-email-address-email.lj5otm6u@moj-digital-tools.pagerduty.com), stating:
 
 - The known facts surrounding the incident
 - Please also state the ‘Slack’ channel on which further communication can take place.
@@ -92,8 +171,10 @@ In the event of a ‘Critical incident’ to the Modernisation Platform infrastr
 The on-call person will get back to you on ‘Slack’ as soon as possible.
 It must be emphasised that this is ONLY for ‘Critical Incidents’ and is not for out-of-hours application or development support.
 
-### Our documentation
+## Documentation
 
-All Modernisation Platform documentation is openly available in Git repositories stored on GitHub. The starting point for this documentation is the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform).
+We maintain documentation in all of our GitHub repositories.
 
-For users of the Modernisation Platform there is the [Modernisation Platform User Guide](https://user-guide.modernisation-platform.service.justice.gov.uk). This guide is the “front door” to the Modernisation Platform and contains concepts, guides, walkthroughs and other information to help teams use the Modernisation Platform.
+The [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform) is the starting point for our documentation.
+
+The [Modernisation Platform User Guide](https://user-guide.modernisation-platform.service.justice.gov.uk) is our front door for users, containing concepts, guides, runbooks, and other helpful information.

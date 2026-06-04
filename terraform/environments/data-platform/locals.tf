@@ -16,6 +16,7 @@ locals {
     jsondecode(data.http.environments_file.response_body).tags,
     { "is-production" = local.is-production },
     { "environment-name" = terraform.workspace },
+    { "service-area" = "Hosting" },
     { "source-code" = "https://github.com/ministryofjustice/modernisation-platform" }
   )
 
@@ -33,7 +34,7 @@ locals {
   # example_data = local.application_data.accounts[local.environment].example_var
   application_data = fileexists("./application_variables.json") ? jsondecode(file("./application_variables.json")) : {}
 
-  oidc_repositories        = ["ministryofjustice/data-platform-products:*"]
+  oidc_repositories        = ["ministryofjustice/data-platform-products"]
   oidc_default_policy_arns = ["arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess"]
 
 }

@@ -5,14 +5,24 @@
         "cidr": "10.27.64.0/21",
         "accounts": [
           "apex-production",
-          "eric-production",
-          "mlra-production",
           "ccms-ebs-production",
-          "maat-production",
-          "oas-production",
-          "portal-production",
+          "ccms-edrms-production",
+          "ccms-oia-production",
+          "ccms-pui-internal-production",
+          "ccms-pui-production",
+          "contract-work-administration-production",
+          "edw-19c-production",
+          "laa-ccms-soa-production",
+          "laa-cst-security-dashboard-production",
+          "laa-enterprise-service-bus-production",
+          "laa-mail-relay-production",
           "laa-oem-production",
-          "mojfin-production"
+          "laa-pui-secure-browser-production",
+          "maat-production",
+          "maatdb-production",
+          "mlra-production",
+          "mojfin-production",
+          "oas-production"
         ]
       }
     }
@@ -23,9 +33,11 @@
     "additional_endpoints": [
       "com.amazonaws.eu-west-2.xray",
       "com.amazonaws.eu-west-2.secretsmanager",
-      "com.amazonaws.eu-west-2.email-smtp"
+      "com.amazonaws.eu-west-2.email-smtp",
+      "com.amazonaws.eu-west-2.sns",
+      "com.amazonaws.eu-west-2.sqs"
     ],
-    "additional_private_zones": [],
+    "additional_private_zones": ["aws.prd.legalservices.gov.uk"],
     "additional_vpcs": [],
     "dns_zone_extend": []
   }

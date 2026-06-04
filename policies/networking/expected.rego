@@ -1,4 +1,6 @@
-package main
+package policies.networking
+
+import rego.v1
 
 expected :=
 {
@@ -19,225 +21,38 @@ expected :=
         ]
       }
     },
-    "hmpps-preproduction": {
-      "general": {
-        "cidr": "10.27.0.0/21",
-        "accounts": [
-          "performance-hub-preproduction",
-          "oasys-preproduction",
-          "nomis-preproduction",
-          "electronic-monitoring-data-preproduction",
-          "ppud-preproduction",
-          "delius-iaps-preproduction",
-          "delius-jitbit-preproduction",
-          "delius-mis-preproduction",
-          "nomis-combined-reporting-preproduction",
-          "nomis-data-hub-preproduction",
-          "digital-prison-reporting-preproduction",
-          "corporate-staff-rostering-preproduction",
-          "planetfm-preproduction",
-          "hmpps-oem-preproduction",
-          "hmpps-domain-services-preproduction"
-        ]
-      }
-    },
-    "platforms-development": {
-      "general": {
-        "cidr": "10.26.16.0/21",
-        "accounts": [
-          "example-development",
-          "data-platform-development",
-          "data-platform-apps-and-tools-development",
-          "observability-platform-development"
-        ]
-      }
-    },
-    "hmpps-development": {
-      "general": {
-        "cidr": "10.26.24.0/21",
-        "accounts": [
-          "performance-hub-development",
-          "digital-prison-reporting-development",
-          "electronic-monitoring-data-development",
-          "equip-development",
-          "ppud-development",
-          "refer-monitor-development",
-          "nomis-development",
-          "oasys-development",
-          "delius-iaps-development",
-          "delius-jitbit-development",
-          "delius-mis-development",
-          "nomis-combined-reporting-development",
-          "nomis-data-hub-development",
-          "delius-core-development",
-          "hmpps-intelligence-management-development",
-          "corporate-staff-rostering-development",
-          "planetfm-development",
-          "hmpps-oem-development",
-          "hmpps-domain-services-development"
-        ]
-      }
-    },
-    "platforms-test": {
-      "general": {
-        "cidr": "10.26.0.0/21",
-        "accounts": [
-          "data-platform-test",
-          "testing-test"
-        ]
-      }
-    },
-    "hmpps-test": {
-      "general": {
-        "cidr": "10.26.8.0/21",
-        "accounts": [
-          "nomis-test",
-          "oasys-test",
-          "digital-prison-reporting-test",
-          "delius-jitbit-test",
-          "delius-mis-test",
-          "nomis-combined-reporting-test",
-          "nomis-data-hub-test",
-          "corporate-staff-rostering-test",
-          "planetfm-test",
-          "hmpps-oem-test",
-          "hmpps-domain-services-test",
-          "delius-core-test"
-        ]
-      }
-    },
     "cica-development": {
       "general": {
         "cidr": "10.26.32.0/21",
         "accounts": [
-          "tariff-development",
-          "cica-copilot-development"
+          "cica-copilot-development",
+          "cica-data-extraction-development",
+          "cica-sandbox-development",
+          "cica-tariff-development"
         ]
       }
     },
-    "hmpps-production": {
+    "cica-test": {
       "general": {
-        "cidr": "10.27.8.0/21",
+        "cidr": "10.26.112.0/21",
         "accounts": [
-          "performance-hub-production",
-          "ppud-production",
-          "electronic-monitoring-data-production",
-          "equip-production",
-          "oasys-production",
-          "nomis-production",
-          "delius-iaps-production",
-          "delius-jitbit-production",
-          "delius-mis-production",
-          "nomis-combined-reporting-production",
-          "nomis-data-hub-production",
-          "hmpps-intelligence-management-production",
-          "corporate-staff-rostering-production",
-          "planetfm-production",
-          "hmpps-oem-production",
-          "digital-prison-reporting-production",
-          "hmpps-domain-services-production"
+          "cica-tariff-test"
         ]
       }
     },
-    "hmcts-development": {
+    "cica-preproduction": {
       "general": {
-        "cidr": "10.26.40.0/21",
+        "cidr": "10.27.88.0/21",
         "accounts": [
-          "xhibit-portal-development",
-          "tipstaff-development",
-          "tribunals-development",
-          "dacp-development",
-          "pra-registe-development",
-          "ncas-development",
-          "wardship-development"
+          "cica-tariff-preproduction"
         ]
       }
     },
-    "hmcts-production": {
+    "cica-production": {
       "general": {
-        "cidr": "10.27.16.0/21",
+        "cidr": "10.27.80.0/21",
         "accounts": [
-          "xhibit-portal-production",
-          "tipstaff-production",
-          "tribunals-production",
-          "dacp-production",
-          "pra-register-production",
-          "ncas-production",
-          "wardship-production"
-        ]
-      }
-    },
-    "hmcts-preproduction": {
-      "general": {
-        "cidr": "10.27.24.0/21",
-        "accounts": [
-          "xhibit-portal-preproduction",
-          "tipstaff-preproduction",
-          "tribunals-preproduction",
-          "dacp-preproduction",
-          "pra-register-preproduction",
-          "ncas-preproduction",
-          "wardship-preproduction"
-        ]
-      }
-    },
-    "hq-development": {
-      "general": {
-        "cidr": "10.26.48.0/21",
-        "accounts": [
-          "data-and-insights-wepi-development",
-          "cdpt-chaps-development",
-          "cdpt-ifs-development"
-        ]
-      }
-    },
-    "hq-test": {
-      "general": {
-        "cidr": "10.26.120.0/21",
-        "accounts": [
-          "threat-and-vulnerability-mgmt-production"
-        ]
-      }
-    },
-    "hq-production": {
-      "general": {
-        "cidr": "10.27.32.0/21",
-        "accounts": [
-          "data-and-insights-wepi-production",
-          "cdpt-chaps-production",
-          "cdpt-ifs-production"
-        ]
-      }
-    },
-    "laa-development": {
-      "general": {
-        "cidr": "10.26.56.0/21",
-        "accounts": [
-          "apex-development",
-          "ccms-ebs-development",
-          "ccms-ebs-upgrade-development",
-          "laa-ccms-infra-azure-ad-sso",
-          "laa-oem-development",
-          "maat-development",
-          "maatdb-development",
-          "mlra-development",
-          "oas-development",
-          "portal-development",
-          "mojfin-development"
-        ]
-      }
-    },
-    "opg-development": {
-      "general": {
-        "cidr": "10.26.72.0/21",
-        "accounts": [
-        ]
-      }
-    },
-    "opg-test": {
-      "general": {
-        "cidr": "10.26.64.0/21",
-        "accounts": [
+          "cica-tariff-production"
         ]
       }
     },
@@ -255,20 +70,33 @@ expected :=
         ]
       }
     },
-    "laa-test": {
+    "cjse-preproduction": {
       "general": {
-        "cidr": "10.26.96.0/21",
+        "cidr": "10.27.120.0/21",
         "accounts": [
-          "apex-test",
-          "eric-test",
-          "mlra-test",
-          "ccms-ebs-test",
-          "laa-oem-test",
-          "maat-test",
-          "oas-test",
-          "portal-test",
-          "mojfin-test"
         ]
+      }
+    },
+    "cjse-production": {
+      "general": {
+        "cidr": "10.27.112.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "hmcts-development": {
+      "general": {
+        "cidr": "10.26.40.0/21",
+        "accounts": [
+              "dacp-development",
+              "hmcts-claude-provider-development",
+              "ncas-development",
+              "pra-registe-development",
+              "tipstaff-development",
+              "tribunals-development",
+              "wardship-development",
+              "xhibit-portal-development"
+            ]
       }
     },
     "hmcts-test": {
@@ -278,25 +106,292 @@ expected :=
         ]
       }
     },
-    "cica-test": {
+    "hmcts-preproduction": {
       "general": {
-        "cidr": "10.26.112.0/21",
+        "cidr": "10.27.24.0/21",
         "accounts": [
+          "xhibit-portal-preproduction",
+          "tipstaff-preproduction",
+          "tribunals-preproduction",
+          "dacp-preproduction",
+          "pra-register-preproduction",
+          "ncas-preproduction",
+          "wardship-preproduction"
+        ]
+      }
+    },
+    "hmcts-production": {
+      "general": {
+        "cidr": "10.27.16.0/21",
+        "accounts": [
+          "xhibit-portal-production",
+          "tipstaff-production",
+          "tribunals-production",
+          "dacp-production",
+          "pra-register-production",
+          "ncas-production",
+          "wardship-production"
+        ]
+      }
+    },
+    "hmpps-development": {
+      "general": {
+        "cidr": "10.26.24.0/21",
+        "accounts": [
+              "delius-alfresco-development",
+              "delius-core-development",
+              "delius-iaps-development",
+              "delius-jitbit-development",
+              "delius-mis-development",
+              "digital-prison-reporting-development",
+              "electronic-monitoring-data-development",
+              "equip-development",
+              "eucs-appstream-development",
+              "hmpps-court-data-ingestion-api-development",
+              "hmpps-domain-services-development",
+              "hmpps-esupervision-development",
+              "hmpps-oem-development",
+              "nomis-data-hub-development",
+              "nomis-development",
+              "oasys-development",
+              "performance-hub-development",
+              "ppud-development",
+              "refer-monitor-development",
+              "vcms-development"
+            ]
+      }
+    },
+    "hmpps-test": {
+      "general": {
+        "cidr": "10.26.8.0/21",
+        "accounts": [
+          "nomis-test",
+          "oasys-test",
+          "digital-prison-reporting-test",
+          "delius-alfresco-test",
+          "delius-jitbit-test",
+          "nomis-combined-reporting-test",
+          "nomis-data-hub-test",
+          "hmpps-oem-test",
+          "hmpps-domain-services-test",
+          "delius-core-test",
+          "oasys-national-reporting-test",
+          "vcms-test"
+        ]
+      }
+    },
+    "hmpps-preproduction": {
+      "general": {
+        "cidr": "10.27.0.0/21",
+        "accounts": [
+          "corporate-staff-rostering-preproduction",
+          "delius-alfresco-preproduction",
+          "delius-core-preproduction",
+          "delius-iaps-preproduction",
+          "delius-jitbit-preproduction",
+          "delius-mis-preproduction",
+          "digital-prison-reporting-preproduction",
+          "electronic-monitoring-data-preproduction",
+          "hmpps-court-data-ingestion-api-preproduction",
+          "hmpps-domain-services-preproduction",
+          "hmpps-oem-preproduction",
+          "nomis-preproduction",
+          "nomis-combined-reporting-preproduction",
+          "nomis-data-hub-preproduction",
+          "oasys-preproduction",
+          "oasys-national-reporting-preproduction",
+          "performance-hub-preproduction",
+          "planetfm-preproduction",
+          "ppud-preproduction",
+          "vcms-preproduction"
+        ]
+      }
+    },
+    "hmpps-production": {
+      "general": {
+        "cidr": "10.27.8.0/21",
+        "accounts": [
+              "corporate-staff-rostering-production",
+              "delius-alfresco-production",
+              "delius-core-production",
+              "delius-core-training-production",
+              "delius-iaps-production",
+              "delius-jitbit-production",
+              "delius-mis-production",
+              "digital-prison-reporting-production",
+              "electronic-monitoring-data-production",
+              "equip-production",
+              "eucs-appstream-production",
+              "hmpps-court-data-ingestion-api-production",
+              "hmpps-domain-services-production",
+              "hmpps-esupervision-production",
+              "hmpps-oem-production",
+              "nomis-combined-reporting-production",
+              "nomis-data-hub-production",
+              "nomis-production",
+              "oasys-national-reporting-production",
+              "oasys-production",
+              "performance-hub-production",
+              "planetfm-production",
+              "ppud-production",
+              "prison-retail-production",
+              "vcms-production"
+            ]
+      }
+    },
+    "hq-development": {
+      "general": {
+        "cidr": "10.26.48.0/21",
+        "accounts": [
+          "cdpt-chaps-development",
+          "cdpt-ifs-development"
+        ]
+      }
+    },
+    "hq-test": {
+      "general": {
+        "cidr": "10.26.120.0/21",
+        "accounts": [
+          "threat-and-vulnerability-mgmt-production"
         ]
       }
     },
     "hq-preproduction": {
       "general": {
         "cidr": "10.27.40.0/21",
-        "accounts": ["data-and-insights-wepi-preproduction",
-                     "cdpt-chaps-preproduction",
-                     "cdpt-ifs-preproduction"
+        "accounts": [
+          "cdpt-chaps-preproduction",
+          "cdpt-ifs-preproduction"
         ]
       }
     },
-    "opg-production": {
+    "hq-production": {
       "general": {
-        "cidr": "10.27.48.0/21",
+        "cidr": "10.27.32.0/21",
+        "accounts": [
+          "cdpt-chaps-production",
+          "cdpt-ifs-production"
+        ]
+      }
+    },
+    "laa-development": {
+      "general": {
+        "cidr": "10.26.56.0/21",
+        "accounts": [
+              "apex-development",
+              "ccms-ebs-development",
+              "ccms-ebs-upgrade-development",
+              "ccms-edrms-development",
+              "ccms-oia-development",
+              "ccms-pui-development",
+              "ccms-pui-internal-development",
+              "contract-work-administration-development",
+              "data-factory-laa-development",
+              "edw-19c-development",
+              "laa-ccms-soa-development",
+              "laa-cis-development",
+              "laa-cst-security-dashboard-development",
+              "laa-enterprise-service-bus-development",
+              "laa-mail-relay-development",
+              "laa-oem-development",
+              "laa-pui-secure-browser-development",
+              "laa-stabilisation-cdc-poc-development",
+              "maat-development",
+              "maatdb-development",
+              "mlra-development",
+              "mojfin-development",
+              "oas-development"
+            ]
+      }
+    },
+    "laa-test": {
+      "general": {
+        "cidr": "10.26.96.0/21",
+        "accounts": [
+              "apex-test",
+              "ccms-ebs-test",
+              "ccms-ebs-upgrade-test",
+              "ccms-edrms-test",
+              "ccms-oia-test",
+              "ccms-pui-internal-test",
+              "ccms-pui-test",
+              "contract-work-administration-test",
+              "data-factory-laa-test",
+              "edw-19c-test",
+              "laa-ccms-soa-test",
+              "laa-enterprise-service-bus-test",
+              "laa-mail-relay-test",
+              "laa-oem-test",
+              "laa-pui-secure-browser-test",
+              "maat-test",
+              "maatdb-test",
+              "mlra-test",
+              "mojfin-test",
+              "oas-test"
+            ]
+      }
+    },
+    "laa-preproduction": {
+      "general": {
+        "cidr": "10.27.72.0/21",
+        "accounts": [
+              "apex-preproduction",
+              "ccms-ebs-preproduction",
+              "ccms-edrms-preproduction",
+              "ccms-oia-preproduction",
+              "ccms-pui-internal-preproduction",
+              "ccms-pui-preproduction",
+              "contract-work-administration-preproduction",
+              "edw-19c-preproduction",
+              "laa-ccms-soa-preproduction",
+              "laa-cis-preproduction",
+              "laa-mail-relay-preproduction",
+              "laa-oem-preproduction",
+              "laa-pui-secure-browser-preproduction",
+              "maat-preproduction",
+              "maatdb-preproduction",
+              "mlra-preproduction",
+              "mojfin-preproduction",
+              "oas-preproduction"
+            ]
+      }
+    },
+    "laa-production": {
+      "general": {
+        "cidr": "10.27.64.0/21",
+        "accounts": [
+              "apex-production",
+              "ccms-ebs-production",
+              "ccms-edrms-production",
+              "ccms-oia-production",
+              "ccms-pui-internal-production",
+              "ccms-pui-production",
+              "contract-work-administration-production",
+              "edw-19c-production",
+              "laa-ccms-soa-production",
+              "laa-cst-security-dashboard-production",
+              "laa-enterprise-service-bus-production",
+              "laa-mail-relay-production",
+              "laa-oem-production",
+              "laa-pui-secure-browser-production",
+              "maat-production",
+              "maatdb-production",
+              "mlra-production",
+              "mojfin-production",
+              "oas-production"
+            ]
+      }
+    },
+    "opg-development": {
+      "general": {
+        "cidr": "10.26.72.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "opg-test": {
+      "general": {
+        "cidr": "10.26.64.0/21",
         "accounts": [
         ]
       }
@@ -308,58 +403,43 @@ expected :=
         ]
       }
     },
-    "laa-production": {
+    "opg-production": {
       "general": {
-        "cidr": "10.27.64.0/21",
-        "accounts": [
-          "apex-production",
-          "eric-production",
-          "mlra-production",
-          "ccms-ebs-production",
-          "maat-production",
-          "oas-production",
-          "portal-production",
-          "laa-oem-production",
-          "mojfin-production"
-        ]
-      }
-    },
-    "laa-preproduction": {
-      "general": {
-        "cidr": "10.27.72.0/21",
-        "accounts": [
-          "apex-preproduction",
-          "mlra-preproduction",
-          "ccms-ebs-preproduction",
-          "maat-preproduction",
-          "oas-preproduction",
-          "portal-preproduction",
-          "laa-oem-preproduction"
-        ]
-      }
-    },
-    "cica-production": {
-      "general": {
-        "cidr": "10.27.80.0/21",
+        "cidr": "10.27.48.0/21",
         "accounts": [
         ]
       }
     },
-    "cica-preproduction": {
+    "platforms-development": {
       "general": {
-        "cidr": "10.27.88.0/21",
+        "cidr": "10.26.16.0/21",
         "accounts": [
+          "analytical-platform-ingestion-development",
+          "analytical-platform-next-poc-hub-deveopment",
+          "analytical-platform-next-poc-producer-development",
+          "coat-development",
+          "data-factory-corporate-development",
+          "data-factory-moj-development",
+          "data-platform-development",
+          "data-platform-governance-development",
+          "example-development",
+          "integration-hub-development",
+          "observability-platform-development",
+          "octo-development",
+          "panda-cyber-appsec-lab-development"
         ]
       }
     },
-    "platforms-production": {
+    "platforms-test": {
       "general": {
-        "cidr": "10.27.96.0/21",
+        "cidr": "10.26.0.0/21",
         "accounts": [
-          "data-platform-production",
-          "long-term-storage-production",
-          "data-platform-apps-and-tools-production",
-          "observability-platform-production"
+          "data-factory-corporate-test",
+          "data-factory-moj-test",
+          "data-platform-test",
+          "data-platform-governance-test",
+          "integration-hub-test",
+          "testing-test"
         ]
       }
     },
@@ -367,20 +447,53 @@ expected :=
       "general": {
         "cidr": "10.27.104.0/21",
         "accounts": [
-          "data-platform-preproduction"
+          "data-platform-preproduction",
+          "data-platform-governance-preproduction",
+          "integration-hub-preproduction"
         ]
       }
     },
-    "cjse-production": {
+    "platforms-production": {
       "general": {
-        "cidr": "10.27.112.0/21",
+        "cidr": "10.27.96.0/21",
+        "accounts": [
+          "analytical-platform-common-production",
+          "analytical-platform-ingestion-production",
+          "coat-production",
+          "data-platform-production",
+          "data-platform-governance-production",
+          "integration-hub-production",
+          "long-term-storage-production",
+          "observability-platform-production"
+        ]
+      }
+    },
+    "yjb-development": {
+      "general": {
+        "cidr": "10.26.144.0/21",
+        "accounts": [
+          "youth-justice-app-framework-development"
+        ]
+      }
+    },
+    "yjb-test": {
+      "general": {
+        "cidr": "10.26.152.0/21",
+        "accounts": [
+          "youth-justice-app-framework-test"
+        ]
+      }
+    },
+    "yjb-preproduction": {
+      "general": {
+        "cidr": "10.27.144.0/21",
         "accounts": [
         ]
       }
     },
-    "cjse-preproduction": {
+    "yjb-production": {
       "general": {
-        "cidr": "10.27.120.0/21",
+        "cidr": "10.27.152.0/21",
         "accounts": [
         ]
       }

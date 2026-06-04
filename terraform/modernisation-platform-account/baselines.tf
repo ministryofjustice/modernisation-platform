@@ -10,13 +10,15 @@ locals {
     "eu-central-1", # Europe (Frankfurt)
     "eu-west-1",    # Europe (Ireland)
     "eu-west-2",    # Europe (London)
+    "eu-west-3",    # Europe (Paris)
     "us-east-1",    # US East (N. Virginia) (for global services)
   ]
 }
 
 # Secure baselines (GuardDuty, Config, SecurityHub, etc)
+#trivy:ignore:AVD-AWS-0136 trivy:ignore:AVD-AWS-0132
 module "baselines-modernisation-platform" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=98bf536ee2c66b268dfb7670f416fc1103935212" # v6.1.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=0b7f8d865fedca1ee28289ec94b76e93ed04effb" # v10.0.2
   providers = {
     # Default and replication regions
     aws                    = aws.modernisation-platform-eu-west-2
@@ -41,6 +43,12 @@ module "baselines-modernisation-platform" {
     aws.us-west-2      = aws.modernisation-platform-us-west-2
   }
 
+  # Ensure bucket policy references correct account
+  current_account_id = local.environment_management.modernisation_platform_account_id
+
+  # Selectively reduce pre prod backups on certain accounts
+  reduced_preprod_backup_retention = local.reduced_preprod_backup_retention
+
   # Regions to enable IAM Access Analyzer in
   enabled_access_analyzer_regions = local.enabled_baseline_regions
 
@@ -59,16 +67,22 @@ module "baselines-modernisation-platform" {
   # Regions to enable Security Hub in
   enabled_securityhub_regions = local.enabled_baseline_regions
 
-  # Regions to enable default VPC configuration and VPC Flow Logs in
-  enabled_vpc_regions = local.enabled_baseline_regions
-
   cloudtrail_kms_key = data.aws_kms_key.cloudtrail_key.arn
 
   root_account_id = local.root_account.master_account_id
   tags            = local.tags
-}
 
-# Trusted Advisor: refresh every 60 minutes
-module "trusted-advisor-modernisation-platform" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-trusted-advisor?ref=46fadea1bd3e19c643cfbbee705a17a048690a18" # v4.0.0
+  # Regions to enable IMDSv2 in
+  enabled_imdsv2_regions = local.enabled_baseline_regions
+
+  # Pass in pagerduty integration key for security hub alerts
+  pagerduty_integration_key = local.pagerduty_integration_keys["security_hub"]
+
+  # PagerDuty Key for High Priority Alarms
+  high_priority_pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_high_priority_cloudwatch"]
+
+  enable_securityhub_slack_alerts                    = true
+  securityhub_slack_alerts_scope                     = ["CRITICAL", "HIGH"]
+  securityhub_slack_alerts_pagerduty_integration_key = local.pagerduty_integration_keys["security_hub_alerts_critical_priority"]
+
 }

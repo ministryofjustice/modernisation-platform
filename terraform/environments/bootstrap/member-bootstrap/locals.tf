@@ -6,6 +6,12 @@ data "aws_caller_identity" "modernisation-platform" {
   provider = aws.modernisation-platform
 }
 
+# To Get Modernisation Platform Account Number
+data "aws_ssm_parameter" "modernisation_platform_account_id" {
+  provider = aws.modernisation-platform
+  name     = "modernisation_platform_account_id"
+}
+
 data "aws_iam_session_context" "whoami" {
   arn = data.aws_caller_identity.current.arn
 }
@@ -15,8 +21,19 @@ data "aws_iam_roles" "member-sso-admin-access" {
   path_prefix = "/aws-reserved/sso.amazonaws.com/"
 }
 
-data "aws_iam_roles" "github_actions_role" {
-  name_regex = "github-actions"
+data "aws_iam_role" "sprinkler_oidc" {
+  count = (terraform.workspace == "sprinkler-development") ? 1 : 0
+  name  = "github-actions"
+}
+
+data "aws_iam_role" "sprinkler_environments_read_only" {
+  count = (terraform.workspace == "sprinkler-development") ? 1 : 0
+  name  = "github-actions-environments-read-only"
+}
+
+data "aws_iam_role" "sprinkler_environments_dev_test" {
+  count = (terraform.workspace == "sprinkler-development") ? 1 : 0
+  name  = "github-actions-environments-dev-test"
 }
 
 data "http" "environments_file" {
@@ -38,6 +55,7 @@ locals {
 
   tags = {
     business-unit = "Platforms"
+    service-area  = "Hosting"
     application   = "Modernisation Platform: Member Bootstrap"
     is-production = true
     owner         = "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
@@ -57,4 +75,18 @@ locals {
     "oasys-preproduction",
     "oasys-production"
   ]
+
+  # skip the following alias creation if the alias is used by another account (they are globally unique)
+  skip_alias = sort([
+    "apex-development",
+    "apex-production",
+    "apex-test",
+    "data-platform-production",
+    "electronic-monitoring-data-preproduction",
+    "nomis-production",
+    "testing-test",
+    "nomis-development",
+    "oas-test",
+    "vcms-test"
+  ])
 }

@@ -1,12 +1,31 @@
 {
   "account-type": "member",
+  "codeowners": ["hosting-migrations", "studio-webops"],
   "environments": [
     {
       "name": "development",
       "access": [
         {
-          "github_slug": "studio-webops",
-          "level": "sandbox"
+          "sso_group_name": "hosting-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "studio-webops",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "csr-application-support",
+          "level": "instance-access"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-csr-application-support",
+          "level": "instance-access"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
+          "level": "developer"
         }
       ]
     },
@@ -14,7 +33,25 @@
       "name": "test",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "hosting-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "studio-webops",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "csr-application-support",
+          "level": "instance-access"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-csr-application-support",
+          "level": "instance-access"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
           "level": "developer"
         }
       ]
@@ -23,7 +60,25 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "hosting-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "studio-webops",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "csr-application-support",
+          "level": "instance-access"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-csr-application-support",
+          "level": "instance-access"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
           "level": "developer"
         }
       ]
@@ -32,8 +87,30 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "hosting-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "studio-webops",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "csr-application-support",
+          "level": "instance-access"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-csr-application-support",
+          "level": "instance-access"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "security-audit"
         }
       ]
     }
@@ -42,7 +119,10 @@
     "application": "nomis-data-hub",
     "business-unit": "HMPPS",
     "infrastructure-support": "digital-studio-operations-team@digital.justice.gov.uk",
-    "owner": "digital-studio-operations-team@digital.justice.gov.uk"
+    "owner": "digital-studio-operations-team@digital.justice.gov.uk",
+    "critical-national-infrastructure": true
   },
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": [
+    "ministryofjustice/dso-modernisation-platform-automation"
+  ]
 }

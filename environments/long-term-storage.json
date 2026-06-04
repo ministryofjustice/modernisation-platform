@@ -5,8 +5,28 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "modernisation-platform-long-term-storage",
+          "sso_group_name": "modernisation-platform-long-term-storage",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-ccteam",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-tsd-solutionarchitects",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-OSPT",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "security-audit"
         }
       ]
     }
@@ -14,8 +34,11 @@
   "tags": {
     "application": "long-term-storage",
     "business-unit": "Platforms",
+    "service-area": "Hosting",
     "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
-    "owner": "hosting-leads@digital.justice.gov.uk"
+    "owner": "hosting-leads@digital.justice.gov.uk",
+    "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
 }

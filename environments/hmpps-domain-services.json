@@ -1,17 +1,43 @@
 {
   "account-type": "member",
+  "codeowners": ["hosting-migrations", "studio-webops"],
   "environments": [
     {
       "name": "development",
       "access": [
         {
-          "github_slug": "studio-webops",
-          "level": "sandbox",
-          "nuke": "exclude"
+          "sso_group_name": "hosting-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
-          "github_slug": "csr-application-support",
+          "sso_group_name": "studio-webops",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "csr-application-support",
           "level": "instance-management"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-csr-application-support",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "national-applications-reporting-team",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "hmpps-jumpserver-access",
+          "level": "instance-access"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-hmpps-jumpserver-access",
+          "level": "instance-access"
         }
       ]
     },
@@ -19,12 +45,38 @@
       "name": "test",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "hosting-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "studio-webops",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "csr-application-support",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-csr-application-support",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "national-applications-reporting-team",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
           "level": "developer"
         },
         {
-          "github_slug": "csr-application-support",
-          "level": "instance-management"
+          "sso_group_name": "hmpps-jumpserver-access",
+          "level": "instance-access"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-hmpps-jumpserver-access",
+          "level": "instance-access"
         }
       ]
     },
@@ -32,12 +84,38 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "hosting-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "studio-webops",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "csr-application-support",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-csr-application-support",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "national-applications-reporting-team",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
           "level": "developer"
         },
         {
-          "github_slug": "csr-application-support",
-          "level": "instance-management"
+          "sso_group_name": "hmpps-jumpserver-access",
+          "level": "instance-access"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-hmpps-jumpserver-access",
+          "level": "instance-access"
         }
       ]
     },
@@ -45,12 +123,38 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "hosting-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "studio-webops",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "csr-application-support",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-csr-application-support",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "national-applications-reporting-team",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
           "level": "developer"
         },
         {
-          "github_slug": "csr-application-support",
-          "level": "instance-management"
+          "sso_group_name": "hmpps-jumpserver-access",
+          "level": "instance-access"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-hmpps-jumpserver-access",
+          "level": "instance-access"
         }
       ]
     }
@@ -59,8 +163,11 @@
     "application": "hmpps-domain-services",
     "business-unit": "HMPPS",
     "infrastructure-support": "digital-studio-operations-team@digital.justice.gov.uk",
-    "owner": "sean.privett@digital.justice.gov.uk"
+    "owner": "digital-studio-operations-team@digital.justice.gov.uk",
+    "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [""],
+  "github-oidc-team-repositories": [
+    "ministryofjustice/dso-modernisation-platform-automation"
+  ],
   "go-live-date": "2023-08-22"
 }

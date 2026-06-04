@@ -1,86 +1,83 @@
----
 name: 'Format Code: ensure code formatting guidelines are met'
 
 on:
-  workflow_dispatch: null
+  workflow_dispatch:
   schedule:
-    - cron: 45 4 * * 1-5
+    - cron: '45 4 * * 1-5'
 
-permissions:
-  contents: write
-  pull-requests: write
+permissions: read-all
 
 concurrency:
   group: '${{ github.ref }}-${{ github.workflow }}'
   cancel-in-progress: true
 
+env:
+  APP_ID: 2013696
+  RATE_THRESHOLD: 100
+
 jobs:
-  build:
-    name: MegaLinter
+  fetch-secrets:
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8 # v6.1.1
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+    permissions:
+      id-token: write
+      contents: read
+  format-code:
+    needs: fetch-secrets
+    permissions:
+      contents: write
+      pull-requests: write
+      security-events: write  # needed for SARIF upload
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 #v4.1.1
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          token: '${{ secrets.GITHUB_TOKEN }}'
           fetch-depth: 0
+
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8 # v6.1.1
+        with:
+          mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+      - name: Create GitHub App token
+        id: app
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ env.APP_ID }}               
+          private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
+          owner: "ministryofjustice"
+          repositories: "modernisation-platform"
+
+      - name: Authenticate GitHub
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+        run: |
+          gh auth status
 
       - name: Prepare Git options
         run: bash ./scripts/git-setup.sh
 
-      - name: Create new branch
-        run: |
-          date=$(date +%Y_%m_%d)
-          branch_name="date_$date"
-          git checkout -b $branch_name
-
-      - name: Run linter
-        id: ml
-        # You can override MegaLinter flavor used to have faster performances
-        # More info at https://megalinter.io/flavors/
-        uses: oxsecurity/megalinter/flavors/terraform@688bc7466d7ab4faa83d614c2e6f9acf42b674dc #v7.8.0
-        env:
-          # All available variables are described in documentation
-          # https://megalinter.io/configuration/#shared-variables
-          # ADD YOUR CUSTOM ENV VARIABLES HERE OR DEFINE THEM IN A FILE .mega-linter.yml AT THE ROOT OF YOUR REPOSITORY
-          APPLY_FIXES: all # When active, APPLY_FIXES must also be defined as environment variable (in github/workflows/mega-linter.yml or other CI tool)
-          APPLY_FIXES_EVENT: all # Decide which event triggers application of fixes in a commit or a PR (pull_request, push, all)
-          APPLY_FIXES_MODE: pull_request # If APPLY_FIXES is used, defines if the fixes are directly committed (commit) or posted in a PR (pull_request)
+      - name: Run Format Code Action
+        uses: ministryofjustice/modernisation-platform-github-actions/format-code@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8 # v6.1.1
+        with:
+          APPLY_FIXES: all 
+          APPLY_FIXES_EVENT: all
+          APPLY_FIXES_MODE: pull_request
           DISABLE_ERRORS: true
           EMAIL_REPORTER: false
           ENABLE_LINTERS: JSON_PRETTIER,YAML_PRETTIER,TERRAFORM_TERRAFORM_FMT,MARKDOWN_MARKDOWNLINT
-          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
           VALIDATE_ALL_CODEBASE: true
           YAML_PRETTIER_FILTER_REGEX_EXCLUDE: (.github/*)
+          MARKDOWN_MARKDOWNLINT_FILTER_REGEX_EXCLUDE: (terraform/modules/.*/.*.md)
           REPORT_OUTPUT_FOLDER: none
-
-      - name: Check for changes
-        run: |
-          git add .
-          git commit -m "Updates from GitHub Actions Format Code workflow" || true
-          branch_name=$(git branch --show-current)
-          changes=$(git diff origin/main...$branch_name --name-only)
-          if [ -z "$changes" ]; then
-            echo "No changes detected."
-          else
-            echo "Changes detected."
-            echo "changes=true" >> $GITHUB_ENV
-          fi
-
-      - name: Push changes
-        if: env.changes == 'true'
-        run: |
-          git config --global push.autoSetupRemote true
-          git push
-
-      - name: Create pull request
-        if: env.changes == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          pr_title="GitHub Actions Code Formatter workflow"
-          pr_body="This pull request includes updates from the GitHub Actions Code Formatter workflow. Please review the changes and merge if everything looks good."
-          branch_name=$(git branch --show-current)
-          pr_head="${{ github.repository_owner }}:${branch_name}"
-          pr_base="main"
-          gh pr create --title "$pr_title" --body "$pr_body" --head "$pr_head" --base "$pr_base" --label "code quality"
+          
+      - name: Run Signed Commit Action
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8 # v6.1.1
+        with:
+          github_token: ${{ steps.app.outputs.token }}
+          pr_title: "GitHub Actions Code Formatter workflow"
+          pr_body: "This pull request includes updates from the GitHub Actions Code Formatter workflow. Please review the changes and merge if everything looks good."

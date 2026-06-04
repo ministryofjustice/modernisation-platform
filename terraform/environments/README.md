@@ -4,7 +4,7 @@ This directory creates and maintains organisational units, their accounts, and t
 
 ## Bootstrapping accounts
 
-The subdirectory [bootstrap](bootstrap) enables bootstrapping resources in all accounts that are part of the Modernisation Platform, such as an IAM role for cross-account access and security implementations. It utilises terraform workspaces and has an [automated script](../../scripts/create-accounts.sh) to create accounts and bootstrap them as part of our CI/CD pipeline.
+The subdirectory [bootstrap](bootstrap) enables bootstrapping resources in all accounts that are part of the Modernisation Platform, such as an IAM role for cross-account access and security implementations. It utilises terraform workspaces and has a [`new-environment.yml` workflow](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment.yml) to create accounts and bootstrap them as part of our CI/CD pipeline.
 
 ## State management
 

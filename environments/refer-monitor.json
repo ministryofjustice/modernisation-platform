@@ -5,11 +5,11 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "hmpps-interventions-dev",
+          "sso_group_name": "hmpps-interventions-dev",
           "level": "sandbox"
         },
         {
-          "github_slug": "hmpps-interventions-dashboard-access",
+          "sso_group_name": "hmpps-interventions-dashboard-access",
           "level": "sandbox"
         }
       ]
@@ -19,7 +19,8 @@
     "application": "refer-monitor",
     "business-unit": "HMPPS",
     "infrastructure-support": "interventions-devs@digital.justice.gov.uk",
-    "owner": "interventions-devs@digital.justice.gov.uk"
+    "owner": "interventions-devs@digital.justice.gov.uk",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""]
 }

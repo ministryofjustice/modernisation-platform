@@ -1,19 +1,23 @@
 # tfsec:ignore:aws-s3-enable-versioning tfsec:ignore:aws-s3-encryption-customer-key
 module "imagebuilder_log_bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=8688bc15a08fbf5a4f4eef9b7433c5a417df8df1" # v7.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=f72f8d5bcf3081f6de0ef16d1017b53c81e16457" # v10.0.0
 
   providers = {
     aws.bucket-replication = aws.bucket-replication
   }
 
-  bucket_prefix       = "ec2-image-builder-logs-"
-  versioning_enabled  = false
-  replication_enabled = false
+  bucket_prefix               = "ec2-image-builder-logs-"
+  sse_algorithm               = "aws:kms"
+  custom_kms_key              = aws_kms_key.imagebuilder_logs.arn
+  enforce_kms_request_headers = false
+  versioning_enabled          = false
+  replication_enabled         = false
 
   lifecycle_rule = [
     {
       id      = "main"
       enabled = "Enabled"
+      prefix  = ""
       tags    = {}
       transition = [
         {
@@ -44,6 +48,49 @@ module "imagebuilder_log_bucket" {
 
 
   tags = local.tags
+}
+
+resource "aws_kms_key" "imagebuilder_logs" {
+  description             = "KMS key for EC2 Image Builder log bucket"
+  deletion_window_in_days = 30
+  enable_key_rotation     = true
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "EnableRootPermissions"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        }
+        Action   = "kms:*"
+        Resource = "*"
+      },
+      {
+        Sid    = "AllowImageBuilderRoleToUseKey"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/ImageBuilder"
+        }
+        Action = [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:GenerateDataKey",
+          "kms:GenerateDataKeyWithoutPlaintext",
+          "kms:DescribeKey"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+
+  tags = local.tags
+}
+
+resource "aws_kms_alias" "imagebuilder_logs" {
+  name          = "alias/imagebuilder-log-bucket"
+  target_key_id = aws_kms_key.imagebuilder_logs.key_id
 }
 
 output "imagebuilder_log_bucket_id" {

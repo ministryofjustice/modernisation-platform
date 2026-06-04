@@ -57,18 +57,34 @@ resource "aws_cloudwatch_log_group" "external_inspection" {
 }
 
 resource "aws_flow_log" "external_inspection" {
-  iam_role_arn             = data.aws_iam_role.vpc-flow-log.arn
+  iam_role_arn             = aws_iam_role.vpc_flow_log.arn
   log_destination          = aws_cloudwatch_log_group.external_inspection.arn
+  log_format               = local.custom_vpc_flow_log_format
   traffic_type             = "ALL"
   log_destination_type     = "cloud-watch-logs"
   max_aggregation_interval = "60"
   vpc_id                   = aws_vpc.external_inspection.id
-  log_format               = "$${version} $${account-id} $${interface-id} $${srcaddr} $${dstaddr} $${srcport} $${dstport} $${protocol} $${packets} $${bytes} $${start} $${end} $${action} $${pkt-srcaddr} $${pkt-dstaddr} $${flow-direction} $${traffic-path}"
 
   tags = merge(
     local.tags,
     {
       Name = "external-inspection-flow-logs"
+    }
+  )
+}
+
+resource "aws_flow_log" "external_inspection_s3" {
+  log_destination          = local.core_logging_bucket_arns["vpc-flow-logs"]
+  log_destination_type     = "s3"
+  log_format               = local.custom_vpc_flow_log_format
+  max_aggregation_interval = "60"
+  traffic_type             = "ALL"
+  vpc_id                   = aws_vpc.external_inspection.id
+
+  tags = merge(
+    local.tags,
+    {
+      Name = "external-inspection-vpc-flow-logs-s3"
     }
   )
 }
@@ -168,6 +184,8 @@ module "firewall_policy" {
   fw_fqdn_rulegroup_name = format("%s-fw-fqdn-rulegroup", local.application_name)
   fw_allowed_domains     = local.fqdn_firewall_rules.fw_allowed_domains
   fw_home_net_ips        = local.fqdn_firewall_rules.fw_home_net_ips
+  ip_sets                = local.firewall_sets["IP_SETS"]
+  port_sets              = local.firewall_sets["PORT_SETS"]
   rules                  = local.firewall_rules
   tags                   = local.tags
 }

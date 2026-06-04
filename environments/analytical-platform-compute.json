@@ -1,0 +1,158 @@
+{
+  "account-type": "member",
+  "components": [
+    {
+      "name": "actions-runner"
+    },
+    {
+      "name": "airflow"
+    },
+    {
+      "name": "central-digital-bedrock"
+    },
+    {
+      "name": "cluster"
+    },
+    {
+      "name": "lakeformation"
+    },
+    {
+      "name": "mlflow"
+    },
+    {
+      "name": "network"
+    },
+    {
+      "name": "quicksight"
+    },
+    {
+      "name": "sagemaker-ai"
+    },
+    {
+      "name": "dashboard-service"
+    },
+    {
+      "name": "next"
+    }
+  ],
+  "codeowners": ["analytical-platform-engineers"],
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "analytical-platform-engineers",
+          "level": "platform-engineer-admin",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-analytical-platform-engineers",
+          "level": "platform-engineer-admin"
+        },
+        {
+          "sso_group_name": "analytical-platform-engineers",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "analytical-platform-engineers",
+          "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "analytical-platform-engineers",
+          "level": "quicksight-admin"
+        },
+        {
+          "sso_group_name": "analytical-platform-airflow",
+          "level": "mwaa-user"
+        },
+        {
+          "sso_group_name": "data-platform-audit-and-security",
+          "level": "security-audit"
+        }
+      ],
+      "instance_scheduler_skip": ["true"],
+      "nuke": "exclude"
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "analytical-platform-engineers",
+          "level": "platform-engineer-admin",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-analytical-platform-engineers",
+          "level": "platform-engineer-admin"
+        },
+        {
+          "sso_group_name": "analytical-platform-engineers",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "analytical-platform-engineers",
+          "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "analytical-platform-engineers",
+          "level": "quicksight-admin"
+        },
+        {
+          "sso_group_name": "analytical-platform-airflow",
+          "level": "mwaa-user"
+        },
+        {
+          "sso_group_name": "data-platform-audit-and-security",
+          "level": "security-audit"
+        }
+      ],
+      "instance_scheduler_skip": ["true"]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "analytical-platform-engineers",
+          "level": "platform-engineer-admin",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-analytical-platform-engineers",
+          "level": "platform-engineer-admin"
+        },
+        {
+          "sso_group_name": "analytical-platform-engineers",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "analytical-platform-engineers",
+          "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "analytical-platform-engineers",
+          "level": "quicksight-admin"
+        },
+        {
+          "sso_group_name": "analytical-platform-airflow",
+          "level": "mwaa-user"
+        },
+        {
+          "sso_group_name": "data-platform-audit-and-security",
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "analytical-platform-compute",
+    "business-unit": "Platforms",
+    "infrastructure-support": "analytical-platform@digital.justice.gov.uk",
+    "owner": "Analytical Platform: analytical-platform@digital.justice.gov.uk"
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
+}

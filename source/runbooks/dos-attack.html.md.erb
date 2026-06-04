@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: DoS or DDoS Attack
-last_reviewed_on: 2023-09-10
+last_reviewed_on: 2026-03-19
 review_in: 6 months
 ---
 
@@ -23,7 +23,7 @@ Follow the [general incident guidance](./manage-an-incident.html) to record the 
 
 Detailed metrics on the type of DDoS attack can be found in Cloudwatch under the [DDoS metrics](https://docs.aws.amazon.com/waf/latest/developerguide/monitoring-cloudwatch.html) in the affected account.
 
-If the application has [automatic DDoS layer 7 mitigation](https://docs.aws.amazon.com/waf/latest/developerguide/ddos-automatic-app-layer-response.html) enabled, the attack may already be mitigated by this.  You can check this in the DDoS metrics or the [AWS Shield Events](https://us-east-1.console.aws.amazon.com/wafv2/shieldv2#/events) area in the console.
+If the application has [automatic DDoS layer 7 mitigation](https://docs.aws.amazon.com/waf/latest/developerguide/ddos-automatic-app-layer-response.html) enabled, the attack may already be mitigated by this. You can check this in the DDoS metrics or the [AWS Shield Events](https://us-east-1.console.aws.amazon.com/wafv2/shieldv2#/events) area in the console.
 
 ### Report the attack to AWS
 
@@ -39,4 +39,4 @@ Alternatively the SRT team can assist with creating these rules.
 
 ## Notify users and security
 
-Follow the [general incident guidance](./manage-an-incident.html#5-end-the-incident) to notify users and the security team.
+Follow the [general incident guidance](./manage-an-incident.html#6-end-the-incident) to notify users and the security team.

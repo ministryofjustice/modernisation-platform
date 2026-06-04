@@ -5,16 +5,37 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-sre-admins",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-aws-infrastructure",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "oas-migration",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "laa-dba",
           "level": "developer"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-aws-infrastructure",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-dba",
           "level": "developer"
         }
       ]
@@ -23,8 +44,32 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-sre-admins",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-aws-infrastructure",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-cyber-security-team",
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "laa-cyber-security-team",
+          "level": "view-only"
+        },
+        {
+          "sso_group_name": "laa-cyber-security-team",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "laa-cyber-security-team",
+          "level": "instance-management"
         }
       ]
     },
@@ -32,8 +77,21 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "security-audit"
         }
       ]
     }
@@ -41,8 +99,9 @@
   "tags": {
     "application": "oas",
     "business-unit": "LAA",
-    "infrastructure-support": "aws-webops-laa@digital.justice.gov.uk",
-    "owner": "get-acccess-service-improvement@digital.justice.gov.uk"
+    "infrastructure-support": "laa_ops@digital.justice.gov.uk",
+    "owner": "applicationOperations@justice.gov.uk",
+    "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": [""]
 }

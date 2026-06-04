@@ -11,7 +11,6 @@ on:
   pull_request:
     branches:
       - main
-    types: [opened, edited, reopened, synchronize]
     paths:
       - 'terraform/environments/$application_name/**'
       - '.github/workflows/$application_name.yml'
@@ -26,6 +25,11 @@ on:
         options:
           - deploy
           - destroy
+      component:
+        description: "Optional: Target a specific component for destroy. Defaults to 'root' to destroy the root or <application> folder."
+        required: false
+        default: "root"
+        type: string
 
 permissions:
   id-token: write  # This is required for requesting the JWT
@@ -33,34 +37,36 @@ permissions:
 
 jobs:
   strategy:
-    uses: ./.github/workflows/reusable_terraform_strategy.yml
+    uses: ./.github/workflows/reusable_terraform_components_strategy.yml
     if: inputs.action != 'destroy'
     with:
       application: "${{ github.workflow }}"
 
   terraform:
     needs: strategy
-    if: inputs.action != 'destroy'
+    if: inputs.action != 'destroy' && join(fromJson(needs.strategy.outputs.matrix).include) != ''
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.strategy.outputs.matrix) }}
-    uses: ./.github/workflows/reusable_terraform_plan_apply.yml
+    uses: ./.github/workflows/reusable_terraform_components_plan_apply.yml
     with:
       application: "${{ github.workflow }}"
       environment: "${{ matrix.target }}"
       action: "${{ matrix.action }}"
+      component: "${{ matrix.component }}"     # If your strategy workflow also outputs "matrix.component"
     secrets:
-      modernisation_platform_environments: "${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}"
-      pipeline_github_token: "${{ secrets.MODERNISATION_PLATFORM_CI_USER_ENVIRONMENTS_REPO_PAT }}"
+      MODERNISATION_PLATFORM_ACCOUNT_ID: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_ID }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   destroy-development:
     if: inputs.action == 'destroy'
-    uses: ./.github/workflows/reusable_terraform_plan_apply.yml
+    uses: ./.github/workflows/reusable_terraform_components_plan_apply.yml
     with:
       application: "${{ github.workflow }}"
       environment: "development"
       action: "plan_apply"
       plan_apply_tfargs: "-destroy"
+      component: "${{ inputs.component }}"  # Targets a specific component for the destroy operation; defaults to 'root' if not specified.
     secrets:
-      modernisation_platform_environments: "${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}"
-      pipeline_github_token: "${{ secrets.MODERNISATION_PLATFORM_CI_USER_ENVIRONMENTS_REPO_PAT }}"
+      MODERNISATION_PLATFORM_ACCOUNT_ID: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_ID }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}

@@ -1,0 +1,250 @@
+name: terraform plan apply
+on:
+  workflow_call:
+    inputs:
+      working-directory:
+        required: true
+        type: string
+        description: "Path to the directory where the workflow operates"
+      environment:
+        type: string
+        required: false
+        description: "Name of the environment, e.g. development"
+      aws_region:
+        required: false
+        type: string
+        default: "eu-west-2"
+        description: "Specifies the AWS region"
+      terraform_version:
+        type: string
+        required: false
+        description: "The terraform version to use"
+        default: "~1"
+      workflow_id:   # This is the unique ID of the calling workflow
+        description: 'Unique ID for the calling workflow'
+        required: false
+        type: string
+      set_github_app_token:
+        description: "Whether to set the GitHub App token"
+        required: false
+        type: string
+        default: "false"
+      download_collaborators:
+        description: "Whether to download collaborators.json from modernisation-platform-github"
+        required: false
+        type: string
+        default: "false"
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER:
+        required: true
+      PASSPHRASE:
+        required: true
+
+permissions: {}
+
+env:
+  TF_IN_AUTOMATION: true
+  TF_DESTROY_THRESHOLD: 10 # Sets a threshold to alert if the number of resources shown to be destroyed in the plan output is equal or greater than this number.
+  RATE_THRESHOLD: 100
+  APP_ID: 2013696
+
+jobs:
+  fetch-secrets:
+    permissions:
+      id-token: write
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8 # v6.1.1
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+  plan-and-apply:
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+    needs: fetch-secrets
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8 # v6.1.1
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+          pagerduty_token: ${{ needs.fetch-secrets.outputs.pagerduty_token }}
+          pagerduty_userapi_token: ${{ needs.fetch-secrets.outputs.pagerduty_userapi_token }}
+          mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+      - name: Create GitHub App token
+        if: ${{ inputs.set_github_app_token == 'true' }}
+        id: app
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ env.APP_ID }}               
+          private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
+          owner: "ministryofjustice"
+      
+      - name: Download collaborators.json from modernisation-platform-github
+        if: ${{ inputs.download_collaborators == 'true' && inputs.set_github_app_token == 'true' }}
+        run: |
+          curl -H "Authorization: token ${{ steps.app.outputs.token }}" \
+            -o collaborators.json \
+            https://raw.githubusercontent.com/ministryofjustice/modernisation-platform-github/main/collaborators.json
+
+      - name: Authenticate GitHub CLI as the App and Check the Rate Usage
+        if: ${{ inputs.set_github_app_token == 'true' }}
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+        run: |
+          # gh automatically uses GH_TOKEN if set — no `gh auth login` needed
+          gh auth status
+          bash ./scripts/check-github-api-usage.sh
+
+      - name: Set TF_VAR_github_token
+        if: ${{ inputs.set_github_app_token == 'true' }}
+        run: |
+          echo "TF_VAR_github_token=${{ steps.app.outputs.token }}" >> $GITHUB_ENV
+
+      - name: set env variables
+        run: |
+          echo "TF_VAR_pagerduty_token=$PAGERDUTY_TOKEN" >> $GITHUB_ENV
+          echo "TF_VAR_pagerduty_user_token=$PAGERDUTY_USERAPI_TOKEN" >> $GITHUB_ENV
+
+      - name: Set up variables
+        id: vars
+        if: ${{ inputs.environment }}
+        run: |
+          account_name=$(basename ${{ inputs.working-directory }})
+          echo "ACCOUNT_NAME=${account_name}"  >> $GITHUB_ENV
+          echo "WORKSPACE_NAME=${account_name}-${{ inputs.environment }}" >> $GITHUB_ENV
+          # Check if test directory exists
+          if [ ${GITHUB_REF} != 'refs/heads/main' ] && [ -d "${{ inputs.working-directory }}/test" ]; then
+              echo "run_terratest=true" >> $GITHUB_OUTPUT
+          fi
+    
+      - name: Setup Go
+        if: ${{ steps.vars.outputs.run_terratest == 'true' }}
+        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6.4.0
+        with:
+          go-version: 1.26
+          cache-dependency-path: "${{ inputs.working-directory }}/test/go.sum"
+
+      - name: Set Account Number
+        run: |
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@99214aa6889fcddfa57764031d71add364327e59 # v6.1.3
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ inputs.aws_region }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
+        with:
+          terraform_version: "${{ inputs.terraform_version }}"
+          terraform_wrapper: false
+
+      - name: Initialize Terraform
+        run: |
+          bash scripts/terraform-init.sh ${{ inputs.working-directory }}
+
+      - name: Terraform Workspace Select
+        if: ${{ inputs.environment }}
+        run: |
+          terraform -chdir="${{ inputs.working-directory }}" workspace select ${WORKSPACE_NAME}
+
+      - name: Run Terratest
+        if: ${{ steps.vars.outputs.run_terratest == 'true' }}
+        run: |
+          pushd ${{ inputs.working-directory }}/test
+          go mod tidy
+          TEST=`go test | ${{ github.workspace }}/scripts/redact-output.sh | tee /dev/stderr | tail -n 1`
+          popd
+          TEST="> TERRATEST RESULT - ${ACCOUNT_NAME}
+          ${TEST}"
+          pwd
+          ls
+          bash scripts/update-pr-comments.sh "${TEST}"
+
+      - name: Run Terraform Plan
+        if: github.event.ref != 'refs/heads/main'
+        id: show
+        run: |
+          bash scripts/terraform-plan.sh ${{ inputs.working-directory }}
+
+      - name: Get Destroy Count
+        if: github.event_name == 'pull_request'
+        id: get_destroy_count
+        env:
+          destroy_threshold: ${{ env.TF_DESTROY_THRESHOLD }}
+          plan_summary: ${{ steps.show.outputs.summary }}
+        run: |
+            bash scripts/get-terraform-destroy-count.sh
+
+      - name: Post Warning & Check for Approval
+        id: post_warning_check_approval
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          destroy_count: ${{ steps.get_destroy_count.outputs.destroy_count }}
+          destroy_threshold: ${{ env.TF_DESTROY_THRESHOLD }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const orgName = 'ministryofjustice';
+            const teamSlug = 'modernisation-platform';
+            const destroyCount = parseInt(process.env.destroy_count, 10);
+            const destroyThreshold = parseInt(process.env.destroy_threshold, 10);
+            const summary = `\`${{ steps.show.outputs.summary }}\``;
+            const workflowId = "${{ env.WORKSPACE_NAME }}";
+            const identifier = workflowId ? `_${workflowId}_\n` : `_${{ inputs.workflow_id }}_\n`;
+
+            if (destroyCount >= destroyThreshold) {
+              await github.rest.pulls.createReview({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.payload.pull_request.number,
+                event: 'REQUEST_CHANGES',
+                body: `### :warning: Warning - Large Number of Resources to be Destroyed.\n ${identifier}${summary}\n Please review the plan and confirm the changes are expected.`
+              });
+            }
+
+      - name: Post Comment
+        if: github.event.ref != 'refs/heads/main'
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const workflowId = "${{ env.WORKSPACE_NAME }}";
+            const identifier = workflowId ? `_${workflowId}_\n` : `_${{ inputs.workflow_id }}_\n`;
+            const summary = `\`${{ steps.show.outputs.summary }}\``;
+            const issue_number = context.payload.pull_request ? context.payload.pull_request.number : null;
+            if (!issue_number) {
+              console.log('No issue number found, skipping comment.');
+              return;
+            }
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number,
+              body: `### Terraform Plan Summary\n${identifier}${summary}`
+            });
+
+      - name: terraform apply
+        if: github.event.ref == 'refs/heads/main'
+        run: bash scripts/terraform-apply.sh ${{ inputs.working-directory }}
+
+      - name: Slack failure notification
+        if: ${{ failure() && github.ref == 'refs/heads/main' }}
+        uses: slackapi/slack-github-action@45a88b9581bfab2566dc881e2cd66d334e621e2c # v3.0.3
+        with:
+          webhook-type: incoming-webhook
+          payload: |
+            {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
+        env:
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}

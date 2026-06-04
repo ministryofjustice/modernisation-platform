@@ -35,9 +35,10 @@ resource "aws_network_acl" "protected" {
   )
 }
 
-#tfsec:ignore:aws-vpc-no-excessive-port-access tfsec:ignore:aws-ec2-no-public-ingress-acl
+# trivy:ignore:AVD-AWS-0102:NACL rule allows all ports by design
 resource "aws_network_acl_rule" "data_subnet_static_rules" {
   #checkov:skip=CKV_AWS_352:Verified - these rules are reasonable
+  #checkov:skip=CKV_AWS_231:Allow ingress from 0.0.0.0:0 to port 3389 required
   for_each       = local.static_acl_rules
   cidr_block     = each.value.cidr_block
   egress         = each.value.egress
@@ -49,9 +50,10 @@ resource "aws_network_acl_rule" "data_subnet_static_rules" {
   to_port        = each.value.to_port != null ? each.value.to_port : null
 }
 
-#tfsec:ignore:aws-vpc-no-excessive-port-access tfsec:ignore:aws-ec2-no-public-ingress-acl
+# trivy:ignore:AVD-AWS-0102:NACL rule allows all ports by design
 resource "aws_network_acl_rule" "private_subnet_static_rules" {
   #checkov:skip=CKV_AWS_352:Verified - these rules are reasonable
+  #checkov:skip=CKV_AWS_231:Allow ingress from 0.0.0.0:0 to port 3389 required
   for_each       = local.static_acl_rules
   cidr_block     = each.value.cidr_block
   egress         = each.value.egress
@@ -63,9 +65,10 @@ resource "aws_network_acl_rule" "private_subnet_static_rules" {
   to_port        = each.value.to_port != null ? each.value.to_port : null
 }
 
-#tfsec:ignore:aws-vpc-no-excessive-port-access tfsec:ignore:aws-ec2-no-public-ingress-acl
+# trivy:ignore:AVD-AWS-0102:NACL rule allows all ports by design
 resource "aws_network_acl_rule" "public_subnet_static_rules" {
   #checkov:skip=CKV_AWS_352:Verified - these rules are reasonable
+  #checkov:skip=CKV_AWS_231:Allow ingress from 0.0.0.0:0 to port 3389 required
   for_each       = local.static_acl_rules
   cidr_block     = each.value.cidr_block
   egress         = each.value.egress
@@ -77,7 +80,7 @@ resource "aws_network_acl_rule" "public_subnet_static_rules" {
   to_port        = each.value.to_port != null ? each.value.to_port : null
 }
 
-#tfsec:ignore:aws-vpc-no-excessive-port-access tfsec:ignore:aws-ec2-no-public-ingress-acl
+# trivy:ignore:AVD-AWS-0102:NACL rule allows all ports by design
 resource "aws_network_acl_rule" "public_subnet_internet_access_rules" {
   #checkov:skip=CKV_AWS_231:Verified - these rules are reasonable
   for_each       = local.public_access_acl_rules
@@ -230,4 +233,39 @@ resource "aws_network_acl_rule" "public_subnet_dynamic_range_egress_rules" {
   protocol       = "-1"
   rule_action    = "allow"
   rule_number    = (each.key * 100) + 6000
+}
+resource "aws_network_acl_rule" "laa_ssh_rules" {
+  for_each       = local.laa_ssh_rules_to_apply
+  cidr_block     = each.value.cidr_block
+  egress         = each.value.egress
+  from_port      = each.value.from_port
+  network_acl_id = aws_network_acl.general-private.id
+  protocol       = each.value.protocol
+  rule_action    = each.value.rule_action
+  rule_number    = each.value.rule_number
+  to_port        = each.value.to_port
+}
+
+resource "aws_network_acl_rule" "laa_custom_tcp_rules" {
+  for_each       = local.laa_custom_tcp_rules_to_apply
+  cidr_block     = each.value.cidr_block
+  egress         = each.value.egress
+  from_port      = each.value.from_port
+  network_acl_id = aws_network_acl.general-private.id
+  protocol       = each.value.protocol
+  rule_action    = each.value.rule_action
+  rule_number    = each.value.rule_number
+  to_port        = each.value.to_port
+}
+
+resource "aws_network_acl_rule" "cica_custom_ap_db_rules" {
+  for_each       = local.cica_db_rules_to_apply
+  cidr_block     = each.value.cidr_block
+  egress         = each.value.egress
+  from_port      = each.value.from_port
+  network_acl_id = strcontains(var.vpc_name, "production") ? aws_network_acl.general-data.id : aws_network_acl.general-private.id
+  protocol       = each.value.protocol
+  rule_action    = each.value.rule_action
+  rule_number    = each.value.rule_number
+  to_port        = each.value.to_port
 }

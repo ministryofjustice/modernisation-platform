@@ -27,20 +27,6 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
-  "equip_development_to_internet_monitoring": {
-    "action": "PASS",
-    "source_ip": "${hmpps-development}",
-    "destination_ip": "0.0.0.0/0",
-    "destination_port": "5721",
-    "protocol": "TCP"
-  },
-  "equip_prod_to_internet_monitoring": {
-    "action": "PASS",
-    "source_ip": "${hmpps-production}",
-    "destination_ip": "0.0.0.0/0",
-    "destination_port": "5721",
-    "protocol": "TCP"
-  },
   "hmpps-development_to_internet_smtps": {
     "action": "PASS",
     "source_ip": "${hmpps-development}",
@@ -93,6 +79,55 @@
   "hmpps-production_to_internet_smtp-submission": {
     "action": "PASS",
     "source_ip": "${hmpps-production}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "587",
+    "protocol": "TCP"
+  },
+  "laa_development_inline_ftp_a": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-development-general-private-subnets-a}",
+    "destination_ip": "13.17.132.44",
+    "destination_port": "22",
+    "protocol": "TCP"
+  },
+  "laa_development_inline_ftp_b": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-development-general-private-subnets-b}",
+    "destination_ip": "13.17.132.44",
+    "destination_port": "22",
+    "protocol": "TCP"
+  },
+  "laa_development_inline_ftp_c": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-development-general-private-subnets-c}",
+    "destination_ip": "13.17.132.44",
+    "destination_port": "22",
+    "protocol": "TCP"
+  },
+  "cica_dev_to_internet_smtps": {
+    "action": "PASS",
+    "source_ip": "${cica-development}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "587",
+    "protocol": "TCP"
+  },
+  "cica_test_to_internet_smtps": {
+    "action": "PASS",
+    "source_ip": "${cica-test}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "587",
+    "protocol": "TCP"
+  },
+  "cica_preproduction_to_internet_smtps": {
+    "action": "PASS",
+    "source_ip": "${cica-preproduction}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "587",
+    "protocol": "TCP"
+  },
+  "cica_production_to_internet_smtps": {
+    "action": "PASS",
+    "source_ip": "${cica-production}",
     "destination_ip": "0.0.0.0/0",
     "destination_port": "587",
     "protocol": "TCP"

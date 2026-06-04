@@ -5,12 +5,23 @@
         "cidr": "10.27.72.0/21",
         "accounts": [
           "apex-preproduction",
-          "mlra-preproduction",
           "ccms-ebs-preproduction",
+          "ccms-edrms-preproduction",
+          "ccms-oia-preproduction",
+          "ccms-pui-internal-preproduction",
+          "ccms-pui-preproduction",
+          "contract-work-administration-preproduction",
+          "edw-19c-preproduction",
+          "laa-ccms-soa-preproduction",
+          "laa-cis-preproduction",
+          "laa-mail-relay-preproduction",
+          "laa-oem-preproduction",
+          "laa-pui-secure-browser-preproduction",
           "maat-preproduction",
-          "oas-preproduction",
-          "portal-preproduction",
-          "laa-oem-preproduction"
+          "maatdb-preproduction",
+          "mlra-preproduction",
+          "mojfin-preproduction",
+          "oas-preproduction"
         ]
       }
     }

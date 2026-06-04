@@ -1,0 +1,57 @@
+name: Modernisation Member Information
+
+on:
+  schedule:
+    - cron: "30 17 * * *"
+  workflow_dispatch:
+
+env:
+    AWS_REGION: "eu-west-2"
+
+permissions:
+    id-token: write # This is required for requesting the JWT
+    contents: read # This is required for actions/checkout
+
+jobs:
+
+  fetch-secrets:
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8 # v6.1.1
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}  
+
+  member-information:
+    runs-on: ubuntu-latest
+    needs: fetch-secrets
+    steps:
+      - name: Checkout modernisation-platform Repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Checkout modernisation-platform-environments repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          repository: 'ministryofjustice/modernisation-platform-environments'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: 'modernisation-platform-environments'
+
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8 # v6.1.1
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management}}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+      - name: Set Account Number
+        run: |
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@99214aa6889fcddfa57764031d71add364327e59 # v6.1.3
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-apply"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Fetch Member Information
+        run: bash ./scripts/internal/modernisation-member-information.sh modernisation-member-information member_information.csv

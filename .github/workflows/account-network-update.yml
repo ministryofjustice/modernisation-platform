@@ -1,0 +1,77 @@
+name: Account Network Update
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+permissions:
+  contents: write
+  issues: read
+  pull-requests: write
+
+
+jobs:
+  network-setup:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Download network setup artifact
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: network-setup-info
+        continue-on-error: true  # Continue even if the artifact is not found
+
+      - name: Check if artifact exists
+        id: check_artifact
+        run: |
+          if [ ! -f network-setup-info.json ]; then
+            echo "Artifact not found. Skipping the workflow."
+            echo "SKIP=true" >> $GITHUB_ENV
+          fi
+
+      - name: Set up Python
+        if: env.SKIP != 'true'
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.x'
+
+      - name: Install jq
+        if: env.SKIP != 'true'
+        run: sudo apt-get install jq
+
+      - name: Check PR number matches artifact
+        if: env.SKIP != 'true'
+        id: prcheck
+        run: |
+          ARTIFACT_PR=$(jq -r '.pr_number' network-setup-info.json)
+          if [ "$ARTIFACT_PR" != "${{ github.event.pull_request.number }}" ]; then
+            echo "This workflow is not for this PR. Exiting."
+            exit 1
+          fi
+
+      - name: Run network-setup.py
+        if: env.SKIP != 'true' && env.ISOLATED_ACCOUNT == 'No'
+        run: |
+          python scripts/network-setup.py \
+            $(jq -r '.app_name' network-setup-info.json) \
+            $(jq -r '.business_unit' network-setup-info.json) \
+            $(jq -r '.environments[]' network-setup-info.json)
+
+      - name: Commit and push network changes
+        if: env.SKIP != 'true' && env.ISOLATED_ACCOUNT == 'No'
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8 # v6.1.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pr_title: "Automated Signed Commit"
+          pr_body: "This PR was created automatically to update generated files."
+          commit_message: "Automated environment request for $APP_NAME"
+          files_to_commit: |
+            environments-networks/*
+            policies/networks/*

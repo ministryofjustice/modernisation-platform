@@ -1,0 +1,55 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "cica-mp-tariff",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "cica-mp-tariff",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "cica-mp-tariff",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "cica-mp-tariff",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "cica-tariff",
+    "business-unit": "CICA",
+    "infrastructure-support": "Infrastructure@cica.gov.uk",
+    "owner": "alan.terry@cica.gov.uk",
+    "critical-national-infrastructure": true,
+    "securityhub-slack-channel": "cica-devops"
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": "2025-11-29"
+}

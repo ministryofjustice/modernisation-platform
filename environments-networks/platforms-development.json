@@ -4,10 +4,20 @@
       "general": {
         "cidr": "10.26.16.0/21",
         "accounts": [
-          "example-development",
+          "analytical-platform-compute-development",
+          "analytical-platform-ingestion-development",
+          "analytical-platform-next-poc-hub-development",
+          "analytical-platform-next-poc-producer-development",
+          "coat-development",
+          "data-factory-corporate-development",
+          "data-factory-moj-development",
           "data-platform-development",
-          "data-platform-apps-and-tools-development",
-          "observability-platform-development"
+          "data-platform-governance-development",
+          "example-development",
+          "integration-hub-development",
+          "observability-platform-development",
+          "octo-development",
+          "panda-cyber-appsec-lab-development"
         ]
       }
     }

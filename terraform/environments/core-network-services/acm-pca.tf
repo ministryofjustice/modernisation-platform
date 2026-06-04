@@ -37,6 +37,9 @@ resource "aws_s3_bucket_lifecycle_configuration" "acm-pca" {
     id     = "default"
     status = "Enabled"
 
+    filter {
+      prefix = ""
+    }
     abort_incomplete_multipart_upload {
       days_after_initiation = "3"
     }

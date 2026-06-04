@@ -1,0 +1,44 @@
+{
+  "account-type": "member",
+  "codeowners": ["data-engineering", "data-platform-engineering"],
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "data-engineering",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "data-factory-security-team",
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "data-platform-engineering",
+          "level": "platform-engineer-admin",
+          "github_action_reviewer": "true"
+        }
+      ],
+      "nuke": "exclude"
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "data-engineering",
+          "level": "data-engineer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "Data Factory - MOJ",
+    "business-unit": "Platforms",
+    "infrastructure-support": "DataEngineering-gg@justice.gov.uk",
+    "owner": "DataEngineering-gg@justice.gov.uk",
+    "slack-channel": "data-engineering-notifications",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}

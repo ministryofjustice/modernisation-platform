@@ -1,0 +1,123 @@
+{
+  "account-type": "member",
+  "codeowners": ["laa-sre-admins"],
+  "components": [
+    {
+      "name": "ccms-soa-sandbox",
+      "sso_group_name": "laa-sre-admins"
+    }
+  ],
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-ccms-developers",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-soa-developers",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-soa-dba-temp",
+          "level": "sandbox"
+        }
+      ],
+      "nuke": "exclude"
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "laa-ccms-developers",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-soa-developers",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "laa-ccms-developers",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-soa-developers",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "laa-ccms-developers",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "security-audit"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "LAA-CCMS-SOA",
+    "business-unit": "LAA",
+    "infrastructure-support": "ApplicationOperations@justice.gov.uk",
+    "owner": "ApplicationOperations@justice.gov.uk",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": ["ministryofjustice/laa-ccms-soa-docker"],
+  "go-live-date": ""
+}

@@ -77,6 +77,24 @@ locals {
       rule_number = 3000
       to_port     = null
     },
+    allow_10-27-136-0_in = {
+      cidr_block  = "10.27.136.0/21"
+      egress      = false
+      from_port   = null
+      protocol    = "-1"
+      rule_action = "allow"
+      rule_number = 2010
+      to_port     = null
+    },
+    allow_10-27-136-0_out = {
+      cidr_block  = "10.27.136.0/21"
+      egress      = true
+      from_port   = null
+      protocol    = "-1"
+      rule_action = "allow"
+      rule_number = 2010
+      to_port     = null
+    },
     deny_mp_cidr_out = {
       cidr_block  = "10.26.0.0/15"
       egress      = true
@@ -185,13 +203,23 @@ locals {
       rule_number = 5400
       to_port     = 5721
     },
+
+    deny_0-0-0-0_remote-desktop_tcp_in = {
+      cidr_block  = "0.0.0.0/0"
+      egress      = false
+      from_port   = 3389
+      protocol    = "tcp"
+      rule_action = "deny"
+      rule_number = 5000
+      to_port     = 3389
+    },
     allow_0-0-0-0_dynamic_tcp_in = {
       cidr_block  = "0.0.0.0/0"
       egress      = false
       from_port   = 1024
       protocol    = "tcp"
       rule_action = "allow"
-      rule_number = 5300
+      rule_number = 5100
       to_port     = 65535
     }
   }

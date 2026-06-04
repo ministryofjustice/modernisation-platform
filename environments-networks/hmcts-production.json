@@ -18,7 +18,12 @@
   "options": {
     "bastion_linux": false,
     "additional_cidrs": [],
-    "additional_endpoints": [],
+    "additional_endpoints": [
+      "com.amazonaws.eu-west-2.ecr.dkr",
+      "com.amazonaws.eu-west-2.ecr.api",
+      "com.amazonaws.eu-west-2.secretsmanager",
+      "com.amazonaws.eu-west-2.elasticloadbalancing"
+    ],
     "additional_private_zones": [],
     "additional_vpcs": [],
     "dns_zone_extend": []

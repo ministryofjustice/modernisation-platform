@@ -1,5 +1,51 @@
+# List your CircleCI project UUIDs here
+variable "circleci_projects" {
+  type = list(string)
+  default = [
+    "de1a24bf-86ce-46b6-be7c-9e3ff18c426d",
+    "a8261e54-d33e-457d-987d-a7e72b8fa71d",
+    "fc34a59d-eef0-41b5-95aa-49b79c9df464",
+    "b7521033-fef1-4704-b6bf-a5de64dfd172",
+    "e005cebb-d1a6-48b7-899f-f4e98f69b5f9",
+    "8efea430-97f8-460d-8176-32cdf8cb1496",
+    "9e49c173-8b12-4a45-b6f5-c070326f70e3",
+    "12265069-d7d2-4793-9208-6c2776768e79",
+    "4558740e-b873-4afe-ab89-c0bfac5eb1dd",
+    "eae023cd-eee1-4ed6-b56c-8e13e669c11e",
+    "e0dc8cbb-56a5-4d6b-a2e5-07eedc3fafbf",
+    "76e04379-39d8-4324-ad9a-3a3a6fe57714",
+    "0395c2c2-47ba-4f35-a1d5-14d44e44ab2f",
+    "9ac0841a-b64e-4bcf-85de-5db560c160c5",
+    "5bdf3d6a-7e24-430d-9421-b2d622562e67",
+    "659d5a35-b178-409b-ad93-fa6c06b3cc17",
+    "e470ab22-fab7-4a5e-a517-626e5caa6083",
+    "5fed69c2-94a7-4928-89e0-90c61a701112",
+    "be550f96-5baa-4106-9bd2-df7cadd8e2c1",
+    "5bd0fe14-af38-4aa1-bbd7-8b72ba80abbf",
+    "eb20746e-4f04-40bc-b874-68fde01bda11",
+    "d0d6f90e-9f96-4477-a192-8986a852bb26",
+    "266309bc-91c3-4cf8-9656-9774e7aca0fd",
+    "92ef16a0-e54e-4edd-9e54-b21e0e3ea2c3",
+    "b67f0d73-43d8-4213-9a40-dc096ee986d6",
+    "190904ca-0fed-4fda-82ff-4e2a001b6882",
+    "453e00f9-f8f6-444b-bc12-c0a158caa4cb",
+    "53ee4338-4063-4d6c-8bb5-6ea9e6d9d1cb"
+  ]
+}
+
+# Build the list of allowed sub claims for CircleCI OIDC
+locals {
+  allowed_circleci_projects = [
+    for project_id in var.circleci_projects :
+    "org/${local.secret_json.organisation_id}/project/${project_id}/user/*"
+  ]
+}
+# Shared IAM role for all CircleCI projects listed in variable `circleci_projects`.
+# The trust policy is scoped to only allow these projects to assume this role via OIDC.
 resource "aws_iam_role" "circleci_iam_role" {
-  name = "circleci_iam_role"
+  name                 = "circleci_iam_role"
+  max_session_duration = 7200
+
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [{
@@ -10,7 +56,7 @@ resource "aws_iam_role" "circleci_iam_role" {
       },
       Condition = {
         StringLike = {
-          "${aws_iam_openid_connect_provider.circleci_oidc_provider.url}:sub" = "org/${local.secret_json.organisation_id}/*"
+          "${aws_iam_openid_connect_provider.circleci_oidc_provider.url}:sub" : local.allowed_circleci_projects
         }
       }
     }]
@@ -26,8 +72,17 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
   #checkov:skip=CKV_AWS_111
   statement {
     actions = [
+      "athena:ListTagsForResource",
       "athena:StartQueryExecution",
       "athena:GetQueryExecution",
+      "athena:CreateDataCatalog",
+      "athena:DeleteDataCatalog",
+      "athena:GetDataCatalog",
+      "athena:GetDatabase",
+      "athena:GetTableMetadata",
+      "athena:ListDatabases",
+      "athena:ListTableMetadata",
+      "athena:UpdateDataCatalog",
       "autoscaling:PutScheduledUpdateGroupAction",
       "autoscaling:SetDesiredCapacity",
       "backup:Start*",
@@ -56,6 +111,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "dms:DescribeReplicationTasks",
       "dms:ModifyEndpoint",
       "dms:RemoveTagsFromResource",
+      "dms:ModifyReplicationInstance",
       "dms:TestConnection",
       "dynamodb:GetItem",
       "dynamodb:PutItem",
@@ -80,6 +136,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "ecr:DescribeImages",
       "ecr:DescribeRepositories",
       "ecr:ListImages",
+      "ecr:ListTagsForResource",
       "ecr:GetAuthorizationToken",
       "ecr:GetDownloadUrlForLayer",
       "ecr:BatchGetImage",
@@ -103,6 +160,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "ec2:DeleteSecurityGroup",
       "ec2:CreateTags",
       "ec2:DeleteTags",
+      "ecr:CreateRepository",
       "elasticfilesystem:Describe*",
       "elasticfilesystem:Create*",
       "elasticfilesystem:Delete*",
@@ -121,8 +179,12 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "glue:BatchStopJobRun",
       "glue:StopWorkflowRun",
       "glue:UpdateJob",
+      "glue:TagResource",
+      "glue:UntagResource",
       "glue:GetSecurityConfiguration",
       "glue:GetTags",
+      "glue:UpdateTrigger",
+      "iam:CreatePolicyVersion",
       "iam:getRole",
       "iam:getRolePolicy",
       "iam:listAttachedRolePolicies",
@@ -140,14 +202,19 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "logs:CreateLogGroup",
       "logs:DescribeLogGroups",
       "logs:DescribeResourcePolicies",
-      "logs:GetLogEvents",
+      "logs:Get*",
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents",
+      "logs:List*",
+      "logs:DescribeMetricFilters",
+      "logs:PutMetricFilter",
+      "logs:DeleteMetricFilter",
       "lambda:*",
       "s3:GetBucketLocation",
       "s3:ListBucket",
       "s3:ListAllMyBuckets",
+      "s3:*BucketNotification",
       "s3:*Object*",
       "rds:*",
       "secretsmanager:ListSecrets",
@@ -164,11 +231,14 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "iam:GetPolicy",
       "dms:List*",
       "iam:GetPolicyVersion",
+      "iam:DeletePolicyVersion",
       "dms:DescribeReplicationSubnetGroups",
       "dms:DescribeReplicationInstances",
+      "dms:ModifyReplicationInstance",
       "dms:DescribeReplicationTasks",
       "dms:ModifyReplicationTask",
       "dms:DeleteReplicationTask",
+      "dms:MoveReplicationTask",
       "dms:ModifyReplicationSubnetGroup",
       "logs:ListTagsLogGroup",
       "events:DescribeRule",
@@ -177,6 +247,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "states:ListStateMachineVersions",
       "events:ListTargetsByRule",
       "states:ListTagsForResource",
+      "states:ValidateStateMachineDefinition",
       "iam:CreateRole",
       "iam:CreatePolicy",
       "iam:DeleteRole",
@@ -198,6 +269,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "states:DeleteActivity",
       "states:CreateStateMachine",
       "states:DeleteStateMachine",
+      "states:UpdateStateMachine",
       "events:PutRule",
       "events:EnableRule",
       "events:DeleteRule",
@@ -222,6 +294,9 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "logs:DeleteRetentionPolicy",
       "logs:CreateLogGroup",
       "logs:DeleteLogGroup",
+      "logs:TagLogGroup",
+      "logs:TagResource",
+      "logs:UntagResource",
       "glue:CreateSecurityConfiguration",
       "glue:DeleteSecurityConfiguration",
       "glue:CreateUserDefinedFunction",
@@ -231,6 +306,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "glue:CreateRegistry",
       "glue:CreateSchema",
       "glue:CreateTable",
+      "glue:GetTrigger",
       "glue:CreateTrigger",
       "glue:DeleteConnection",
       "glue:DeleteJob",
@@ -238,7 +314,22 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "glue:DeleteSchema",
       "glue:DeleteTable",
       "glue:DeleteTrigger",
-      "iam:TagRole"
+      "glue:GetConnection",
+      "iam:TagRole",
+      "iam:UntagRole",
+      "iam:UpdateAssumeRolePolicy",
+      "iam:TagPolicy",
+      "iam:UntagPolicy",
+      "scheduler:CreateSchedule",
+      "scheduler:DeleteSchedule",
+      "scheduler:UpdateSchedule",
+      "scheduler:TagSchedule",
+      "scheduler:UntagSchedule",
+      "scheduler:GetSchedule",
+      "scheduler:ListSchedules",
+      "scheduler:TagResource",
+      "scheduler:UntagResource",
+      "lakeformation:RevokePermissions"
     ]
     resources = ["*"]
   }
@@ -249,7 +340,6 @@ resource "aws_iam_policy" "circleci_iam_policy" {
   description = "Policy for CircleCI"
   policy      = data.aws_iam_policy_document.circleci_iam_policy.json
 }
-
 
 resource "aws_iam_policy_attachment" "circleci_policy_attachment" {
   policy_arn = aws_iam_policy.circleci_iam_policy.arn

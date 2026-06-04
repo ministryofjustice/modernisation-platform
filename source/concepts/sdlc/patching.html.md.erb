@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Patching
-last_reviewed_on: 2023-12-19
+last_reviewed_on: 2026-01-26
 review_in: 6 months
 ---
 
@@ -20,19 +20,18 @@ If we discover a high risk vulnerability and are unable to contact the applicati
 
 ## Patching and updating we currently do as a platform
 
-| Patch / Update | Method | Scope
-|---|---|---|
-| Github Actions | Dependabot | Platform and user code |
-| Terraform module dependancies | Dependabot | Platform and user code |
-| Golang Code | Dependabot | Platform code |
-| Terraform | Auto upgrades for minor releases, issues raised for major releases. | Platform and user code |
-| Terraform Providers | Ad-hoc as new versions released | Platform code |
-| Documentation | Daniel the manual spaniel Slack bot | Platform documentation |
-| SCA Tools | Always pull from latest | Platform and user code |
-| Platform Bastions | Whenever Terraform is run | User code |
-| EC2 Instances | Patching Module | Platform instances |
-| RDS Instances | Auto minor version upgrade option  | Platform and user instances |
-
+| Patch / Update                | Method                                                              | Scope                       |
+| ----------------------------- | ------------------------------------------------------------------- | --------------------------- |
+| Github Actions                | Dependabot                                                          | Platform and user code      |
+| Terraform module dependancies | Dependabot                                                          | Platform and user code      |
+| Golang Code                   | Dependabot                                                          | Platform code               |
+| Terraform                     | Auto upgrades for minor releases, issues raised for major releases. | Platform and user code      |
+| Terraform Providers           | Ad-hoc as new versions released                                     | Platform code               |
+| Documentation                 | Daniel the manual spaniel Slack bot                                 | Platform documentation      |
+| SCA Tools                     | Always pull from latest                                             | Platform and user code      |
+| Platform Bastions             | Whenever Terraform is run                                           | User code                   |
+| EC2 Instances                 | Patching Module                                                     | Platform instances          |
+| RDS Instances                 | Auto minor version upgrade option                                   | Platform and user instances |
 
 ## More information
 

@@ -13,10 +13,10 @@ data "aws_ec2_transit_gateway_vpc_attachment" "transit_gateway_all" {
   id       = each.key
 }
 
-data "aws_ec2_transit_gateway_peering_attachment" "pttp-tgw" {
+data "aws_ec2_transit_gateway_peering_attachment" "moj_tgw" {
   filter {
     name   = "tag:Name"
-    values = ["PTTP-Transit-Gateway-attachment-accepter"]
+    values = ["MOJ-TGW-attachment-accepter"]
   }
 }
 
@@ -96,10 +96,10 @@ locals {
 # TGW Peering  #
 ################
 
-resource "aws_ec2_transit_gateway_peering_attachment_accepter" "PTTP-Production" {
-  transit_gateway_attachment_id = data.aws_ec2_transit_gateway_peering_attachment.pttp-tgw.id
+resource "aws_ec2_transit_gateway_peering_attachment_accepter" "moj_tgw_production" {
+  transit_gateway_attachment_id = data.aws_ec2_transit_gateway_peering_attachment.moj_tgw.id
   tags = {
-    Name = "PTTP-Transit-Gateway-attachment-accepter"
+    Name = "MOJ-TGW-attachment-accepter"
     Side = "Acceptor"
   }
 
@@ -146,16 +146,16 @@ resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_firewall" 
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
 
-# add external egress routes for non-live-data TGW route table to PTTP attachment
-resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_non_live_data_to_PTTP" {
+# add external egress routes for non-live-data TGW route table to MOJ attachment
+resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_non_live_data_to_moj" {
   for_each                       = local.non_live_data_static_routes
   destination_cidr_block         = each.value
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.external_inspection_in.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["non_live_data"].id
 }
 
-# add external egress routes for live-data TGW route table to PTTP attachment
-resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_live_data_to_PTTP" {
+# add external egress routes for live-data TGW route table to MOJ TGW attachment
+resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_live_data_to_moj" {
   for_each                       = local.live_data_static_routes
   destination_cidr_block         = each.value
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.external_inspection_in.id
@@ -172,18 +172,53 @@ resource "aws_ec2_transit_gateway_route" "external_static_routes" {
 resource "aws_ec2_transit_gateway_route" "inspection_static_routes" {
   for_each                       = local.inspection_static_routes
   destination_cidr_block         = each.value
-  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.pttp-tgw.id
+  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.moj_tgw.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
 
-# associate tgw external-inspection-in routing table with PTTP peering attachment
+# associate tgw external-inspection-in routing table with MOJ-TGW peering attachment
 resource "aws_ec2_transit_gateway_route_table_association" "external_inspection_in" {
-  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.pttp-tgw.id
+  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.moj_tgw.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
 }
 
 # associate tgw external-inspection-out routing table with external-inspection-in subnet
 resource "aws_ec2_transit_gateway_route_table_association" "external_inspection_out" {
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.external_inspection_in.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
+}
+
+# ECP Peering
+data "aws_ec2_transit_gateway_peering_attachment" "ecp_tgw" {
+  filter {
+    name   = "tag:Name"
+    values = ["ECP-TGW-attachment-accepter"]
+  }
+}
+
+resource "aws_ec2_transit_gateway_peering_attachment_accepter" "ecp_tgw_production" {
+  transit_gateway_attachment_id = data.aws_ec2_transit_gateway_peering_attachment.ecp_tgw.id
+  tags = {
+    Name = "ECP-TGW-attachment-accepter"
+    Side = "Acceptor"
+  }
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+# ECP routing
+
+# associate tgw external-inspection-in routing table with ECP-TGW peering attachment
+resource "aws_ec2_transit_gateway_route_table_association" "external_inspection_in_ecp" {
+  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.ecp_tgw.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
+}
+
+resource "aws_ec2_transit_gateway_route" "inspection_static_routes_ecp_safedb" {
+  for_each                       = toset(["10.205.10.0/24", "10.205.11.0/24", "10.205.14.0/24", "10.205.15.0/24"])
+  destination_cidr_block         = each.key
+  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.ecp_tgw.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }

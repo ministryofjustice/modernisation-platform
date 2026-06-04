@@ -12,16 +12,16 @@ The Modernisation Platform will end up hosting much of the MoJs legacy infrastru
 
 ## Patching and updating we currently do as a platform
 
-| Patch / Update                | Method                                                              | Scope                  | Example |
-| ----------------------------- | ------------------------------------------------------------------- | ---------------------- |---|
-| Github Actions                | Dependabot                                                          | Platform and user code |[Example](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/dependabot.yml#L7)|
-| Terraform module dependancies | Dependabot                                                          | Platform and user code |[Example](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/dependabot.yml#L14)|
-| Golang Code                   | Dependabot                                                          | Platform code          |[Example](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/dependabot.yml#L230)|
-| Terraform                     | Auto upgrades for minor releases, issues raised for major releases. | Platform and user code |[Example](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/versions.tf#L4)|
-| Terraform Providers           | Ad-hoc as new versions released                                     | Platform code          |[Example](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/versions.tf#L4)|
-| Documentation                 | Daniel the manual spaniel Slack bot                                 | Platform documentation |[Example](https://github.com/ministryofjustice/tech-docs-monitor/blob/main/Rakefile#L9)|
-| SCA Tools                     | Always pull from latest                                             | Platform and user code |[Example](https://github.com/ministryofjustice/github-actions/blob/main/terraform-static-analysis/entrypoint.sh#L21)|
-| Platform Bastions             | Whenever Terraform is run                                           | User code              |[Example](https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux/blob/main/main.tf#L352)|
+| Patch / Update                | Method                                                              | Scope                  | Example                                                                                                                                     |
+| ----------------------------- | ------------------------------------------------------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Github Actions                | Dependabot                                                          | Platform and user code | [Example](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/dependabot.yml#L7)                                  |
+| Terraform module dependancies | Dependabot                                                          | Platform and user code | [Example](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/dependabot.yml#L14)                                 |
+| Golang Code                   | Dependabot                                                          | Platform code          | [Example](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/dependabot.yml#L230)                                |
+| Terraform                     | Auto upgrades for minor releases, issues raised for major releases. | Platform and user code | [Example](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/versions.tf#L4)                      |
+| Terraform Providers           | Ad-hoc as new versions released                                     | Platform code          | [Example](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/versions.tf#L4)                      |
+| Documentation                 | Daniel the manual spaniel Slack bot                                 | Platform documentation | [Example](https://github.com/ministryofjustice/tech-docs-monitor/blob/main/Rakefile#L9)                                                     |
+| SCA Tools                     | Always pull from latest                                             | Platform and user code | [Example](https://github.com/ministryofjustice/modernisation-platform-github-actions/blob/main/terraform-static-analysis/entrypoint.sh#L21) |
+| Platform Bastions             | Whenever Terraform is run                                           | User code              | [Example](https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux/blob/main/main.tf#L352)                       |
 
 ## Patching and updating we want to investigate
 

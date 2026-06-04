@@ -5,18 +5,19 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "cica-copilot-llm-maintainers",
-          "level": "sandbox",
-          "nuke": "exclude"
+          "sso_group_name": "cica-copilot-llm-maintainers",
+          "level": "sandbox"
         }
-      ]
+      ],
+      "nuke": "exclude"
     }
   ],
   "tags": {
     "application": "cica-copilot",
     "business-unit": "CICA",
     "infrastructure-support": "infrastructure@cica.gov.uk",
-    "owner": "CICA: infrastructure@cica.gov.uk"
+    "owner": "CICA: infrastructure@cica.gov.uk",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""],
   "go-live-date": ""

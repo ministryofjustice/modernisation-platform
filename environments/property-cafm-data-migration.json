@@ -1,0 +1,42 @@
+{
+  "account-type": "member",
+  "isolated-network": "true",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "property-datahub",
+          "level": "sandbox"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "property-datahub",
+          "level": "data-engineer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "property-datahub",
+          "level": "data-engineer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "property-cafm",
+    "business-unit": "Property",
+    "infrastructure-support": "DataEngineering-gg@justice.gov.uk",
+    "owner": "stuart.james1@justice.gov.uk",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}

@@ -1,23 +1,69 @@
 {
   "account-type": "member",
+  "components": [
+    {
+      "name": "playground",
+      "sso_group_name": "modernisation-platform"
+    },
+    {
+      "name": "testbed"
+    }
+  ],
   "environments": [
     {
       "name": "development",
       "access": [
         {
-          "github_slug": "modernisation-platform",
-          "level": "sandbox",
-          "nuke": "rebuild"
+          "sso_group_name": "modernisation-platform",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "reporting-operations"
+        },
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "migration"
+        },
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-security",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "quicksight-admin"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-modernisation-platform",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "ssm-session-access"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "octo-cyber-team",
+          "level": "security-audit"
         }
-      ],
-      "additional_reviewers": ["astrobinson"]
+      ]
     }
   ],
   "tags": {
     "application": "modernisation-platform",
     "business-unit": "Platforms",
+    "service-area": "Hosting",
     "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
-    "owner": "Modernisation Platform : modernisation-platform@digital.justice.gov.uk"
+    "owner": "Modernisation Platform : modernisation-platform@digital.justice.gov.uk",
+    "slack-channel": "modernisation-platform",
+    "critical-national-infrastructure": false
   },
   "go-live-date": "",
   "github-oidc-team-repositories": [""]

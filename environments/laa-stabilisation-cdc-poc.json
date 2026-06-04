@@ -1,0 +1,32 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "laa-stabilisation-cdc",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "v1-hub20-developers",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "sandbox"
+        }
+      ],
+      "nuke": "exclude"
+    }
+  ],
+  "tags": {
+    "application": "laa-stabilisation-cdc-poc",
+    "business-unit": "LAA",
+    "infrastructure-support": "wendy.calverley@digital.justice.gov.uk",
+    "owner": "wendy.calverley@digital.justice.gov.uk",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": ["ministryofjustice/laa-cdc-replacement"],
+  "go-live-date": ""
+}

@@ -1,12 +1,51 @@
 {
   "account-type": "member",
+  "components": [
+    {
+      "name": "anonymisation",
+      "sso_group_name": "laa-ccms-migration-team"
+    },
+    {
+      "name": "sandbox",
+      "sso_group_name": "laa-ccms-migration-team"
+    }
+  ],
   "environments": [
     {
       "name": "development",
       "access": [
         {
-          "github_slug": "laa-ccms-migration-team",
+          "sso_group_name": "laa-ccms-migration-team",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "sandbox"
+        }
+      ],
+      "nuke": "exclude"
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "laa-ccms-migration-team",
+          "level": "developer",
+          "nuke": "exclude"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "nuke": "exclude"
+        },
+        {
+          "sso_group_name": "laa-ccms-migration-team",
           "level": "sandbox",
+          "nuke": "exclude"
+        },
+        {
+          "sso_group_name": "laa-ccms-migration-team",
+          "level": "instance-management",
           "nuke": "exclude"
         }
       ]
@@ -15,8 +54,9 @@
   "tags": {
     "application": "ccms-ebs-upgrade",
     "business-unit": "LAA",
-    "infrastructure-support": "laa-ccms-platform-tea-aaaaeti4e5egi736k6a4k46qtm@moj.org.slack.com",
-    "owner": "donovan.artz@digital.justice.gov.uk"
+    "infrastructure-support": "ApplicationOperations@justice.gov.uk",
+    "owner": "ApplicationOperations@justice.gov.uk",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""]
 }
