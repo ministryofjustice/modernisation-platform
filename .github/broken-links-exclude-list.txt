@@ -33,3 +33,6 @@ https://filia-aleks.medium.com
 https://www.hashicorp.com
 https://www.lastpass.com
 https://medium.com
+
+# Added this list for those links throwing errors incorrectly
+https://docs.aws.amazon.com/ram/latest/userguide/what-is.html
