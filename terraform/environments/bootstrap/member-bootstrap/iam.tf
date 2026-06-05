@@ -884,6 +884,7 @@ data "aws_iam_policy_document" "policy" {
       "kms:GenerateDataKey",
       "lambda:GetCodeSigningConfig",
       "lambda:UpdateFunctionCode",
+      "lambda:UpdateFunctionConfiguration",
       "logs:CreateLogGroup",
       "logs:DescribeLogGroups",
       "logs:DescribeResourcePolicies",
