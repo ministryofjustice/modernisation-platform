@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Creating AWS Accounts for Teams
-last_reviewed_on: 2026-04-10
+last_reviewed_on: 2026-06-05
 review_in: 6 months
 ---
 
@@ -229,6 +229,10 @@ The pipeline will also generate a PR for networking variables in both the modern
 This will run the RAM share script again (it needs to run in the previous step as if adding an environment the networking files will already be there, it need to run in this step as this is the first time adding the networking files)
 
 > If the RAM share script fails to run on the merge for any reason, it will have to be run manually in the relevant application folder [here](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments).
+
+#### 5. Run the core-shared-services-deployment workflow
+
+This will ensure that the permissions to use the shared kms keys by the new account have been properly applied.
 
 ## Checking its creation
 
