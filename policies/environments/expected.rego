@@ -18,6 +18,7 @@ expected :=
     "apex",
     "bichard7",
     "ccms-ebs",
+    "ccms-ebs-ai",
     "ccms-ebs-upgrade",
     "ccms-edrms",
     "ccms-oia",
