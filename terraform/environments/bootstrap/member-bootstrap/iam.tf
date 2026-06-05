@@ -1438,16 +1438,18 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
     sid    = "AllowAccountRestrictedAccess"
     effect = "Allow"
     actions = [
-      "secretsmanager:GetSecretValue",
-      "oam:ListTagsForResource",
-      "glue:GetConnection",
-      "quicksight:Describe*",
-      "quicksight:ListTagsForResource",
-      "workspaces-web:Get*",
-      "workspaces-web:List*",
       "airflow:Get*",
       "airflow:List*",
-      "redshift-data:Describe*"
+      "glue:GetConnection",
+      "lakeformation:GetLFTag",
+      "lakeformation:ListLFTags",
+      "oam:ListTagsForResource",
+      "quicksight:Describe*",
+      "quicksight:ListTagsForResource",
+      "redshift-data:Describe*",
+      "secretsmanager:GetSecretValue",
+      "workspaces-web:Get*",
+      "workspaces-web:List*"
     ]
     resources = ["*"]
     condition {
