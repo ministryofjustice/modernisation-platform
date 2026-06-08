@@ -427,6 +427,7 @@ expected :=
           "integration-hub-development",
           "observability-platform-development",
           "octo-development",
+          "octo-engineering-ai-enablement-development",
           "panda-cyber-appsec-lab-development"
         ]
       }
@@ -465,7 +466,8 @@ expected :=
           "data-platform-governance-production",
           "integration-hub-production",
           "long-term-storage-production",
-          "observability-platform-production"
+          "observability-platform-production",
+          "octo-engineering-ai-enablement-production"
         ]
       }
     },
