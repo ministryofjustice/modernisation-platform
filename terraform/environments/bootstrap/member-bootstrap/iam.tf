@@ -110,18 +110,21 @@ module "member-access" {
 
 resource "aws_iam_role_policy_attachment" "member_infrastructure_access_role_compute" {
   count      = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
+  depends_on = [module.member-access]
   role       = "MemberInfrastructureAccess"
   policy_arn = aws_iam_policy.member-access-compute[0].arn
 }
 
 resource "aws_iam_role_policy_attachment" "member_infrastructure_access_role_data" {
   count      = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
+  depends_on = [module.member-access]
   role       = "MemberInfrastructureAccess"
   policy_arn = aws_iam_policy.member-access-data[0].arn
 }
 
 resource "aws_iam_role_policy_attachment" "member_infrastructure_access_role_network" {
   count      = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
+  depends_on = [module.member-access]
   role       = "MemberInfrastructureAccess"
   policy_arn = aws_iam_policy.member-access-network[0].arn
 }
