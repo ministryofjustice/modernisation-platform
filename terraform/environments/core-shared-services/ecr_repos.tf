@@ -981,6 +981,14 @@ module "ebs_sftp_ecr_repo" {
     "arn:aws:iam::${local.environment_management.account_ids["ccms-ebs-production"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["ccms-ebs-development"]}:role/modernisation-platform-oidc-cicd"
   ]
+
+  enable_retrieval_policy_for_lambdas = [
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["ccms-ebs-development"]}:function:ccms-ebs-development-process-file*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["ccms-ebs-preproduction"]}:function:ccms-ebs-preproduction-process-file*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["ccms-ebs-production"]}:function:ccms-ebs-production-process-file*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["ccms-ebs-test"]}:function:ccms-ebs-test-process-file*",
+  ]
+
   tags_common = local.tags
 }
 

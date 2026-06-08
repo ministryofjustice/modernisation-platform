@@ -194,6 +194,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "iam:PassRole",
       "iam:ListPolicyVersions",
       "iam:DetachRolePolicy",
+      "iam:UpdateRole",
       "kinesis:PutRecord",
       "kms:DescribeKey",
       "kms:Decrypt*",

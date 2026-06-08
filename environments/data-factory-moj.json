@@ -17,6 +17,10 @@
           "sso_group_name": "data-platform-engineering",
           "level": "platform-engineer-admin",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "data-factory-aker-team",
+          "level": "sandbox"
         }
       ],
       "nuke": "exclude"

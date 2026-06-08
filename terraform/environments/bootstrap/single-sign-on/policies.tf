@@ -866,6 +866,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "ds:AccessDSData",
       "ds:CancelSchemaExtension",
       "ds:CheckAlias",
+      "ds:ConnectDirectory",
       "ds:CreateAlias",
       "ds:CreateComputer",
       "ds:CreateDirectory",
@@ -966,7 +967,8 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "transfer:*",
       "wafv2:*",
       "wellarchitected:*",
-      "workspaces-web:*"
+      "workspaces-web:*",
+      "workspaces:*"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
