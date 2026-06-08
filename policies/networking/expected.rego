@@ -279,6 +279,7 @@ expected :=
         "cidr": "10.26.56.0/21",
         "accounts": [
               "apex-development",
+              "ccms-ebs-ai-development",
               "ccms-ebs-development",
               "ccms-ebs-upgrade-development",
               "ccms-edrms-development",
