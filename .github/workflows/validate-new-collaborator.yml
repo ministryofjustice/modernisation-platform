@@ -1,0 +1,208 @@
+name: New Collaborator Issue
+
+on:
+  issues:
+    types: [opened, labeled]
+
+permissions:
+  issues: write
+  contents: read
+  pull-requests: write
+
+env:
+  APP_ID: 2013696
+
+jobs:
+  validate:
+    if: contains(github.event.issue.labels.*.name, 'collaborator')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create GitHub App token
+        id: app
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ env.APP_ID }}
+          private-key: ${{ secrets.MP_GITHUB_APP_PRIVATE_KEY }}
+          owner: "ministryofjustice"
+
+      - name: Checkout modernisation-platform-github repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          repository: 'ministryofjustice/modernisation-platform-github'
+          token: ${{ steps.app.outputs.token }}
+          path: 'modernisation-platform-github'
+
+      - name: Extract collaborator fields
+        id: extract_fields
+        env:
+          COLLABORATOR_BODY: ${{ github.event.issue.body }}
+        run: |
+          echo "$COLLABORATOR_BODY" > collaborator_body.txt
+
+          extract_field() {
+            local key="$1"
+            local value=$(awk -v k="$key" '$0==k {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' collaborator_body.txt | xargs)
+            # Sanitize: remove newlines/carriage returns, limit to 200 chars
+            echo "$value" | tr -d '\n\r' | head -c 200
+          }
+
+          requestor_email=$(extract_field "### Requestor email address")
+          collaborator_name=$(extract_field "### Collaborator name/email address")
+          collaborator_github=$(extract_field "### Collaborator GitHub username")
+          collaborator_application=$(extract_field "### Collaborator requested application")
+          environments=$(extract_field "### Environments requiring access")
+
+          echo "requestor_email=$requestor_email" >> "$GITHUB_OUTPUT"
+          echo "collaborator_name=$collaborator_name" >> "$GITHUB_OUTPUT"
+          echo "collaborator_github=$collaborator_github" >> "$GITHUB_OUTPUT"
+          echo "collaborator_application=$collaborator_application" >> "$GITHUB_OUTPUT"
+          echo "environments=$environments" >> "$GITHUB_OUTPUT"
+
+      - name: Validate requestor email
+        id: validate_email
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          GOV_UK_NOTIFY_API_KEY: ${{ secrets.GOV_UK_NOTIFY_API_KEY }}
+          COLLABORATOR_EMAIL_TEMPLATE_ID: ${{ vars.COLLABORATOR_EMAIL_TEMPLATE_ID }}
+          REQUESTOR_EMAIL: ${{ steps.extract_fields.outputs.requestor_email }}
+        run: |
+          email="$REQUESTOR_EMAIL"
+
+          if [[ "$email" != *"@justice.gov.uk" ]]; then
+            if [[ -n "$GOV_UK_NOTIFY_API_KEY" && -n "$COLLABORATOR_EMAIL_TEMPLATE_ID" ]]; then
+              payload=$(jq -n \
+                --arg email "$email" \
+                --arg template_id "$COLLABORATOR_EMAIL_TEMPLATE_ID" \
+                --arg issue_url "$ISSUE_URL" \
+                --arg reason "Requestor email must be an @justice.gov.uk address." \
+                --arg provided_email "${email:-"(none)"}" \
+                '{email_address: $email, template_id: $template_id, personalisation: {reason: $reason, provided_email: $provided_email, issue_url: $issue_url}}')
+
+              curl -sS -X POST "https://api.notifications.service.gov.uk/v2/notifications/email" \
+                -H "Authorization: ApiKey-v1 $GOV_UK_NOTIFY_API_KEY" \
+                -H "Content-Type: application/json" \
+                -d "$payload" >/dev/null || echo "Failed to send requester email notification"
+            else
+              echo "Skipping requester email notification: Notify API key or template ID not set"
+            fi
+
+            gh issue comment "$ISSUE_NUMBER" --body "## Validation failed
+
+          This issue has been closed because the **Requestor email address** is not a valid \`@justice.gov.uk\` address.
+
+          Provided value: \`${email:-"(none)"}\`
+
+          Please re-submit the form using your \`@justice.gov.uk\` email address."
+
+            gh issue close "$ISSUE_NUMBER" --reason "not planned"
+            echo "is_valid=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "is_valid=true" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout modernisation-platform repository (scripts)
+        if: steps.validate_email.outputs.is_valid == 'true'
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          path: 'modernisation-platform'
+
+      - name: Update collaborators.json
+        if: steps.validate_email.outputs.is_valid == 'true'
+        run: |
+          python3 modernisation-platform/scripts/update-collaborators.py \
+            --file modernisation-platform-github/collaborators.json \
+            --username "${{ steps.extract_fields.outputs.collaborator_name }}" \
+            --github-username "${{ steps.extract_fields.outputs.collaborator_github }}" \
+            --application "${{ steps.extract_fields.outputs.collaborator_application }}" \
+            --environments "${{ steps.extract_fields.outputs.environments }}"
+
+      - name: Create PR in modernisation-platform-github
+        id: create_pr
+        if: steps.validate_email.outputs.is_valid == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+          COLLABORATOR_NAME: ${{ steps.extract_fields.outputs.collaborator_name }}
+          COLLABORATOR_GITHUB: ${{ steps.extract_fields.outputs.collaborator_github }}
+        run: |
+          collaborator_name="$COLLABORATOR_NAME"
+          collaborator_github="$COLLABORATOR_GITHUB"
+
+          BRANCH="add-collaborator-${collaborator_github}-${ISSUE_NUMBER}"
+
+          cd modernisation-platform-github
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add collaborators.json
+          git commit -m "Add collaborator: ${collaborator_name} (${collaborator_github})"
+          git push origin "$BRANCH"
+
+          pr_url=$(gh pr create \
+            --repo ministryofjustice/modernisation-platform-github \
+            --title "Add collaborator: ${collaborator_name} (${collaborator_github})" \
+            --body "Automated PR to add collaborator raised via issue ${ISSUE_URL}" \
+            --base main \
+            --head "$BRANCH")
+
+          pr_number=$(echo "$pr_url" | awk -F'/' '{print $NF}')
+
+          # Enable auto-merge so the PR merges once all required checks/reviews pass.
+          gh pr merge "$pr_number" \
+            --repo ministryofjustice/modernisation-platform-github \
+            --auto \
+            --squash
+
+          echo "pr_url=$pr_url" >> "$GITHUB_OUTPUT"
+          echo "pr_number=$pr_number" >> "$GITHUB_OUTPUT"
+
+      - name: Email requester for approval decision
+        if: steps.validate_email.outputs.is_valid == 'true'
+        env:
+          GOV_UK_NOTIFY_API_KEY: ${{ secrets.GOV_UK_NOTIFY_API_KEY }}
+          COLLABORATOR_DECISION_EMAIL_TEMPLATE_ID: ${{ vars.COLLABORATOR_DECISION_EMAIL_TEMPLATE_ID }}
+          COLLABORATOR_DECISION_ENDPOINT: ${{ vars.COLLABORATOR_DECISION_ENDPOINT }}
+          COLLABORATOR_DECISION_SIGNING_KEY: ${{ secrets.COLLABORATOR_DECISION_SIGNING_KEY }}
+          REQUESTOR_EMAIL: ${{ steps.extract_fields.outputs.requestor_email }}
+          PR_URL: ${{ steps.create_pr.outputs.pr_url }}
+          PR_NUMBER: ${{ steps.create_pr.outputs.pr_number }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          if [[ -z "$GOV_UK_NOTIFY_API_KEY" || -z "$COLLABORATOR_DECISION_EMAIL_TEMPLATE_ID" || -z "$REQUESTOR_EMAIL" ]]; then
+            echo "Skipping requester decision email: missing API key, template ID, or requester email"
+            exit 0
+          fi
+
+          if [[ -z "$COLLABORATOR_DECISION_ENDPOINT" || -z "$COLLABORATOR_DECISION_SIGNING_KEY" ]]; then
+            echo "Skipping requester decision links: missing decision endpoint or signing key"
+            exit 0
+          fi
+
+          timestamp=$(date +%s)
+          approve_message="approve|${PR_NUMBER}|${ISSUE_NUMBER}|${timestamp}"
+          reject_message="reject|${PR_NUMBER}|${ISSUE_NUMBER}|${timestamp}"
+
+          approve_signature=$(printf '%s' "$approve_message" | openssl dgst -sha256 -hmac "$COLLABORATOR_DECISION_SIGNING_KEY" -binary | xxd -p -c 256)
+          reject_signature=$(printf '%s' "$reject_message" | openssl dgst -sha256 -hmac "$COLLABORATOR_DECISION_SIGNING_KEY" -binary | xxd -p -c 256)
+
+          approve_url="${COLLABORATOR_DECISION_ENDPOINT}?action=approve&pr_number=${PR_NUMBER}&issue_number=${ISSUE_NUMBER}&ts=${timestamp}&sig=${approve_signature}"
+          reject_url="${COLLABORATOR_DECISION_ENDPOINT}?action=reject&pr_number=${PR_NUMBER}&issue_number=${ISSUE_NUMBER}&ts=${timestamp}&sig=${reject_signature}"
+
+          payload=$(jq -n \
+            --arg email "$REQUESTOR_EMAIL" \
+            --arg template_id "$COLLABORATOR_DECISION_EMAIL_TEMPLATE_ID" \
+            --arg pr_url "$PR_URL" \
+            --arg approve_url "$approve_url" \
+            --arg reject_url "$reject_url" \
+            --arg pr_number "$PR_NUMBER" \
+            '{email_address: $email, template_id: $template_id, personalisation: {pr_url: $pr_url, approve_url: $approve_url, reject_url: $reject_url, pr_number: $pr_number}}')
+
+          curl -sS -X POST "https://api.notifications.service.gov.uk/v2/notifications/email" \
+            -H "Authorization: ApiKey-v1 $GOV_UK_NOTIFY_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "$payload" >/dev/null

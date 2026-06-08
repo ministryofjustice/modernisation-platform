@@ -22,7 +22,7 @@ body:
   id: requestor-email
   attributes:
     label: Requestor email address
-    description: The email address of the person making this request.
+    description: Must be a valid @justice.gov.uk email address.
     placeholder: e.g., user@justice.gov.uk
   validations:
     required: true
@@ -58,6 +58,7 @@ body:
   attributes:
     label: Environments requiring access
     description: Please select the environments that the new external collaborator requires access to.
+    multiple: true
     options:
     - "development"
     - "test"
@@ -84,6 +85,7 @@ body:
   attributes:
     label: Additional deployment approval access
     description: Does this collaborator need the ability to approve deployments through GitHub Actions?
+    multiple: true
     options:
     - "Yes"
     - "No"
