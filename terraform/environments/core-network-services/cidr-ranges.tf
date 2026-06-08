@@ -78,6 +78,10 @@ locals {
     laa-ecp-safedb-2               = "10.205.15.0/24"
     laa-ecp-safedb-3               = "10.205.11.0/24"
 
+    # laa mp workspaces cidr ranges
+    laa-mp-workspaces-non-prod             = "10.26.130.0/23"
+    laa-mp-workspaces-prod                 = "10.27.130.0/23"
+
     # NEC cidr ranges
     nec-nonprod = "10.120.0.0/24"
     nec-prod    = "10.110.0.0/24"
