@@ -1,0 +1,155 @@
+name: Collaborator PR Decision
+
+on:
+  repository_dispatch:
+    types: [collaborator_pr_decision]
+  workflow_dispatch:
+    inputs:
+      action:
+        description: Decision action (approve or reject)
+        required: true
+        type: choice
+        options:
+          - approve
+          - reject
+      pr_number:
+        description: Pull request number in modernisation-platform-github
+        required: true
+        type: string
+      issue_number:
+        description: Source issue number in this repository
+        required: true
+        type: string
+      signature:
+        description: HMAC signature for action|pr_number|issue_number|timestamp
+        required: true
+        type: string
+      timestamp:
+        description: Unix timestamp used for signature
+        required: true
+        type: string
+
+permissions:
+  issues: write
+  contents: read
+  pull-requests: write
+
+env:
+  APP_ID: 2013696
+  TARGET_REPO: ministryofjustice/modernisation-platform-github
+
+jobs:
+  decision:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Resolve payload
+        id: payload
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          DISPATCH_ACTION: ${{ github.event.client_payload.action }}
+          DISPATCH_PR_NUMBER: ${{ github.event.client_payload.pr_number }}
+          DISPATCH_ISSUE_NUMBER: ${{ github.event.client_payload.issue_number }}
+          DISPATCH_SIGNATURE: ${{ github.event.client_payload.signature }}
+          DISPATCH_TIMESTAMP: ${{ github.event.client_payload.timestamp }}
+          INPUT_ACTION: ${{ inputs.action }}
+          INPUT_PR_NUMBER: ${{ inputs.pr_number }}
+          INPUT_ISSUE_NUMBER: ${{ inputs.issue_number }}
+          INPUT_SIGNATURE: ${{ inputs.signature }}
+          INPUT_TIMESTAMP: ${{ inputs.timestamp }}
+        run: |
+          if [[ "$EVENT_NAME" == "repository_dispatch" ]]; then
+            echo "action=$DISPATCH_ACTION" >> "$GITHUB_OUTPUT"
+            echo "pr_number=$DISPATCH_PR_NUMBER" >> "$GITHUB_OUTPUT"
+            echo "issue_number=$DISPATCH_ISSUE_NUMBER" >> "$GITHUB_OUTPUT"
+            echo "signature=$DISPATCH_SIGNATURE" >> "$GITHUB_OUTPUT"
+            echo "timestamp=$DISPATCH_TIMESTAMP" >> "$GITHUB_OUTPUT"
+          else
+            echo "action=$INPUT_ACTION" >> "$GITHUB_OUTPUT"
+            echo "pr_number=$INPUT_PR_NUMBER" >> "$GITHUB_OUTPUT"
+            echo "issue_number=$INPUT_ISSUE_NUMBER" >> "$GITHUB_OUTPUT"
+            echo "signature=$INPUT_SIGNATURE" >> "$GITHUB_OUTPUT"
+            echo "timestamp=$INPUT_TIMESTAMP" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Validate payload signature
+        env:
+          DECISION_SIGNING_KEY: ${{ secrets.COLLABORATOR_DECISION_SIGNING_KEY }}
+          ACTION: ${{ steps.payload.outputs.action }}
+          PR_NUMBER: ${{ steps.payload.outputs.pr_number }}
+          ISSUE_NUMBER: ${{ steps.payload.outputs.issue_number }}
+          SIGNATURE: ${{ steps.payload.outputs.signature }}
+          TIMESTAMP: ${{ steps.payload.outputs.timestamp }}
+        run: |
+          if [[ -z "$DECISION_SIGNING_KEY" ]]; then
+            echo "Missing COLLABORATOR_DECISION_SIGNING_KEY secret"
+            exit 1
+          fi
+
+          if [[ "$ACTION" != "approve" && "$ACTION" != "reject" ]]; then
+            echo "Invalid action: $ACTION"
+            exit 1
+          fi
+
+          if [[ -z "$PR_NUMBER" || -z "$ISSUE_NUMBER" || -z "$SIGNATURE" || -z "$TIMESTAMP" ]]; then
+            echo "Missing required payload fields"
+            exit 1
+          fi
+
+          now=$(date +%s)
+          age=$((now - TIMESTAMP))
+          if (( age < 0 || age > 86400 )); then
+            echo "Decision link expired"
+            exit 1
+          fi
+
+          message="${ACTION}|${PR_NUMBER}|${ISSUE_NUMBER}|${TIMESTAMP}"
+          expected=$(printf '%s' "$message" | openssl dgst -sha256 -hmac "$DECISION_SIGNING_KEY" -binary | xxd -p -c 256)
+          if [[ "$expected" != "$SIGNATURE" ]]; then
+            echo "Invalid signature"
+            exit 1
+          fi
+
+      - name: Create GitHub App token
+        id: app
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ env.APP_ID }}
+          private-key: ${{ secrets.MP_GITHUB_APP_PRIVATE_KEY }}
+          owner: "ministryofjustice"
+
+      - name: Execute PR decision in target repo
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          ACTION: ${{ steps.payload.outputs.action }}
+          PR_NUMBER: ${{ steps.payload.outputs.pr_number }}
+        run: |
+          if [[ "$ACTION" == "approve" ]]; then
+            gh pr review "$PR_NUMBER" \
+              --repo "$TARGET_REPO" \
+              --approve \
+              --body "Approved via requester decision link"
+
+            gh pr merge "$PR_NUMBER" \
+              --repo "$TARGET_REPO" \
+              --auto \
+              --squash
+          else
+            gh pr close "$PR_NUMBER" \
+              --repo "$TARGET_REPO" \
+              --comment "Closed via requester decision link"
+          fi
+
+      - name: Comment on source issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ACTION: ${{ steps.payload.outputs.action }}
+          PR_NUMBER: ${{ steps.payload.outputs.pr_number }}
+          ISSUE_NUMBER: ${{ steps.payload.outputs.issue_number }}
+        run: |
+          if [[ "$ACTION" == "approve" ]]; then
+            gh issue comment "$ISSUE_NUMBER" \
+              --body "Requester approved PR #$PR_NUMBER. Auto-merge is enabled and will merge once checks pass."
+          else
+            gh issue comment "$ISSUE_NUMBER" \
+              --body "Requester rejected PR #$PR_NUMBER. The PR has been closed."
+          fi
