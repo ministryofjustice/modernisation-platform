@@ -139,18 +139,21 @@ module "member-access-sprinkler" {
 
 resource "aws_iam_role_policy_attachment" "member_infrastructure_access_sprinkler_role_compute" {
   count      = (terraform.workspace == "sprinkler-development") ? 1 : 0
+  depends_on = [module.member-access-sprinkler]
   role       = "MemberInfrastructureAccess"
   policy_arn = aws_iam_policy.member-access-compute[0].arn
 }
 
 resource "aws_iam_role_policy_attachment" "member_infrastructure_access_sprinkler_role_data" {
   count      = (terraform.workspace == "sprinkler-development") ? 1 : 0
+  depends_on = [module.member-access-sprinkler]
   role       = "MemberInfrastructureAccess"
   policy_arn = aws_iam_policy.member-access-data[0].arn
 }
 
 resource "aws_iam_role_policy_attachment" "member_infrastructure_access_sprinkler_role_network" {
   count      = (terraform.workspace == "sprinkler-development") ? 1 : 0
+  depends_on = [module.member-access-sprinkler]
   role       = "MemberInfrastructureAccess"
   policy_arn = aws_iam_policy.member-access-network[0].arn
 }
