@@ -1,6 +1,11 @@
 {
   "account-type": "member",
-  "codeowners": "laa-aws-infrastructure, laa-aws-infrastructure",
+  "components": [
+    {
+      "name": "workspace-components"
+    }
+  ],
+  "codeowners": "laa-aws-infrastructure",
   "environments": [
     {
       "name": "development",
@@ -10,7 +15,7 @@
           "level": "sandbox"
         }
       ],
-      "nuke": ""
+      "nuke": "exclude"
     },
     {
       "name": "production",
