@@ -5,7 +5,7 @@
       "name": "workspace-components"
     }
   ],
-  "codeowners": "laa-aws-infrastructure, laa-aws-infrastructure",
+  "codeowners": "laa-aws-infrastructure",
   "environments": [
     {
       "name": "development",
@@ -15,7 +15,7 @@
           "level": "sandbox"
         }
       ],
-      "nuke": ""
+      "nuke": "exclude"
     },
     {
       "name": "production",
