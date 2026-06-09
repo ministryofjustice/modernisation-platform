@@ -31,7 +31,7 @@ This means the baseline should prioritise controls with strong, repeatable behav
 
 AWS documentation reference:
 
-- S3 default encryption and related behaviour: https://docs.aws.amazon.com/AmazonS3/latest/userguide/blocking-unblocking-s3-c-encryption-gpb.html?icmpid=docs_amazons3_console
+- S3 default encryption and related behaviour: <https://docs.aws.amazon.com/AmazonS3/latest/userguide/blocking-unblocking-s3-c-encryption-gpb.html?icmpid=docs_amazons3_console>
 
 ## Decision
 
@@ -101,7 +101,7 @@ Known incident informing this approach:
 
 ## References
 
-- AWS S3 User Guide: Blocking and restricting server-side encryption with customer-provided keys (includes current default encryption behaviour context): https://docs.aws.amazon.com/AmazonS3/latest/userguide/blocking-unblocking-s3-c-encryption-gpb.html?icmpid=docs_amazons3_console
+- AWS S3 User Guide: Blocking and restricting server-side encryption with customer-provided keys (includes current default encryption behaviour context): <https://docs.aws.amazon.com/AmazonS3/latest/userguide/blocking-unblocking-s3-c-encryption-gpb.html?icmpid=docs_amazons3_console>
 
 ## Evidence from testing
 
