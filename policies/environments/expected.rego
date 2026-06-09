@@ -34,6 +34,7 @@ expected :=
     "cloud-platform-live",
     "cloud-platform-non-live",
     "coat",
+    "container-platform-octo",
     "contract-work-administration",
     "cooker",
     "core-logging",
