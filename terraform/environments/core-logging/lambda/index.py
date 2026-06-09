@@ -2,6 +2,7 @@
 import base64
 from botocore.exceptions import ClientError
 import json
+import os
 
 athena_client = boto3.client('athena', region_name='eu-west-2')
 sts_client = boto3.client('sts')
@@ -9,6 +10,14 @@ ssm_client = boto3.client('ssm', region_name='eu-west-2')
 query_location='s3://athena-cloudtrail-query'
 athena_db="mod_cloudtrail_logs"
 athena_table="cloudtrail_logs"
+athena_kms_key_arn = os.environ["ATHENA_KMS_KEY_ARN"]
+athena_result_configuration = {
+    "OutputLocation": query_location,
+    "EncryptionConfiguration": {
+        "EncryptionOption": "SSE_KMS",
+        "KmsKey": athena_kms_key_arn,
+    },
+}
 
 #Get account numbers from modernsation platform account
 def get_accounts():
@@ -84,7 +93,7 @@ def create_athena_database():
            
         QueryString='CREATE DATABASE IF NOT EXISTS %s' % athena_db,
         
-        ResultConfiguration={'OutputLocation': query_location})
+        ResultConfiguration=athena_result_configuration)
         
     except ClientError as e:
         print("Unexpected error: %s" % e)     
@@ -103,7 +112,7 @@ def drop_athena_table():
                 'Database': athena_db
          },
          
-        ResultConfiguration={'OutputLocation': query_location})
+        ResultConfiguration=athena_result_configuration)
         
     except ClientError as e:
         
@@ -191,9 +200,7 @@ def create_athena_table(list_accounts):
             QueryExecutionContext={
                 'Database': athena_db
          },
-            ResultConfiguration={
-                'OutputLocation': query_location,
-            }
+            ResultConfiguration=athena_result_configuration
         )
         print(response)
         return response

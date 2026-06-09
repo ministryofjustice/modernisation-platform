@@ -144,6 +144,8 @@ resource "aws_iam_policy" "athena_lambda_policy" {
       {
         Action = [
           "kms:Decrypt*",
+          "kms:DescribeKey",
+          "kms:Encrypt",
           "kms:GenerateDataKey"
         ]
         Effect = "Allow"
@@ -279,7 +281,8 @@ resource "aws_lambda_function" "athena_table_update" {
   kms_key_arn                    = aws_kms_key.athena_logging.arn
   environment {
     variables = {
-      mod_account = data.aws_caller_identity.mod-platform.account_id
+      mod_account        = data.aws_caller_identity.mod-platform.account_id
+      ATHENA_KMS_KEY_ARN = aws_kms_key.s3_logging_cloudtrail.arn
     }
   }
 }
