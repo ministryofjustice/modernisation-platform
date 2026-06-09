@@ -10,7 +10,7 @@
           "level": "sandbox"
         }
       ],
-      "nuke": ""
+      "nuke": "exclude"
     },
     {
       "name": "production",
