@@ -1531,6 +1531,32 @@ data "aws_iam_policy_document" "oidc_assume_nuke_role_member" {
     actions = ["sts:AssumeRole"]
   }
 
+  # Additional read permissions to align with scope of those assigned to github-actions-plan
+  statement {
+    sid    = "AllowAccountRestrictedAccess"
+    effect = "Allow"
+    actions = [
+      "airflow:Get*",
+      "airflow:List*",
+      "glue:GetConnection",
+      "lakeformation:GetLFTag",
+      "lakeformation:ListLFTags",
+      "oam:ListTagsForResource",
+      "quicksight:Describe*",
+      "quicksight:ListTagsForResource",
+      "redshift-data:Describe*",
+      "secretsmanager:GetSecretValue",
+      "workspaces-web:Get*",
+      "workspaces-web:List*"
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalAccount"
+      values   = [local.environment_management.account_ids[terraform.workspace]]
+    }
+  }
+
   # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
   # checkov:skip=CKV_AWS_356: "Cannot restrict by KMS alias so leaving open"
   statement {
