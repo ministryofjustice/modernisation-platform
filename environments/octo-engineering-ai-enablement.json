@@ -8,15 +8,23 @@
         {
           "sso_group_name": "azure-aws-sso-kiro-admins",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "justice-engineering-ai-enablement",
+          "level": "sandbox"
         }
       ],
-      "nuke": ""
+      "nuke": "exclude"
     },
     {
       "name": "production",
       "access": [
         {
           "sso_group_name": "azure-aws-sso-kiro-admins",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "justice-engineering-ai-enablement",
           "level": "developer"
         }
       ]
