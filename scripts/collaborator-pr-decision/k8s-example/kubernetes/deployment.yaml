@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: collaborator-pr-decision
+  namespace: your-namespace
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: collaborator-pr-decision
+  template:
+    metadata:
+      labels:
+        app: collaborator-pr-decision
+    spec:
+      containers:
+      - name: api
+        image: your-registry/collaborator-pr-decision:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        env:
+        - name: GH_OWNER
+          value: ministryofjustice
+        - name: GH_REPO
+          value: modernisation-platform
+        - name: TARGET_OWNER
+          value: ministryofjustice
+        - name: TARGET_REPO
+          value: modernisation-platform-github
+        - name: GH_DISPATCH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: collaborator-pr-decision-secrets
+              key: GH_DISPATCH_TOKEN
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 300m
+            memory: 256Mi

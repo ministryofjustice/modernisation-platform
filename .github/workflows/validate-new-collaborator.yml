@@ -37,28 +37,67 @@ jobs:
         env:
           COLLABORATOR_BODY: ${{ github.event.issue.body }}
         run: |
-          echo "$COLLABORATOR_BODY" > collaborator_body.txt
+          printf '%s' "$COLLABORATOR_BODY" > collaborator_body.txt
 
-          extract_field() {
+          # Extract a raw field value from the issue body (one line under the heading).
+          # We only strip control characters here so the validator can still see
+          # any disallowed printable characters and reject the input.
+          extract_raw() {
             local key="$1"
-            local value=$(awk -v k="$key" '$0==k {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' collaborator_body.txt | xargs)
-            # Sanitize: remove newlines/carriage returns, limit to 200 chars
-            echo "$value" | tr -d '\n\r' | head -c 200
+            local value
+            value=$(awk -v k="$key" '$0==k {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' collaborator_body.txt)
+            # Strip control characters (incl. CR/LF) and trim whitespace, cap length.
+            value=$(printf '%s' "$value" | tr -d '\000-\037' | awk '{$1=$1; print}')
+            printf '%s' "$value" | cut -c1-200
           }
 
-          requestor_email=$(extract_field "### Requestor email address")
-          collaborator_name=$(extract_field "### Collaborator name/email address")
-          collaborator_github=$(extract_field "### Collaborator GitHub username")
-          collaborator_application=$(extract_field "### Collaborator requested application")
-          environments=$(extract_field "### Environments requiring access")
+          # Apply an allow-list to produce a sanitized value. The validator compares
+          # raw vs sanitized; if they differ the input had disallowed characters
+          # and the whole request is rejected.
+          sanitize() {
+            local value="$1"
+            local allowed_pattern="$2"
+            printf '%s' "$value" | LC_ALL=C sed -E "s/[^${allowed_pattern}]//g"
+          }
 
-          echo "requestor_email=$requestor_email" >> "$GITHUB_OUTPUT"
-          echo "collaborator_name=$collaborator_name" >> "$GITHUB_OUTPUT"
-          echo "collaborator_github=$collaborator_github" >> "$GITHUB_OUTPUT"
-          echo "collaborator_application=$collaborator_application" >> "$GITHUB_OUTPUT"
-          echo "environments=$environments" >> "$GITHUB_OUTPUT"
+          email_chars='A-Za-z0-9@._%+-'
+          name_chars='A-Za-z0-9@._%+-'
+          github_chars='A-Za-z0-9-'
+          app_chars='a-z0-9-'
+          env_chars='a-z0-9, -'
 
-      - name: Validate requestor email
+          requestor_email_raw=$(extract_raw "### Requestor email address")
+          collaborator_name_raw=$(extract_raw "### Collaborator email address")
+          collaborator_github_raw=$(extract_raw "### Collaborator GitHub username")
+          collaborator_application_raw=$(extract_raw "### Collaborator requested application")
+          environments_raw=$(extract_raw "### Environments requiring access")
+
+          # Normalise case-insensitive fields before sanitizing.
+          collaborator_application_norm=$(printf '%s' "$collaborator_application_raw" | tr '[:upper:]' '[:lower:]')
+          environments_norm=$(printf '%s' "$environments_raw" | tr '[:upper:]' '[:lower:]')
+
+          requestor_email=$(sanitize "$requestor_email_raw" "$email_chars")
+          collaborator_name=$(sanitize "$collaborator_name_raw" "$name_chars")
+          collaborator_github=$(sanitize "$collaborator_github_raw" "$github_chars")
+          collaborator_application=$(sanitize "$collaborator_application_norm" "$app_chars")
+          environments=$(sanitize "$environments_norm" "$env_chars")
+
+          # Write outputs using a fresh random EOF delimiter so values cannot inject new outputs.
+          delim="EOF_$(openssl rand -hex 16)"
+          {
+            printf 'requestor_email<<%s\n%s\n%s\n' "$delim" "$requestor_email" "$delim"
+            printf 'collaborator_name<<%s\n%s\n%s\n' "$delim" "$collaborator_name" "$delim"
+            printf 'collaborator_github<<%s\n%s\n%s\n' "$delim" "$collaborator_github" "$delim"
+            printf 'collaborator_application<<%s\n%s\n%s\n' "$delim" "$collaborator_application" "$delim"
+            printf 'environments<<%s\n%s\n%s\n' "$delim" "$environments" "$delim"
+            printf 'requestor_email_raw<<%s\n%s\n%s\n' "$delim" "$requestor_email_raw" "$delim"
+            printf 'collaborator_name_raw<<%s\n%s\n%s\n' "$delim" "$collaborator_name_raw" "$delim"
+            printf 'collaborator_github_raw<<%s\n%s\n%s\n' "$delim" "$collaborator_github_raw" "$delim"
+            printf 'collaborator_application_raw<<%s\n%s\n%s\n' "$delim" "$collaborator_application_norm" "$delim"
+            printf 'environments_raw<<%s\n%s\n%s\n' "$delim" "$environments_norm" "$delim"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Validate collaborator fields
         id: validate_email
         env:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
@@ -68,41 +107,130 @@ jobs:
           GOV_UK_NOTIFY_API_KEY: ${{ secrets.GOV_UK_NOTIFY_API_KEY }}
           COLLABORATOR_EMAIL_TEMPLATE_ID: ${{ vars.COLLABORATOR_EMAIL_TEMPLATE_ID }}
           REQUESTOR_EMAIL: ${{ steps.extract_fields.outputs.requestor_email }}
+          REQUESTOR_EMAIL_RAW: ${{ steps.extract_fields.outputs.requestor_email_raw }}
+          COLLABORATOR_NAME: ${{ steps.extract_fields.outputs.collaborator_name }}
+          COLLABORATOR_NAME_RAW: ${{ steps.extract_fields.outputs.collaborator_name_raw }}
+          COLLABORATOR_GITHUB: ${{ steps.extract_fields.outputs.collaborator_github }}
+          COLLABORATOR_GITHUB_RAW: ${{ steps.extract_fields.outputs.collaborator_github_raw }}
+          COLLABORATOR_APPLICATION: ${{ steps.extract_fields.outputs.collaborator_application }}
+          COLLABORATOR_APPLICATION_RAW: ${{ steps.extract_fields.outputs.collaborator_application_raw }}
+          ENVIRONMENTS: ${{ steps.extract_fields.outputs.environments }}
+          ENVIRONMENTS_RAW: ${{ steps.extract_fields.outputs.environments_raw }}
         run: |
-          email="$REQUESTOR_EMAIL"
+          set -u
 
-          if [[ "$email" != *"@justice.gov.uk" ]]; then
-            if [[ -n "$GOV_UK_NOTIFY_API_KEY" && -n "$COLLABORATOR_EMAIL_TEMPLATE_ID" ]]; then
-              payload=$(jq -n \
-                --arg email "$email" \
-                --arg template_id "$COLLABORATOR_EMAIL_TEMPLATE_ID" \
-                --arg issue_url "$ISSUE_URL" \
-                --arg reason "Requestor email must be an @justice.gov.uk address." \
-                --arg provided_email "${email:-"(none)"}" \
-                '{email_address: $email, template_id: $template_id, personalisation: {reason: $reason, provided_email: $provided_email, issue_url: $issue_url}}')
+          errors=()
 
-              curl -sS -X POST "https://api.notifications.service.gov.uk/v2/notifications/email" \
-                -H "Authorization: ApiKey-v1 $GOV_UK_NOTIFY_API_KEY" \
-                -H "Content-Type: application/json" \
-                -d "$payload" >/dev/null || echo "Failed to send requester email notification"
-            else
-              echo "Skipping requester email notification: Notify API key or template ID not set"
+          # Field: requestor_email
+          # Strict: must match a valid email and end in @justice.gov.uk.
+          if [[ -z "$REQUESTOR_EMAIL" ]]; then
+            errors+=("Requestor email is missing.")
+          elif [[ "$REQUESTOR_EMAIL" != "$REQUESTOR_EMAIL_RAW" ]]; then
+            errors+=("Requestor email contained disallowed characters.")
+          elif ! [[ "$REQUESTOR_EMAIL" =~ ^[A-Za-z0-9._%+-]+@justice\.gov\.uk$ ]]; then
+            errors+=("Requestor email must be a valid @justice.gov.uk address.")
+          fi
+
+          # Field: collaborator_name (must be a valid email address; any domain is allowed
+          # because collaborators are external).
+          if [[ -z "$COLLABORATOR_NAME" ]]; then
+            errors+=("Collaborator email address is missing.")
+          elif [[ "$COLLABORATOR_NAME" != "$COLLABORATOR_NAME_RAW" ]]; then
+            errors+=("Collaborator email address contained disallowed characters.")
+          elif (( ${#COLLABORATOR_NAME} > 254 )); then
+            errors+=("Collaborator email address is too long (max 254 characters).")
+          elif ! [[ "$COLLABORATOR_NAME" =~ ^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$ ]]; then
+            errors+=("Collaborator email address is not a valid email address.")
+          fi
+
+          # Field: collaborator_github
+          # GitHub usernames: 1-39 chars, alphanumeric or hyphen, no leading/trailing hyphen, no consecutive hyphens.
+          if [[ -z "$COLLABORATOR_GITHUB" ]]; then
+            errors+=("Collaborator GitHub username is missing.")
+          elif [[ "$COLLABORATOR_GITHUB" != "$COLLABORATOR_GITHUB_RAW" ]]; then
+            errors+=("Collaborator GitHub username contained disallowed characters.")
+          elif ! [[ "$COLLABORATOR_GITHUB" =~ ^[A-Za-z0-9](-?[A-Za-z0-9]){0,38}$ ]]; then
+            errors+=("Collaborator GitHub username is not a valid GitHub username.")
+          fi
+
+          # Field: collaborator_application
+          if [[ -z "$COLLABORATOR_APPLICATION" ]]; then
+            errors+=("Collaborator requested application is missing.")
+          elif [[ "$COLLABORATOR_APPLICATION" != "$COLLABORATOR_APPLICATION_RAW" ]]; then
+            errors+=("Collaborator requested application contained disallowed characters (only lowercase letters, digits and - allowed).")
+          elif ! [[ "$COLLABORATOR_APPLICATION" =~ ^[a-z0-9][a-z0-9-]{0,63}$ ]]; then
+            errors+=("Collaborator requested application is not a valid application name.")
+          fi
+
+          # Field: environments — whitelist values from a known set.
+          if [[ -z "$ENVIRONMENTS" ]]; then
+            errors+=("Environments requiring access is missing.")
+          elif [[ "$ENVIRONMENTS" != "$ENVIRONMENTS_RAW" ]]; then
+            errors+=("Environments requiring access contained disallowed characters.")
+          else
+            allowed_envs="development test preproduction production"
+            # Split on commas or spaces, validate each token.
+            invalid_envs=()
+            # shellcheck disable=SC2001
+            tokens=$(printf '%s' "$ENVIRONMENTS" | sed 's/,/ /g')
+            for env_token in $tokens; do
+              found=0
+              for allowed in $allowed_envs; do
+                if [[ "$env_token" == "$allowed" ]]; then
+                  found=1
+                  break
+                fi
+              done
+              if (( found == 0 )); then
+                invalid_envs+=("$env_token")
+              fi
+            done
+            if (( ${#invalid_envs[@]} > 0 )); then
+              errors+=("Environments requiring access contains invalid values: ${invalid_envs[*]}. Allowed: ${allowed_envs}.")
             fi
+          fi
 
-            gh issue comment "$ISSUE_NUMBER" --body "## Validation failed
-
-          This issue has been closed because the **Requestor email address** is not a valid \`@justice.gov.uk\` address.
-
-          Provided value: \`${email:-"(none)"}\`
-
-          Please re-submit the form using your \`@justice.gov.uk\` email address."
-
-            gh issue close "$ISSUE_NUMBER" --reason "not planned"
-            echo "is_valid=false" >> "$GITHUB_OUTPUT"
+          if (( ${#errors[@]} == 0 )); then
+            echo "All fields validated successfully."
+            echo "is_valid=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          echo "is_valid=true" >> "$GITHUB_OUTPUT"
+          # Build a human-readable error summary for the issue comment and Notify email.
+          printf 'Validation errors:\n'
+          for err in "${errors[@]}"; do printf ' - %s\n' "$err"; done
+
+          errors_md=""
+          for err in "${errors[@]}"; do
+            errors_md+=$'- '"$err"$'\n'
+          done
+
+          # Email the requester only if their email looks deliverable
+          # (well-formed @justice.gov.uk address). Otherwise skip the email.
+          if [[ -n "$GOV_UK_NOTIFY_API_KEY" && -n "$COLLABORATOR_EMAIL_TEMPLATE_ID" \
+                && "$REQUESTOR_EMAIL" == "$REQUESTOR_EMAIL_RAW" \
+                && "$REQUESTOR_EMAIL" =~ ^[A-Za-z0-9._%+-]+@justice\.gov\.uk$ ]]; then
+            payload=$(jq -n \
+              --arg email "$REQUESTOR_EMAIL" \
+              --arg template_id "$COLLABORATOR_EMAIL_TEMPLATE_ID" \
+              --arg issue_url "$ISSUE_URL" \
+              --arg reason "$errors_md" \
+              --arg provided_email "${REQUESTOR_EMAIL:-(none)}" \
+              '{email_address: $email, template_id: $template_id, personalisation: {reason: $reason, provided_email: $provided_email, issue_url: $issue_url}}')
+
+            curl -sS -X POST "https://api.notifications.service.gov.uk/v2/notifications/email" \
+              -H "Authorization: ApiKey-v1 $GOV_UK_NOTIFY_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d "$payload" >/dev/null || echo "Failed to send requester email notification"
+          else
+            echo "Skipping requester email notification (missing config or invalid email)."
+          fi
+
+          comment_body=$'## Validation failed\n\nThis issue has been closed because the submitted form did not pass validation:\n\n'"$errors_md"$'\nPlease re-submit the form with corrected values.'
+          gh issue comment "$ISSUE_NUMBER" --body "$comment_body"
+          gh issue close "$ISSUE_NUMBER" --reason "not planned"
+          echo "is_valid=false" >> "$GITHUB_OUTPUT"
+          exit 0
 
       - name: Checkout modernisation-platform repository (scripts)
         if: steps.validate_email.outputs.is_valid == 'true'
@@ -112,13 +240,18 @@ jobs:
 
       - name: Update collaborators.json
         if: steps.validate_email.outputs.is_valid == 'true'
+        env:
+          COLLABORATOR_NAME: ${{ steps.extract_fields.outputs.collaborator_name }}
+          COLLABORATOR_GITHUB: ${{ steps.extract_fields.outputs.collaborator_github }}
+          COLLABORATOR_APPLICATION: ${{ steps.extract_fields.outputs.collaborator_application }}
+          ENVIRONMENTS: ${{ steps.extract_fields.outputs.environments }}
         run: |
           python3 modernisation-platform/scripts/update-collaborators.py \
             --file modernisation-platform-github/collaborators.json \
-            --username "${{ steps.extract_fields.outputs.collaborator_name }}" \
-            --github-username "${{ steps.extract_fields.outputs.collaborator_github }}" \
-            --application "${{ steps.extract_fields.outputs.collaborator_application }}" \
-            --environments "${{ steps.extract_fields.outputs.environments }}"
+            --username "$COLLABORATOR_NAME" \
+            --github-username "$COLLABORATOR_GITHUB" \
+            --application "$COLLABORATOR_APPLICATION" \
+            --environments "$ENVIRONMENTS"
 
       - name: Create PR in modernisation-platform-github
         id: create_pr
