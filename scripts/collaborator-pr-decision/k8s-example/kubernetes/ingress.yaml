@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: collaborator-pr-decision
+  namespace: your-namespace
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  tls:
+  - hosts:
+    - collaborator-pr-decision.example.justice.gov.uk
+    secretName: collaborator-pr-decision-tls
+  rules:
+  - host: collaborator-pr-decision.example.justice.gov.uk
+    http:
+      paths:
+      - path: /decision
+        pathType: Prefix
+        backend:
+          service:
+            name: collaborator-pr-decision
+            port:
+              number: 80
