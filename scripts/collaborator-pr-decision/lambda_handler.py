@@ -1,3 +1,5 @@
+# pyright: reportMissingImports=false
+
 import json
 import os
 import urllib.error
@@ -25,7 +27,7 @@ def _get_query_params(event):
 
 
 def _dispatch_to_github(payload):
-    token = os.environ.get("GH_DISPATCH_TOKEN", "")
+    token = _get_dispatch_token()
     owner = os.environ.get("GH_OWNER", "ministryofjustice")
     repo = os.environ.get("GH_REPO", "modernisation-platform")
 
@@ -55,6 +57,35 @@ def _dispatch_to_github(payload):
 
     with urllib.request.urlopen(req, timeout=15) as resp:
         return resp.status
+
+
+def _get_dispatch_token():
+    import boto3
+
+    token = os.environ.get("GH_DISPATCH_TOKEN", "")
+    if token:
+        return token
+
+    secret_name = os.environ.get("GH_DISPATCH_TOKEN_SECRET_NAME", "")
+    if not secret_name:
+        return ""
+
+    client = boto3.client("secretsmanager")
+    response = client.get_secret_value(SecretId=secret_name)
+    secret_string = response.get("SecretString", "")
+    if not secret_string:
+        return ""
+
+    # Accept either plain string secret values or JSON payloads.
+    try:
+        parsed = json.loads(secret_string)
+    except json.JSONDecodeError:
+        return secret_string.strip()
+
+    if isinstance(parsed, str):
+        return parsed.strip()
+
+    return str(parsed.get("token") or parsed.get("dispatch_token") or "").strip()
 
 
 def lambda_handler(event, context):
