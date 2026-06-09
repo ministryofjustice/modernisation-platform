@@ -1,0 +1,39 @@
+{
+  "account-type": "member",
+  "isolated-network": "true",
+  "codeowners": "cloud-platform-engineers",
+  "environments": [
+    {
+      "name": "nonlive",
+      "access": [
+        {
+          "sso_group_name": "cloud-platform-engineers",
+          "level": "platform-engineer-admin"
+        },
+        {
+          "sso_group_name": "container-platform-aws",
+          "level": "platform-engineer-admin"
+        }
+      ]
+    },
+    {
+      "name": "live",
+      "access": [
+        {
+          "sso_group_name": "cloud-platform-engineers",
+          "level": "platform-engineer-admin"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "container-platform-octo",
+    "business-unit": "Platforms",
+    "infrastructure-support": "cloudplatform@justice.gov.uk",
+    "owner": "cloudplatform@justice.gov.uk",
+    "slack-channel": "cloud-platform",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
