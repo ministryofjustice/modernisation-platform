@@ -116,7 +116,7 @@ presets:
       CloudWatchEventsRule:
 +        - property: tag:component
 +          value: "secure-baselines"
-+      CloudWatchEventsTarget:
++     CloudWatchEventsTarget:
 +        - property: tag:component
 +          value: "secure-baselines"
       KMSKey:
