@@ -19,6 +19,9 @@
     },
     {
       "name": "ai-gateway"
+    },
+    {
+      "name": "app"
     }
   ],
   "environments": [
