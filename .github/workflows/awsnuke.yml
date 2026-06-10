@@ -86,7 +86,6 @@ jobs:
       matrix:
         nuke_accts: ${{ fromJSON(needs.setup-prerequisites.outputs.matrix) }}
     name: Sandbox Nuke
-    if: github.ref == 'refs/heads/main'
     permissions:
       id-token: write # This is required for requesting the JWT
       contents: read # This is required for actions/checkout
@@ -192,15 +191,5 @@ jobs:
             --config nuke-config.yml \
             --no-prompt \
             --no-dry-run
-
-      - name: Slack failure notification
-        uses: slackapi/slack-github-action@45a88b9581bfab2566dc881e2cd66d334e621e2c # v3.0.3
-        with:
-          webhook-type: incoming-webhook
-          payload: |
-            {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
-        env:
-          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
-        if: ${{ failure() }}
     env:
       ACCOUNT_NAME: ${{ matrix.nuke_accts }}
