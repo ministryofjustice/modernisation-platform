@@ -81,6 +81,9 @@ presets:
       AccessAnalyzer:
         - property: tag:component
           value: "secure-baselines"
+      BackupVault:
+        - property: tag:component
+          value: "secure-baselines"
       AWSBackupPlan:
         - property: tag:component
           value: "secure-baselines"
@@ -110,7 +113,18 @@ presets:
       EC2VPC:
         - property: tag:component
           value: "secure-baselines"
+      CloudWatchEventsRule:
+        - property: Name
+          value: "iam-credential-exposed"
+      CloudWatchEventsTarget:
+        - property: Name
+          value: "iam-credential-exposed"
+        - property: TargetID
+          value: "credential-responder-lambda"
       KMSKey:
+        - property: tag:component
+          value: "secure-baselines"
+      LambdaFunction:
         - property: tag:component
           value: "secure-baselines"
       RDSClusterSnapshot:
