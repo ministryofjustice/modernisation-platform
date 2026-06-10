@@ -127,10 +127,13 @@ locals {
 
   hmpps_vpc_keys = {
     hmpps-production-a = {
-      cidr_block = "165.72.0.0/16"
+      cidr_block = "165.72.0.0/16",
+      rule_number = 6010
     }
     hmpps-production-b = {
-      cidr_block = "199.40.0.0/16"
+      cidr_block = "199.40.0.0/16",
+      rule_number = 6011
+
     }
   }
 
@@ -141,7 +144,6 @@ locals {
       to_port     = 22
       protocol    = "tcp"
       rule_action = "allow"
-      rule_number = 6010
     }
   }
 
@@ -152,7 +154,10 @@ locals {
       for rule_key, rule in local.hmpps_general_access_rules_base :
       "${rule_key}_${vpc_key}" => merge(
         rule,
-        { cidr_block = vpc_data.cidr_block }
+        {
+          cidr_block  = vpc_data.cidr_block
+          rule_number = vpc_data.rule_number
+        }
       )
     } : {}
   ]...)
