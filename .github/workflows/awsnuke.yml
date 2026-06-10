@@ -168,7 +168,6 @@ jobs:
             --no-prompt
 
       - name: Nuke Apply (Destructive)
-        if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.mode == 'nuke-no-dry-run') }}
         run: |
           # The environment gets reset between steps, so the role needs to be re-assumed.
           aws sts assume-role \
