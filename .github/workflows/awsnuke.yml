@@ -70,9 +70,12 @@ jobs:
 
       - name: Set Account Number
         run: |
+          ACCOUNT_NAME="sprinkler-development"
           ACCOUNT_NUMBER=$(jq -r -e '.account_ids["sprinkler-development"]' <<< $ENVIRONMENT_MANAGEMENT)
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "ACCOUNT_NUMBER=${ACCOUNT_NUMBER}" >> $GITHUB_ENV
+          echo "ACCOUNT_NAME=$ACCOUNT_NAME" >> "$GITHUB_ENV"
+          
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@d979d5b3a71173a29b74b5b88418bfda9437d885 # v6.1.1
         with:
