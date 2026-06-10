@@ -114,11 +114,13 @@ presets:
         - property: tag:component
           value: "secure-baselines"
       CloudWatchEventsRule:
-        - property: tag:component
-          value: "secure-baselines"
+        - property: Name
+          value: "iam-credential-exposed"
       CloudWatchEventsTarget:
-        - property: tag:component
-          value: "secure-baselines"
+        - property: Name
+          value: "iam-credential-exposed"
+        - property: TargetID
+          value: "credential-responder-lambda"
       KMSKey:
         - property: tag:component
           value: "secure-baselines"
