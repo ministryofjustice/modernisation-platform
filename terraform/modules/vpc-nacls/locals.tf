@@ -123,5 +123,38 @@ locals {
     )
   } : {}
 
+# Custom Rules for Outbound HMPPS Rules
+
+  hmpps_vpc_keys = {
+    hmpps-production-a = {
+      cidr_block = "165.72.0.0/16"
+    }
+    hmpps-production-b = {
+      cidr_block = "199.40.0.0/16"
+    }
+  }
+
+  hmpps_general_access_rules_base = {
+    hmpps_general_access_rules_egress = {
+      egress      = true
+      from_port   = 22
+      to_port     = 22
+      protocol    = "tcp"
+      rule_action = "allow"
+      rule_number = 6010
+    }
+  }
+
+  apply_hmpps_ap_rules = anytrue([for key in keys(local.hmpps_vpc_keys) : strcontains(key, var.vpc_name)])
+
+  hmpps_rules_to_apply = merge([
+    for vpc_key, vpc_data in local.hmpps_vpc_keys : strcontains(vpc_key, var.vpc_name) ? {
+      for rule_key, rule in local.hmpps_general_access_rules_base :
+      "${rule_key}_${vpc_key}" => merge(
+        rule,
+        { cidr_block = vpc_data.cidr_block }
+      )
+    } : {}
+  ]...)
 
 }
