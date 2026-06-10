@@ -123,7 +123,7 @@ locals {
     )
   } : {}
 
-# Custom Rules for Outbound HMPPS Rules
+# Custom Egress Rules for HMPPS
 
   hmpps_vpc_keys = {
     hmpps-production-a = {
