@@ -5,7 +5,8 @@ settings:
     RDSInstance: true
     EC2Instance: true
     CloudformationStack: true
-  force-delete-lightsail-addons: true
+    force-delete-lightsail-addons:
+    enabled: true
 
 regions:
   - "eu-west-2"
@@ -81,8 +82,8 @@ presets:
         - property: tag:component
           value: "secure-baselines"
       BackupVault:
-+        - property: tag:component
-+          value: "secure-baselines"
+        - property: tag:component
+          value: "secure-baselines"
       AWSBackupPlan:
         - property: tag:component
           value: "secure-baselines"
@@ -113,11 +114,11 @@ presets:
         - property: tag:component
           value: "secure-baselines"
       CloudWatchEventsRule:
-+        - property: tag:component
-+          value: "secure-baselines"
-+     CloudWatchEventsTarget:
-+        - property: tag:component
-+          value: "secure-baselines"
+        - property: tag:component
+          value: "secure-baselines"
+      CloudWatchEventsTarget:
+        - property: tag:component
+          value: "secure-baselines"
       KMSKey:
         - property: tag:component
           value: "secure-baselines"
