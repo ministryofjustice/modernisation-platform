@@ -5,8 +5,7 @@ settings:
     RDSInstance: true
     EC2Instance: true
     CloudformationStack: true
-    force-delete-lightsail-addons:
-    enabled: true
+  force-delete-lightsail-addons: true
 
 regions:
   - "eu-west-2"
