@@ -131,5 +131,19 @@
     "destination_ip": "0.0.0.0/0",
     "destination_port": "587",
     "protocol": "TCP"
+  },
+  "hmpps-production_to_internet_dhl_qa_sftp": {
+    "action": "PASS",
+    "source_ip": "${hmpps-production}",
+    "destination_ip": "165.72.0.0/16",
+    "destination_port": "22",
+    "protocol": "TCP"
+  },
+  "hmpps-production_to_internet_dhl_sftp": {
+    "action": "PASS",
+    "source_ip": "${hmpps-production}",
+    "destination_ip": "199.40.0.0/16",
+    "destination_port": "22",
+    "protocol": "TCP"
   }
 }
