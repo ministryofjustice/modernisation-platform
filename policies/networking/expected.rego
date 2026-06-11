@@ -138,6 +138,7 @@ expected :=
       "general": {
         "cidr": "10.26.24.0/21",
         "accounts": [
+              "cfo-data-management-system-development",
               "delius-alfresco-development",
               "delius-core-development",
               "delius-iaps-development",
@@ -184,6 +185,7 @@ expected :=
       "general": {
         "cidr": "10.27.0.0/21",
         "accounts": [
+          "cfo-data-management-system-preproduction",
           "corporate-staff-rostering-preproduction",
           "delius-alfresco-preproduction",
           "delius-core-preproduction",
@@ -211,6 +213,7 @@ expected :=
       "general": {
         "cidr": "10.27.8.0/21",
         "accounts": [
+              "cfo-data-management-system-production",
               "corporate-staff-rostering-production",
               "delius-alfresco-production",
               "delius-core-production",
