@@ -123,15 +123,15 @@ locals {
     )
   } : {}
 
-# Custom Egress Rules for HMPPS
+  # Custom Egress Rules for HMPPS
 
   hmpps_vpc_keys = {
     hmpps-production-a = {
-      cidr_block = "165.72.0.0/16",
+      cidr_block  = "165.72.0.0/16",
       rule_number = 5500
     }
     hmpps-production-b = {
-      cidr_block = "199.40.0.0/16",
+      cidr_block  = "199.40.0.0/16",
       rule_number = 5501
 
     }
