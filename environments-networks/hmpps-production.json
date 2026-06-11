@@ -4,6 +4,7 @@
       "general": {
         "cidr": "10.27.8.0/21",
         "accounts": [
+          "cfo-data-management-system-production",
           "corporate-staff-rostering-production",
           "delius-alfresco-production",
           "delius-core-production",
