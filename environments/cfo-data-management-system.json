@@ -1,0 +1,60 @@
+{
+  "account-type": "member",
+  "codeowners": "hmpps-creating-future-opportunities-live",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "hmpps-creating-future-opportunities-live",
+          "level": "sandbox",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "hmpps-creating-future-opportunities-devs",
+          "level": "sandbox"
+        }
+      ],
+      "nuke": ""
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "hmpps-creating-future-opportunities-live",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "hmpps-creating-future-opportunities-devs",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "hmpps-creating-future-opportunities-live",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "hmpps-creating-future-opportunities-devs",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "Data Management System CATS",
+    "business-unit": "HMPPS",
+    "service-area": "Creating Future Opportunities (CFO)",
+    "infrastructure-support": "daresbury-ict-admin@justice.gov.uk",
+    "owner": "Andrew.Grocott@justice.gov.uk",
+    "slack-channel": "hmpps-cfo-ict-team",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
