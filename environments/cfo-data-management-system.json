@@ -14,8 +14,7 @@
           "sso_group_name": "hmpps-creating-future-opportunities-devs",
           "level": "sandbox"
         }
-      ],
-      "nuke": ""
+      ]
     },
     {
       "name": "preproduction",
@@ -47,7 +46,7 @@
     }
   ],
   "tags": {
-    "application": "Data Management System CATS",
+    "application": "cfo-data-management-system",
     "business-unit": "HMPPS",
     "service-area": "Creating Future Opportunities (CFO)",
     "infrastructure-support": "daresbury-ict-admin@justice.gov.uk",
