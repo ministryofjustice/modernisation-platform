@@ -269,3 +269,15 @@ resource "aws_network_acl_rule" "cica_custom_ap_db_rules" {
   rule_number    = each.value.rule_number
   to_port        = each.value.to_port
 }
+
+resource "aws_network_acl_rule" "hmpps_custom_ssh_rules" {
+  for_each       = local.hmpps_rules_to_apply
+  cidr_block     = each.value.cidr_block
+  egress         = each.value.egress
+  from_port      = each.value.from_port
+  network_acl_id = aws_network_acl.general-private.id
+  protocol       = each.value.protocol
+  rule_action    = each.value.rule_action
+  rule_number    = each.value.rule_number
+  to_port        = each.value.to_port
+}
