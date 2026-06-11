@@ -30,7 +30,7 @@
           "level": "developer"
         }
       ]
-    }
+    },
     {
       "name": "production",
       "access": [
