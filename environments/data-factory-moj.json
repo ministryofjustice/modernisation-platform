@@ -1,6 +1,12 @@
 {
   "account-type": "member",
   "codeowners": ["data-engineering", "data-platform-engineering"],
+  "components": [
+    {
+      "name": "streaming-poc",
+      "sso_group_name": "data-factory-aker-team"
+    }
+  ],
   "environments": [
     {
       "name": "development",

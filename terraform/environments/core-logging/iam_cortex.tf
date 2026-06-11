@@ -62,7 +62,10 @@ data "aws_iam_policy_document" "cortex_user_policy" {
       "kms:Decrypt",
       "kms:DescribeKey"
     ]
-    resources = [for key in aws_kms_key.logging : key.arn]
+    resources = concat(
+      [for key in aws_kms_key.logging : key.arn],
+      [aws_kms_key.config_logs.arn]
+    )
   }
 }
 
@@ -87,4 +90,3 @@ data "aws_iam_policy_document" "cortex_trust_policy" {
     }
   }
 }
-
