@@ -14,8 +14,7 @@
           "sso_group_name": "hmpps-creating-future-opportunities-devs",
           "level": "sandbox"
         }
-      ],
-      "nuke": ""
+      ]
     },
     {
       "name": "preproduction",
