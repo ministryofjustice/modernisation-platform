@@ -5,17 +5,16 @@ module "s3_bucket_config_logs" {
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
-  bucket_policy               = [data.aws_iam_policy_document.config_bucket_policy.json]
-  bucket_name                 = "modernisation-platform-logs-config"
-  replication_bucket          = "modernisation-platform-logs-config-replication"
-  suffix_name                 = "-config"
-  custom_kms_key              = aws_kms_key.config_logs.arn
-  custom_replication_kms_key  = aws_kms_key.config_logs_replication.arn
-  sse_algorithm               = "aws:kms"
-  enforce_kms_request_headers = false
-  replication_enabled         = true
-  replication_region          = "eu-west-1"
-  versioning_enabled          = true
+  bucket_policy              = [data.aws_iam_policy_document.config_bucket_policy.json]
+  bucket_name                = "modernisation-platform-logs-config"
+  replication_bucket         = "modernisation-platform-logs-config-replication"
+  suffix_name                = "-config"
+  custom_kms_key             = aws_kms_key.config_logs.arn
+  custom_replication_kms_key = aws_kms_key.config_logs_replication.arn
+  sse_algorithm              = "AES256"
+  replication_enabled        = true
+  replication_region         = "eu-west-1"
+  versioning_enabled         = true
 
   lifecycle_rule = [
     {
