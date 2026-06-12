@@ -21,10 +21,6 @@
           "level": "reporting-operations"
         },
         {
-          "sso_group_name": "digital-prisons-reporting-development-data-engineer",
-          "level": "data-engineer"
-        },
-        {
           "sso_group_name": "digital-prisons-reporting-development-analytics-engineer",
           "level": "analytics-engineer"
         },
@@ -57,10 +53,6 @@
         {
           "sso_group_name": "digital-prisons-reporting-test-data-engineer",
           "level": "data-engineer"
-        },
-        {
-          "sso_group_name": "digital-prisons-reporting-test-analytics-engineer",
-          "level": "analytics-engineer"
         },
         {
           "sso_group_name": "hmpps-datahub-restricted",
