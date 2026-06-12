@@ -25,6 +25,10 @@
           "level": "data-engineer"
         },
         {
+          "sso_group_name": "digital-prisons-reporting-development-analytics-engineer",
+          "level": "analytics-engineer"
+        },
+        {
           "sso_group_name": "hmpps-datahub-restricted",
           "level": "view-only"
         }
@@ -55,6 +59,10 @@
           "level": "data-engineer"
         },
         {
+          "sso_group_name": "digital-prisons-reporting-test-analytics-engineer",
+          "level": "analytics-engineer"
+        },
+        {
           "sso_group_name": "hmpps-datahub-restricted",
           "level": "view-only"
         }
@@ -76,6 +84,10 @@
           "level": "data-engineer"
         },
         {
+          "sso_group_name": "digital-prisons-reporting-preproduction-analytics-engineer",
+          "level": "analytics-engineer"
+        },
+        {
           "sso_group_name": "hmpps-datahub-restricted",
           "level": "view-only"
         }
@@ -95,6 +107,10 @@
         {
           "sso_group_name": "digital-prisons-reporting-production-data-engineer",
           "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "digital-prisons-reporting-production-analytics-engineer",
+          "level": "analytics-engineer"
         },
         {
           "sso_group_name": "hmpps-datahub-restricted",
