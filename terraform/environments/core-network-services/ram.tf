@@ -12,6 +12,16 @@ resource "aws_ram_resource_association" "transit-gateway" {
   resource_share_arn = aws_ram_resource_share.transit-gateway.id
 }
 
+# Share the Transit Gateway with accounts that need to create VPC attachments.
+resource "aws_ram_principal_association" "transit-gateway" {
+  for_each = {
+    cloud-platform-development = local.environment_management.account_ids["cloud-platform-development"]
+  }
+
+  principal          = each.value
+  resource_share_arn = aws_ram_resource_share.transit-gateway.arn
+}
+
 # Create a resource share for the Certificate Manager
 resource "aws_ram_resource_share" "acm-pca-live" {
   name                      = "acm-pca-live"
