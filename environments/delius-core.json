@@ -11,6 +11,10 @@
           "github_action_reviewer": "true"
         },
         {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
+          "level": "sandbox"
+        }
+        {
           "sso_group_name": "hosting-migrations",
           "level": "sandbox",
           "github_action_reviewer": "true"
@@ -92,6 +96,10 @@
           "github_action_reviewer": "true"
         },
         {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
+          "level": "developer"
+        },
+        {
           "sso_group_name": "hmpps-dba",
           "level": "developer",
           "github_action_reviewer": "true"
@@ -164,6 +172,10 @@
           "github_action_reviewer": "true"
         },
         {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
+          "level": "developer"
+        },
+        {
           "sso_group_name": "hmpps-dba",
           "level": "developer",
           "github_action_reviewer": "true"
@@ -221,6 +233,10 @@
           "sso_group_name": "hosting-migrations",
           "level": "developer",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
+          "level": "developer"
         },
         {
           "sso_group_name": "hmpps-dba",
