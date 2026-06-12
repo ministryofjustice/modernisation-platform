@@ -5,7 +5,6 @@ locals {
   container-platform-nonlive-attachments = {
     cloud-platform-development = {
       attachment_id = "tgw-attach-0b0cca7618e009d38"
-      cidr_range    = "10.195.32.0/20"
     }
   }
 }
