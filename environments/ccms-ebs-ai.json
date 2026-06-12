@@ -8,6 +8,10 @@
         {
           "sso_group_name": "laa-sre-admins",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "ccms-ai-team",
+          "level": "ssm-session-access"
         }
       ],
       "nuke": "exclude"
