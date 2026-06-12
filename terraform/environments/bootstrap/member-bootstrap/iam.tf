@@ -207,6 +207,7 @@ data "aws_iam_policy_document" "member-access-compute" {
       "ec2:DeleteSubnet",
       "ec2:CreateRoute",
       "ec2:DeleteRoute",
+      "ec2:ReplaceRoute",
       "ec2:*RouteTable*",
       "ec2:CreateVpcEndpoint",
       "ec2:DeleteVpcEndpoints",
