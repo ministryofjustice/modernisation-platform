@@ -16,6 +16,7 @@
           "laa-cst-security-dashboard-production",
           "laa-enterprise-service-bus-production",
           "laa-mail-relay-production",
+          "laa-new-workspaces-production",
           "laa-oem-production",
           "laa-pui-secure-browser-production",
           "maat-production",
