@@ -5,6 +5,18 @@
     {
       "name": "streaming-poc",
       "sso_group_name": "data-factory-aker-team"
+    },
+    {
+      "name": "streaming-poc-msk",
+      "sso_group_name": "data-factory-aker-team"
+    },
+    {
+      "name": "streaming-poc-opensearch",
+      "sso_group_name": "data-factory-aker-team"
+    },
+    {
+      "name": "streaming-poc-maf",
+      "sso_group_name": "data-factory-aker-team"
     }
   ],
   "environments": [
