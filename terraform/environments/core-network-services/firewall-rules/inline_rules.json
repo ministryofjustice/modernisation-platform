@@ -145,5 +145,19 @@
     "destination_ip": "199.40.0.0/16",
     "destination_port": "22",
     "protocol": "TCP"
+  },
+  "cp_nonlive_to_internet_https": {
+    "action": "PASS",
+    "source_ip": "${container-platform-nonlive}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
+  "cp_live_to_internet_https": {
+    "action": "PASS",
+    "source_ip": "${container-platform-live}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "443",
+    "protocol": "TCP"
   }
 }
