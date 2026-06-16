@@ -271,6 +271,7 @@ resource "aws_iam_role_policy" "member-delegation" {
       {
         "Effect" : "Allow",
         "Action" : [
+          "apigateway:CreateAccessAssociation",
           "apigateway:CreateDomainNameAccessAssociation",
           "apigateway:DeleteDomainNameAccessAssociation",
           "apigateway:GetDomainNameAccessAssociations",
