@@ -84,6 +84,41 @@ data "aws_iam_policy_document" "kms_state_bucket" {
     }
   }
   statement {
+    sid    = "AllowTerraformStateBucketUseFromModernisationPlatformOU"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*"
+    ]
+    resources = ["*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values   = ["arn:aws:s3:::modernisation-platform-terraform-state/*"]
+    }
+  }
+  statement {
     sid    = "AllowAWSBackupDecrypt"
     effect = "Allow"
     actions = [
