@@ -33,12 +33,32 @@ state_kms_key_id() {
     exit 1
   fi
 
-  echo "arn:aws:kms:eu-west-2:${account_id}:alias/s3-state-bucket"
+  if ! command -v aws >/dev/null 2>&1; then
+    echo "Unable to resolve Modernisation Platform state bucket KMS key ARN because aws CLI is unavailable." >&2
+    echo "Set TERRAFORM_STATE_KMS_KEY_ID to the state bucket KMS key ARN." >&2
+    exit 1
+  fi
+
+  local key_arn
+  key_arn=$(aws kms describe-key \
+    --key-id "arn:aws:kms:eu-west-2:${account_id}:alias/s3-state-bucket" \
+    --region eu-west-2 \
+    --query KeyMetadata.Arn \
+    --output text)
+
+  if [ -z "${key_arn}" ] || ! [[ "${key_arn}" =~ ^arn:aws:kms:eu-west-2:[0-9]{12}:key/.+ ]]; then
+    echo "Unable to resolve Modernisation Platform state bucket KMS key ARN from alias/s3-state-bucket." >&2
+    echo "Set TERRAFORM_STATE_KMS_KEY_ID to the state bucket KMS key ARN." >&2
+    exit 1
+  fi
+
+  echo "${key_arn}"
 }
 
 if [ -z "$1" ]; then
   echo "Unsure where to run terraform, exiting"
   exit 1
 else
-  terraform -chdir="$1" init -input=false -no-color -backend-config="kms_key_id=$(state_kms_key_id)"
+  kms_key_id="$(state_kms_key_id)"
+  terraform -chdir="$1" init -input=false -no-color -backend-config="kms_key_id=${kms_key_id}"
 fi
