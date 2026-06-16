@@ -271,6 +271,15 @@ resource "aws_iam_role_policy" "member-delegation" {
       {
         "Effect" : "Allow",
         "Action" : [
+          "apigateway:CreateAccessAssociation",
+          "apigateway:CreateDomainNameAccessAssociation",
+          "apigateway:DeleteDomainNameAccessAssociation",
+          "apigateway:GetDomainNameAccessAssociations",
+          "apigateway:DELETE",
+          "apigateway:GET",
+          "apigateway:PATCH",
+          "apigateway:POST",
+          "apigateway:PUT",
           "route53:List*",
           "route53:Get*",
           "route53resolver:CreateResolverEndpoint",
