@@ -130,8 +130,8 @@
   "tags": {
     "application": "mojfin",
     "business-unit": "LAA",
-    "infrastructure-support": "laa_ops@digital.justice.gov.uk",
-    "owner": "william.moran@justice.gov.uk",
+    "infrastructure-support": "ApplicationOperations@justice.gov.uk",
+    "owner": "ApplicationOperations@justice.gov.uk",
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""],
