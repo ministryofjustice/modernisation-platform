@@ -1511,6 +1511,7 @@ module "github_actions_nuke" {
   source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
   github_repositories = ["ministryofjustice/modernisation-platform"]
   role_name           = "github-actions-nuke"
+  policy_arns         = ["arn:aws:iam::aws:policy/AdministratorAccess"]
   policy_jsons        = [data.aws_iam_policy_document.oidc_assume_nuke_role_member[0].json]
   subject_claim       = "ref:refs/heads/main"
   tags                = { "Name" = "github-actions-nuke" }
@@ -1540,32 +1541,6 @@ data "aws_iam_policy_document" "oidc_assume_nuke_role_member" {
       values   = [data.aws_organizations_organization.root_account.id]
     }
     actions = ["sts:AssumeRole"]
-  }
-
-  # Additional read permissions to align with scope of those assigned to github-actions-plan
-  statement {
-    sid    = "AllowAccountRestrictedAccess"
-    effect = "Allow"
-    actions = [
-      "airflow:Get*",
-      "airflow:List*",
-      "glue:GetConnection",
-      "lakeformation:GetLFTag",
-      "lakeformation:ListLFTags",
-      "oam:ListTagsForResource",
-      "quicksight:Describe*",
-      "quicksight:ListTagsForResource",
-      "redshift-data:Describe*",
-      "secretsmanager:GetSecretValue",
-      "workspaces-web:Get*",
-      "workspaces-web:List*"
-    ]
-    resources = ["*"]
-    condition {
-      test     = "StringEquals"
-      variable = "aws:PrincipalAccount"
-      values   = [local.environment_management.account_ids[terraform.workspace]]
-    }
   }
 
   # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
