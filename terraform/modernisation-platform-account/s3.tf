@@ -131,8 +131,11 @@ data "aws_iam_policy_document" "kms_state_bucket" {
     resources = ["*"]
 
     principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions", "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions-environments-dev-test"]
+      type = "AWS"
+      identifiers = [
+        "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions",
+        "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions-environments-dev-test"
+      ]
     }
 
     condition {
@@ -148,6 +151,69 @@ data "aws_iam_policy_document" "kms_state_bucket" {
         "arn:aws:s3:::modernisation-platform-terraform-state/single-sign-on/*",
         "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*/sprinkler-development/*"
       ]
+    }
+  }
+
+  statement {
+    sid    = "AllowSprinklerAccountTerraformStateBucketUse"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*"
+    ]
+    resources = ["*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions-dev-test"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values   = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/accounts/sprinkler/*"]
+    }
+  }
+
+  statement {
+    sid    = "AllowSprinklerMemberTerraformStateBucketUse"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*"
+    ]
+    resources = ["*"]
+
+    principals {
+      type = "AWS"
+      identifiers = [
+        "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions-environments-dev-test",
+        "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions-environments-read-only"
+      ]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values   = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/sprinkler/*"]
     }
   }
   statement {

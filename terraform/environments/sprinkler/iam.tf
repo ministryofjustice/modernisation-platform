@@ -21,6 +21,34 @@ data "aws_iam_policy_document" "oidc_deny_specific_actions" {
   }
 
   statement {
+    sid    = "AllowTerraformStateKMSBackend"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*"
+    ]
+    resources = ["arn:aws:kms:eu-west-2:${data.aws_ssm_parameter.modernisation_platform_account_id.value}:key/*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state/single-sign-on/*",
+        "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*/sprinkler-development/*"
+      ]
+    }
+  }
+
+  statement {
     sid       = "AllowOIDCReadState"
     effect    = "Allow"
     resources = ["arn:aws:s3:::modernisation-platform-terraform-state/*", "arn:aws:s3:::modernisation-platform-terraform-state/"]
@@ -77,6 +105,31 @@ data "aws_iam_policy_document" "github_actions_environments_read_only" {
   }
 
   statement {
+    sid    = "AllowTerraformStateKMSBackend"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*"
+    ]
+    resources = ["arn:aws:kms:eu-west-2:${data.aws_ssm_parameter.modernisation_platform_account_id.value}:key/*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values   = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/sprinkler/*"]
+    }
+  }
+
+  statement {
     sid    = "AllowAssumeRoles"
     effect = "Allow"
     actions = [
@@ -129,6 +182,35 @@ data "aws_iam_policy_document" "github_actions_environments_dev_test" {
     effect    = "Allow"
     resources = ["*"]
     actions   = ["kms:Decrypt"]
+  }
+
+  statement {
+    sid    = "AllowTerraformStateKMSBackend"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*"
+    ]
+    resources = ["arn:aws:kms:eu-west-2:${data.aws_ssm_parameter.modernisation_platform_account_id.value}:key/*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state/single-sign-on/*",
+        "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*/sprinkler-development/*",
+        "arn:aws:s3:::modernisation-platform-terraform-state/environments/members/sprinkler/sprinkler-development/*"
+      ]
+    }
   }
 
   statement {
