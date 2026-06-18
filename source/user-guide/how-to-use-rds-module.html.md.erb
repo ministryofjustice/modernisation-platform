@@ -1,0 +1,211 @@
+---
+owner_slack: "#modernisation-platform"
+title: RDS Instance Module
+last_reviewed_on: 2026-06-18
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+## Deploying an RDS Instance in the Modernisation Platform
+
+Standing up a production-grade relational database on AWS involves a lot of moving parts — subnet groups, parameter groups, security groups, encryption, monitoring, secrets rotation, and more. Get any one of them wrong and you're looking at a security gap, a compliance failure.
+
+This module takes care of all of that for you. With a handful of inputs you get a fully configured, security-hardened RDS instance that meets MoJ standards out of the box — so your team can focus on building the application.
+
+You can use the [modernisation-platform-terraform-rds-instance](https://github.com/ministryofjustice/modernisation-platform-terraform-rds-instance) module to create an [AWS RDS (Relational Database Service)](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html) instance in your account.
+
+The module supports:
+
+- PostgreSQL, MySQL, MariaDB, Oracle, and SQL Server database engines.
+- Automated backups, maintenance windows, and storage autoscaling.
+- Encryption using a customer-managed KMS key or the AWS-managed default.
+- Enhanced Monitoring and Performance Insights.
+- Automatic SSL enforcement via a managed parameter group.
+- Secrets Manager integration for secure credential storage.
+- Read replicas and snapshot restores.
+- Optional log forwarding to XSIAM Cortex via Kinesis Firehose.
+- Ingress rules scoped to specified CIDR blocks or security groups.
+
+---
+
+## Minimum viable example
+
+The following shows the smallest set of inputs required to create an RDS instance:
+
+```hcl
+module "rds" {
+  source = "git::https://github.com/ministryofjustice/modernisation-platform-terraform-rds-instance?ref=v0.5.0"
+
+  application_name    = local.application_name
+  vpc_id              = local.vpc_id
+  monitoring_role_arn = aws_iam_role.rds_monitoring.arn
+  tags                = local.tags
+
+  db_engine               = "postgres"
+  db_engine_version       = "16"
+  db_name                 = "myapp"
+  db_username             = "dbadmin"
+  db_parameter_group_family = "postgres16"
+}
+```
+
+All other inputs will use their defaults (20 GiB gp3 storage, `db.t3.medium` instance class, multi-AZ enabled, deletion protection on, 7-day backups, and subnets discovered via `Type = data` tags).
+
+---
+
+## Example usage
+
+```hcl
+module "rds" {
+  source = "git::https://github.com/ministryofjustice/modernisation-platform-terraform-rds-instance?ref=v0.5.0"
+
+  application_name  = local.application_name
+  vpc_id            = local.vpc_id
+  monitoring_role_arn = aws_iam_role.rds_monitoring.arn
+  tags              = local.tags
+
+  db_engine         = "postgres"
+  db_engine_version = "16"
+  db_name           = "myapp"
+  db_username       = "dbadmin"
+
+  db_instance_class         = "db.t3.medium"
+  db_allocated_storage      = 20
+  db_max_allocated_storage  = 100
+  db_storage_type           = "gp3"
+
+  db_parameter_group_family = "postgres16"
+
+  multi_az                  = true
+  deletion_protection       = true
+  skip_final_snapshot       = false
+
+  backup_retention_period = 7
+  backup_window           = "03:00-06:00"
+  maintenance_window      = "Mon:00:00-Mon:03:00"
+
+  allowed_security_groups = [aws_security_group.app.id]
+}
+```
+
+---
+
+## Prerequisites
+
+To use this module you must:
+
+- Have Terraform ≥ 1.0 and the AWS provider ~> 6.0 configured.
+- Have an existing VPC and data subnets tagged with `Type = data` (or provide explicit `subnet_ids`).
+- Create an IAM role that allows RDS Enhanced Monitoring and pass its ARN as `monitoring_role_arn`.
+- Ensure the Secrets Manager service is available in your account — the module stores the generated database password there automatically (except for read replicas).
+
+---
+
+## Key inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| `application_name` | Name of the application | `string` | — | yes |
+| `vpc_id` | VPC ID where the RDS instance will be deployed | `string` | — | yes |
+| `monitoring_role_arn` | ARN of the IAM role for Enhanced Monitoring | `string` | — | yes |
+| `tags` | Common tags applied to all resources | `map(string)` | — | yes |
+| `db_engine` | Database engine type (e.g. `postgres`, `mysql`, `mariadb`, `oracle-se2`, `sqlserver-se`) | `string` | — | yes |
+| `db_engine_version` | Database engine version | `string` | — | yes |
+| `db_instance_class` | RDS instance class | `string` | `"db.t3.medium"` | no |
+| `db_allocated_storage` | Allocated storage in GiB | `number` | `20` | no |
+| `db_max_allocated_storage` | Upper limit for storage autoscaling in GiB. Set to `0` to disable | `number` | `0` | no |
+| `db_storage_type` | Storage type (`gp2`, `gp3`, `io1`, `io2`) | `string` | `"gp3"` | no |
+| `db_iops` | Provisioned IOPS — required for `io1`/`io2` storage types (minimum 1000) | `number` | `null` | no |
+| `db_name` | Name of the initial database to create | `string` | `null` | no |
+| `db_username` | Master username for the database | `string` | `null` | no |
+| `db_parameter_group_family` | Parameter group family for SSL enforcement (e.g. `postgres16`, `mysql8.0`) | `string` | `null` | no |
+| `parameter_group_name` | Name of a pre-existing parameter group — skips module-managed group when set | `string` | `null` | no |
+| `multi_az` | Deploy across multiple Availability Zones | `bool` | `true` | no |
+| `deletion_protection` | Enable deletion protection | `bool` | `true` | no |
+| `skip_final_snapshot` | Skip final snapshot before destroy | `bool` | `false` | no |
+| `backup_retention_period` | Days to retain automated backups (`0` disables) | `number` | `7` | no |
+| `backup_window` | Preferred daily backup window in UTC | `string` | `"03:00-06:00"` | no |
+| `maintenance_window` | Preferred weekly maintenance window | `string` | `"Mon:00:00-Mon:03:00"` | no |
+| `kms_key_id` | ARN of a customer-managed KMS key for encryption | `string` | `null` | no |
+| `allowed_cidr_blocks` | CIDR blocks permitted to connect to the RDS instance | `list(string)` | `[]` | no |
+| `allowed_security_groups` | Security group IDs permitted to connect to the RDS instance | `list(string)` | `[]` | no |
+| `subnet_ids` | Explicit subnet IDs for the DB subnet group — overrides tag-based discovery | `list(string)` | `null` | no |
+| `subnet_tags` | Tags used to discover subnets for the DB subnet group | `map(string)` | `{ "Type": "data" }` | no |
+| `snapshot_identifier` | Snapshot identifier to restore from | `string` | `null` | no |
+| `replicate_source_db` | Identifier or ARN of the source instance to create a read replica from | `string` | `null` | no |
+| `performance_insights_enabled` | Enable Performance Insights | `bool` | `true` | no |
+| `performance_insights_retention_period` | Retention period for Performance Insights data in days (`7` or `731`) | `number` | `7` | no |
+| `monitoring_interval` | Enhanced Monitoring interval in seconds (`1`, `5`, `10`, `15`, `30`, or `60`) | `number` | `60` | no |
+| `opt_in_xsiam_logging` | Forward RDS CloudWatch logs to XSIAM Cortex via Kinesis Firehose | `bool` | `false` | no |
+| `xsiam_firehose_stream_name` | Kinesis Firehose stream name — required when `opt_in_xsiam_logging = true` | `string` | `null` | no |
+| `xsiam_cloudwatch_role_arn` | IAM role ARN for CloudWatch to write to Firehose — required when `opt_in_xsiam_logging = true` | `string` | `null` | no |
+
+For the full list of inputs see the [module README](https://github.com/ministryofjustice/modernisation-platform-terraform-rds-instance#inputs).
+
+---
+
+## Restoring from a snapshot
+
+To restore an instance from an existing snapshot, set `snapshot_identifier` to the snapshot ID or ARN. The `db_username` must match the master username stored in the snapshot.
+
+```hcl
+module "rds" {
+  source = "git::https://github.com/ministryofjustice/modernisation-platform-terraform-rds-instance?ref=v0.5.0"
+
+  # ...other required inputs...
+
+  snapshot_identifier = "rds:my-db-2026-01-01"
+  db_username         = "dbadmin"
+}
+```
+
+---
+
+## Creating a read replica
+
+Set `replicate_source_db` to the identifier or ARN of the source instance. The master username, database name, and password are inherited from the source — Secrets Manager is not provisioned for the replica.
+
+```hcl
+module "rds_replica" {
+  source = "git::https://github.com/ministryofjustice/modernisation-platform-terraform-rds-instance?ref=v0.5.0"
+
+  # ...other required inputs...
+
+  replicate_source_db = "my-primary-db-instance"
+}
+```
+
+---
+
+## XSIAM log forwarding
+
+To forward RDS CloudWatch logs to XSIAM Cortex, set `opt_in_xsiam_logging = true` and provide the Firehose stream name and a CloudWatch-to-Firehose IAM role ARN.
+
+```hcl
+module "rds" {
+  source = "git::https://github.com/ministryofjustice/modernisation-platform-terraform-rds-instance?ref=v0.5.0"
+
+  # ...other required inputs...
+
+  opt_in_xsiam_logging       = true
+  xsiam_firehose_stream_name = "xsiam-log-delivery-stream"
+  xsiam_cloudwatch_role_arn  = aws_iam_role.cloudwatch_firehose.arn
+}
+```
+
+---
+
+## Related links
+
+- [AWS RDS Documentation](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html)
+- [AWS RDS Supported Engines](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_CreateDBInstance.html)
+- [AWS Secrets Manager Documentation](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html)
+- [Module source code on GitHub](https://github.com/ministryofjustice/modernisation-platform-terraform-rds-instance)
+
+---
+
+## Support
+
+To raise an issue with this module, please create a ticket in the
+[Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform-terraform-rds-instance/issues).
