@@ -131,8 +131,12 @@ data "aws_iam_policy_document" "kms_state_bucket" {
     resources = ["*"]
 
     principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions", "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions-environments-dev-test"]
+      type = "AWS"
+      identifiers = [
+        "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions",
+        "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions-environments-dev-test",
+        "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions-environments-read-only"
+      ]
     }
 
     condition {
@@ -146,7 +150,9 @@ data "aws_iam_policy_document" "kms_state_bucket" {
       variable = "kms:EncryptionContext:aws:s3:arn"
       values = [
         "arn:aws:s3:::modernisation-platform-terraform-state/single-sign-on/*",
-        "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*/sprinkler-development/*"
+        "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*/sprinkler-development/*",
+        "arn:aws:s3:::modernisation-platform-terraform-state/environments/accounts/sprinkler/*",
+        "arn:aws:s3:::modernisation-platform-terraform-state/environments/members/sprinkler/*"
       ]
     }
   }
