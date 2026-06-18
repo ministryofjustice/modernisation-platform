@@ -297,6 +297,8 @@ module "r53_delegations_integration_hub_mft" {
   create_zone = false
   name        = local.application-zones["integration-hub-mft-prod"]
 
+  depends_on = [aws_route53_zone.application_zones["integration-hub-mft-prod"]]
+
   records = {
     for zone_key in toset([
       "integration-hub-mft-development",
