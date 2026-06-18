@@ -218,6 +218,7 @@ data "aws_iam_policy_document" "member-access-compute" {
       "ec2:DisableSerialConsoleAccess",
       "ec2:EnableSerialConsoleAccess",
       "ec2:GetSerialConsoleAccessStatus",
+      "ec2:ModifySubnetAttribute",
       "ec2:ModifyVpc*",
       "ec2:Describe*",
       "ec2:*NetworkAcl*",
