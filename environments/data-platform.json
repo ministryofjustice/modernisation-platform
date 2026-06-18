@@ -22,6 +22,9 @@
     },
     {
       "name": "app"
+    },
+    {
+      "name": "monitoring"
     }
   ],
   "environments": [
