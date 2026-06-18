@@ -287,7 +287,7 @@ resource "aws_route53_record" "cwa-prod-db2" {
 }
 
 # Integration Hub Managed File Transfer subdomains
-module "route53_zones" {
+module "r53_zones_integration_hub_mft" {
   source = "terraform-aws-modules/route53/aws"
 
   for_each = toset([
@@ -299,4 +299,25 @@ module "route53_zones" {
   name    = each.value
   records = {}
   tags    = local.tags
+}
+
+module "r53_delegations_integration_hub_mft" {
+  source = "terraform-aws-modules/route53/aws"
+
+  # Do not create the parent zone here; use the existing one.
+  create_zone = false
+  name        = local.application-zones["integration-hub-mft-prod"]
+
+  records = {
+    for environment, zone in module.r53_zones_integration_hub_mft : environment => {
+      name            = environment
+      type            = "NS"
+      ttl             = 30
+      allow_overwrite = true
+
+      records = zone.name_servers
+    }
+  }
+
+  tags = local.tags
 }
