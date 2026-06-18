@@ -50,6 +50,7 @@ Modernisation Platform users can use these modules in their infrastructure. They
 | [modernisation-platform-terraform-aws-data-firehose](https://github.com/ministryofjustice/modernisation-platform-terraform-aws-data-firehose)         | Module for creating an AWS Data Stream to be used by a set of AWS CloudWatch Log Groups                                                                                            |
 | [modernisation-platform-terraform-rds-instance](https://github.com/ministryofjustice/modernisation-platform-terraform-rds-instance)                   | Module for creating a production-ready RDS instance with encryption, monitoring, Secrets Manager integration, and SSL enforcement                                                  |
 
+
 ### Terraform modules - used by the core platform
 
 These modules are used by the Modernisation Platform's core infrastructure
