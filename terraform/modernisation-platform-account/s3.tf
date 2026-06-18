@@ -119,6 +119,38 @@ data "aws_iam_policy_document" "kms_state_bucket" {
     }
   }
   statement {
+    sid    = "AllowSprinklerTerraformStateBucketUse"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*"
+    ]
+    resources = ["*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions", "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions-environments-dev-test"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state/single-sign-on/*",
+        "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*/sprinkler-development/*"
+      ]
+    }
+  }
+  statement {
     sid    = "AllowAWSBackupDecrypt"
     effect = "Allow"
     actions = [
