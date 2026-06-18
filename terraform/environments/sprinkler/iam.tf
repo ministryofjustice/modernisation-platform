@@ -105,6 +105,31 @@ data "aws_iam_policy_document" "github_actions_environments_read_only" {
   }
 
   statement {
+    sid    = "AllowTerraformStateKMSBackend"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*"
+    ]
+    resources = ["arn:aws:kms:eu-west-2:${data.aws_ssm_parameter.modernisation_platform_account_id.value}:key/*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values   = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/sprinkler/*"]
+    }
+  }
+
+  statement {
     sid    = "AllowAssumeRoles"
     effect = "Allow"
     actions = [
