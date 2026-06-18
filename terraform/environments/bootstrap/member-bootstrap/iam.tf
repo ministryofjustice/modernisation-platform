@@ -1264,31 +1264,6 @@ data "aws_iam_policy_document" "oidc_assume_role_dev_test" {
   }
 
   statement {
-    sid    = "AllowTerraformStateKMSBackend"
-    effect = "Allow"
-    actions = [
-      "kms:Decrypt",
-      "kms:DescribeKey",
-      "kms:Encrypt",
-      "kms:GenerateDataKey*",
-      "kms:ReEncrypt*"
-    ]
-    resources = ["arn:aws:kms:eu-west-2:${local.environment_management.modernisation_platform_account_id}:key/*"]
-
-    condition {
-      test     = "StringEquals"
-      variable = "kms:ViaService"
-      values   = ["s3.eu-west-2.amazonaws.com"]
-    }
-
-    condition {
-      test     = "StringLike"
-      variable = "kms:EncryptionContext:aws:s3:arn"
-      values   = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/accounts/*"]
-    }
-  }
-
-  statement {
     sid    = "AllowOIDCReadState"
     effect = "Allow"
     resources = [
@@ -1630,31 +1605,6 @@ data "aws_iam_policy_document" "oidc_assume_nuke_role_member" {
     effect    = "Allow"
     resources = ["*"]
     actions   = ["kms:Decrypt"]
-  }
-
-  statement {
-    sid    = "AllowTerraformStateKMSBackend"
-    effect = "Allow"
-    actions = [
-      "kms:Decrypt",
-      "kms:DescribeKey",
-      "kms:Encrypt",
-      "kms:GenerateDataKey*",
-      "kms:ReEncrypt*"
-    ]
-    resources = ["arn:aws:kms:eu-west-2:${local.environment_management.modernisation_platform_account_id}:key/*"]
-
-    condition {
-      test     = "StringEquals"
-      variable = "kms:ViaService"
-      values   = ["s3.eu-west-2.amazonaws.com"]
-    }
-
-    condition {
-      test     = "StringLike"
-      variable = "kms:EncryptionContext:aws:s3:arn"
-      values   = ["arn:aws:s3:::modernisation-platform-terraform-state/*"]
-    }
   }
 
   statement {
