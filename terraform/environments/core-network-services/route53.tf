@@ -3,30 +3,27 @@ locals {
   modernisation-platform-internal-domain = "modernisation-platform.internal"
 
   application-zones = {
-    ccms-ebs                    = "ccms-ebs.service.justice.gov.uk",
-    cdpt-chaps                  = "correspondence-handling-and-processing.service.justice.gov.uk",
-    cdpt-chaps-dev              = "cdpt-chaps.hq-development.modernisation-platform.service.justice.gov.uk",
-    cdpt-chaps-preprod          = "cdpt-chaps.hq-preproduction.modernisation-platform.service.justice.gov.uk"
-    cdpt-ifs                    = "integrated-fraud-system.service.justice.gov.uk",
-    dacp                        = "divorce-section-search.service.justice.gov.uk",
-    delius-jitbit               = "jitbit.cr.probation.service.justice.gov.uk",
-    equip                       = "equip.service.justice.gov.uk",
-    integration-hub-mft-dev     = "development.managed-file-transfer.service.justice.gov.uk",
-    integration-hub-mft-test    = "test.managed-file-transfer.service.justice.gov.uk",
-    integration-hub-mft-preprod = "preproduction.managed-file-transfer.service.justice.gov.uk",
-    integration-hub-mft-prod    = "managed-file-transfer.service.justice.gov.uk",
-    laa-apex                    = "laa-apex.service.justice.gov.uk",
-    maat                        = "means-assessment-administration.service.justice.gov.uk",
-    mlra                        = "maat-libra-administration-tool.service.justice.gov.uk",
-    mojfin                      = "laa-finance-data.service.justice.gov.uk",
-    ncas                        = "neutral-citation-allocation.service.justice.gov.uk",
-    ppud                        = "ppud.justice.gov.uk",
-    pra-register                = "parental-responsibility-agreement.service.justice.gov.uk",
-    tipstaff                    = "tipstaff.service.justice.gov.uk",
-    tribunals                   = "tribunals.gov.uk",
-    wardship                    = "wardship-agreements-register.service.justice.gov.uk"
-    legalservices               = "legalservices.gov.uk"
-    laa                         = "laa.service.justice.gov.uk"
+    ccms-ebs                 = "ccms-ebs.service.justice.gov.uk",
+    cdpt-chaps               = "correspondence-handling-and-processing.service.justice.gov.uk",
+    cdpt-chaps-dev           = "cdpt-chaps.hq-development.modernisation-platform.service.justice.gov.uk",
+    cdpt-chaps-preprod       = "cdpt-chaps.hq-preproduction.modernisation-platform.service.justice.gov.uk"
+    cdpt-ifs                 = "integrated-fraud-system.service.justice.gov.uk",
+    dacp                     = "divorce-section-search.service.justice.gov.uk",
+    delius-jitbit            = "jitbit.cr.probation.service.justice.gov.uk",
+    equip                    = "equip.service.justice.gov.uk",
+    integration-hub-mft-prod = "managed-file-transfer.service.justice.gov.uk",
+    laa-apex                 = "laa-apex.service.justice.gov.uk",
+    maat                     = "means-assessment-administration.service.justice.gov.uk",
+    mlra                     = "maat-libra-administration-tool.service.justice.gov.uk",
+    mojfin                   = "laa-finance-data.service.justice.gov.uk",
+    ncas                     = "neutral-citation-allocation.service.justice.gov.uk",
+    ppud                     = "ppud.justice.gov.uk",
+    pra-register             = "parental-responsibility-agreement.service.justice.gov.uk",
+    tipstaff                 = "tipstaff.service.justice.gov.uk",
+    tribunals                = "tribunals.gov.uk",
+    wardship                 = "wardship-agreements-register.service.justice.gov.uk"
+    legalservices            = "legalservices.gov.uk"
+    laa                      = "laa.service.justice.gov.uk"
   }
 
   private-application-zones = {
@@ -287,4 +284,19 @@ resource "aws_route53_record" "cwa-prod-db2" {
     zone_id                = "ZD4D7Y8KGAS4G"
     evaluate_target_health = false
   }
+}
+
+# Integration Hub Managed File Transfer subdomains
+module "route53_zones" {
+  source = "terraform-aws-modules/route53/aws"
+
+  for_each = toset([
+    "development.managed-file-transfer.service.justice.gov.uk",
+    "test.managed-file-transfer.service.justice.gov.uk",
+    "preproduction.managed-file-transfer.service.justice.gov.uk",
+  ])
+
+  name    = each.value
+  records = {}
+  tags    = local.tags
 }
