@@ -217,7 +217,7 @@ module "dns_zone_extend_private" {
 locals {
   member_delegation_additional_accounts = {
     "core-vpc-development" = {
-      "laa-development" = [local.environment_management.account_ids["laa-workspaces-development","laa-new-workspaces-development","laa-new-worksapces-production"]]
+      "laa-development" = [local.environment_management.account_ids["laa-workspaces-development","laa-new-workspaces-development"]]
     }
   }
 }
