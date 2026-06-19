@@ -119,6 +119,52 @@ data "aws_iam_policy_document" "kms_state_bucket" {
     }
   }
   statement {
+    sid    = "AllowMemberTerraformStateBucketUseFromGithubActions"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*"
+    ]
+    resources = ["*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [data.aws_organizations_organization.root_account.id]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "ArnLike"
+      variable = "aws:PrincipalArn"
+      values = [
+        "arn:aws:iam::*:role/github-actions-plan",
+        "arn:aws:iam::*:role/github-actions-apply",
+        "arn:aws:sts::*:assumed-role/github-actions-plan/*",
+        "arn:aws:sts::*:assumed-role/github-actions-apply/*"
+      ]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values   = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"]
+    }
+  }
+  statement {
     sid    = "AllowSprinklerTerraformStateBucketUse"
     effect = "Allow"
     actions = [
