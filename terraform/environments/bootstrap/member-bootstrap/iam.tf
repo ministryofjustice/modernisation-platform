@@ -1144,7 +1144,10 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
     condition {
       test     = "StringLike"
       variable = "kms:EncryptionContext:aws:s3:arn"
-      values   = ["arn:aws:s3:::modernisation-platform-terraform-state/*"]
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/*"
+      ]
     }
   }
 
@@ -1286,7 +1289,10 @@ data "aws_iam_policy_document" "oidc_assume_role_dev_test" {
     condition {
       test     = "StringLike"
       variable = "kms:EncryptionContext:aws:s3:arn"
-      values   = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/accounts/*"]
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/environments/accounts/*"
+      ]
     }
   }
 
@@ -1501,7 +1507,10 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
     condition {
       test     = "StringLike"
       variable = "kms:EncryptionContext:aws:s3:arn"
-      values   = ["arn:aws:s3:::modernisation-platform-terraform-state/*"]
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/*"
+      ]
     }
   }
 
@@ -1655,7 +1664,10 @@ data "aws_iam_policy_document" "oidc_assume_nuke_role_member" {
     condition {
       test     = "StringLike"
       variable = "kms:EncryptionContext:aws:s3:arn"
-      values   = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"]
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"
+      ]
     }
   }
 
