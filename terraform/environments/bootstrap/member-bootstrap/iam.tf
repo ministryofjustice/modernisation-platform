@@ -254,6 +254,8 @@ data "aws_iam_policy_document" "member-access-compute" {
       "elasticloadbalancing:*",
       "events:*",
       "kafka:Create*",
+      "kafka:Describe*",
+      "kafka:TagResource",
       "fis:*",
       "iam:*",
       "kms:*",
