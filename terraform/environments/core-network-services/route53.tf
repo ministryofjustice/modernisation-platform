@@ -300,16 +300,16 @@ module "r53_delegations_integration_hub_mft" {
 
   records = {
     for zone_key in toset([
-      "integration-hub-mft-development",
-      "integration-hub-mft-preproduction",
-      "integration-hub-mft-test",
-      ]) : local.application-zones[zone_key] => {
-      name            = local.application-zones[zone_key]
+      "development",
+      "test",
+      "preproduction",
+      ]) : zone_key => {
+      name            = zone_key
       type            = "NS"
       ttl             = 30
       allow_overwrite = true
 
-      records = aws_route53_zone.application_zones[zone_key].name_servers
+      records = aws_route53_zone.application_zones["integration-hub-mft-${zone_key}"].name_servers
     }
   }
 
