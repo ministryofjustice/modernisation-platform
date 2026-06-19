@@ -290,8 +290,7 @@ resource "aws_route53_record" "cwa-prod-db2" {
 }
 
 module "r53_delegations_integration_hub_mft" {
-  source  = "terraform-aws-modules/route53/aws"
-  version = "6.5.0"
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-route53.git?ref=301fdd6f0876acfd737005dace317e6ac8cae186" # v6.5.0
 
   # Do not create the parent zone here; use the existing one.
   create_zone = false
