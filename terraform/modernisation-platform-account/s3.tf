@@ -165,6 +165,36 @@ data "aws_iam_policy_document" "kms_state_bucket" {
     }
   }
   statement {
+    sid    = "AllowMemberTerraformStateBucketUseFromMemberAccounts"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*"
+    ]
+    resources = ["*"]
+
+    # Cross-account KMS permissions are delegated to member accounts here; member IAM policies restrict the actual roles.
+    principals {
+      type        = "AWS"
+      identifiers = [for account_id in sort(values(local.environment_management.account_ids)) : "arn:aws:iam::${account_id}:root"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values   = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"]
+    }
+  }
+  statement {
     sid    = "AllowSprinklerTerraformStateBucketUse"
     effect = "Allow"
     actions = [
