@@ -115,7 +115,10 @@ data "aws_iam_policy_document" "kms_state_bucket" {
     condition {
       test     = "StringLike"
       variable = "kms:EncryptionContext:aws:s3:arn"
-      values   = ["arn:aws:s3:::modernisation-platform-terraform-state/*"]
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/*"
+      ]
     }
   }
   statement {
@@ -161,7 +164,10 @@ data "aws_iam_policy_document" "kms_state_bucket" {
     condition {
       test     = "StringLike"
       variable = "kms:EncryptionContext:aws:s3:arn"
-      values   = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"]
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"
+      ]
     }
   }
   statement {
@@ -191,7 +197,10 @@ data "aws_iam_policy_document" "kms_state_bucket" {
     condition {
       test     = "StringLike"
       variable = "kms:EncryptionContext:aws:s3:arn"
-      values   = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"]
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"
+      ]
     }
   }
   statement {
@@ -224,6 +233,7 @@ data "aws_iam_policy_document" "kms_state_bucket" {
       test     = "StringLike"
       variable = "kms:EncryptionContext:aws:s3:arn"
       values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
         "arn:aws:s3:::modernisation-platform-terraform-state/single-sign-on/*",
         "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*/sprinkler-development/*"
       ]
@@ -256,7 +266,10 @@ data "aws_iam_policy_document" "kms_state_bucket" {
     condition {
       test     = "StringLike"
       variable = "kms:EncryptionContext:aws:s3:arn"
-      values   = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/accounts/sprinkler/*"]
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/environments/accounts/sprinkler/*"
+      ]
     }
   }
 
@@ -289,7 +302,10 @@ data "aws_iam_policy_document" "kms_state_bucket" {
     condition {
       test     = "StringLike"
       variable = "kms:EncryptionContext:aws:s3:arn"
-      values   = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/sprinkler/*"]
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/environments/members/sprinkler/*"
+      ]
     }
   }
   statement {
