@@ -1,5 +1,5 @@
 locals {
-  centralised_endpoint_vpc_cidr = "10.20.128.0/20"
+  centralised_endpoint_vpc_cidr = "10.20.240.0/20"
 
   centralised_endpoint_consumer_accounts = {
     cloud-platform-development      = local.environment_management.account_ids["cloud-platform-development"]
