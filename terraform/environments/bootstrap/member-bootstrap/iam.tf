@@ -256,6 +256,8 @@ data "aws_iam_policy_document" "member-access-compute" {
       "kafka:Create*",
       "kafka:Describe*",
       "kafka:TagResource",
+      "kafka:DeleteCluster",
+      "kafka:ListClusters",
       "fis:*",
       "iam:*",
       "kms:*",
