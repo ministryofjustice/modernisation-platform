@@ -341,7 +341,7 @@ resource "aws_kms_alias" "s3_state_bucket_eu-west-1_replication" {
 }
 
 module "state-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=f72f8d5bcf3081f6de0ef16d1017b53c81e16457" # v10.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=76321e50b20f5c0d918cd45bdcf0b62049f5baf1" # v10.1.0
 
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
@@ -961,7 +961,7 @@ data "aws_iam_policy_document" "allow-state-access-for-root-account-sso-admins" 
 }
 
 module "cost-management-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=f72f8d5bcf3081f6de0ef16d1017b53c81e16457" # v10.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=76321e50b20f5c0d918cd45bdcf0b62049f5baf1" # v10.1.0
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
@@ -1000,7 +1000,7 @@ data "aws_iam_policy_document" "cost_management_bucket_policy" {
 }
 
 module "member_information_bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=f72f8d5bcf3081f6de0ef16d1017b53c81e16457" # v10.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=76321e50b20f5c0d918cd45bdcf0b62049f5baf1" # v10.1.0
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }

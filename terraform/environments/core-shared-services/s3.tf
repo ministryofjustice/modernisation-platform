@@ -3,7 +3,7 @@ data "aws_kms_alias" "general_hmpps" {
 }
 
 module "s3-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=f72f8d5bcf3081f6de0ef16d1017b53c81e16457" # v10.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=76321e50b20f5c0d918cd45bdcf0b62049f5baf1" # v10.1.0
 
   providers = {
     aws.bucket-replication = aws.bucket-replication
@@ -84,7 +84,7 @@ data "aws_iam_policy_document" "bucket_policy" {
 }
 
 module "s3-software-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=f72f8d5bcf3081f6de0ef16d1017b53c81e16457" # v10.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=76321e50b20f5c0d918cd45bdcf0b62049f5baf1" # v10.1.0
 
   providers = {
     aws.bucket-replication = aws.bucket-replication
