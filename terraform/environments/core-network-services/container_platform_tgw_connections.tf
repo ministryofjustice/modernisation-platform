@@ -8,12 +8,18 @@ locals {
     },
     cloud-platform-preproduction = {
       attachment_id = "tgw-attach-0dafba0c55531888f"
+    },
+    container-platform-octo-nonlive = {
+      attachment_id = "tgw-attach-0e373debb35a1ecbd"
     }
   }
 
   container-platform-live-attachments = {
     cloud-platform-live = {
       attachment_id = "tgw-attach-04105db6caaa49915"
+    },
+    container-platform-octo-live = {
+      attachment_id = "tgw-attach-05031a46f7a0d42ba"
     }
   }
 }

@@ -115,7 +115,92 @@ data "aws_iam_policy_document" "kms_state_bucket" {
     condition {
       test     = "StringLike"
       variable = "kms:EncryptionContext:aws:s3:arn"
-      values   = ["arn:aws:s3:::modernisation-platform-terraform-state/*"]
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/*"
+      ]
+    }
+  }
+  statement {
+    sid    = "AllowMemberTerraformStateBucketUseFromGithubActions"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*"
+    ]
+    resources = ["*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [data.aws_organizations_organization.root_account.id]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "ArnLike"
+      variable = "aws:PrincipalArn"
+      values = [
+        "arn:aws:iam::*:role/github-actions-plan",
+        "arn:aws:iam::*:role/github-actions-apply",
+        "arn:aws:sts::*:assumed-role/github-actions-plan/*",
+        "arn:aws:sts::*:assumed-role/github-actions-apply/*"
+      ]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"
+      ]
+    }
+  }
+  statement {
+    sid    = "AllowMemberTerraformStateBucketUseFromMemberAccounts"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*"
+    ]
+    resources = ["*"]
+
+    # Cross-account KMS permissions are delegated to member accounts here; member IAM policies restrict the actual roles.
+    principals {
+      type        = "AWS"
+      identifiers = [for account_id in sort(values(local.environment_management.account_ids)) : "arn:aws:iam::${account_id}:root"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"
+      ]
     }
   }
   statement {
@@ -148,6 +233,7 @@ data "aws_iam_policy_document" "kms_state_bucket" {
       test     = "StringLike"
       variable = "kms:EncryptionContext:aws:s3:arn"
       values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
         "arn:aws:s3:::modernisation-platform-terraform-state/single-sign-on/*",
         "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*/sprinkler-development/*"
       ]
@@ -180,7 +266,10 @@ data "aws_iam_policy_document" "kms_state_bucket" {
     condition {
       test     = "StringLike"
       variable = "kms:EncryptionContext:aws:s3:arn"
-      values   = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/accounts/sprinkler/*"]
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/environments/accounts/sprinkler/*"
+      ]
     }
   }
 
@@ -213,7 +302,10 @@ data "aws_iam_policy_document" "kms_state_bucket" {
     condition {
       test     = "StringLike"
       variable = "kms:EncryptionContext:aws:s3:arn"
-      values   = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/sprinkler/*"]
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/environments/members/sprinkler/*"
+      ]
     }
   }
   statement {
@@ -249,7 +341,7 @@ resource "aws_kms_alias" "s3_state_bucket_eu-west-1_replication" {
 }
 
 module "state-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=f72f8d5bcf3081f6de0ef16d1017b53c81e16457" # v10.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=76321e50b20f5c0d918cd45bdcf0b62049f5baf1" # v10.1.0
 
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
@@ -869,7 +961,7 @@ data "aws_iam_policy_document" "allow-state-access-for-root-account-sso-admins" 
 }
 
 module "cost-management-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=f72f8d5bcf3081f6de0ef16d1017b53c81e16457" # v10.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=76321e50b20f5c0d918cd45bdcf0b62049f5baf1" # v10.1.0
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
@@ -908,7 +1000,7 @@ data "aws_iam_policy_document" "cost_management_bucket_policy" {
 }
 
 module "member_information_bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=f72f8d5bcf3081f6de0ef16d1017b53c81e16457" # v10.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=76321e50b20f5c0d918cd45bdcf0b62049f5baf1" # v10.1.0
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
