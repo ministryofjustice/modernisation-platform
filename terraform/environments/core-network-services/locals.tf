@@ -171,13 +171,7 @@ locals {
 
 
   core-vpcs = {
-    for file in concat(
-      fileset("../../../environments-networks", "*-development.json"),
-      fileset("../../../environments-networks", "*-test.json"),
-      fileset("../../../environments-networks", "*-preproduction.json"),
-      fileset("../../../environments-networks", "*-production.json"),
-      fileset("../../../environments-networks", "*-sandbox.json")
-    ) :
+    for file in fileset("../../../environments-networks", "*.json") :
     replace(file, ".json", "") => jsondecode(file("../../../environments-networks/${file}"))
   }
 

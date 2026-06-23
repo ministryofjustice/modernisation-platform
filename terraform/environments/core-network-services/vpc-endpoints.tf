@@ -9,7 +9,7 @@ locals {
     container-platform-octo-live    = local.environment_management.account_ids["container-platform-octo-live"]
   }
 
-  centralised_endpoint_configuration = jsondecode(file("../../../environments-networks/centralised-vpc-endpoints.json"))
+  centralised_endpoint_configuration = jsondecode(file("${path.module}/centralised-vpc-endpoints.json"))
 
   centralised_interface_endpoint_services = {
     for endpoint_name in toset(local.centralised_endpoint_configuration.interface_endpoint_names) :
