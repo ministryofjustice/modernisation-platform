@@ -9,20 +9,30 @@ locals {
     container-platform-octo-live    = local.environment_management.account_ids["container-platform-octo-live"]
   }
 
+  centralised_interface_endpoint_names = toset([
+    "ec2messages",
+    "ecr.api",
+    "ecr.dkr",
+    "kms",
+    "logs",
+    "secretsmanager",
+    "ssm",
+    "ssmmessages",
+    "sts",
+  ])
+
+  centralised_gateway_endpoint_names = toset([
+    "s3",
+  ])
+
   centralised_interface_endpoint_services = {
-    ec2messages    = "com.amazonaws.${data.aws_region.current.region}.ec2messages"
-    ecr_api        = "com.amazonaws.${data.aws_region.current.region}.ecr.api"
-    ecr_dkr        = "com.amazonaws.${data.aws_region.current.region}.ecr.dkr"
-    kms            = "com.amazonaws.${data.aws_region.current.region}.kms"
-    logs           = "com.amazonaws.${data.aws_region.current.region}.logs"
-    secretsmanager = "com.amazonaws.${data.aws_region.current.region}.secretsmanager"
-    ssm            = "com.amazonaws.${data.aws_region.current.region}.ssm"
-    ssmmessages    = "com.amazonaws.${data.aws_region.current.region}.ssmmessages"
-    sts            = "com.amazonaws.${data.aws_region.current.region}.sts"
+    for endpoint_name in local.centralised_interface_endpoint_names :
+    replace(endpoint_name, ".", "_") => "com.amazonaws.${data.aws_region.current.region}.${endpoint_name}"
   }
 
   centralised_gateway_endpoint_services = {
-    s3 = "com.amazonaws.${data.aws_region.current.region}.s3"
+    for endpoint_name in local.centralised_gateway_endpoint_names :
+    endpoint_name => "com.amazonaws.${data.aws_region.current.region}.${endpoint_name}"
   }
 
   centralised_endpoint_service_private_dns_zones = {
