@@ -969,7 +969,7 @@ module "cost-management-bucket" {
   bucket_name                 = "mp-cost-explorer-reports"
   custom_kms_key              = aws_kms_key.s3_state_bucket_multi_region.arn
   sse_algorithm               = "aws:kms"
-  enforce_kms_request_headers = true
+  enforce_kms_request_headers = false
   replication_enabled         = false
   lifecycle_rule = [
     {
