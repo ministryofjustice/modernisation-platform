@@ -556,13 +556,9 @@ data "aws_iam_policy_document" "analytics_engineering" {
     effect = "Allow"
     actions = [
       "glue:Batch*Partition",
-      "glue:BatchDeleteTable",
       "glue:CreateDatabase",
       "glue:CreatePartition",
       "glue:CreateTable",
-      "glue:DeleteDatabase",
-      "glue:DeletePartition",
-      "glue:DeleteTable",
       "glue:UpdateDatabase",
       "glue:UpdatePartition",
       "glue:UpdateTable",
