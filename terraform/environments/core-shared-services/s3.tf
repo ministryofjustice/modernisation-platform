@@ -94,7 +94,7 @@ module "s3-software-bucket" {
   bucket_policy               = [data.aws_iam_policy_document.software_bucket_policy.json]
   sse_algorithm               = "aws:kms"
   custom_kms_key              = aws_kms_key.software_bucket.arn
-  enforce_kms_request_headers = false
+  enforce_kms_request_headers = true
   replication_enabled         = false
   versioning_enabled          = true
   force_destroy               = false
