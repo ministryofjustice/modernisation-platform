@@ -1,0 +1,16 @@
+{
+  "interface_endpoint_names": [
+    "ec2messages",
+    "ecr.api",
+    "ecr.dkr",
+    "kms",
+    "logs",
+    "secretsmanager",
+    "ssm",
+    "ssmmessages",
+    "sts"
+  ],
+  "gateway_endpoint_names": [
+    "s3"
+  ]
+}

@@ -9,29 +9,15 @@ locals {
     container-platform-octo-live    = local.environment_management.account_ids["container-platform-octo-live"]
   }
 
-  centralised_interface_endpoint_names = toset([
-    "ec2messages",
-    "ecr.api",
-    "ecr.dkr",
-    "kms",
-    "logs",
-    "secretsmanager",
-    "ssm",
-    "ssmmessages",
-    "sts",
-  ])
-
-  centralised_gateway_endpoint_names = toset([
-    "s3",
-  ])
+  centralised_endpoint_configuration = jsondecode(file("../../../environments-networks/centralised-vpc-endpoints.json"))
 
   centralised_interface_endpoint_services = {
-    for endpoint_name in local.centralised_interface_endpoint_names :
+    for endpoint_name in toset(local.centralised_endpoint_configuration.interface_endpoint_names) :
     replace(endpoint_name, ".", "_") => "com.amazonaws.${data.aws_region.current.region}.${endpoint_name}"
   }
 
   centralised_gateway_endpoint_services = {
-    for endpoint_name in local.centralised_gateway_endpoint_names :
+    for endpoint_name in toset(local.centralised_endpoint_configuration.gateway_endpoint_names) :
     endpoint_name => "com.amazonaws.${data.aws_region.current.region}.${endpoint_name}"
   }
 
