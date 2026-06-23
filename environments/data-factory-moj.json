@@ -1,6 +1,9 @@
 {
   "account-type": "member",
-  "codeowners": ["data-engineering", "data-platform-engineering"],
+  "codeowners": [
+    "data-engineering",
+    "data-platform-engineering"
+  ],
   "components": [
     {
       "name": "streaming-poc",
@@ -16,6 +19,10 @@
     },
     {
       "name": "streaming-poc-maf",
+      "sso_group_name": "data-factory-aker-team"
+    },
+    {
+      "name": "streaming-poc-opensearch-config",
       "sso_group_name": "data-factory-aker-team"
     }
   ],
