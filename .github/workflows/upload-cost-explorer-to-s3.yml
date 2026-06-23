@@ -4,18 +4,8 @@ on:
     # Runs on the second day of every month at 6:30 AM
     - cron: '30 6 2 * *'
   workflow_dispatch:
-    inputs:
-      upload_target:
-        description: "Upload target"
-        required: true
-        default: "production"
-        type: choice
-        options:
-          - "production"
-          - "example-canary"
 env:
   AWS_REGION: "eu-west-2"
-  COST_EXPLORER_UPLOAD_TARGET: ${{ github.event_name == 'workflow_dispatch' && inputs.upload_target || 'production' }}
 permissions:
   id-token: write # This is required for requesting the JWT
   contents: read # This is required for actions/checkout
@@ -45,17 +35,6 @@ jobs:
           ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
-
-      - name: Set Cost Explorer upload target
-        run: |
-          if [ "$COST_EXPLORER_UPLOAD_TARGET" = "example-canary" ]; then
-            EXAMPLE_ACCOUNT_NUMBER=$(jq -r -e '.account_ids["example-development"]' <<< "$ENVIRONMENT_MANAGEMENT")
-            echo "COST_EXPLORER_BUCKET_NAME=mp-example-development-cost-explorer-upload-test" >> "$GITHUB_ENV"
-            echo "COST_EXPLORER_KMS_KEY_ID=arn:aws:kms:${AWS_REGION}:${EXAMPLE_ACCOUNT_NUMBER}:alias/example-cost-explorer-upload-test" >> "$GITHUB_ENV"
-          else
-            echo "COST_EXPLORER_BUCKET_NAME=mp-cost-explorer-reports" >> "$GITHUB_ENV"
-            echo "COST_EXPLORER_KMS_KEY_ID=alias/s3-state-bucket-multi-region" >> "$GITHUB_ENV"
-          fi
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@e7f100cf4c008499ea8adda475de1042d6975c7b # v6.2.0
