@@ -12,8 +12,8 @@ previous_month_name=$(date -d "${current_month}/01 -1 month" +%B)
 previous_month_year="$previous_month_name $current_year"
 
 # S3 bucket and file details
-bucket_name="${COST_EXPLORER_BUCKET_NAME:-mp-cost-explorer-reports}"
-kms_key_id="${COST_EXPLORER_KMS_KEY_ID:-alias/s3-state-bucket-multi-region}"
+bucket_name="mp-cost-explorer-reports"
+kms_key_id="alias/s3-state-bucket-multi-region"
 csv_file="cost_explorer.csv"
 s3_file_path="s3://$bucket_name/$csv_file"
 
