@@ -27,7 +27,6 @@ expected :=
     "cdpt-chaps",
     "cdpt-ifs",
     "cfo-data-management-system",
-    "cica-data-extraction",
     "cica-sandbox",
     "cica-tariff",
     "cloud-platform",
