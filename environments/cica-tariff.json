@@ -20,15 +20,6 @@
       ]
     },
     {
-      "name": "preproduction",
-      "access": [
-        {
-          "sso_group_name": "cica-mp-tariff",
-          "level": "developer"
-        }
-      ]
-    },
-    {
       "name": "production",
       "access": [
         {
@@ -50,6 +41,8 @@
     "critical-national-infrastructure": true,
     "securityhub-slack-channel": "cica-devops"
   },
-  "github-oidc-team-repositories": [""],
+  "github-oidc-team-repositories": [
+    ""
+  ],
   "go-live-date": "2025-11-29"
 }

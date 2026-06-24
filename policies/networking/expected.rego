@@ -42,7 +42,6 @@ expected :=
       "general": {
         "cidr": "10.27.88.0/21",
         "accounts": [
-          "cica-tariff-preproduction"
         ]
       }
     },
