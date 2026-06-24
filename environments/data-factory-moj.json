@@ -1,9 +1,6 @@
 {
   "account-type": "member",
-  "codeowners": [
-    "data-engineering",
-    "data-platform-engineering"
-  ],
+  "codeowners": ["data-engineering", "data-platform-engineering"],
   "components": [
     {
       "name": "streaming-poc",
