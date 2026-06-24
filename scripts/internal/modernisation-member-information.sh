@@ -13,6 +13,7 @@ README_REPO_DIR="./modernisation-platform-environments/terraform/environments"
 bucket_name="$1"
 csv_file="$2"
 s3_file_path="s3://$bucket_name/data/$csv_file"
+kms_key_id="alias/s3-state-bucket-multi-region"
 
 # Function to extract member readme info
 extract_member_readme_info() {
@@ -143,5 +144,5 @@ for json_file in "$JSON_DIR"/*.json; do
 done
 
 # Upload $csv_file to the S3 bucket
-aws s3 cp $csv_file $s3_file_path
+aws s3 cp "$csv_file" "$s3_file_path" --sse aws:kms --sse-kms-key-id "$kms_key_id"
 rm $csv_file
