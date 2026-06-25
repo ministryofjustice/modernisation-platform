@@ -1,0 +1,16 @@
+{
+  "account-type": "member",
+  "codeowners": ", ",
+  "environments": [],
+  "tags": {
+    "application": "See PR",
+    "business-unit": "Central Digital",
+    "service-area": "See PR",
+    "infrastructure-support": "See PR",
+    "owner": "See PR",
+    "slack-channel": "",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
