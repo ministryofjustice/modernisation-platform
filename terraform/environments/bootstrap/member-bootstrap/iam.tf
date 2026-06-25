@@ -1100,8 +1100,8 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
     sid    = "AllowOIDCToAssumeRoles"
     effect = "Allow"
     resources = compact([
-      # skip for cloud-platform and container-platform-octo as they use a different account naming convention and do not need a member-delegation role
-      local.application_name != "cloud-platform" && local.application_name != "container-platform-octo" ? format("arn:aws:iam::%s:role/member-delegation-%s-%s", local.environment_management.account_ids[format("core-vpc-%s", local.application_environment)], lower(local.business_unit), local.application_environment) : "",
+      # skip for cloud-platform and container-platform-* as they use a different account naming convention and do not need a member-delegation role
+      local.application_name != "cloud-platform" && !startswith(local.application_name, "container-platform-") && contains(keys(local.environment_management.account_ids), format("core-vpc-%s", local.application_environment)) ? format("arn:aws:iam::%s:role/member-delegation-%s-%s", local.environment_management.account_ids[format("core-vpc-%s", local.application_environment)], lower(local.business_unit), local.application_environment) : "",
       format("arn:aws:iam::%s:role/modify-dns-records", local.environment_management.account_ids["core-network-services-production"]),
       format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id),
       format("arn:aws:iam::%s:role/ModernisationPlatformSSOReadOnly", local.environment_management.aws_organizations_root_account_id),
@@ -1616,8 +1616,8 @@ data "aws_iam_policy_document" "oidc_assume_nuke_role_member" {
     sid    = "AllowOIDCToAssumeRoles"
     effect = "Allow"
     resources = compact([
-      # skip for cloud-platform and container-platform-octo as they use a different account naming convention and do not need a member-delegation role
-      local.application_name != "cloud-platform" && local.application_name != "container-platform-octo" ? format("arn:aws:iam::%s:role/member-delegation-%s-%s", local.environment_management.account_ids[format("core-vpc-%s", local.application_environment)], lower(local.business_unit), local.application_environment) : "",
+      # skip for cloud-platform and container-platform-* as they use a different account naming convention and do not need a member-delegation role
+      local.application_name != "cloud-platform" && !startswith(local.application_name, "container-platform-") && contains(keys(local.environment_management.account_ids), format("core-vpc-%s", local.application_environment)) ? format("arn:aws:iam::%s:role/member-delegation-%s-%s", local.environment_management.account_ids[format("core-vpc-%s", local.application_environment)], lower(local.business_unit), local.application_environment) : "",
       format("arn:aws:iam::%s:role/modify-dns-records", local.environment_management.account_ids["core-network-services-production"]),
       format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id),
       format("arn:aws:iam::%s:role/ModernisationPlatformSSOReadOnly", local.environment_management.aws_organizations_root_account_id),
