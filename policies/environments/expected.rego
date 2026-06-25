@@ -34,6 +34,7 @@ expected :=
     "cloud-platform-non-live",
     "coat",
     "container-platform-hmpps",
+    "container-platform-laa",
     "container-platform-octo",
     "contract-work-administration",
     "cooker",
