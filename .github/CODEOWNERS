@@ -30,6 +30,7 @@
 /terraform/environments/core-shared-services/cloud-platform-non-live.tf @ministryofjustice/cloud-platform-engineers 
 /terraform/environments/core-shared-services/cloud-platform.tf @ministryofjustice/cloud-platform-engineers 
 /terraform/environments/core-shared-services/coat.tf @ministryofjustice/cloud-optimisation-and-accountability @ministryofjustice/modernisation-platform-audit 
+/terraform/environments/core-shared-services/container-platform-hmpps.tf @ministryofjustice/cloud-platform-engineers 
 /terraform/environments/core-shared-services/container-platform-laa.tf @ministryofjustice/cloud-platform-engineers 
 /terraform/environments/core-shared-services/container-platform-octo.tf @ministryofjustice/cloud-platform-engineers 
 /terraform/environments/core-shared-services/contract-work-administration.tf @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-cwa-developer @ministryofjustice/laa-pcuam @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-audit 
