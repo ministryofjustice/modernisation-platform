@@ -1169,6 +1169,13 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
   }
 
   statement {
+    sid       = "AllowOIDCReadStateBucketEncryption"
+    effect    = "Allow"
+    resources = ["arn:aws:s3:::modernisation-platform-terraform-state"]
+    actions   = ["s3:GetEncryptionConfiguration"]
+  }
+
+  statement {
     sid       = "AllowOIDCWriteState"
     effect    = "Allow"
     resources = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"]
@@ -1529,6 +1536,13 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
       "s3:Get*",
       "s3:List*"
     ]
+  }
+
+  statement {
+    sid       = "AllowOIDCReadStateBucketEncryption"
+    effect    = "Allow"
+    resources = ["arn:aws:s3:::modernisation-platform-terraform-state"]
+    actions   = ["s3:GetEncryptionConfiguration"]
   }
 
   statement {
