@@ -263,6 +263,7 @@ data "aws_iam_policy_document" "member-access-compute" {
       "kms:*",
       "lambda:*",
       "logs:*",
+      "mq:*",
       "workspaces:*",
       "workspaces-web:*"
     ]

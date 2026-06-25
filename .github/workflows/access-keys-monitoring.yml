@@ -33,7 +33,7 @@ jobs:
 
       # Step 1.1: Decrypt Secrets
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@dfc5612d52349be7f27718544d6c996d1daa06c6 # v6.1.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8 # v6.1.1
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           gov_uk_notify_api_key: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
