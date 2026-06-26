@@ -1,0 +1,39 @@
+{
+  "interface_endpoint_names": [
+    "apigateway",
+    "athena",
+    "backup",
+    "cloudtrail",
+    "config",
+    "detective",
+    "dms",
+    "ec2",
+    "ecr.api",
+    "ecr.dkr",
+    "eks",
+    "eks-auth",
+    "elasticache",
+    "email",
+    "email-smtp",
+    "events",
+    "guardduty-data",
+    "inspector2",
+    "kinesis-firehose",
+    "kms",
+    "lambda",
+    "logs",
+    "rds",
+    "rds-data",
+    "secretsmanager",
+    "securityhub",
+    "sns",
+    "sqs",
+    "ssm",
+    "sts",
+    "transcribe",
+    "wafv2"
+  ],
+  "gateway_endpoint_names": [
+    "s3"
+  ]
+}
