@@ -12,6 +12,12 @@ locals {
     container-platform-octo-nonlive = {
       attachment_id = "tgw-attach-0e373debb35a1ecbd"
     }
+    container-platform-laa-nonlive = {
+      attachment_id = "tgw-attach-04e0dc1082bbe9826"
+    }
+    container-platform-hmpps-nonlive = {
+      attachment_id = "tgw-attach-0147624fb2cebdbe4"
+    }
   }
 
   container-platform-live-attachments = {
@@ -20,6 +26,12 @@ locals {
     },
     container-platform-octo-live = {
       attachment_id = "tgw-attach-05031a46f7a0d42ba"
+    }
+    container-platform-laa-live = {
+      attachment_id = "tgw-attach-032e6e3bf761b91f4"
+    }
+    container-platform-hmpps-live = {
+      attachment_id = "tgw-attach-032e9a7da06ed4b63"
     }
   }
 }
