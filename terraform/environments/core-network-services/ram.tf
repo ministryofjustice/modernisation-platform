@@ -15,11 +15,15 @@ resource "aws_ram_resource_association" "transit-gateway" {
 # Share the Transit Gateway with accounts that need to create VPC attachments.
 resource "aws_ram_principal_association" "transit-gateway" {
   for_each = {
-    cloud-platform-development      = local.environment_management.account_ids["cloud-platform-development"],
-    cloud-platform-preproduction    = local.environment_management.account_ids["cloud-platform-preproduction"],
-    cloud-platform-live             = local.environment_management.account_ids["cloud-platform-live"],
-    container-platform-octo-nonlive = local.environment_management.account_ids["container-platform-octo-nonlive"],
-    container-platform-octo-live    = local.environment_management.account_ids["container-platform-octo-live"]
+    cloud-platform-development       = local.environment_management.account_ids["cloud-platform-development"],
+    cloud-platform-preproduction     = local.environment_management.account_ids["cloud-platform-preproduction"],
+    cloud-platform-live              = local.environment_management.account_ids["cloud-platform-live"],
+    container-platform-octo-nonlive  = local.environment_management.account_ids["container-platform-octo-nonlive"],
+    container-platform-octo-live     = local.environment_management.account_ids["container-platform-octo-live"],
+    container-platform-laa-nonlive   = local.environment_management.account_ids["container-platform-laa-nonlive"],
+    container-platform-laa-live      = local.environment_management.account_ids["container-platform-laa-live"],
+    container-platform-hmpps-nonlive = local.environment_management.account_ids["container-platform-hmpps-nonlive"],
+    container-platform-hmpps-live    = local.environment_management.account_ids["container-platform-hmpps-live"]
   }
 
   principal          = each.value
