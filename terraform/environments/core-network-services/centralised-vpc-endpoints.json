@@ -32,8 +32,5 @@
     "sts",
     "transcribe",
     "wafv2"
-  ],
-  "gateway_endpoint_names": [
-    "s3"
   ]
 }

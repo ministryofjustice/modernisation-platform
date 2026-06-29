@@ -92,12 +92,6 @@ output "centralised_interface_endpoint_arns" {
   }
 }
 
-output "centralised_gateway_endpoint_arns" {
-  value = {
-    for name, endpoint in aws_vpc_endpoint.centralised_gateway_endpoints :
-    name => endpoint.arn
-  }
-}
 
 output "centralised_endpoint_route53_profile_id" {
   value = aws_route53profiles_profile.centralised_endpoint_dns_profile.id

@@ -16,11 +16,6 @@ locals {
     replace(endpoint_name, ".", "_") => "com.amazonaws.${data.aws_region.current.region}.${endpoint_name}"
   }
 
-  centralised_gateway_endpoint_services = {
-    for endpoint_name in toset(local.centralised_endpoint_configuration.gateway_endpoint_names) :
-    endpoint_name => "com.amazonaws.${data.aws_region.current.region}.${endpoint_name}"
-  }
-
   centralised_endpoint_service_private_dns_zones = {
     for service_name, service in local.centralised_interface_endpoint_services :
     service_name => "${replace(service, "com.amazonaws.${data.aws_region.current.region}.", "")}.${data.aws_region.current.region}.amazonaws.com"
@@ -83,22 +78,6 @@ resource "aws_vpc_endpoint" "centralised_interface_endpoints" {
   private_dns_enabled = false
   subnet_ids          = module.vpc_centralised_endpoints.non_tgw_subnet_ids_map["private"]
   security_group_ids  = [aws_security_group.centralised_endpoint_interface.id]
-
-  tags = merge(
-    local.tags,
-    {
-      Name = "${local.application_name}-${each.key}-centralised-endpoint"
-    }
-  )
-}
-
-resource "aws_vpc_endpoint" "centralised_gateway_endpoints" {
-  for_each = local.centralised_gateway_endpoint_services
-
-  vpc_id            = module.vpc_centralised_endpoints.vpc_id
-  service_name      = each.value
-  vpc_endpoint_type = "Gateway"
-  route_table_ids   = values(module.vpc_centralised_endpoints.private_route_tables)
 
   tags = merge(
     local.tags,
