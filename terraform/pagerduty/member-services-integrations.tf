@@ -1929,40 +1929,6 @@ locals {
 
     nomis-production-dba = { slack_channel_id = "C07HFLM47QX", escalation_policy = data.pagerduty_escalation_policy.shef_dba.id } # nomis_alarms_prod
   }
-  octo_infrastructure_support_services = {
-    # corporate-staff-rostering-preproduction = { slack_channel_id = "C0617EZEVNZ" } # corporate_staff_rostering_alarms
-    # corporate-staff-rostering-production    = { slack_channel_id = "C0617EZEVNZ" } # corporate_staff_rostering_alarms
-    hmpps-domain-services-development       = { slack_channel_id = "C07J1TAG9JN" } # hmpps_domain_services_alarms_non_prod
-    # hmpps-domain-services-test              = { slack_channel_id = "C07J1TAG9JN" } # hmpps_domain_services_alarms_non_prod
-    # hmpps-domain-services-preproduction     = { slack_channel_id = "C07J1TAG9JN" } # hmpps_domain_services_alarms_non_prod
-    # hmpps-domain-services-production        = { slack_channel_id = "C07JQM7FY72" } # hmpps_domain_services_alarms_prod
-    # hmpps-oem-development                   = { slack_channel_id = "C07J1QBJXC3" } # hmpps_oem_alarms_non_prod
-    # hmpps-oem-test                          = { slack_channel_id = "C07J1QBJXC3" } # hmpps_oem_alarms_non_prod
-    # hmpps-oem-preproduction                 = { slack_channel_id = "C07J1QBJXC3" } # hmpps_oem_alarms_non_prod
-    # hmpps-oem-production                    = { slack_channel_id = "C07JEHTH95F" } # hmpps_oem_alarms_prod
-    # nomis-development                       = { slack_channel_id = "C07HW4A8K19" } # nomis_alarms_non_prod
-    # nomis-test                              = { slack_channel_id = "C07HW4A8K19" } # nomis_alarms_non_prod
-    # nomis-preproduction                     = { slack_channel_id = "C07HW4A8K19" } # nomis_alarms_non_prod
-    # nomis-production                        = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_prod
-    # nomis-combined-reporting-test           = { slack_channel_id = "C07JE9TL03T" } # nomis_combined_reporting_alarms_non_prod
-    # nomis-combined-reporting-preproduction  = { slack_channel_id = "C07JE9TL03T" } # nomis_combined_reporting_alarms_non_prod
-    # nomis-combined-reporting-production     = { slack_channel_id = "C07HYP62DT7" } # nomis_combined_reporting_alarms_prod
-    # nomis-data-hub-test                     = { slack_channel_id = "C07J1TP869Y" } # nomis_data_hub_alarms_non_prod
-    # nomis-data-hub-preproduction            = { slack_channel_id = "C07J1TP869Y" } # nomis_data_hub_alarms_non_prod
-    # nomis-data-hub-production               = { slack_channel_id = "C07HZ1VRP8V" } # nomis_data_hub_alarms_prod
-    # oasys-test                              = { slack_channel_id = "C07HMBMC8KH" } # oasys_alarms_non_prod
-    # oasys-preproduction                     = { slack_channel_id = "C07HMBMC8KH" } # oasys_alarms_non_prod
-    # oasys-production                        = { slack_channel_id = "C07J4CVFVC4" } # oasys_alarms_prod
-    # oasys-national-reporting-test           = { slack_channel_id = "C07HZ24GMGV" } # oasys_national_reporting_alarms_non_prod
-    # oasys-national-reporting-preproduction  = { slack_channel_id = "C07HZ24GMGV" } # oasys_national_reporting_alarms_non_prod
-    # oasys-national-reporting-production     = { slack_channel_id = "C07J1U3SN66" } # oasys_national_reporting_alarms_prod
-    # planetfm-preproduction                  = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
-    # planetfm-production                     = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
-    # prison-retail-production                = { slack_channel_id = "C0A8PGC4THQ" } # prison_retail_alarms
-    # dso-pipelines                           = { slack_channel_id = "C01PWKWDB9D" } # dso_alerts_pipeline
-    #
-    # nomis-production-dba = { slack_channel_id = "C07HFLM47QX", escalation_policy = data.pagerduty_escalation_policy.shef_dba.id } # nomis_alarms_prod
-  }
   slack_events = [
     "incident.triggered",
     "incident.acknowledged",
@@ -2304,58 +2270,6 @@ resource "pagerduty_escalation_policy" "octo_infrastructure_support" {
       type = "schedule_reference"
       id   = pagerduty_schedule.octo_infrastructure_support.id
     }
-  }
-}
-
-resource "pagerduty_service" "octo_infrastructure_support_services" {
-  for_each = local.services
-
-  name                    = each.key
-  description             = "${each.key}-alarms"
-  auto_resolve_timeout    = "null"
-  acknowledgement_timeout = "null"
-  escalation_policy       = lookup(each.value, "escalation_policy", pagerduty_escalation_policy.octo_infrastructure_support.id)
-  alert_creation          = "create_alerts_and_incidents"
-}
-
-resource "pagerduty_service_integration" "octo_infrastructure_support_integrations" {
-  for_each = pagerduty_service.octo_infrastructure_support_services
-
-  name    = data.pagerduty_vendor.cloudwatch.name
-  service = each.value.id
-  vendor  = data.pagerduty_vendor.cloudwatch.id
-}
-
-resource "pagerduty_slack_connection" "octo_infrastructure_support_connections" {
-  for_each = local.octo_infrastructure_support_services
-
-  source_id         = pagerduty_service.octo_infrastructure_support_services[each.key].id
-  source_type       = "service_reference"
-  workspace_id      = local.slack_workspace_id
-  channel_id        = each.value.slack_channel_id
-  notification_type = "responder"
-  config {
-    events     = local.slack_events
-    priorities = ["*"]
-  }
-}
-
-resource "pagerduty_event_orchestration_service" "octo_infrastructure_support_default" {
-  for_each = pagerduty_service.octo_infrastructure_support_services
-
-  service                                = each.value.id
-  enable_event_orchestration_for_service = true
-  set {
-    id = "start"
-    rule {
-      label = "Set the default priority to P5 so breaches appear in the PagerDuty UI"
-      actions {
-        priority = data.pagerduty_priority.p5.id
-      }
-    }
-  }
-  catch_all {
-    actions {}
   }
 }
 
