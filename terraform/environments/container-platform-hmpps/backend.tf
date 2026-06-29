@@ -9,6 +9,6 @@ terraform {
     key                  = "terraform.tfstate"
     region               = "eu-west-2"
     use_lockfile         = true
-    workspace_key_prefix = "environments/accounts/cica-copilot" # This will store the object as environments/accounts/cica-copilot/${workspace}/terraform.tfstate
+    workspace_key_prefix = "environments/accounts/container-platform-hmpps" # This will store the object as environments/accounts/container-platform-hmpps/${workspace}/terraform.tfstate
   }
 }

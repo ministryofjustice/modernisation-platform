@@ -24,14 +24,14 @@
 /terraform/environments/core-shared-services/cdpt-chaps.tf @ministryofjustice/central-digital-product-team @ministryofjustice/modernisation-platform-audit 
 /terraform/environments/core-shared-services/cdpt-ifs.tf @ministryofjustice/central-digital-product-team @ministryofjustice/modernisation-platform-audit 
 /terraform/environments/core-shared-services/cfo-data-management-system.tf @ministryofjustice/hmpps-creating-future-opportunities-devs @ministryofjustice/hmpps-creating-future-opportunities-live 
-/terraform/environments/core-shared-services/cica-copilot.tf @ministryofjustice/cica-copilot-llm-maintainers 
-/terraform/environments/core-shared-services/cica-data-extraction.tf @ministryofjustice/cica-mp-tariff 
 /terraform/environments/core-shared-services/cica-sandbox.tf @ministryofjustice/cica-external-developers @ministryofjustice/cica-review-case-documents 
 /terraform/environments/core-shared-services/cica-tariff.tf @ministryofjustice/cica-mp-tariff @ministryofjustice/modernisation-platform-audit 
 /terraform/environments/core-shared-services/cloud-platform-live.tf @ministryofjustice/cloud-platform-engineers 
 /terraform/environments/core-shared-services/cloud-platform-non-live.tf @ministryofjustice/cloud-platform-engineers 
 /terraform/environments/core-shared-services/cloud-platform.tf @ministryofjustice/cloud-platform-engineers 
 /terraform/environments/core-shared-services/coat.tf @ministryofjustice/cloud-optimisation-and-accountability @ministryofjustice/modernisation-platform-audit 
+/terraform/environments/core-shared-services/container-platform-hmpps.tf @ministryofjustice/cloud-platform-engineers 
+/terraform/environments/core-shared-services/container-platform-laa.tf @ministryofjustice/cloud-platform-engineers 
 /terraform/environments/core-shared-services/container-platform-octo.tf @ministryofjustice/cloud-platform-engineers 
 /terraform/environments/core-shared-services/contract-work-administration.tf @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-cwa-developer @ministryofjustice/laa-pcuam @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-audit 
 /terraform/environments/core-shared-services/cooker.tf @ministryofjustice/modernisation-platform @ministryofjustice/octo-cyber-team @ministryofjustice/tvm-purple-team 
