@@ -283,6 +283,7 @@ expected :=
               "ccms-ebs-development",
               "ccms-ebs-upgrade-development",
               "ccms-edrms-development",
+              "ccms-feasibility-development",
               "ccms-oia-development",
               "ccms-pui-development",
               "ccms-pui-internal-development",
