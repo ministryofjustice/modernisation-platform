@@ -32,6 +32,10 @@
           "level": "developer"
         },
         {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
+        },
+        {
           "sso_group_name": "laa-ccms-developers",
           "level": "developer"
         },
@@ -47,6 +51,10 @@
         {
           "sso_group_name": "laa-sre-admins",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
         },
         {
           "sso_group_name": "laa-ccms-developers",
@@ -65,6 +73,10 @@
           "sso_group_name": "laa-sre-admins",
           "level": "developer",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
         },
         {
           "sso_group_name": "laa-ccms-developers",
