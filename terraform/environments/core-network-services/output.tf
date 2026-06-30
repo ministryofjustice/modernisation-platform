@@ -101,9 +101,6 @@ output "centralised_endpoint_route53_profile_arn" {
   value = aws_route53profiles_profile.centralised_endpoint_dns_profile.arn
 }
 
-output "centralised_vpc_endpoint_ram_share_arn" {
-  value = aws_ram_resource_share.centralised_vpc_endpoints.arn
-}
 
 output "centralised_route53_profile_ram_share_arn" {
   value = aws_ram_resource_share.centralised_endpoint_dns_profile.arn

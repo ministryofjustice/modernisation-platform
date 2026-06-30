@@ -28,11 +28,13 @@ module "vpc_centralised_endpoints" {
   # CIDRs
   vpc_cidr = local.centralised_endpoint_vpc_cidr
 
-  # private gateway type
-  #   nat = Nat Gateway
-  #   transit = Transit Gateway
-  #   none = no gateway for internal traffic
-  gateway = "transit"
+  # gateway = "none" to avoid a circular Terraform dependency: the vpc-hub
+  # module does not create a TGW attachment, so setting gateway = "transit"
+  # causes route creation to fail (AWS requires the attachment to exist first).
+  # Return-path routes (0.0.0.0/0 → TGW) are created explicitly below, after
+  # the TGW attachment is provisioned, using the attachment ID as an implicit
+  # dependency signal to Terraform.
+  gateway = "none"
 
   # VPC Flow Logs
   vpc_flow_log_iam_role       = aws_iam_role.vpc_flow_log.arn
@@ -44,6 +46,35 @@ module "vpc_centralised_endpoints" {
   # Tags
   tags_common = local.tags
   tags_prefix = "centralised-endpoints"
+}
+
+# Return-path default routes (0.0.0.0/0 → TGW) on all hub VPC route tables.
+# Referencing the attachment's transit_gateway_id attribute creates an implicit
+# Terraform dependency, ensuring the attachment exists before these routes are
+# applied. TGW attachment and route table resources live in transit-gateway.tf
+# and transit_gateway_connections.tf.
+resource "aws_route" "centralised_endpoints_private_tgw" {
+  for_each = module.vpc_centralised_endpoints.private_route_tables_map["private"]
+
+  route_table_id         = each.value
+  destination_cidr_block = "0.0.0.0/0"
+  transit_gateway_id     = aws_ec2_transit_gateway_vpc_attachment.centralised_endpoints.transit_gateway_id
+}
+
+resource "aws_route" "centralised_endpoints_data_tgw" {
+  for_each = module.vpc_centralised_endpoints.private_route_tables_map["data"]
+
+  route_table_id         = each.value
+  destination_cidr_block = "0.0.0.0/0"
+  transit_gateway_id     = aws_ec2_transit_gateway_vpc_attachment.centralised_endpoints.transit_gateway_id
+}
+
+resource "aws_route" "centralised_endpoints_transit_gateway_tgw" {
+  for_each = module.vpc_centralised_endpoints.private_route_tables_map["transit_gateway"]
+
+  route_table_id         = each.value
+  destination_cidr_block = "0.0.0.0/0"
+  transit_gateway_id     = aws_ec2_transit_gateway_vpc_attachment.centralised_endpoints.transit_gateway_id
 }
 
 resource "aws_security_group" "centralised_endpoint_interface" {
@@ -85,27 +116,6 @@ resource "aws_vpc_endpoint" "centralised_interface_endpoints" {
       Name = "${local.application_name}-${each.key}-centralised-endpoint"
     }
   )
-}
-
-resource "aws_ram_resource_share" "centralised_vpc_endpoints" {
-  name                      = "centralised-vpc-endpoints"
-  allow_external_principals = false
-
-  tags = local.tags
-}
-
-resource "aws_ram_resource_association" "centralised_vpc_endpoints" {
-  for_each = aws_vpc_endpoint.centralised_interface_endpoints
-
-  resource_arn       = each.value.arn
-  resource_share_arn = aws_ram_resource_share.centralised_vpc_endpoints.arn
-}
-
-resource "aws_ram_principal_association" "centralised_vpc_endpoints" {
-  for_each = local.centralised_endpoint_consumer_accounts
-
-  principal          = each.value
-  resource_share_arn = aws_ram_resource_share.centralised_vpc_endpoints.arn
 }
 
 resource "aws_route53_zone" "centralised_endpoint_private_zones" {
