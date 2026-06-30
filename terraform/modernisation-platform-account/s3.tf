@@ -516,6 +516,33 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
   }
 
   statement {
+    sid       = "AllowGithubActionsReadStateBucketEncryption"
+    effect    = "Allow"
+    actions   = ["s3:GetEncryptionConfiguration"]
+    resources = [module.state-bucket.bucket.arn]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values = [
+        "arn:aws:iam::*:role/github-actions-plan",
+        "arn:aws:iam::*:role/github-actions-apply"
+      ]
+    }
+  }
+
+  statement {
     sid     = "AllowGithubActionsTerraformReadOnlyPutLock"
     effect  = "Allow"
     actions = ["s3:PutObject"]
@@ -969,7 +996,7 @@ module "cost-management-bucket" {
   bucket_name                 = "mp-cost-explorer-reports"
   custom_kms_key              = aws_kms_key.s3_state_bucket_multi_region.arn
   sse_algorithm               = "aws:kms"
-  enforce_kms_request_headers = false
+  enforce_kms_request_headers = true
   replication_enabled         = false
   lifecycle_rule = [
     {

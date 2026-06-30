@@ -17,6 +17,10 @@
     {
       "name": "streaming-poc-maf",
       "sso_group_name": "data-factory-aker-team"
+    },
+    {
+      "name": "streaming-poc-opensearch-config",
+      "sso_group_name": "data-factory-aker-team"
     }
   ],
   "environments": [

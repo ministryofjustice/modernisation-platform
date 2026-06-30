@@ -222,7 +222,12 @@ locals {
         local.environment_management.account_ids["laa-workspaces-development"],
         local.environment_management.account_ids["laa-new-workspaces-development"],
       ]
-    }
+    },
+    "core-vpc-production" = {
+      "laa-production" = [
+        local.environment_management.account_ids["laa-new-workspaces-production"],
+      ]
+    },
   }
 }
 

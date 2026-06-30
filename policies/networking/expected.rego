@@ -25,8 +25,6 @@ expected :=
       "general": {
         "cidr": "10.26.32.0/21",
         "accounts": [
-          "cica-copilot-development",
-          "cica-data-extraction-development",
           "cica-sandbox-development",
           "cica-tariff-development"
         ]
@@ -44,7 +42,6 @@ expected :=
       "general": {
         "cidr": "10.27.88.0/21",
         "accounts": [
-          "cica-tariff-preproduction"
         ]
       }
     },

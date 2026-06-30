@@ -30,7 +30,7 @@ module "laa-shared-bucket" {
   ownership_controls          = "BucketOwnerEnforced"
   sse_algorithm               = "aws:kms"
   custom_kms_key              = local.laa_general_kms_arn
-  enforce_kms_request_headers = false
+  enforce_kms_request_headers = true
 
   lifecycle_rule = [
     {
