@@ -426,6 +426,7 @@ expected :=
           "data-platform-governance-development",
           "example-development",
           "integration-hub-development",
+          "integration-hub-file-transfer-development",
           "observability-platform-development",
           "octo-development",
           "octo-engineering-ai-enablement-development",
