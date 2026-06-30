@@ -21,6 +21,7 @@ expected :=
     "ccms-ebs-ai",
     "ccms-ebs-upgrade",
     "ccms-edrms",
+    "ccms-feasibility",
     "ccms-oia",
     "ccms-pui",
     "ccms-pui-internal",
