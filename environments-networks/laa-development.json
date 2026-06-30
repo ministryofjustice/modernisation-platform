@@ -9,6 +9,7 @@
           "ccms-ebs-development",
           "ccms-ebs-upgrade-development",
           "ccms-edrms-development",
+          "ccms-feasibility-development",
           "ccms-oia-development",
           "ccms-pui-development",
           "ccms-pui-internal-development",
@@ -40,7 +41,13 @@
       "com.amazonaws.eu-west-2.secretsmanager",
       "com.amazonaws.eu-west-2.email-smtp",
       "com.amazonaws.eu-west-2.sns",
-      "com.amazonaws.eu-west-2.sqs"
+      "com.amazonaws.eu-west-2.sqs",
+      "com.amazonaws.eu-west-2.ecs",
+      "com.amazonaws.eu-west-2.ecs-agent",
+      "com.amazonaws.eu-west-2.ecs-telemetry",
+      "com.amazonaws.eu-west-2.ecr.api",
+      "com.amazonaws.eu-west-2.ecr.dkr",
+      "com.amazonaws.eu-west-2.logs"
     ],
     "additional_private_zones": [],
     "additional_vpcs": [],

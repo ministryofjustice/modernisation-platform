@@ -214,11 +214,20 @@ module "dns_zone_extend_private" {
   vpc_id    = module.vpc[each.key].vpc_id
 }
 
+
 locals {
   member_delegation_additional_accounts = {
     "core-vpc-development" = {
-      "laa-development" = [local.environment_management.account_ids["laa-workspaces-development"]]
-    }
+      "laa-development" = [
+        local.environment_management.account_ids["laa-workspaces-development"],
+        local.environment_management.account_ids["laa-new-workspaces-development"],
+      ]
+    },
+    "core-vpc-production" = {
+      "laa-production" = [
+        local.environment_management.account_ids["laa-new-workspaces-production"],
+      ]
+    },
   }
 }
 
@@ -271,6 +280,15 @@ resource "aws_iam_role_policy" "member-delegation" {
       {
         "Effect" : "Allow",
         "Action" : [
+          "apigateway:CreateAccessAssociation",
+          "apigateway:CreateDomainNameAccessAssociation",
+          "apigateway:DeleteDomainNameAccessAssociation",
+          "apigateway:GetDomainNameAccessAssociations",
+          "apigateway:DELETE",
+          "apigateway:GET",
+          "apigateway:PATCH",
+          "apigateway:POST",
+          "apigateway:PUT",
           "route53:List*",
           "route53:Get*",
           "route53resolver:CreateResolverEndpoint",

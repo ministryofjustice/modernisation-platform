@@ -25,8 +25,6 @@ expected :=
       "general": {
         "cidr": "10.26.32.0/21",
         "accounts": [
-          "cica-copilot-development",
-          "cica-data-extraction-development",
           "cica-sandbox-development",
           "cica-tariff-development"
         ]
@@ -44,7 +42,6 @@ expected :=
       "general": {
         "cidr": "10.27.88.0/21",
         "accounts": [
-          "cica-tariff-preproduction"
         ]
       }
     },
@@ -138,6 +135,7 @@ expected :=
       "general": {
         "cidr": "10.26.24.0/21",
         "accounts": [
+              "cfo-data-management-system-development",
               "delius-alfresco-development",
               "delius-core-development",
               "delius-iaps-development",
@@ -184,6 +182,7 @@ expected :=
       "general": {
         "cidr": "10.27.0.0/21",
         "accounts": [
+          "cfo-data-management-system-preproduction",
           "corporate-staff-rostering-preproduction",
           "delius-alfresco-preproduction",
           "delius-core-preproduction",
@@ -211,6 +210,7 @@ expected :=
       "general": {
         "cidr": "10.27.8.0/21",
         "accounts": [
+              "cfo-data-management-system-production",
               "corporate-staff-rostering-production",
               "delius-alfresco-production",
               "delius-core-production",
@@ -283,6 +283,7 @@ expected :=
               "ccms-ebs-development",
               "ccms-ebs-upgrade-development",
               "ccms-edrms-development",
+              "ccms-feasibility-development",
               "ccms-oia-development",
               "ccms-pui-development",
               "ccms-pui-internal-development",
@@ -425,6 +426,7 @@ expected :=
           "data-platform-governance-development",
           "example-development",
           "integration-hub-development",
+          "integration-hub-file-transfer-development",
           "observability-platform-development",
           "octo-development",
           "octo-engineering-ai-enablement-development",

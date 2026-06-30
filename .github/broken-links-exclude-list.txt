@@ -27,6 +27,11 @@ https://github.com/orgs/ministryofjustice/security/overview?query=archived%3Afal
 https://intranet.justice.gov.uk/guidance/hr/end-change-of-employment/
 https://intranet.justice.gov.uk/guidance/security/report-a-security-incident/
 https://justiceuk.sharepoint.com
+https://security-guidance.service.justice.gov.uk/
+https://security-guidance.service.justice.gov.uk/ost/ithc/#what-is-an-it-health-check-and-why-is-it-important
+https://security-guidance.service.justice.gov.uk/security-log-collection/#7-log-transmission-to-the-moj-cyber-security-logging-platform
+https://security-guidance.service.justice.gov.uk/security-log-collection/#security-log-collection
+
 
 # Added as these public sites appear to be blocking checks from github
 https://filia-aleks.medium.com

@@ -84,6 +84,231 @@ data "aws_iam_policy_document" "kms_state_bucket" {
     }
   }
   statement {
+    sid    = "AllowTerraformStateBucketUseFromModernisationPlatformOU"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*"
+    ]
+    resources = ["*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/*"
+      ]
+    }
+  }
+  statement {
+    sid    = "AllowMemberTerraformStateBucketUseFromGithubActions"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*"
+    ]
+    resources = ["*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [data.aws_organizations_organization.root_account.id]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "ArnLike"
+      variable = "aws:PrincipalArn"
+      values = [
+        "arn:aws:iam::*:role/github-actions-plan",
+        "arn:aws:iam::*:role/github-actions-apply",
+        "arn:aws:sts::*:assumed-role/github-actions-plan/*",
+        "arn:aws:sts::*:assumed-role/github-actions-apply/*"
+      ]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"
+      ]
+    }
+  }
+  statement {
+    sid    = "AllowMemberTerraformStateBucketUseFromMemberAccounts"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*"
+    ]
+    resources = ["*"]
+
+    # Cross-account KMS permissions are delegated to member accounts here; member IAM policies restrict the actual roles.
+    principals {
+      type        = "AWS"
+      identifiers = [for account_id in sort(values(local.environment_management.account_ids)) : "arn:aws:iam::${account_id}:root"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"
+      ]
+    }
+  }
+  statement {
+    sid    = "AllowSprinklerTerraformStateBucketUse"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*"
+    ]
+    resources = ["*"]
+
+    principals {
+      type = "AWS"
+      identifiers = [
+        "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions",
+        "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions-environments-dev-test"
+      ]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/single-sign-on/*",
+        "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*/sprinkler-development/*"
+      ]
+    }
+  }
+
+  statement {
+    sid    = "AllowSprinklerAccountTerraformStateBucketUse"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*"
+    ]
+    resources = ["*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions-dev-test"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/environments/accounts/sprinkler/*"
+      ]
+    }
+  }
+
+  statement {
+    sid    = "AllowSprinklerMemberTerraformStateBucketUse"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*"
+    ]
+    resources = ["*"]
+
+    principals {
+      type = "AWS"
+      identifiers = [
+        "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions-environments-dev-test",
+        "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions-environments-read-only"
+      ]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/environments/members/sprinkler/*"
+      ]
+    }
+  }
+  statement {
     sid    = "AllowAWSBackupDecrypt"
     effect = "Allow"
     actions = [
@@ -116,7 +341,7 @@ resource "aws_kms_alias" "s3_state_bucket_eu-west-1_replication" {
 }
 
 module "state-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=f72f8d5bcf3081f6de0ef16d1017b53c81e16457" # v10.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=76321e50b20f5c0d918cd45bdcf0b62049f5baf1" # v10.1.0
 
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
@@ -287,6 +512,33 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
       test     = "ForAnyValue:StringLike"
       variable = "aws:PrincipalArn"
       values   = ["arn:aws:iam::*:role/github-actions-apply", "arn:aws:iam::*:role/github-actions-environments-dev-test", "arn:aws:iam::*:role/github-actions-nuke"]
+    }
+  }
+
+  statement {
+    sid       = "AllowGithubActionsReadStateBucketEncryption"
+    effect    = "Allow"
+    actions   = ["s3:GetEncryptionConfiguration"]
+    resources = [module.state-bucket.bucket.arn]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values = [
+        "arn:aws:iam::*:role/github-actions-plan",
+        "arn:aws:iam::*:role/github-actions-apply"
+      ]
     }
   }
 
@@ -736,7 +988,7 @@ data "aws_iam_policy_document" "allow-state-access-for-root-account-sso-admins" 
 }
 
 module "cost-management-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=f72f8d5bcf3081f6de0ef16d1017b53c81e16457" # v10.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=76321e50b20f5c0d918cd45bdcf0b62049f5baf1" # v10.1.0
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
@@ -744,7 +996,7 @@ module "cost-management-bucket" {
   bucket_name                 = "mp-cost-explorer-reports"
   custom_kms_key              = aws_kms_key.s3_state_bucket_multi_region.arn
   sse_algorithm               = "aws:kms"
-  enforce_kms_request_headers = false
+  enforce_kms_request_headers = true
   replication_enabled         = false
   lifecycle_rule = [
     {
@@ -775,7 +1027,7 @@ data "aws_iam_policy_document" "cost_management_bucket_policy" {
 }
 
 module "member_information_bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=f72f8d5bcf3081f6de0ef16d1017b53c81e16457" # v10.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=76321e50b20f5c0d918cd45bdcf0b62049f5baf1" # v10.1.0
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }

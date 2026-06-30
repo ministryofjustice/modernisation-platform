@@ -5,6 +5,22 @@
     {
       "name": "streaming-poc",
       "sso_group_name": "data-factory-aker-team"
+    },
+    {
+      "name": "streaming-poc-msk",
+      "sso_group_name": "data-factory-aker-team"
+    },
+    {
+      "name": "streaming-poc-opensearch",
+      "sso_group_name": "data-factory-aker-team"
+    },
+    {
+      "name": "streaming-poc-maf",
+      "sso_group_name": "data-factory-aker-team"
+    },
+    {
+      "name": "streaming-poc-opensearch-config",
+      "sso_group_name": "data-factory-aker-team"
     }
   ],
   "environments": [
@@ -21,8 +37,7 @@
         },
         {
           "sso_group_name": "data-platform-engineering",
-          "level": "platform-engineer-admin",
-          "github_action_reviewer": "true"
+          "level": "platform-engineer-admin"
         },
         {
           "sso_group_name": "data-factory-aker-team",

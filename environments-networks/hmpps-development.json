@@ -4,6 +4,7 @@
       "general": {
         "cidr": "10.26.24.0/21",
         "accounts": [
+          "cfo-data-management-system-development",
           "delius-alfresco-development",
           "delius-core-development",
           "delius-iaps-development",
