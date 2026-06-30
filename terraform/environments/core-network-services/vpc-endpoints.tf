@@ -32,7 +32,9 @@ module "vpc_centralised_endpoints" {
   #   nat = Nat Gateway
   #   transit = Transit Gateway
   #   none = no gateway for internal traffic
-  gateway = "transit"
+  # Interface endpoints do not need outbound routing via TGW; inbound traffic
+  # arrives from consumer VPCs via TGW attachments to the endpoint ENIs directly.
+  gateway = "none"
 
   # VPC Flow Logs
   vpc_flow_log_iam_role       = aws_iam_role.vpc_flow_log.arn
@@ -85,27 +87,6 @@ resource "aws_vpc_endpoint" "centralised_interface_endpoints" {
       Name = "${local.application_name}-${each.key}-centralised-endpoint"
     }
   )
-}
-
-resource "aws_ram_resource_share" "centralised_vpc_endpoints" {
-  name                      = "centralised-vpc-endpoints"
-  allow_external_principals = false
-
-  tags = local.tags
-}
-
-resource "aws_ram_resource_association" "centralised_vpc_endpoints" {
-  for_each = aws_vpc_endpoint.centralised_interface_endpoints
-
-  resource_arn       = each.value.arn
-  resource_share_arn = aws_ram_resource_share.centralised_vpc_endpoints.arn
-}
-
-resource "aws_ram_principal_association" "centralised_vpc_endpoints" {
-  for_each = local.centralised_endpoint_consumer_accounts
-
-  principal          = each.value
-  resource_share_arn = aws_ram_resource_share.centralised_vpc_endpoints.arn
 }
 
 resource "aws_route53_zone" "centralised_endpoint_private_zones" {
