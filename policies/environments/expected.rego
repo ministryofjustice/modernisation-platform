@@ -71,6 +71,7 @@ expected :=
     "hmpps-esupervision",
     "hmpps-oem",
     "integration-hub",
+    "integration-hub-file-transfer",
     "laa-ccms-soa",
     "laa-cis",
     "laa-cst-security-dashboard",

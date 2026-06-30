@@ -1,0 +1,26 @@
+{
+  "account-type": "member",
+  "codeowners": ", ",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "integration-hub",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "integration-hub-file-transfer",
+    "business-unit": "Platforms",
+    "service-area": "Data",
+    "infrastructure-support": "integration-hub@justice.gov.uk",
+    "owner": "Platforms",
+    "slack-channel": "ask-integration-hub",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
