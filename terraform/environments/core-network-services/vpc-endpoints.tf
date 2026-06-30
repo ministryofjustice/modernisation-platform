@@ -48,25 +48,11 @@ module "vpc_centralised_endpoints" {
   tags_prefix = "centralised-endpoints"
 }
 
-# TGW attachment for the centralised endpoint hub VPC.
-# Disables default route table association/propagation — we manage these explicitly.
-resource "aws_ec2_transit_gateway_vpc_attachment" "centralised_endpoints" {
-  transit_gateway_id                              = aws_ec2_transit_gateway.transit-gateway.id
-  vpc_id                                          = module.vpc_centralised_endpoints.vpc_id
-  subnet_ids                                      = module.vpc_centralised_endpoints.tgw_subnet_ids
-  transit_gateway_default_route_table_association = false
-  transit_gateway_default_route_table_propagation = false
-
-  tags = merge(
-    local.tags,
-    { Name = "centralised-endpoints-attachment" }
-  )
-}
-
-# Return-path default routes (0.0.0.0/0 → TGW) on all private and data route
-# tables in the hub VPC. Referencing the attachment's transit_gateway_id
-# attribute creates an implicit Terraform dependency, ensuring the attachment
-# exists before these routes are applied.
+# Return-path default routes (0.0.0.0/0 → TGW) on all hub VPC route tables.
+# Referencing the attachment's transit_gateway_id attribute creates an implicit
+# Terraform dependency, ensuring the attachment exists before these routes are
+# applied. TGW attachment and route table resources live in transit-gateway.tf
+# and transit_gateway_connections.tf.
 resource "aws_route" "centralised_endpoints_private_tgw" {
   for_each = module.vpc_centralised_endpoints.private_route_tables_map["private"]
 
@@ -89,50 +75,6 @@ resource "aws_route" "centralised_endpoints_transit_gateway_tgw" {
   route_table_id         = each.value
   destination_cidr_block = "0.0.0.0/0"
   transit_gateway_id     = aws_ec2_transit_gateway_vpc_attachment.centralised_endpoints.transit_gateway_id
-}
-
-# Dedicated TGW route table for the hub attachment.
-resource "aws_ec2_transit_gateway_route_table" "centralised_endpoints" {
-  transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
-
-  tags = merge(local.tags, { Name = "centralised_endpoints" })
-}
-
-# Associate the hub attachment with its dedicated TGW route table.
-resource "aws_ec2_transit_gateway_route_table_association" "centralised_endpoints" {
-  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.centralised_endpoints.id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.centralised_endpoints.id
-}
-
-# Propagate live and non-live MP consumer VPC attachments into the hub's TGW
-# route table so return traffic from endpoint ENIs can reach consumer VPCs.
-resource "aws_ec2_transit_gateway_route_table_propagation" "centralised_endpoints_from_live" {
-  for_each = local.tgw_live_data_attachments
-
-  transit_gateway_attachment_id  = each.key
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.centralised_endpoints.id
-}
-
-resource "aws_ec2_transit_gateway_route_table_propagation" "centralised_endpoints_from_non_live" {
-  for_each = local.tgw_non_live_data_attachments
-
-  transit_gateway_attachment_id  = each.key
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.centralised_endpoints.id
-}
-
-# Static routes in live_data and non_live_data TGW route tables pointing the
-# hub VPC CIDR to the centralised endpoints attachment. This enables consumer
-# VPCs to reach the endpoint ENIs.
-resource "aws_ec2_transit_gateway_route" "centralised_endpoints_live_data" {
-  destination_cidr_block         = local.centralised_endpoint_vpc_cidr
-  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.centralised_endpoints.id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["live_data"].id
-}
-
-resource "aws_ec2_transit_gateway_route" "centralised_endpoints_non_live_data" {
-  destination_cidr_block         = local.centralised_endpoint_vpc_cidr
-  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.centralised_endpoints.id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["non_live_data"].id
 }
 
 resource "aws_security_group" "centralised_endpoint_interface" {

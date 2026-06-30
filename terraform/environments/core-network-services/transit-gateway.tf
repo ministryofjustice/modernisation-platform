@@ -61,3 +61,35 @@ resource "aws_ec2_transit_gateway_route" "inspection_route" {
   transit_gateway_attachment_id  = module.vpc_inspection[each.key].transit_gateway_attachment_id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables[each.key].id
 }
+
+######################################
+# Centralised endpoints VPC attachment
+######################################
+# TGW attachment for the centralised endpoint hub VPC.
+# Disables default route table association/propagation — managed explicitly below
+# and in transit_gateway_connections.tf.
+resource "aws_ec2_transit_gateway_vpc_attachment" "centralised_endpoints" {
+  transit_gateway_id                              = aws_ec2_transit_gateway.transit-gateway.id
+  vpc_id                                          = module.vpc_centralised_endpoints.vpc_id
+  subnet_ids                                      = module.vpc_centralised_endpoints.tgw_subnet_ids
+  transit_gateway_default_route_table_association = false
+  transit_gateway_default_route_table_propagation = false
+
+  tags = merge(
+    local.tags,
+    { Name = "centralised-endpoints-attachment" }
+  )
+}
+
+# Dedicated TGW route table for the hub attachment.
+resource "aws_ec2_transit_gateway_route_table" "centralised_endpoints" {
+  transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
+
+  tags = merge(local.tags, { Name = "centralised_endpoints" })
+}
+
+# Associate the hub attachment with its dedicated TGW route table.
+resource "aws_ec2_transit_gateway_route_table_association" "centralised_endpoints" {
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.centralised_endpoints.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.centralised_endpoints.id
+}
