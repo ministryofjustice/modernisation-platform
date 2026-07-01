@@ -1,19 +1,20 @@
 module "s3-bucket-cloudtrail" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=76321e50b20f5c0d918cd45bdcf0b62049f5baf1" # v10.1.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=355197b5695fcce014ad838c7b586b95f9eb4988" # v10.2.0
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
-  bucket_policy              = [data.aws_iam_policy_document.cloudtrail_bucket_policy.json]
-  bucket_name                = "modernisation-platform-logs-cloudtrail"
-  replication_bucket         = "modernisation-platform-logs-cloudtrail-replication"
-  sse_algorithm              = "aws:kms"
-  suffix_name                = "-cloudtrail"
-  custom_kms_key             = aws_kms_key.s3_logging_cloudtrail.arn
-  custom_replication_kms_key = aws_kms_key.s3_logging_cloudtrail_eu-west-1_replication.arn
-  replication_enabled        = true
-  replication_region         = "eu-west-1"
-  ownership_controls         = "BucketOwnerEnforced"
-  log_bucket                 = module.s3-bucket-cloudtrail-logging.bucket.id
+  bucket_policy                = [data.aws_iam_policy_document.cloudtrail_bucket_policy.json]
+  bucket_name                  = "modernisation-platform-logs-cloudtrail"
+  replication_bucket           = "modernisation-platform-logs-cloudtrail-replication"
+  sse_algorithm                = "aws:kms"
+  suffix_name                  = "-cloudtrail"
+  custom_kms_key               = aws_kms_key.s3_logging_cloudtrail.arn
+  custom_replication_kms_key   = aws_kms_key.s3_logging_cloudtrail_eu-west-1_replication.arn
+  replication_enabled          = true
+  replication_object_lock_days = 1
+  replication_region           = "eu-west-1"
+  ownership_controls           = "BucketOwnerEnforced"
+  log_bucket                   = module.s3-bucket-cloudtrail-logging.bucket.id
   log_buckets = tomap({
     "log_bucket_name" : module.s3-bucket-cloudtrail-logging.bucket.id,
     "log_bucket_arn" : module.s3-bucket-cloudtrail-logging.bucket.arn,
