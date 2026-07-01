@@ -1,0 +1,26 @@
+{
+  "account-type": "member",
+  "codeowners": ", ",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "central-digital-product-team",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "cdpt-transform-beta",
+    "business-unit": "HQ",
+    "service-area": "Service Transformation Group",
+    "infrastructure-support": "central-digital-product-team@justice.gov.uk",
+    "owner": "HQ",
+    "slack-channel": "cdpt-integrated-fraud-system",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
