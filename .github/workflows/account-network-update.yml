@@ -22,56 +22,62 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Download network setup artifact
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: network-setup-info
-        continue-on-error: true  # Continue even if the artifact is not found
-
-      - name: Check if artifact exists
-        id: check_artifact
+      - name: Check whether this PR carries a network-setup request
+        id: check
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
-          if [ ! -f network-setup-info.json ]; then
-            echo "Artifact not found. Skipping the workflow."
-            echo "SKIP=true" >> $GITHUB_ENV
+          set -euo pipefail
+          # The create-newenv workflow commits network-setup-info.json into the
+          # PR it opens. We only act if THIS PR touched that file, so unrelated
+          # merges are skipped and a lingering file in main cannot re-trigger.
+          if ! gh pr view "$PR_NUMBER" --repo "$REPO" --json files \
+                --jq '.files[].path' | grep -Fxq 'network-setup-info.json'; then
+            echo "PR #$PR_NUMBER did not modify network-setup-info.json. Skipping."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
-
-      - name: Set up Python
-        if: env.SKIP != 'true'
-        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
-        with:
-          python-version: '3.x'
-
-      - name: Install jq
-        if: env.SKIP != 'true'
-        run: sudo apt-get install jq
-
-      - name: Check PR number matches artifact
-        if: env.SKIP != 'true'
-        id: prcheck
-        run: |
-          ARTIFACT_PR=$(jq -r '.pr_number' network-setup-info.json)
-          if [ "$ARTIFACT_PR" != "${{ github.event.pull_request.number }}" ]; then
-            echo "This workflow is not for this PR. Exiting."
+          if [ ! -f network-setup-info.json ]; then
+            echo "::error::network-setup-info.json missing from merged tree."
             exit 1
           fi
+          # Validate JSON shape early and export the fields we need.
+          jq -e '
+            (.isolated_account | type == "string")
+            and (.app_name      | type == "string")
+            and (.business_unit | type == "string")
+            and (.environments  | type == "array")
+          ' network-setup-info.json >/dev/null
+          {
+            printf 'ISOLATED_ACCOUNT=%s\n' "$(jq -r '.isolated_account' network-setup-info.json)"
+            printf 'APP_NAME=%s\n'         "$(jq -r '.app_name'         network-setup-info.json)"
+          } >> "$GITHUB_ENV"
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Python
+        if: steps.check.outputs.skip != 'true'
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: '3.12'
 
       - name: Run network-setup.py
-        if: env.SKIP != 'true' && env.ISOLATED_ACCOUNT == 'No'
+        if: steps.check.outputs.skip != 'true' && env.ISOLATED_ACCOUNT == 'No'
         run: |
-          python scripts/network-setup.py \
-            $(jq -r '.app_name' network-setup-info.json) \
-            $(jq -r '.business_unit' network-setup-info.json) \
-            $(jq -r '.environments[]' network-setup-info.json)
+          set -euo pipefail
+          # xargs -0 avoids word-splitting surprises on environment names.
+          jq -r '[.app_name, .business_unit] + .environments | .[]' network-setup-info.json \
+            | xargs python scripts/network-setup.py
 
       - name: Commit and push network changes
-        if: env.SKIP != 'true' && env.ISOLATED_ACCOUNT == 'No'
+        if: steps.check.outputs.skip != 'true' && env.ISOLATED_ACCOUNT == 'No'
         uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8 # v6.1.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "Automated Signed Commit"
           pr_body: "This PR was created automatically to update generated files."
-          commit_message: "Automated environment request for $APP_NAME"
+          commit_message: "Automated environment request for ${{ env.APP_NAME }}"
           files_to_commit: |
             environments-networks/*
             policies/networks/*

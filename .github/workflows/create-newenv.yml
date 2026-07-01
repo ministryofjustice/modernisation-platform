@@ -2,7 +2,11 @@ name: Environment Request
 
 on:
   issues:
-    types: [opened]
+    # Trigger only when a maintainer adds the 'New Account' label. In a public
+    # GitHub repo, only users with triage or write access can add labels, so
+    # the label acts as the authorisation gate. The issue template intentionally
+    # does NOT apply this label at creation time.
+    types: [labeled]
 
 permissions: read-all
 
@@ -10,188 +14,325 @@ jobs:
   handle-request:
     permissions:
       contents: write
-      issues: write 
+      issues: write
       pull-requests: write
-    if: contains(github.event.issue.labels.*.name, 'New Account')
+    # Two guards: (1) the label just added must be 'New Account' (prevents
+    # firing when unrelated labels are added to an already-labelled issue),
+    # and (2) belt-and-braces re-check that the label is present on the issue.
+    if: >-
+      github.event.label.name == 'New Account' &&
+      contains(github.event.issue.labels.*.name, 'New Account')
     runs-on: ubuntu-latest
+    env:
+      # Centralised allowlist patterns. Anything not matching these is rejected
+      # before being passed to a shell, gh, or Python.
+      SAFE_SLUG_RE: '^[A-Za-z0-9._-]{1,100}$'
+      # SAFE_ID_RE / SAFE_LIST_RE force a non-space first character so an
+      # all-whitespace or leading-space value cannot slip through.
+      SAFE_ID_RE:   '^[A-Za-z0-9._-][A-Za-z0-9 ._-]{0,99}$'
+      SAFE_LIST_RE: '^[A-Za-z0-9._-][A-Za-z0-9 ,._-]{0,499}$'
+      SAFE_YES_NO_RE: '^(Yes|No)$'
+      # Slack channel names: lowercase letters, digits, hyphen, underscore; 1-80 chars; no leading '#'.
+      SAFE_SLACK_RE: '^[a-z0-9_-]{1,80}$'
+      # Access-level tokens allowed by the issue form (union across all four
+      # environments). Enforced per comma-separated token below.
+      ALLOWED_ACCESS_LEVELS: 'developer sandbox migration instance-management'
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           fetch-depth: 0
 
       - name: Set up Python
-        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
-          python-version: '3.x'
+          # Pin to a specific minor to avoid surprise behaviour changes from
+          # whatever the latest "3.x" resolves to.
+          python-version: '3.12'
 
       - name: Save issue body to file
         env:
           ISSUE_BODY: ${{ github.event.issue.body }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
-          echo "$ISSUE_BODY" > issue_body.txt
-          echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_ENV
+          set -euo pipefail
+          # Pass the issue body via env (never inline ${{ ... }} into a shell line)
+          # to defeat templating-time injection.
+          printf '%s' "$ISSUE_BODY" > issue_body.txt
+          # ISSUE_NUMBER is a GitHub-controlled integer; safe to write directly.
+          printf 'ISSUE_NUMBER=%s\n' "$ISSUE_NUMBER" >> "$GITHUB_ENV"
 
-      - name: Extract fields from issue
+      - name: Extract and validate fields from issue
         run: |
-          # Function to extract and sanitize field values
+          set -euo pipefail
+
+          # Extract a field without invoking `xargs` (which re-interprets
+          # backslashes/quotes). Strip CR/LF, trim whitespace, and cap length.
           extract_field() {
             local key="$1"
-            local value=$(awk -v k="$key" '$0==k {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
-            # Sanitize: remove newlines/carriage returns, limit to 200 chars
-            echo "$value" | tr -d '\n\r' | head -c 200
+            awk -v k="$key" '
+              $0==k {
+                while (getline > 0) {
+                  if ($0 ~ /^$/)              continue
+                  if ($0 ~ /^_No response_$/) { print ""; exit }
+                  print $0; exit
+                }
+              }' issue_body.txt \
+              | tr -d '\n\r' \
+              | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' \
+              | cut -c1-200
           }
-          
-          # Extract all fields
-          EXISTING_ACCOUNT=$(extract_field "### Is this an existing AWS account?")
-          APP_NAME=$(extract_field "### Application Name")
-          APP_TAG=$(extract_field "### application")
-          BUSINESS_UNIT=$(extract_field "### business-unit")
-          SERVICE_AREA=$(extract_field "### service-area")
-          INFRA_SUPPORT=$(extract_field "### infrastructure-support")
-          OWNER=$(extract_field "### owner")
-          SSO_GROUP=$(extract_field "### SSO Group Name")
-          ISOLATED_ACCOUNT=$(extract_field "### Do you require isolated networking?")
-          SLACK=$(extract_field "### Slack Channel")
-          GITHUB_OWNERS=$(extract_field "### GitHub code owner team slug")
-          GITHUB_REVIEWERS=$(extract_field "### GitHub actions reviewer team slug")
-          
-          
-          # Write to GITHUB_ENV
-          {
-            echo "EXISTING_ACCOUNT=$EXISTING_ACCOUNT"
-            echo "APP_NAME=$APP_NAME"
-            echo "APP_TAG=$APP_TAG"
-            echo "BUSINESS_UNIT=$BUSINESS_UNIT"
-            echo "SERVICE_AREA=$SERVICE_AREA"
-            echo "INFRA_SUPPORT=$INFRA_SUPPORT"
-            echo "OWNER=$OWNER"
-            echo "SSO_GROUP=$SSO_GROUP"
-            echo "ISOLATED_ACCOUNT=$ISOLATED_ACCOUNT"
-            echo "SLACK=$SLACK"
-            echo "GITHUB_OWNERS=$GITHUB_OWNERS"
-            echo "GITHUB_REVIEWERS=$GITHUB_REVIEWERS"
-          } >> $GITHUB_ENV
 
-      - name: Validate Slack field (no #)
+          # Accumulate every failure into a file so the user gets the full list
+          # in one go instead of one-at-a-time re-runs. Reject any value that
+          # doesn't match the supplied allowlist regex.
+          validate() {
+            local name="$1" value="$2" pattern="$3"
+            if ! [[ "$value" =~ $pattern ]]; then
+              printf -- '- **%s**: value %q does not match required pattern `%s`\n' \
+                "$name" "$value" "$pattern" >> validation-errors.txt
+            fi
+          }
+
+          APP_NAME=$(extract_field         "### Application Name")
+          APP_TAG=$(extract_field          "### application")
+          BUSINESS_UNIT=$(extract_field    "### business-unit")
+          SERVICE_AREA=$(extract_field     "### service-area")
+          INFRA_SUPPORT=$(extract_field    "### infrastructure-support")
+          OWNER=$(extract_field            "### owner")
+          SSO_GROUP=$(extract_field        "### SSO Group Name")
+          ISOLATED_ACCOUNT=$(extract_field "### Do you require isolated networking?")
+          SLACK=$(extract_field            "### Slack Channel")
+          GITHUB_OWNERS=$(extract_field    "### GitHub code owner team slug")
+          GITHUB_REVIEWERS=$(extract_field "### GitHub actions reviewer team slug")
+
+          # Field-level allowlist validation. Anything containing shell
+          # metacharacters, quotes, or path separators is rejected before it can
+          # reach the Python script, `gh`, or the artifact JSON.
+          validate APP_NAME         "$APP_NAME"         "$SAFE_SLUG_RE"
+          validate APP_TAG          "$APP_TAG"          "$SAFE_SLUG_RE"
+          validate BUSINESS_UNIT    "$BUSINESS_UNIT"    "$SAFE_SLUG_RE"
+          validate SERVICE_AREA     "$SERVICE_AREA"     "$SAFE_ID_RE"
+          validate INFRA_SUPPORT    "$INFRA_SUPPORT"    "$SAFE_ID_RE"
+          validate OWNER            "$OWNER"            "$SAFE_ID_RE"
+          validate SSO_GROUP        "$SSO_GROUP"        "$SAFE_ID_RE"
+          validate ISOLATED_ACCOUNT "$ISOLATED_ACCOUNT" "$SAFE_YES_NO_RE"
+          validate GITHUB_OWNERS    "$GITHUB_OWNERS"    "$SAFE_SLUG_RE"
+          validate GITHUB_REVIEWERS "$GITHUB_REVIEWERS" "$SAFE_SLUG_RE"
+
+          # Redundant with SAFE_SLACK_RE but gives a clearer message for the common paste mistake.
+          if [[ "$SLACK" == \#* ]]; then
+            printf -- '- **SLACK**: must not start with `#` (got %q)\n' "$SLACK" >> validation-errors.txt
+          fi
+          validate SLACK "$SLACK" "$SAFE_SLACK_RE"
+
+          # If any field failed validation, DO NOT write untrusted values to
+          # GITHUB_ENV (newline injection would let an attacker set arbitrary
+          # env vars for subsequent steps). The reporter step below will comment
+          # on the issue, close it, and fail the workflow.
+          if [ -s validation-errors.txt ]; then
+            exit 0
+          fi
+
+          # All values now match a strict allowlist, so they are safe to write
+          # directly to GITHUB_ENV (no newlines, '=' signs, or quotes possible).
+          {
+            printf 'APP_NAME=%s\n'         "$APP_NAME"
+            printf 'APP_TAG=%s\n'          "$APP_TAG"
+            printf 'BUSINESS_UNIT=%s\n'    "$BUSINESS_UNIT"
+            printf 'SERVICE_AREA=%s\n'     "$SERVICE_AREA"
+            printf 'INFRA_SUPPORT=%s\n'    "$INFRA_SUPPORT"
+            printf 'OWNER=%s\n'            "$OWNER"
+            printf 'SSO_GROUP=%s\n'        "$SSO_GROUP"
+            printf 'ISOLATED_ACCOUNT=%s\n' "$ISOLATED_ACCOUNT"
+            printf 'SLACK=%s\n'            "$SLACK"
+            printf 'GITHUB_OWNERS=%s\n'    "$GITHUB_OWNERS"
+            printf 'GITHUB_REVIEWERS=%s\n' "$GITHUB_REVIEWERS"
+          } >> "$GITHUB_ENV"
+
+      - name: Extract and validate environment selections
         run: |
-          if [[ "${SLACK}" == *"#"* ]]; then
-            echo "::error title=Invalid Slack Channel::SLACK must not include '#'. Please enter the channel name without the leading hash (e.g. 'my-channel' not '#my-channel'). Value: '${SLACK}'"
+          set -euo pipefail
+
+          extract_access_level() {
+            local key="$1"
+            awk -v key="$key" '
+              $0==key {found=1; next}
+              found && /^### / {exit}
+              found && NF && $0!="_No response_" {print $0}
+            ' issue_body.txt | paste -sd, -
+          }
+
+          validate_access_level() {
+            local name="$1" value="$2"
+            # Empty means the environment wasn't selected; nothing to validate.
+            [[ -z "$value" ]] && return 0
+            # Structural allowlist first (defence-in-depth against odd input).
+            if ! [[ "$value" =~ $SAFE_LIST_RE ]]; then
+              printf -- '- **%s access level**: value %q contains disallowed characters\n' \
+                "$name" "$value" >> validation-errors.txt
+              return 0
+            fi
+            # Then enforce that each comma-separated token is one of the
+            # values the issue form actually offers.
+            local token tokens
+            IFS=',' read -r -a tokens <<< "$value"
+            for token in "${tokens[@]}"; do
+              token="${token## }"; token="${token%% }"
+              [[ -z "$token" ]] && continue
+              if ! [[ " $ALLOWED_ACCESS_LEVELS " == *" $token "* ]]; then
+                printf -- '- **%s access level**: token %q is not one of: %s\n' \
+                  "$name" "$token" "$ALLOWED_ACCESS_LEVELS" >> validation-errors.txt
+              fi
+            done
+          }
+
+          selected() {
+            # Avoid the `&& echo … || echo …` pattern: with `set -e`, a false
+            # left-hand side would exit if this were ever refactored.
+            if grep -Fq "$1" issue_body.txt; then
+              echo true
+            else
+              echo false
+            fi
+          }
+
+          DEV_SELECTED=$(selected     "- [x] Development")
+          TEST_SELECTED=$(selected    "- [x] test")
+          PREPROD_SELECTED=$(selected "- [x] Preproduction")
+          PROD_SELECTED=$(selected    "- [x] Production")
+
+          DEV_ACCESS=$(extract_access_level     "### Environment access level Development")
+          TEST_ACCESS=$(extract_access_level    "### Environment access level Test")
+          PREPROD_ACCESS=$(extract_access_level "### Environment access level Preproduction")
+          PROD_ACCESS=$(extract_access_level    "### Environment access level Production")
+
+          validate_access_level development   "$DEV_ACCESS"
+          validate_access_level test          "$TEST_ACCESS"
+          validate_access_level preproduction "$PREPROD_ACCESS"
+          validate_access_level production    "$PROD_ACCESS"
+
+          # Same guard as the previous step: skip the GITHUB_ENV write when any
+          # field failed validation, so untrusted values cannot land in the
+          # environment. The reporter step below handles the user-facing failure.
+          if [ -s validation-errors.txt ]; then
+            exit 0
+          fi
+
+          # Build the JSON with jq rather than string concatenation, so embedded
+          # quotes/backslashes in access-level values cannot break the structure.
+          ENV_SELECTIONS_JSON=$(jq -nc \
+            --arg dev_sel  "$DEV_SELECTED"     --arg dev_acc  "$DEV_ACCESS" \
+            --arg test_sel "$TEST_SELECTED"    --arg test_acc "$TEST_ACCESS" \
+            --arg pre_sel  "$PREPROD_SELECTED" --arg pre_acc  "$PREPROD_ACCESS" \
+            --arg prod_sel "$PROD_SELECTED"    --arg prod_acc "$PROD_ACCESS" \
+            '
+              [
+                (if $dev_sel  == "true" then {name:"development",   access_level:$dev_acc}  else empty end),
+                (if $test_sel == "true" then {name:"test",          access_level:$test_acc} else empty end),
+                (if $pre_sel  == "true" then {name:"preproduction", access_level:$pre_acc}  else empty end),
+                (if $prod_sel == "true" then {name:"production",    access_level:$prod_acc} else empty end)
+              ]
+            ')
+
+          # Sanity-check the JSON parses.
+          echo "$ENV_SELECTIONS_JSON" | jq -e . >/dev/null
+
+          # Structured values must use the heredoc form to be safe against
+          # $GITHUB_ENV injection (newlines, embedded '=' etc.).
+          {
+            echo 'ENV_SELECTIONS_JSON<<__EOF__'
+            echo "$ENV_SELECTIONS_JSON"
+            echo '__EOF__'
+          } >> "$GITHUB_ENV"
+
+      - name: Report validation errors, close issue, and fail
+        # Runs if EITHER validation step accumulated any failures. Posting an
+        # issue comment (and @-mentioning the author) triggers GitHub's default
+        # email notification, so the requester is told exactly what to fix.
+        if: hashFiles('validation-errors.txt') != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          {
+            printf 'Hi @%s, your Modernisation Platform environment request could not be processed automatically because the form contained invalid values.\n\n' "$ISSUE_AUTHOR"
+            printf '**Please open a new environment request and correct the following:**\n\n'
+            cat validation-errors.txt
+            printf '\nSee the [issue template](.github/ISSUE_TEMPLATE/new-environment.yml) for the allowed values for each field.\n\n'
+            printf 'This issue has been closed automatically. Workflow run: %s\n' "$RUN_URL"
+          } > validation-comment.md
+          gh issue comment "$ISSUE_NUMBER" --repo "$REPO" --body-file validation-comment.md
+          gh issue close   "$ISSUE_NUMBER" --repo "$REPO" --reason "not planned"
+          # Fail the workflow so the run is clearly marked as failed in the UI.
+          exit 1
+
+      - name: Configure git identity for bot commits
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Run create-account.py
+        run: |
+          set -euo pipefail
+          python scripts/create-account.py \
+            "$APP_NAME" "$APP_TAG" "$GITHUB_OWNERS" "$GITHUB_REVIEWERS" \
+            "$BUSINESS_UNIT" "$SERVICE_AREA" "$INFRA_SUPPORT" "$OWNER" \
+            "$SLACK" "false" "$SSO_GROUP" "" "$ENV_SELECTIONS_JSON"
+
+      - name: Remove issue template files
+        if: always()
+        run: rm -f issue_body.txt
+
+      - name: Save network setup info
+        run: |
+          set -euo pipefail
+          # Committed into the PR alongside the account files. The downstream
+          # account-network-update workflow reads it from the merged tree, so
+          # no cross-run artifact plumbing is needed. Built with jq (not string
+          # concatenation) so the file is always valid JSON.
+          jq -nc \
+            --arg isolated_account "$ISOLATED_ACCOUNT" \
+            --arg app_name         "$APP_NAME" \
+            --arg business_unit    "$BUSINESS_UNIT" \
+            --argjson environments "$ENV_SELECTIONS_JSON" \
+            '{
+              isolated_account: $isolated_account,
+              app_name:         $app_name,
+              business_unit:    $business_unit,
+              environments:     ($environments | map(.name))
+            }' > network-setup-info.json
+
+      - name: Create a signed commit for the new account
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8 # v6.1.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # ${{ env.* }} interpolates correctly here; "$APP_NAME" would NOT, as
+          # `with:` inputs are not shell-expanded.
+          pr_title: "Automated environment request for ${{ env.APP_NAME }}"
+          pr_body: "This PR was created automatically to update generated files. Linked to #${{ env.ISSUE_NUMBER }}"
+
+      - name: Locate created PR and comment on the originating issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          # Resolve the PR via the unique "Linked to #<n>" marker we embed in the
+          # PR body. ISSUE_NUMBER is GitHub-controlled integer => safe. The search
+          # literal is fully quoted so the user-controlled issue title cannot
+          # broaden the GitHub Search query.
+          PR_URL=$(gh pr list --repo "$REPO" --state open \
+            --search "\"Linked to #${ISSUE_NUMBER}\" in:body" \
+            --json url --jq '.[0].url // empty')
+
+          if [[ -z "$PR_URL" ]]; then
+            # Fail loudly: silent success here hides a broken commit-and-PR flow.
+            echo "::error title=PR not found::Could not locate PR for issue #$ISSUE_NUMBER (search: 'Linked to #${ISSUE_NUMBER}' in:body). The signed-commit step may have failed to open the PR."
             exit 1
           fi
 
-      - name: Extract environment selections
-        run: |
-          ENVIRONMENTS=""
-
-          # Development
-          DEV_SELECTED=$(awk '/- \[x\] Development/ {print "true"}' issue_body.txt)
-          DEV_ACCESS=$(awk -v key="### Environment access level Development" '
-            $0==key {found=1; next}
-            found && /^### / {exit}
-            found && NF && $0!="_No response_" {print $0}
-          ' issue_body.txt | paste -sd, -)
-          if [ "$DEV_SELECTED" = "true" ]; then
-            ENVIRONMENTS="${ENVIRONMENTS}{\"name\": \"development\", \"access_level\": \"$DEV_ACCESS\"},"
-          fi
-
-          # Test
-          TEST_SELECTED=$(awk '/- \[x\] test/ {print "true"}' issue_body.txt)
-          TEST_ACCESS=$(awk -v key="### Environment access level Test" '
-            $0==key {found=1; next}
-            found && /^### / {exit}
-            found && NF && $0!="_No response_" {print $0}
-          ' issue_body.txt | paste -sd, -)
-          if [ "$TEST_SELECTED" = "true" ]; then
-            ENVIRONMENTS="${ENVIRONMENTS}{\"name\": \"test\", \"access_level\": \"$TEST_ACCESS\"},"
-          fi
-
-          # Preproduction
-          PREPROD_SELECTED=$(awk '/- \[x\] Preproduction/ {print "true"}' issue_body.txt)
-          PREPROD_ACCESS=$(awk -v key="### Environment access level Preproduction" '
-            $0==key {found=1; next}
-            found && /^### / {exit}
-            found && NF && $0!="_No response_" {print $0}
-          ' issue_body.txt | paste -sd, -)
-          if [ "$PREPROD_SELECTED" = "true" ]; then
-            ENVIRONMENTS="${ENVIRONMENTS}{\"name\": \"preproduction\", \"access_level\": \"$PREPROD_ACCESS\"},"
-          fi
-
-          # Production
-          PROD_SELECTED=$(awk '/- \[x\] Production/ {print "true"}' issue_body.txt)
-          PROD_ACCESS=$(awk -v key="### Environment access level Production" '
-            $0==key {found=1; next}
-            found && /^### / {exit}
-            found && NF && $0!="_No response_" {print $0}
-          ' issue_body.txt | paste -sd, -)
-          if [ "$PROD_SELECTED" = "true" ]; then
-            ENVIRONMENTS="${ENVIRONMENTS}{\"name\": \"production\", \"access_level\": \"$PROD_ACCESS\"},"
-          fi
-
-          # Remove trailing comma and wrap in brackets
-          ENV_SELECTIONS_JSON="[$(echo $ENVIRONMENTS | sed 's/,$//')]"
-          echo "ENV_SELECTIONS_JSON=$ENV_SELECTIONS_JSON" >> $GITHUB_ENV
-
-      - name: Create and checkout branch for environment request
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Run create-account.py for new accounts
-        if: env.EXISTING_ACCOUNT == 'No'
-        run: |
-          ls -l scripts
-          python scripts/create-account.py "$APP_NAME" "$APP_TAG" "$GITHUB_OWNERS" "$GITHUB_REVIEWERS" "$BUSINESS_UNIT" "$SERVICE_AREA" "$INFRA_SUPPORT" "$OWNER" "$SLACK" "false" "$SSO_GROUP" "" "$ENV_SELECTIONS_JSON"
-
-      - name: Run amend-accounts.py for existing accounts
-        if: env.EXISTING_ACCOUNT == 'Yes'
-        run: |
-          python scripts/amend-accounts.py \
-            "$APP_NAME" \
-            "$SSO_GROUP" \
-            "$ENV_SELECTIONS_JSON"
-            # Add other arguments as needed for your amend script
-
-      - name: remove issue template files
-        run: rm -f issue_body.txt
-
-      - name: Install GitHub CLI
-        run: |
-          sudo apt-get update
-          sudo apt-get install gh
-  
-      - name: Create a signed commit for new accounts
-        if: env.EXISTING_ACCOUNT == 'No'
-        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8 # v6.1.1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          pr_title: "Automated environment request for $APP_NAME"
-          pr_body: "This PR was created automatically to update generated files. Linked to #${{ github.event.issue.number }}"
-
-
-      - name: Commit changes for existing accounts
-        if: env.EXISTING_ACCOUNT == 'Yes'
-        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8 # v6.1.1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          pr_title: "Automated environment amendment request for $APP_NAME"
-          pr_body: "This PR was created automatically to update generated files. Linked to #${{ github.event.issue.number }}"
-
-
-      - name: Comment on issue with PR link
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          PR_TITLE="Automated environment amendment request for $APP_NAME"
-          PR_URL=$(gh pr list --state open --search "$pr_title in:title" --json url -q '.[0].url')
-          echo "PR URL: $PR_URL"
-          REPO="${{ github.repository }}"
-          gh issue comment $ISSUE_NUMBER --repo "$REPO" --body "A pull request has been created for your environment request: $PR_URL"
-      
-      - name: Save network setup info
-        run: |
-          echo "{\"pr_number\": ${{ github.event.pull_request.number }}, ISOLATED_ACCOUNT, \"app_name\": \"$APP_NAME\", \"business_unit\": \"$BUSINESS_UNIT\", \"environments\": $(echo $ENV_SELECTIONS_JSON | jq -c 'map(.name)')}" > network-setup-info.json
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: network-setup-info
-          path: network-setup-info.json
+          gh issue comment "$ISSUE_NUMBER" --repo "$REPO" \
+            --body "A pull request has been created for your environment request: $PR_URL"
