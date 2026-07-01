@@ -280,6 +280,34 @@
     "destination_port": "5721",
     "protocol": "UDP"
   },
+  "hmpps_production_to_delius_prod_oracledb_1521": {
+    "action": "PASS",
+    "source_ip": "${hmpps-production}",
+    "destination_ip": "${delius-prod}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "hmpps_production_to_delius_prod_oracledb_1522": {
+    "action": "PASS",
+    "source_ip": "${hmpps-production}",
+    "destination_ip": "${delius-prod}",
+    "destination_port": "1522",
+    "protocol": "TCP"
+  },
+  "delius_prod_to_hmpps_production_oracledb_1521": {
+    "action": "PASS",
+    "source_ip": "${delius-prod}",
+    "destination_ip": "${hmpps-production}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "delius_prod_to_hmpps_production_oracledb_1522": {
+    "action": "PASS",
+    "source_ip": "${delius-prod}",
+    "destination_ip": "${hmpps-production}",
+    "destination_port": "1522",
+    "protocol": "TCP"
+  },
   "hmpps_production_to_delius_eng_prod_oracledb": {
     "action": "PASS",
     "source_ip": "${hmpps-production}",
