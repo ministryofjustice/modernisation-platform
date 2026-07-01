@@ -1,20 +1,21 @@
 ## S3 Bucket Module for AWS Route 53 Public DNS Query Logs
 module "s3_bucket_r53_public_dns_logs" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=76321e50b20f5c0d918cd45bdcf0b62049f5baf1" # v10.1.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=355197b5695fcce014ad838c7b586b95f9eb4988" # v10.2.0
 
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
-  bucket_policy              = [data.aws_iam_policy_document.r53_public_dns_logs_bucket_policy.json]
-  bucket_name                = "modernisation-platform-logs-r53-public-dns-logs"
-  replication_bucket         = "modernisation-platform-logs-r53-public-dns-logs-replication"
-  sse_algorithm              = "aws:kms"
-  suffix_name                = "-r53-public-dns-logs"
-  custom_kms_key             = aws_kms_key.r53_public_dns_logs.arn
-  custom_replication_kms_key = aws_kms_key.r53_public_dns_logs_replication.arn
-  replication_enabled        = true
-  replication_region         = "eu-west-1"
-  versioning_enabled         = true
+  bucket_policy                = [data.aws_iam_policy_document.r53_public_dns_logs_bucket_policy.json]
+  bucket_name                  = "modernisation-platform-logs-r53-public-dns-logs"
+  replication_bucket           = "modernisation-platform-logs-r53-public-dns-logs-replication"
+  sse_algorithm                = "aws:kms"
+  suffix_name                  = "-r53-public-dns-logs"
+  custom_kms_key               = aws_kms_key.r53_public_dns_logs.arn
+  custom_replication_kms_key   = aws_kms_key.r53_public_dns_logs_replication.arn
+  replication_enabled          = true
+  replication_object_lock_days = 1
+  replication_region           = "eu-west-1"
+  versioning_enabled           = true
 
   lifecycle_rule = [
     {

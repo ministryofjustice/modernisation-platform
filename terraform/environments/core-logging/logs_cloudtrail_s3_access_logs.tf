@@ -1,5 +1,5 @@
 module "s3-bucket-cloudtrail-logging" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=9facf9fc8f8b8e3f93ffbda822028534b9a75399" # v9.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=355197b5695fcce014ad838c7b586b95f9eb4988" # v10.2.0
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
@@ -12,8 +12,9 @@ module "s3-bucket-cloudtrail-logging" {
   custom_replication_kms_key = aws_kms_key.s3_logging_cloudtrail_eu-west-1_replication.arn
   ownership_controls         = "BucketOwnerEnforced"
 
-  replication_enabled = true
-  replication_region  = "eu-west-1"
+  replication_enabled          = true
+  replication_object_lock_days = 1
+  replication_region           = "eu-west-1"
 
   tags = local.tags
 }

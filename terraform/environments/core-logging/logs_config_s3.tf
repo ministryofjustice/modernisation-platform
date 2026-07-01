@@ -1,21 +1,22 @@
 ## S3 Bucket Module for AWS Config Logs
 module "s3_bucket_config_logs" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=76321e50b20f5c0d918cd45bdcf0b62049f5baf1" # v10.1.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=355197b5695fcce014ad838c7b586b95f9eb4988" # v10.2.0
 
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
-  bucket_policy               = [data.aws_iam_policy_document.config_bucket_policy.json]
-  bucket_name                 = "modernisation-platform-logs-config"
-  replication_bucket          = "modernisation-platform-logs-config-replication"
-  suffix_name                 = "-config"
-  custom_kms_key              = aws_kms_key.config_logs.arn
-  custom_replication_kms_key  = aws_kms_key.config_logs_replication.arn
-  sse_algorithm               = "aws:kms"
-  enforce_kms_request_headers = false
-  replication_enabled         = true
-  replication_region          = "eu-west-1"
-  versioning_enabled          = true
+  bucket_policy                = [data.aws_iam_policy_document.config_bucket_policy.json]
+  bucket_name                  = "modernisation-platform-logs-config"
+  replication_bucket           = "modernisation-platform-logs-config-replication"
+  suffix_name                  = "-config"
+  custom_kms_key               = aws_kms_key.config_logs.arn
+  custom_replication_kms_key   = aws_kms_key.config_logs_replication.arn
+  sse_algorithm                = "aws:kms"
+  enforce_kms_request_headers  = false
+  replication_enabled          = true
+  replication_object_lock_days = 1
+  replication_region           = "eu-west-1"
+  versioning_enabled           = true
 
   lifecycle_rule = [
     {
