@@ -9,6 +9,7 @@ on:
 
 permissions: 
     issues: write 
+    repository-projects: write 
 
 jobs:
   create-and-track-issue:
