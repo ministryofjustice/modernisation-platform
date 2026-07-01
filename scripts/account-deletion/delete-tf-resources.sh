@@ -7,7 +7,7 @@ CONFIG_SCRIPT="config.txt"
 # Function to call the appropriate credentials function based on the workspace
 set_credentials_based_on_workspace() {
     case "$1" in
-        development)
+        development|sandbox|sandbox-*)
             DEVELOPMENT_CREDENTIALS
             ;;
         test)
@@ -20,7 +20,7 @@ set_credentials_based_on_workspace() {
             PRODUCTION_CREDENTIALS
             ;;
         *)
-            echo "Invalid workspace specified: $1. Skipping."
+            echo "No credential mapping exists for workspace: $1"
             return 1
             ;;
     esac
@@ -45,15 +45,12 @@ part_1() {
         echo "Loading configurations and AWS credentials..."
         source "$CONFIG_SCRIPT"
         
-        # Call the MP_CREDENTIAL function to load credentials
+        # Load MP credentials first for initial Terraform setup.
         MP_CREDENTIALS
         
         # Debugging: Echo the loaded configurations and AWS credentials to verify
         echo "Loaded application name: $APPLICATION_NAME"
         echo "Loaded workspaces: ${WORKSPACES[*]}"
-        echo "Debugging - AWS_ACCESS_KEY_ID is set to: $AWS_ACCESS_KEY_ID"
-        echo "Debugging - AWS_SECRET_ACCESS_KEY is set to: $AWS_SECRET_ACCESS_KEY"
-        echo "Debugging - AWS_SESSION_TOKEN is set to: $AWS_SESSION_TOKEN"
     }
 
     # Load configurations and AWS credentials
@@ -61,7 +58,7 @@ part_1() {
 
     # Verify if the required AWS environment variables are set
     if [ -z "$AWS_ACCESS_KEY_ID" ] || [ -z "$AWS_SECRET_ACCESS_KEY" ] || [ -z "$AWS_SESSION_TOKEN" ]; then
-        echo "One or more AWS credentials were not provided in the $CONFIG_FILE. Please check your input and try again."
+        echo "One or more AWS credentials were not provided in $CONFIG_SCRIPT. Please check your input and try again."
         exit 1
     fi
 
@@ -78,6 +75,17 @@ part_1() {
 
     # Loop through each workspace and perform Terraform operations
     for WORKSPACE in "${WORKSPACES[@]}"; do
+        # Switch to credentials that match the current workspace before destroy.
+        if ! set_credentials_based_on_workspace "$WORKSPACE"; then
+            echo "Cannot continue without credentials for workspace $WORKSPACE."
+            exit 1
+        fi
+
+        if [ -z "$AWS_ACCESS_KEY_ID" ] || [ -z "$AWS_SECRET_ACCESS_KEY" ] || [ -z "$AWS_SESSION_TOKEN" ]; then
+            echo "Credentials for workspace $WORKSPACE are incomplete."
+            exit 1
+        fi
+
         # Construct the full workspace name
         FULL_WORKSPACE_NAME="${APPLICATION_NAME}-${WORKSPACE}"
         echo "----------------------------------------------------------------"
