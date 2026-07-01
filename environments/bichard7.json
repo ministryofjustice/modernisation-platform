@@ -47,15 +47,6 @@
       ]
     },
     {
-      "name": "sandbox-c",
-      "access": [
-        {
-          "sso_group_name": "cjse-bichard7-next",
-          "level": "administrator"
-        }
-      ]
-    },
-    {
       "name": "sandbox-shared",
       "access": [
         {
