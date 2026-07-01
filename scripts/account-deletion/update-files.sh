@@ -17,10 +17,16 @@ for workspace in "${WORKSPACES[@]}"; do
     # Delete the environment from environments-networks.json files
     business_unit=$(jq -r '.tags."business-unit"' $APPLICATION_NAME.json | tr "[:upper:]" "[:lower:]")
     account=$APPLICATION_NAME-$workspace
-    echo "Removing all references to $account in $business_unit-$workspace.json"
-    cd $USER_MP_DIR/environments-networks
-    jq ".cidr."subnet_sets".general.accounts |= map(select(. != \"$account\"))" $business_unit-$workspace.json > $business_unit-$workspace.tmp
-    mv $business_unit-$workspace.tmp $business_unit-$workspace.json
+    network_file="$USER_MP_DIR/environments-networks/$business_unit-$workspace.json"
+    
+    if [ -f "$network_file" ]; then
+        echo "Removing all references to $account in $business_unit-$workspace.json"
+        cd $USER_MP_DIR/environments-networks
+        jq ".cidr."subnet_sets".general.accounts |= map(select(. != \"$account\"))" $business_unit-$workspace.json > $business_unit-$workspace.tmp
+        mv $business_unit-$workspace.tmp $business_unit-$workspace.json
+    else
+        echo "Note: $business_unit-$workspace.json does not exist, skipping networking configuration update"
+    fi
 
     # Delete environment from opa networking test policies
     echo "Removing all references to $account in networking/expected.rego"
