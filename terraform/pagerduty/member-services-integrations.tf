@@ -1858,8 +1858,8 @@ locals {
     "annesa.mariyam"   = local.justice_email_suffix
   }
   octo_infrastructure_support_team_members = {
-    "george.hill2"     = local.justice_email_suffix
-    "annesa.mariyam"   = local.justice_email_suffix
+    "george.hill2"   = local.justice_email_suffix
+    "annesa.mariyam" = local.justice_email_suffix
   }
   # repeat users, e.g. for a 3 day stint of concierge
   dso_schedule_user_order = [
