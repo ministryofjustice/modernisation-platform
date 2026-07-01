@@ -335,7 +335,8 @@ module "github_actions_read_secrets_role" {
     "ministryofjustice/modernisation-platform-terraform-pagerduty-integration",
     "ministryofjustice/modernisation-platform-terraform-rds-instance",
     "ministryofjustice/modernisation-platform-terraform-s3-bucket",
-    "ministryofjustice/modernisation-platform-terraform-ssm-patching"
+    "ministryofjustice/modernisation-platform-terraform-ssm-patching",
+    "ministryofjustice/moj-terraform-github-periodic-sync"
   ]
   role_name    = "github-actions-read-secrets"
   policy_jsons = [data.aws_iam_policy_document.oidc_assume_read_secrets_role_member.json]
