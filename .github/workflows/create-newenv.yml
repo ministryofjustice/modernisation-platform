@@ -36,7 +36,7 @@ jobs:
       SAFE_SLACK_RE: '^[a-z0-9_-]{1,80}$'
       # Access-level tokens allowed by the issue form (union across all four
       # environments). Enforced per comma-separated token below.
-      ALLOWED_ACCESS_LEVELS: 'developer sandbox migration instance-management'
+      ALLOWED_ACCESS_LEVELS: 'view-only developer sandbox migration instance-management instance-access security-audit reporting-operations data-engineer fleet-manager s3-upload ssm-session-access data-scientist'
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
