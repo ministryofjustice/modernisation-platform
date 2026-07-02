@@ -9,6 +9,6 @@ terraform {
     key                  = "terraform.tfstate"
     region               = "eu-west-2"
     use_lockfile         = true
-    workspace_key_prefix = "environments/accounts/cica-data-extraction" # This will store the object as environments/accounts/cica-data-extraction/${workspace}/terraform.tfstate
+    workspace_key_prefix = "environments/accounts/container-platform-laa" # This will store the object as environments/accounts/container-platform-laa/${workspace}/terraform.tfstate
   }
 }

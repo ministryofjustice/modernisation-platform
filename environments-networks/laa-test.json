@@ -36,7 +36,13 @@
       "com.amazonaws.eu-west-2.secretsmanager",
       "com.amazonaws.eu-west-2.email-smtp",
       "com.amazonaws.eu-west-2.sns",
-      "com.amazonaws.eu-west-2.sqs"
+      "com.amazonaws.eu-west-2.sqs",
+      "com.amazonaws.eu-west-2.ecs",
+      "com.amazonaws.eu-west-2.ecs-agent",
+      "com.amazonaws.eu-west-2.ecs-telemetry",
+      "com.amazonaws.eu-west-2.ecr.api",
+      "com.amazonaws.eu-west-2.ecr.dkr",
+      "com.amazonaws.eu-west-2.logs"
     ],
     "additional_private_zones": ["aws.prd.legalservices.gov.uk"],
     "additional_vpcs": [],

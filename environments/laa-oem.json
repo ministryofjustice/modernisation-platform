@@ -7,6 +7,18 @@
         {
           "sso_group_name": "laa-ccms-migration-team",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
+          "level": "developer"
         }
       ],
       "nuke": "exclude"
@@ -17,6 +29,18 @@
         {
           "sso_group_name": "laa-ccms-migration-team",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
+          "level": "developer"
         }
       ]
     },
@@ -26,6 +50,18 @@
         {
           "sso_group_name": "laa-ccms-migration-team",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
+          "level": "developer"
         }
       ]
     },
@@ -34,6 +70,18 @@
       "access": [
         {
           "sso_group_name": "laa-ccms-migration-team",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
           "level": "developer"
         }
       ]

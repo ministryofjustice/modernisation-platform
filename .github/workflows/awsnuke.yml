@@ -94,7 +94,7 @@ jobs:
     needs: [setup-prerequisites, fetch-secrets]
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       
       - name: Decrypt Secrets
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@91d5c1efbe43e1c8fdfc55fd39e8183fc6be8fa8 # v6.1.1
@@ -148,16 +148,6 @@ jobs:
       - name: Nuke Plan (Dry Run)
         if: ${{ inputs.mode == 'nuke-dry-run' }}
         run: |
-          aws sts assume-role \
-            --role-arn "arn:aws:iam::${ACCOUNT_NUMBER}:role/MemberInfrastructureAccess" \
-            --role-session-name githubactionsgotestrolesession > creds.json || {
-              echo "Failed to assume role"
-              exit 1
-          }
-          export AWS_ACCESS_KEY_ID=$(jq -r '.Credentials.AccessKeyId' creds.json)
-          export AWS_SECRET_ACCESS_KEY=$(jq -r '.Credentials.SecretAccessKey' creds.json)
-          export AWS_SESSION_TOKEN=$(jq -r '.Credentials.SessionToken' creds.json)
-
           echo "Verifying identity..."
           aws sts get-caller-identity || {
             echo "Invalid credentials"
@@ -171,17 +161,6 @@ jobs:
       - name: Nuke Apply (Destructive)
         if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.mode == 'nuke-no-dry-run') }}
         run: |
-          # The environment gets reset between steps, so the role needs to be re-assumed.
-          aws sts assume-role \
-            --role-arn "arn:aws:iam::${ACCOUNT_NUMBER}:role/MemberInfrastructureAccess" \
-            --role-session-name githubactionsgoliveapply > creds.json || {
-              echo "Failed to assume role"
-              exit 1
-          }
-          export AWS_ACCESS_KEY_ID=$(jq -r '.Credentials.AccessKeyId' creds.json)
-          export AWS_SECRET_ACCESS_KEY=$(jq -r '.Credentials.SecretAccessKey' creds.json)
-          export AWS_SESSION_TOKEN=$(jq -r '.Credentials.SessionToken' creds.json)
-
           echo "Verifying identity..."
           aws sts get-caller-identity || {
             echo "Invalid credentials"

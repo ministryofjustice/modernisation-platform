@@ -57,6 +57,10 @@
           "level": "developer"
         },
         {
+          "sso_group_name": "laa-ccms-ebs-developers",
+          "level": "developer"
+        },
+        {
           "sso_group_name": "laa-ccms-security-testing-kpmg",
           "level": "developer"
         },
@@ -87,6 +91,10 @@
       "access": [
         {
           "sso_group_name": "laa-ccms-migration-team",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
           "level": "developer"
         },
         {
@@ -142,6 +150,10 @@
         {
           "sso_group_name": "modernisation-platform-security",
           "level": "view-only"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
+          "level": "developer"
         },
         {
           "sso_group_name": "octo-cyber-team",

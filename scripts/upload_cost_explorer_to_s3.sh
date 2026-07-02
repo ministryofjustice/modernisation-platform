@@ -13,6 +13,7 @@ previous_month_year="$previous_month_name $current_year"
 
 # S3 bucket and file details
 bucket_name="mp-cost-explorer-reports"
+kms_key_id="alias/s3-state-bucket-multi-region"
 csv_file="cost_explorer.csv"
 s3_file_path="s3://$bucket_name/$csv_file"
 
@@ -92,5 +93,5 @@ done
 mv "$tmp_csv_file" "$csv_file"
 
 # Upload the updated CSV file to S3
-aws s3 cp "$csv_file" "$s3_file_path"
+aws s3 cp "$csv_file" "$s3_file_path" --sse aws:kms --sse-kms-key-id "$kms_key_id"
 rm "$csv_file"

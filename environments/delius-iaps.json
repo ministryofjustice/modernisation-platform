@@ -14,6 +14,10 @@
           "level": "developer"
         },
         {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
+          "level": "developer"
+        },
+        {
           "sso_group_name": "hmpps-dba",
           "level": "instance-management"
         }
@@ -28,6 +32,10 @@
         },
         {
           "sso_group_name": "hosting-migrations",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
           "level": "developer"
         },
         {
@@ -53,6 +61,10 @@
         },
         {
           "sso_group_name": "hosting-migrations",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
           "level": "developer"
         },
         {

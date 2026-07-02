@@ -1857,6 +1857,10 @@ locals {
     "george.hill2"     = local.justice_email_suffix
     "annesa.mariyam"   = local.justice_email_suffix
   }
+  octo_infrastructure_support_team_members = {
+    "george.hill2"   = local.justice_email_suffix
+    "annesa.mariyam" = local.justice_email_suffix
+  }
   # repeat users, e.g. for a 3 day stint of concierge
   dso_schedule_user_order = [
     "antony.gowland",
@@ -1877,6 +1881,18 @@ locals {
     "william.gibbon",
     "william.gibbon",
     "william.gibbon",
+  ]
+  octo_infrastructure_support_schedule_user_order = [
+    "george.hill2",
+    "george.hill2",
+    "george.hill2",
+    "george.hill2",
+    "george.hill2",
+    "annesa.mariyam",
+    "annesa.mariyam",
+    "annesa.mariyam",
+    "annesa.mariyam",
+    "annesa.mariyam",
   ]
 
   services = {
@@ -2164,6 +2180,101 @@ resource "pagerduty_event_orchestration_service" "az_dso_alerts" {
 
 # END - DSO Azure alerts
 
+# OCTO Infrastructure Support
+
+data "pagerduty_user" "octo_infrastructure_support" {
+  for_each = local.octo_infrastructure_support_team_members
+  email    = "${each.key}${each.value}"
+}
+
+resource "pagerduty_team" "octo_infrastructure_support" {
+  name        = "OCTO Infrastructure Support"
+  description = "OCTO Infrastructure Support squad (HMPPS) responsible for infrastructure support of Nomis, Oasys, CSR, PlanetFM, NonCore. Managed in terraform"
+}
+
+resource "pagerduty_team_membership" "octo_infrastructure_support" {
+  for_each = data.pagerduty_user.octo_infrastructure_support
+  team_id  = pagerduty_team.octo_infrastructure_support.id
+  user_id  = each.value.id
+}
+
+resource "pagerduty_schedule" "octo_infrastructure_support" {
+  name        = "OCTO Infrastructure Support Concierge (In Hours Rota)"
+  description = "#ask-octo-infrastructure-support Concierge in-hours rota. Managed in terraform"
+  time_zone   = "Europe/London"
+
+  # Incidents will not be created if there is no one on call. Adding a fall back layer to ensure there is always a user on call.
+  layer {
+    name                         = "Fallback layer"
+    start                        = "2025-05-15T06:00:00Z"
+    rotation_virtual_start       = "2025-05-15T06:00:00Z"
+    rotation_turn_length_seconds = 604800
+
+    users = [
+      pagerduty_user.pager_duty_users["modernisation_platform"].id
+    ]
+  }
+
+  layer {
+    name                         = "Primary Schedule"
+    start                        = "2026-05-12T00:00:00Z"
+    rotation_virtual_start       = "2026-05-12T00:00:00Z"
+    rotation_turn_length_seconds = 86400
+
+    users = [
+      for user in local.octo_infrastructure_support_schedule_user_order : data.pagerduty_user.octo_infrastructure_support[user].id
+    ]
+
+    restriction {
+      type              = "weekly_restriction"
+      start_day_of_week = 1
+      start_time_of_day = "08:00:00"
+      duration_seconds  = 28800
+    }
+    restriction {
+      type              = "weekly_restriction"
+      start_day_of_week = 2
+      start_time_of_day = "08:00:00"
+      duration_seconds  = 28800
+    }
+    restriction {
+      type              = "weekly_restriction"
+      start_day_of_week = 3
+      start_time_of_day = "08:00:00"
+      duration_seconds  = 28800
+    }
+    restriction {
+      type              = "weekly_restriction"
+      start_day_of_week = 4
+      start_time_of_day = "08:00:00"
+      duration_seconds  = 28800
+    }
+    restriction {
+      type              = "weekly_restriction"
+      start_day_of_week = 5
+      start_time_of_day = "08:00:00"
+      duration_seconds  = 28800
+    }
+  }
+
+  teams = [pagerduty_team.octo_infrastructure_support.id]
+}
+
+resource "pagerduty_escalation_policy" "octo_infrastructure_support" {
+  name  = "OCTO Infrastructure Support Escalation Policy"
+  teams = [pagerduty_team.octo_infrastructure_support.id]
+
+  rule {
+    escalation_delay_in_minutes = 120 # since no on-call and primary notification is via slack integration
+    target {
+      type = "schedule_reference"
+      id   = pagerduty_schedule.octo_infrastructure_support.id
+    }
+  }
+}
+
+# END - OCTO Infrastructure Support
+
 resource "pagerduty_service" "sprinkler-development" {
   name                    = "sprinkler-development"
   description             = "sprinkler-development"
@@ -2348,6 +2459,58 @@ resource "pagerduty_slack_connection" "cis_non_prod" {
       "incident.action_invocation.created",
       "incident.action_invocation.terminated",
       "incident.action_invocation.updated",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
+
+
+# Slack channel: #delius-aws-oracle-prod-alerts
+
+resource "pagerduty_service" "delius_oracle_prod" {
+  name                    = "Delius Oracle Prod"
+  description             = "Delius Oracle Prod Alarms"
+  auto_resolve_timeout    = "null"
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "delius_oracle_prod_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.delius_oracle_prod.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "delius_oracle_prod_connection" {
+  source_id         = pagerduty_service.delius_oracle_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "CRECAHXT4"
+  notification_type = "responder"
+  lifecycle {
+    ignore_changes = [
+      config,
+    ]
+  }
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.responder.added",
+      "incident.responder.replied",
       "incident.status_update_published",
       "incident.reopened"
     ]

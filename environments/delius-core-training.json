@@ -16,6 +16,10 @@
           "github_action_reviewer": "true"
         },
         {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
+          "level": "developer"
+        },
+        {
           "sso_group_name": "hmpps-dba",
           "level": "developer"
         },

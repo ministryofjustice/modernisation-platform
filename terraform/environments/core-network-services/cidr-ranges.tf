@@ -156,6 +156,10 @@ locals {
     ad-azure-dc-a         = "10.20.104.5/32" # ditto
     ad-azure-dc-b         = "10.20.106.5/32" # ditto
     ad-azure-rdlic        = "10.20.108.6/32" # ditto
+
+    # Container platform ranges
+    container-platform-nonlive = "10.195.0.0/16"
+    container-platform-live    = "10.41.0.0/16"
   }
 
   all_cidr_ranges = merge(

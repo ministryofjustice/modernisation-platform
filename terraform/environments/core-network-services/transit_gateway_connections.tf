@@ -74,19 +74,21 @@ locals {
   }
 
   tgw_live_data_attachments = {
-    for k, v in data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all : k => v.tags.Name if(
+    for k, v in data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all : k => v.tags.Name if try(
       length(regexall("(?:production-attachment)", v.tags.Name)) > 0 ||
       length(regexall("(?:preproduction-attachment)", v.tags.Name)) > 0 ||
-      length(regexall("(?:-live_data-attachment)", v.tags.Name)) > 0
+      length(regexall("(?:-live_data-attachment)", v.tags.Name)) > 0,
+      false
     )
   }
 
   tgw_non_live_data_attachments = {
-    for k, v in data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all : k => v.tags.Name if(
+    for k, v in data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all : k => v.tags.Name if try(
       length(regexall("(?:development-attachment)", v.tags.Name)) > 0 ||
       length(regexall("(?:sandbox-attachment)", v.tags.Name)) > 0 ||
       length(regexall("(?:test-attachment)", v.tags.Name)) > 0 ||
-      length(regexall("(?:-non_live_data-attachment)", v.tags.Name)) > 0
+      length(regexall("(?:-non_live_data-attachment)", v.tags.Name)) > 0,
+      false
     )
   }
 
@@ -221,4 +223,37 @@ resource "aws_ec2_transit_gateway_route" "inspection_static_routes_ecp_safedb" {
   destination_cidr_block         = each.key
   transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.ecp_tgw.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
+}
+
+######################################
+# Centralised endpoints TGW routing
+######################################
+# Propagate live and non-live consumer VPC attachments into the hub's TGW route
+# table so return traffic from endpoint ENIs can find its way back to consumer VPCs.
+resource "aws_ec2_transit_gateway_route_table_propagation" "centralised_endpoints_from_live" {
+  for_each = local.tgw_live_data_attachments
+
+  transit_gateway_attachment_id  = each.key
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.centralised_endpoints.id
+}
+
+resource "aws_ec2_transit_gateway_route_table_propagation" "centralised_endpoints_from_non_live" {
+  for_each = local.tgw_non_live_data_attachments
+
+  transit_gateway_attachment_id  = each.key
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.centralised_endpoints.id
+}
+
+# Static routes for the hub VPC CIDR in the live_data and non_live_data TGW
+# route tables so consumer VPCs can initiate connections to the endpoint ENIs.
+resource "aws_ec2_transit_gateway_route" "centralised_endpoints_live_data" {
+  destination_cidr_block         = local.centralised_endpoint_vpc_cidr
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.centralised_endpoints.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["live_data"].id
+}
+
+resource "aws_ec2_transit_gateway_route" "centralised_endpoints_non_live_data" {
+  destination_cidr_block         = local.centralised_endpoint_vpc_cidr
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.centralised_endpoints.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["non_live_data"].id
 }

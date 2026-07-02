@@ -3,6 +3,9 @@
   "components": [
     {
       "name": "workspace-components"
+    },
+    {
+      "name": "ad-radius-mfa-config"
     }
   ],
   "codeowners": "laa-aws-infrastructure",

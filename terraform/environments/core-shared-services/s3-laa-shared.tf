@@ -17,7 +17,7 @@ locals {
 
 
 module "laa-shared-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=f72f8d5bcf3081f6de0ef16d1017b53c81e16457" # v10.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=76321e50b20f5c0d918cd45bdcf0b62049f5baf1" # v10.1.0
 
   providers = {
     aws.bucket-replication = aws.bucket-replication
@@ -30,7 +30,7 @@ module "laa-shared-bucket" {
   ownership_controls          = "BucketOwnerEnforced"
   sse_algorithm               = "aws:kms"
   custom_kms_key              = local.laa_general_kms_arn
-  enforce_kms_request_headers = false
+  enforce_kms_request_headers = true
 
   lifecycle_rule = [
     {

@@ -1,13 +1,13 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Security Hub Slack Notifications
-last_reviewed_on: 2025-12-12
+last_reviewed_on: 2026-06-15
 review_in: 6 months
 ---
 
 # <%= current_page.data.title %>
 
-This page covers the various Security Hub alerts that are forwarded to slack. There are two sections:
+This page covers the various Security Hub alerts that are forwarded to Slack. There are two sections:
 
 - Those slack alerts reported by Security Hub for Core accounts.
 
@@ -20,13 +20,13 @@ This page covers the various Security Hub alerts that are forwarded to slack. Th
 
 These alerts are deployed in SECURE BASELINES via the [modernisation-platform-terraform-baselines](https://github.com/ministryofjustice/modernisation-platform-terraform-baselines/blob/main/modules/securityhub/main.tf) module and are generated via an EventBridge rule that scans for those events with pre-defined levels of criticality. 
 
-Initially this has been set include "CRITICAL" alerts only but in future will be extended to "HIGH" and possibly others. These levels are set as a local in the [modernisation-platform repo](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/secure-baselines/locals.tf). Currently the core-shared-services account is excluded from scope but will be added in the future.
+Initially this has been set to include "CRITICAL" alerts only but in future will be extended to "HIGH" and possibly others. These levels are set as a local in the [modernisation-platform repo](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/secure-baselines/locals.tf). Currently the core-shared-services account is excluded from scope but will be added in the future.
 
 ### Viewing and Resolving Security Hub Alerts
 
-The slack alerts are routed via pagerduty to the channel [modernisation-platform-sec-hub-high-alerts](https://mojdt.slack.com/archives/C0A3B5K1FR6) and occur only when the Workflow status is set to 'NEW'. Existing alerts will not be flagged unless their status changes.
+The Slack alerts are routed via PagerDuty to the channel [modernisation-platform-sec-hub-high-alerts](https://mojdt.slack.com/archives/C0A3B5K1FR6) and occur only when the Workflow status is set to 'NEW'. Existing alerts will not be flagged unless their status changes.
 
-Once an alert is received in slack, the cause must be reviewed using the [AWS Console](https://eu-west-2.console.aws.amazon.com/securityhub/home) and the underlying issue assessed & resolved. If resolved the appropriate Workflow Status can be applied. 
+Once an alert is received in Slack, the cause must be reviewed using the [AWS Console](https://eu-west-2.console.aws.amazon.com/securityhub/home) and the underlying issue assessed and resolved. If resolved the appropriate Workflow Status can be applied. 
 
 Further information on the workflow for Security Hub alerts can be found in the [AWS Documentation](https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-findings.html)
 
@@ -86,7 +86,7 @@ Slack channel <slack channel name> webhook added/updated in secret
 
 A scheduled GitHub Actions job runs **daily** to send a summary of **Security Hub severity findings** to the Slack channel you specified in the tag.
 
-The summary includes counts of findings by severity (e.g., Critical, High, Medium, Low) of the particular account
+The summary includes counts of findings by severity (e.g., Critical, High, Medium, Low) of the particular account.
 
 You can see an [example of the summary results here](https://moj.enterprise.slack.com/archives/C07SNBJBVC6).
 

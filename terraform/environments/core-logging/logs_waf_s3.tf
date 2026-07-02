@@ -1,6 +1,6 @@
 # S3 bucket for centralised modernisation platform waf logs
 module "s3-bucket-modernisation-platform-waf-logs" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=f72f8d5bcf3081f6de0ef16d1017b53c81e16457" # v10.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=355197b5695fcce014ad838c7b586b95f9eb4988" # v10.2.0
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
@@ -12,9 +12,10 @@ module "s3-bucket-modernisation-platform-waf-logs" {
   custom_kms_key             = aws_kms_key.s3_modernisation_platform_waf_logs.arn
   custom_replication_kms_key = aws_kms_key.s3_modernisation_platform_waf_logs_eu_west_1_replication.arn
 
-  replication_enabled = true
-  replication_region  = "eu-west-1"
-  versioning_enabled  = true
+  replication_enabled          = true
+  replication_object_lock_days = 1
+  replication_region           = "eu-west-1"
+  versioning_enabled           = true
 
   lifecycle_rule = [
     {

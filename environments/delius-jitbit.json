@@ -15,6 +15,10 @@
           "github_action_reviewer": "true"
         },
         {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
+          "level": "sandbox"
+        },
+        {
           "sso_group_name": "hmpps-delius-jitbit-devs",
           "level": "instance-management"
         }
@@ -32,6 +36,10 @@
           "sso_group_name": "hosting-migrations",
           "level": "developer",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
+          "level": "developer"
         },
         {
           "sso_group_name": "hmpps-delius-jitbit-devs",
@@ -52,6 +60,10 @@
           "github_action_reviewer": "true"
         },
         {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
+          "level": "developer"
+        },
+        {
           "sso_group_name": "hmpps-delius-jitbit-devs",
           "level": "instance-management"
         }
@@ -68,6 +80,10 @@
           "sso_group_name": "hosting-migrations",
           "level": "developer",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
+          "level": "developer"
         },
         {
           "sso_group_name": "hmpps-delius-jitbit-devs",

@@ -267,6 +267,8 @@ data "aws_iam_policy_document" "developer_additional" {
       "kms:CreateGrant",
       "lambda:InvokeFunction",
       "lambda:UpdateFunctionCode",
+      "mq:Describe*",
+      "mq:List*",
       "oam:ListTagsForResource",
       "rds:AddTagsToResource",
       "rds:CopyDB*",
@@ -556,13 +558,9 @@ data "aws_iam_policy_document" "analytics_engineering" {
     effect = "Allow"
     actions = [
       "glue:Batch*Partition",
-      "glue:BatchDeleteTable",
       "glue:CreateDatabase",
       "glue:CreatePartition",
       "glue:CreateTable",
-      "glue:DeleteDatabase",
-      "glue:DeletePartition",
-      "glue:DeleteTable",
       "glue:UpdateDatabase",
       "glue:UpdatePartition",
       "glue:UpdateTable",
@@ -608,7 +606,11 @@ data "aws_iam_policy_document" "analytics_engineering_athena_additional" {
       "s3:AbortMultipartUpload",
       "s3:PutObject",
     ]
-    resources = ["arn:aws:s3:::probation-query-results-*"]
+    resources = [
+      "arn:aws:s3:::probation-query-results-*",
+      "arn:aws:s3:::dpr-working-production/analytics/*",
+      "arn:aws:s3:::dpr-working-preproduction/analytics/*",
+    ]
   }
   statement {
     sid    = "AthenaS3Allow"
@@ -617,7 +619,11 @@ data "aws_iam_policy_document" "analytics_engineering_athena_additional" {
       "s3:PutObject",
       "s3:DeleteObject",
     ]
-    resources = ["arn:aws:s3:::probation-datalake-*"]
+    resources = [
+      "arn:aws:s3:::probation-datalake-*",
+      "arn:aws:s3:::dpr-structured-historical-production/data/*",
+      "arn:aws:s3:::dpr-structured-historical-preproduction/data/*",
+    ]
   }
 }
 

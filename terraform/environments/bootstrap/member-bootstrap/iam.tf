@@ -207,6 +207,7 @@ data "aws_iam_policy_document" "member-access-compute" {
       "ec2:DeleteSubnet",
       "ec2:CreateRoute",
       "ec2:DeleteRoute",
+      "ec2:ReplaceRoute",
       "ec2:*RouteTable*",
       "ec2:CreateVpcEndpoint",
       "ec2:DeleteVpcEndpoints",
@@ -217,6 +218,7 @@ data "aws_iam_policy_document" "member-access-compute" {
       "ec2:DisableSerialConsoleAccess",
       "ec2:EnableSerialConsoleAccess",
       "ec2:GetSerialConsoleAccessStatus",
+      "ec2:ModifySubnetAttribute",
       "ec2:ModifyVpc*",
       "ec2:Describe*",
       "ec2:*NetworkAcl*",
@@ -251,11 +253,17 @@ data "aws_iam_policy_document" "member-access-compute" {
       "eks:*",
       "elasticloadbalancing:*",
       "events:*",
+      "kafka:Create*",
+      "kafka:Describe*",
+      "kafka:TagResource",
+      "kafka:DeleteCluster",
+      "kafka:ListClusters",
       "fis:*",
       "iam:*",
       "kms:*",
       "lambda:*",
       "logs:*",
+      "mq:*",
       "workspaces:*",
       "workspaces-web:*"
     ]
@@ -347,6 +355,9 @@ data "aws_iam_policy_document" "member-access-network" {
       "ds:Delete*",
       "ds:Deregister*",
       "ds:Disable*",
+      "ds:DisconnectDirectory",
+      "ds:authorizeApplication",
+      "ds:deauthorizeApplication",
       "ds:Enable*",
       "ds:RegisterCertificate",
       "ds:RegisterEventTopic",
@@ -367,8 +378,12 @@ data "aws_iam_policy_document" "member-access-network" {
       "ram:AssociateResourceShare",
       "ram:CreateResourceShare",
       "ram:DeleteResourceShare",
+      "ram:DisassociateResourceShare",
       "ram:Get*",
       "ram:List*",
+      "ram:TagResource",
+      "ram:UntagResource",
+      "ram:UpdateResourceShare",
       "route53:*",
       "route53resolver:*",
       "scheduler:*",
@@ -1086,8 +1101,8 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
     sid    = "AllowOIDCToAssumeRoles"
     effect = "Allow"
     resources = compact([
-      # skip for cloud-platform and container-platform-octo as they use a different account naming convention and do not need a member-delegation role
-      local.application_name != "cloud-platform" && local.application_name != "container-platform-octo" ? format("arn:aws:iam::%s:role/member-delegation-%s-%s", local.environment_management.account_ids[format("core-vpc-%s", local.application_environment)], lower(local.business_unit), local.application_environment) : "",
+      # skip for cloud-platform and container-platform-* as they use a different account naming convention and do not need a member-delegation role
+      local.application_name != "cloud-platform" && !startswith(local.application_name, "container-platform-") ? format("arn:aws:iam::%s:role/member-delegation-%s-%s", local.environment_management.account_ids[format("core-vpc-%s", local.application_environment)], lower(local.business_unit), local.application_environment) : "",
       format("arn:aws:iam::%s:role/modify-dns-records", local.environment_management.account_ids["core-network-services-production"]),
       format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id),
       format("arn:aws:iam::%s:role/ModernisationPlatformSSOReadOnly", local.environment_management.aws_organizations_root_account_id),
@@ -1112,6 +1127,34 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
   }
 
   statement {
+    sid    = "AllowTerraformStateKMSBackend"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*"
+    ]
+    resources = ["arn:aws:kms:eu-west-2:${local.environment_management.modernisation_platform_account_id}:key/*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/*"
+      ]
+    }
+  }
+
+  statement {
     sid    = "AllowOIDCReadState"
     effect = "Allow"
 
@@ -1123,6 +1166,13 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
       "s3:Get*",
       "s3:List*"
     ]
+  }
+
+  statement {
+    sid       = "AllowOIDCReadStateBucketEncryption"
+    effect    = "Allow"
+    resources = ["arn:aws:s3:::modernisation-platform-terraform-state"]
+    actions   = ["s3:GetEncryptionConfiguration"]
   }
 
   statement {
@@ -1226,6 +1276,34 @@ data "aws_iam_policy_document" "oidc_assume_role_dev_test" {
     effect    = "Allow"
     resources = ["*"]
     actions   = ["kms:Decrypt"]
+  }
+
+  statement {
+    sid    = "AllowTerraformStateKMSBackend"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*"
+    ]
+    resources = ["arn:aws:kms:eu-west-2:${local.environment_management.modernisation_platform_account_id}:key/*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/environments/accounts/*"
+      ]
+    }
   }
 
   statement {
@@ -1419,6 +1497,34 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
   }
 
   statement {
+    sid    = "AllowTerraformStateKMSBackend"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*"
+    ]
+    resources = ["arn:aws:kms:eu-west-2:${local.environment_management.modernisation_platform_account_id}:key/*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/*"
+      ]
+    }
+  }
+
+  statement {
     sid    = "AllowOIDCReadState"
     effect = "Allow"
 
@@ -1430,6 +1536,13 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
       "s3:Get*",
       "s3:List*"
     ]
+  }
+
+  statement {
+    sid       = "AllowOIDCReadStateBucketEncryption"
+    effect    = "Allow"
+    resources = ["arn:aws:s3:::modernisation-platform-terraform-state"]
+    actions   = ["s3:GetEncryptionConfiguration"]
   }
 
   statement {
@@ -1506,6 +1619,7 @@ module "github_actions_nuke" {
   source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
   github_repositories = ["ministryofjustice/modernisation-platform"]
   role_name           = "github-actions-nuke"
+  policy_arns         = ["arn:aws:iam::aws:policy/AdministratorAccess"]
   policy_jsons        = [data.aws_iam_policy_document.oidc_assume_nuke_role_member[0].json]
   subject_claim       = "ref:refs/heads/main"
   tags                = { "Name" = "github-actions-nuke" }
@@ -1517,8 +1631,8 @@ data "aws_iam_policy_document" "oidc_assume_nuke_role_member" {
     sid    = "AllowOIDCToAssumeRoles"
     effect = "Allow"
     resources = compact([
-      # skip for cloud-platform and container-platform-octo as they use a different account naming convention and do not need a member-delegation role
-      local.application_name != "cloud-platform" && local.application_name != "container-platform-octo" ? format("arn:aws:iam::%s:role/member-delegation-%s-%s", local.environment_management.account_ids[format("core-vpc-%s", local.application_environment)], lower(local.business_unit), local.application_environment) : "",
+      # skip for cloud-platform and container-platform-* as they use a different account naming convention and do not need a member-delegation role
+      local.application_name != "cloud-platform" && !startswith(local.application_name, "container-platform-") ? format("arn:aws:iam::%s:role/member-delegation-%s-%s", local.environment_management.account_ids[format("core-vpc-%s", local.application_environment)], lower(local.business_unit), local.application_environment) : "",
       format("arn:aws:iam::%s:role/modify-dns-records", local.environment_management.account_ids["core-network-services-production"]),
       format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id),
       format("arn:aws:iam::%s:role/ModernisationPlatformSSOReadOnly", local.environment_management.aws_organizations_root_account_id),
@@ -1537,32 +1651,6 @@ data "aws_iam_policy_document" "oidc_assume_nuke_role_member" {
     actions = ["sts:AssumeRole"]
   }
 
-  # Additional read permissions to align with scope of those assigned to github-actions-plan
-  statement {
-    sid    = "AllowAccountRestrictedAccess"
-    effect = "Allow"
-    actions = [
-      "airflow:Get*",
-      "airflow:List*",
-      "glue:GetConnection",
-      "lakeformation:GetLFTag",
-      "lakeformation:ListLFTags",
-      "oam:ListTagsForResource",
-      "quicksight:Describe*",
-      "quicksight:ListTagsForResource",
-      "redshift-data:Describe*",
-      "secretsmanager:GetSecretValue",
-      "workspaces-web:Get*",
-      "workspaces-web:List*"
-    ]
-    resources = ["*"]
-    condition {
-      test     = "StringEquals"
-      variable = "aws:PrincipalAccount"
-      values   = [local.environment_management.account_ids[terraform.workspace]]
-    }
-  }
-
   # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
   # checkov:skip=CKV_AWS_356: "Cannot restrict by KMS alias so leaving open"
   statement {
@@ -1570,6 +1658,34 @@ data "aws_iam_policy_document" "oidc_assume_nuke_role_member" {
     effect    = "Allow"
     resources = ["*"]
     actions   = ["kms:Decrypt"]
+  }
+
+  statement {
+    sid    = "AllowTerraformStateKMSBackend"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*"
+    ]
+    resources = ["arn:aws:kms:eu-west-2:${local.environment_management.modernisation_platform_account_id}:key/*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"
+      ]
+    }
   }
 
   statement {
