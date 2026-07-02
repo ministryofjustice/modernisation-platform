@@ -388,6 +388,77 @@ module "state-bucket" {
   ]
 }
 
+data "aws_iam_policy_document" "state_bucket_replication_kms" {
+  statement {
+    sid    = "AllowDecryptSourceStateBucketObjects"
+    effect = "Allow"
+
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey"
+    ]
+
+    resources = [
+      aws_kms_key.s3_state_bucket_multi_region.arn
+    ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/*"
+      ]
+    }
+  }
+
+  statement {
+    sid    = "AllowEncryptStateBucketReplicas"
+    effect = "Allow"
+
+    actions = [
+      "kms:Decrypt",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*",
+      "kms:DescribeKey"
+    ]
+
+    resources = [
+      aws_kms_replica_key.s3_state_bucket_multi_region_replica.arn
+    ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-1.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state-replication",
+        "arn:aws:s3:::modernisation-platform-terraform-state-replication/*"
+      ]
+    }
+  }
+}
+
+resource "aws_iam_role_policy" "state_bucket_replication_kms" {
+  provider = aws.modernisation-platform-eu-west-1
+
+  name   = "AWSS3BucketReplication-terraform-state-kms"
+  role   = module.state-bucket.role[0].id
+  policy = data.aws_iam_policy_document.state_bucket_replication_kms.json
+}
+
 # Allow access to the bucket from the MoJ root account
 # Policy extrapolated from:
 # https://www.terraform.io/docs/backends/types/s3.html#s3-bucket-permissions
