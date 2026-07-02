@@ -116,8 +116,12 @@ jobs:
           validate OWNER            "$OWNER"            "$SAFE_ID_RE"
           validate SSO_GROUP        "$SSO_GROUP"        "$SAFE_ID_RE"
           validate ISOLATED_ACCOUNT "$ISOLATED_ACCOUNT" "$SAFE_YES_NO_RE"
-          validate GITHUB_OWNERS    "$GITHUB_OWNERS"    "$SAFE_SLUG_RE"
-          validate GITHUB_REVIEWERS "$GITHUB_REVIEWERS" "$SAFE_SLUG_RE"
+          if [[ -n "$GITHUB_OWNERS" ]]; then
+            validate GITHUB_OWNERS "$GITHUB_OWNERS" "$SAFE_SLUG_RE"
+          fi
+          if [[ -n "$GITHUB_REVIEWERS" ]]; then
+            validate GITHUB_REVIEWERS "$GITHUB_REVIEWERS" "$SAFE_SLUG_RE"
+          fi
 
           # Redundant with SAFE_SLACK_RE but gives a clearer message for the common paste mistake.
           if [[ "$SLACK" == \#* ]]; then
