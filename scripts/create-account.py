@@ -25,14 +25,18 @@ def _validate_app_name(name):
 
 def _safe_env_path(app_name):
     """Return environments/<app_name>.json, asserting the resolved path stays
-    inside ENV_DIR. Guards against traversal via `..`, absolute paths, symlinks
-    or NUL bytes in a defence-in-depth manner."""
+    inside ENV_DIR. Guards against traversal via `..`, absolute paths, NUL bytes,
+    and symlink escapes in a defence-in-depth manner."""
     if "/" in app_name or "\\" in app_name or "\x00" in app_name:
         _fail(f"invalid characters in app_name {app_name!r}")
-    candidate = os.path.abspath(os.path.join(ENV_DIR, f"{app_name}.json"))
-    if os.path.dirname(candidate) != ENV_DIR:
-        _fail(f"refusing to write outside {ENV_DIR}: {candidate}")
-    return candidate
+
+    candidate = os.path.join(ENV_DIR, f"{app_name}.json")
+    env_real = os.path.realpath(ENV_DIR)
+    candidate_real = os.path.realpath(candidate)
+
+    if os.path.commonpath([candidate_real, env_real]) != env_real:
+        _fail(f"refusing to write outside {ENV_DIR}: {candidate_real}")
+    return candidate_real
 
 
 def add_app_to_rego(app_name, rego_path):
