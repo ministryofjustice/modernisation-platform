@@ -18,9 +18,14 @@
         },
         {
           "sso_group_name": "central-digital-product-team",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "central-digital-product-team",
           "level": "instance-management"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "preproduction",
