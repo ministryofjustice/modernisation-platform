@@ -386,6 +386,7 @@ data "aws_iam_policy_document" "member-access-network" {
       "ram:UpdateResourceShare",
       "route53:*",
       "route53resolver:*",
+      "route53profiles:*",
       "scheduler:*",
       "secretsmanager:*",
       "ses:*",
