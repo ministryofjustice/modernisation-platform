@@ -88,9 +88,8 @@ jobs:
         if: steps.check.outputs.skip != 'true' && env.ISOLATED_ACCOUNT == 'No'
         run: |
           set -euo pipefail
-          # xargs -0 avoids word-splitting surprises on environment names.
-          jq -r '[.app_name, .business_unit] + .environments | .[]' network-setup-info.json \
-            | xargs python scripts/network-setup.py
+          mapfile -t args < <(jq -r '[.app_name, .business_unit] + .environments | .[]' network-setup-info.json)
+          python scripts/network-setup.py "${args[@]}"
 
       - name: Commit and push network changes
         if: steps.check.outputs.skip != 'true' && env.ISOLATED_ACCOUNT == 'No'
