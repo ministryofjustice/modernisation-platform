@@ -20,10 +20,3 @@ resource "aws_backup_plan" "cloudtrail_s3_extended_window" {
 
   tags = local.tags
 }
-
-resource "aws_backup_selection" "cloudtrail_s3_extended_window" {
-  name         = "cloudtrail-s3-extended-window"
-  iam_role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/AWSBackup"
-  plan_id      = aws_backup_plan.cloudtrail_s3_extended_window.id
-  resources    = [module.s3-bucket-cloudtrail.bucket.arn]
-}
