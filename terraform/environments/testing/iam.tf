@@ -26,7 +26,8 @@ module "github_actions_testing_role" {
     "ministryofjustice/modernisation-platform-terraform-pagerduty-integration",
     "ministryofjustice/modernisation-platform-terraform-s3-bucket",
     "ministryofjustice/modernisation-platform-terraform-ssm-patching",
-    "ministryofjustice/modernisation-platform-terraform-rds-instance"
+    "ministryofjustice/modernisation-platform-terraform-rds-instance",
+    "ministryofjustice/moj-terraform-github-periodic-sync"
   ]
   role_name   = "github-actions-testing"
   policy_arns = ["arn:aws:iam::aws:policy/ReadOnlyAccess"]

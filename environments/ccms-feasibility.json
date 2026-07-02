@@ -1,6 +1,28 @@
 {
   "account-type": "member",
   "codeowners": "laa-sre-admins",
+  "components": [
+    {
+      "name": "ccms-ebs",
+      "sso_group_name": "laa-sre-admins"
+    },
+    {
+      "name": "ccms-pui",
+      "sso_group_name": "laa-sre-admins"
+    },
+    {
+      "name": "ccms-oia",
+      "sso_group_name": "laa-sre-admins"
+    },
+    {
+      "name": "ccms-soa",
+      "sso_group_name": "laa-sre-admins"
+    },
+    {
+      "name": "ccms-edrms",
+      "sso_group_name": "laa-sre-admins"
+    }
+  ],
   "environments": [
     {
       "name": "development",
