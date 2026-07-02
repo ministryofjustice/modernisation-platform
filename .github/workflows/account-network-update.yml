@@ -50,9 +50,31 @@ jobs:
             and (.business_unit | type == "string")
             and (.environments  | type == "array")
           ' network-setup-info.json >/dev/null
+
+          ISOLATED_ACCOUNT="$(jq -r '.isolated_account' network-setup-info.json | tr -d '\r\n')"
+          APP_NAME="$(jq -r '.app_name' network-setup-info.json | tr -d '\r\n')"
+          BUSINESS_UNIT="$(jq -r '.business_unit' network-setup-info.json | tr -d '\r\n')"
+
+          if ! [[ "$ISOLATED_ACCOUNT" =~ ^(Yes|No)$ ]]; then
+            echo "::error::network-setup-info.json has invalid isolated_account (expected 'Yes' or 'No'): $ISOLATED_ACCOUNT"
+            exit 1
+          fi
+          if ! [[ "$APP_NAME" =~ ^[A-Za-z0-9._-]{1,100}$ ]]; then
+            echo "::error::network-setup-info.json has invalid app_name: $APP_NAME"
+            exit 1
+          fi
+          if ! [[ "$BUSINESS_UNIT" =~ ^[A-Za-z0-9._-]{1,100}$ ]]; then
+            echo "::error::network-setup-info.json has invalid business_unit: $BUSINESS_UNIT"
+            exit 1
+          fi
+          if ! jq -e '.environments | all(. == "development" or . == "test" or . == "preproduction" or . == "production")' network-setup-info.json >/dev/null; then
+            echo "::error::network-setup-info.json has invalid environments list (expected: development/test/preproduction/production)"
+            exit 1
+          fi
+
           {
-            printf 'ISOLATED_ACCOUNT=%s\n' "$(jq -r '.isolated_account' network-setup-info.json)"
-            printf 'APP_NAME=%s\n'         "$(jq -r '.app_name'         network-setup-info.json)"
+            printf 'ISOLATED_ACCOUNT=%s\n' "$ISOLATED_ACCOUNT"
+            printf 'APP_NAME=%s\n'         "$APP_NAME"
           } >> "$GITHUB_ENV"
           echo "skip=false" >> "$GITHUB_OUTPUT"
 
