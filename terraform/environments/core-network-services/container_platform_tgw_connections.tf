@@ -57,6 +57,12 @@ resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_cp_attachm
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["non_live_data"].id
 }
 
+resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_cp_attachments_nonlive_centralised_endpoints" {
+  for_each                       = local.container-platform-nonlive-attachments
+  transit_gateway_attachment_id  = each.value.attachment_id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.centralised_endpoints.id
+}
+
 # Live
 resource "aws_ec2_transit_gateway_route_table_association" "cp_live_association" {
   for_each                       = local.container-platform-live-attachments
@@ -68,4 +74,10 @@ resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_cp_attachm
   for_each                       = local.container-platform-live-attachments
   transit_gateway_attachment_id  = each.value.attachment_id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["live_data"].id
+}
+
+resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_cp_attachments_live_centralised_endpoints" {
+  for_each                       = local.container-platform-live-attachments
+  transit_gateway_attachment_id  = each.value.attachment_id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.centralised_endpoints.id
 }
