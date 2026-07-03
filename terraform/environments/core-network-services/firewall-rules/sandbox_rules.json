@@ -19,12 +19,5 @@
     "destination_ip": "${mp-sandbox-garden}",
     "destination_port": "443",
     "protocol": "TCP"
-  },
-  "laa_mp_workspaces_to_mp_laa_sandbox": {
-    "action": "PASS",
-    "source_ip": "${laa-mp-workspaces-non-prod}",
-    "destination_ip": "${mp-sandbox-house}",
-    "destination_port": "80",
-    "protocol": "TCP"
   }
 }
