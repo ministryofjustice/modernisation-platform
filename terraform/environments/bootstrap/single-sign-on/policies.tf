@@ -974,6 +974,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "support-console:*",
       "textract:*",
       "transfer:*",
+      "transform:*",
       "wafv2:*",
       "wellarchitected:*",
       "workspaces-web:*",
@@ -993,7 +994,21 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "arn:aws:sso::${local.environment_management.aws_organizations_root_account_id}:application/ssoins-7535d9af4f41fb26/*" #tfsec:ignore:AWS099 tfsec:ignore:AWS097
     ]
   }
+
+  statement {
+    sid    = "sandboxCodeConnectionsAllow"
+    effect = "Allow"
+    actions = [
+      "codeconnections:UseConnection",
+      "codeconnections:StartOAuthHandshake"
+    ]
+    resources = [
+      "arn:aws:codestar-connections:*:*:connection/*",
+      "arn:aws:codeconnections:*:*:connection/*"
+    ]
+  }
 }
+
 
 # migration policy - member SSO and collaborators
 # developer role plus additional migration permissions
