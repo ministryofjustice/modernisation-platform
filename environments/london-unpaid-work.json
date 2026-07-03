@@ -1,0 +1,35 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "hmpps-migration",
+          "level": "sandbox"
+        }
+      ],
+      "nuke": "exclude"
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "hmpps-migration",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "london-unpaid-work",
+    "business-unit": "HMPPS",
+    "service-area": "Hosting",
+    "infrastructure-support": "probation-webops-gg@justice.gov.uk",
+    "owner": "probation-webops-gg@justice.gov.uk",
+    "slack-channel": "",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}

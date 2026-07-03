@@ -83,6 +83,7 @@ expected :=
     "laa-pui-secure-browser",
     "laa-stabilisation-cdc-poc",
     "laa-workspaces",
+    "london-unpaid-work",
     "long-term-storage",
     "maat",
     "maatdb",
