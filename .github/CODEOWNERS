@@ -61,6 +61,7 @@
 /terraform/environments/core-shared-services/hmpps-domain-services.tf @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
 /terraform/environments/core-shared-services/hmpps-esupervision.tf @ministryofjustice/stg-pathfinders 
 /terraform/environments/core-shared-services/hmpps-oem.tf @ministryofjustice/hmpps-dba @ministryofjustice/hmpps-migration @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
+/terraform/environments/core-shared-services/integration-hub-api.tf @ministryofjustice/integration-hub 
 /terraform/environments/core-shared-services/integration-hub-file-transfer.tf @ministryofjustice/integration-hub 
 /terraform/environments/core-shared-services/integration-hub.tf @ministryofjustice/integration-hub 
 /terraform/environments/core-shared-services/laa-ccms-soa.tf @ministryofjustice/laa-sre-admins 
@@ -73,6 +74,7 @@
 /terraform/environments/core-shared-services/laa-pui-secure-browser.tf @ministryofjustice/ecp-admin @ministryofjustice/laa-sre-admins 
 /terraform/environments/core-shared-services/laa-stabilisation-cdc-poc.tf @ministryofjustice/laa-sre-admins @ministryofjustice/laa-stabilisation-cdc @ministryofjustice/v1-hub20-developers 
 /terraform/environments/core-shared-services/laa-workspaces.tf @ministryofjustice/laa-aws-infrastructure 
+/terraform/environments/core-shared-services/london-unpaid-work.tf @ministryofjustice/hmpps-migration 
 /terraform/environments/core-shared-services/long-term-storage.tf @ministryofjustice/modernisation-platform-long-term-storage @ministryofjustice/octo-cyber-team 
 /terraform/environments/core-shared-services/maat.tf @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-crime-apps-team @ministryofjustice/laa-sre-admins @ministryofjustice/octo-cyber-team 
 /terraform/environments/core-shared-services/maatdb.tf @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-crime-apps-team @ministryofjustice/laa-dba @ministryofjustice/laa-maat-migrations @ministryofjustice/laa-sre-admins 

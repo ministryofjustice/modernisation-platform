@@ -81,6 +81,110 @@ locals {
   laa_custom_tcp_rules_to_apply = local.apply_laa_custom_tcp_rules ? local.laa_custom_egress_tcp_acl_rules : {}
 
 
+ # LAA ingress rules from Workspaces. Add/change these as required.
+ # Note - only rule numbers between 2200 and 2219
+
+  laa_workspaces_ingress_rule_list = [
+    {
+      laa_vpc_name    = "laa-development"
+      rule_number     = 2200
+      from_port       = 443
+      to_port         = 443
+      workspaces_cidr = "10.26.130.0/23"
+      subnet_name     = "general-private"
+    },
+    {
+      laa_vpc_name    = "laa-test"
+      rule_number     = 2200
+      from_port       = 443
+      to_port         = 443
+      workspaces_cidr = "10.26.130.0/23"
+      subnet_name     = "general-private"
+    },
+    {
+      laa_vpc_name    = "laa-preproduction"
+      rule_number     = 2200
+      from_port       = 443
+      to_port         = 443
+      workspaces_cidr = "10.27.130.0/23"
+      subnet_name     = "general-private"
+    },
+    {
+      laa_vpc_name    = "laa-production"
+      rule_number     = 2200
+      from_port       = 443
+      to_port         = 443
+      workspaces_cidr = "10.27.130.0/23"
+      subnet_name     = "general-private"
+    }
+  ]
+
+ # LAA egress rules for Workspaces traffic. These are typically stable ephemeral ranges.
+  laa_workspaces_egress_rule_list = [
+    {
+      laa_vpc_name    = "laa-development"
+      rule_number     = 2200
+      from_port       = 1024
+      to_port         = 65535
+      workspaces_cidr = "10.26.130.0/23"
+      subnet_name     = "general-private"
+    },
+    {
+      laa_vpc_name    = "laa-test"
+      rule_number     = 2200
+      from_port       = 1024
+      to_port         = 65535
+      workspaces_cidr = "10.26.130.0/23"
+      subnet_name     = "general-private"
+    },
+    {
+      laa_vpc_name    = "laa-preproduction"
+      rule_number     = 2200
+      from_port       = 1024
+      to_port         = 65535
+      workspaces_cidr = "10.27.130.0/23"
+      subnet_name     = "general-private"
+    },
+    {
+      laa_vpc_name    = "laa-production"
+      rule_number     = 2200
+      from_port       = 1024
+      to_port         = 65535
+      workspaces_cidr = "10.27.130.0/23"
+      subnet_name     = "general-private"
+    }
+  ]
+
+  laa_workspaces_ingress_rules_to_apply = {
+    for idx, rule in local.laa_workspaces_ingress_rule_list :
+    format("laa_workspaces_ingress_%s_%d_%d_%03d", rule.subnet_name, rule.from_port, rule.to_port, idx) => {
+      cidr_block  = rule.workspaces_cidr
+      egress      = false
+      from_port   = rule.from_port
+      to_port     = rule.to_port
+      protocol    = "tcp"
+      rule_action = "allow"
+      rule_number = rule.rule_number
+      subnet_name = rule.subnet_name
+    } if rule.laa_vpc_name == var.vpc_name
+  }
+
+  laa_workspaces_egress_rules_to_apply = {
+    for idx, rule in local.laa_workspaces_egress_rule_list :
+    format("laa_workspaces_egress_%s_%d_%d_%03d", rule.subnet_name, rule.from_port, rule.to_port, idx) => {
+      cidr_block  = rule.workspaces_cidr
+      egress      = true
+      from_port   = rule.from_port
+      to_port     = rule.to_port
+      protocol    = "tcp"
+      rule_action = "allow"
+      rule_number = rule.rule_number
+      subnet_name = rule.subnet_name
+    } if rule.laa_vpc_name == var.vpc_name
+  }
+
+  laa_workspaces_rules_to_apply = merge(local.laa_workspaces_ingress_rules_to_apply, local.laa_workspaces_egress_rules_to_apply)
+
 
   # Custom Rules for access to selected CICA subnets from AP
 
