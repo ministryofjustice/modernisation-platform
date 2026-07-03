@@ -2,11 +2,15 @@ locals {
   centralised_endpoint_vpc_cidr = "10.20.240.0/20"
 
   centralised_endpoint_consumer_accounts = {
-    cloud-platform-development      = local.environment_management.account_ids["cloud-platform-development"]
-    cloud-platform-preproduction    = local.environment_management.account_ids["cloud-platform-preproduction"]
-    cloud-platform-live             = local.environment_management.account_ids["cloud-platform-live"]
-    container-platform-octo-nonlive = local.environment_management.account_ids["container-platform-octo-nonlive"]
-    container-platform-octo-live    = local.environment_management.account_ids["container-platform-octo-live"]
+    cloud-platform-development       = local.environment_management.account_ids["cloud-platform-development"]
+    cloud-platform-preproduction     = local.environment_management.account_ids["cloud-platform-preproduction"]
+    cloud-platform-live              = local.environment_management.account_ids["cloud-platform-live"]
+    container-platform-hmpps-live    = local.environment_management.account_ids["container-platform-hmpps-live"]
+    container-platform-hmpps-nonlive = local.environment_management.account_ids["container-platform-hmpps-nonlive"]
+    container-platform-laa-live      = local.environment_management.account_ids["container-platform-laa-live"]
+    container-platform-laa-nonlive   = local.environment_management.account_ids["container-platform-laa-nonlive"]
+    container-platform-octo-nonlive  = local.environment_management.account_ids["container-platform-octo-nonlive"]
+    container-platform-octo-live     = local.environment_management.account_ids["container-platform-octo-live"]
   }
 
   centralised_endpoint_configuration = jsondecode(file("${path.module}/centralised-vpc-endpoints.json"))
