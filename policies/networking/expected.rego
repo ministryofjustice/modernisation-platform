@@ -425,6 +425,7 @@ expected :=
           "data-platform-development",
           "data-platform-governance-development",
           "example-development",
+          "integration-hub-api-development",
           "integration-hub-development",
           "integration-hub-file-transfer-development",
           "observability-platform-development",
