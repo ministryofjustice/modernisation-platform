@@ -15,13 +15,13 @@
 /terraform/environments/core-shared-services/apex.tf @ministryofjustice/laa-apex-developer @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-audit 
 /terraform/environments/core-shared-services/bichard7.tf @ministryofjustice/cjse-bichard7-next 
 /terraform/environments/core-shared-services/ccms-ebs-ai.tf @ministryofjustice/laa-sre-admins, laa-sre-admins 
-/terraform/environments/core-shared-services/ccms-ebs-upgrade.tf @ministryofjustice/laa-ccms-migration-team @ministryofjustice/laa-sre-admins 
-/terraform/environments/core-shared-services/ccms-ebs.tf @ministryofjustice/laa-ccms-developers @ministryofjustice/laa-ccms-ebs-developers @ministryofjustice/laa-ccms-instance-access @ministryofjustice/laa-ccms-migration-team @ministryofjustice/laa-ccms-security-testing-kpmg @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-security @ministryofjustice/octo-cyber-team 
+/terraform/environments/core-shared-services/ccms-ebs-upgrade.tf @ministryofjustice/laa-ccms-migration-team @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-audit 
+/terraform/environments/core-shared-services/ccms-ebs.tf @ministryofjustice/laa-ccms-developers @ministryofjustice/laa-ccms-ebs-developers @ministryofjustice/laa-ccms-instance-access @ministryofjustice/laa-ccms-migration-team @ministryofjustice/laa-ccms-security-testing-kpmg @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-audit @ministryofjustice/modernisation-platform-security @ministryofjustice/octo-cyber-team 
 /terraform/environments/core-shared-services/ccms-edrms.tf @ministryofjustice/laa-sre-admins 
 /terraform/environments/core-shared-services/ccms-feasibility.tf @ministryofjustice/laa-sre-admins 
-/terraform/environments/core-shared-services/ccms-oia.tf @ministryofjustice/laa-ccms-developers @ministryofjustice/laa-dba @ministryofjustice/laa-oia-developers @ministryofjustice/laa-sre-admins @ministryofjustice/octo-cyber-team 
+/terraform/environments/core-shared-services/ccms-oia.tf @ministryofjustice/laa-ccms-developers @ministryofjustice/laa-dba @ministryofjustice/laa-oia-developers @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-audit @ministryofjustice/octo-cyber-team 
 /terraform/environments/core-shared-services/ccms-pui-internal.tf @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-audit 
-/terraform/environments/core-shared-services/ccms-pui.tf @ministryofjustice/laa-ccms-developers @ministryofjustice/laa-sre-admins @ministryofjustice/octo-cyber-team 
+/terraform/environments/core-shared-services/ccms-pui.tf @ministryofjustice/laa-ccms-developers @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-audit @ministryofjustice/octo-cyber-team 
 /terraform/environments/core-shared-services/cdpt-chaps.tf @ministryofjustice/central-digital-product-team @ministryofjustice/modernisation-platform-audit 
 /terraform/environments/core-shared-services/cdpt-ifs.tf @ministryofjustice/central-digital-product-team @ministryofjustice/modernisation-platform-audit 
 /terraform/environments/core-shared-services/cfo-data-management-system.tf @ministryofjustice/hmpps-creating-future-opportunities-devs @ministryofjustice/hmpps-creating-future-opportunities-live 
