@@ -13,7 +13,7 @@ module "s3-bucket-cloudtrail-logging" {
   ownership_controls         = "BucketOwnerEnforced"
 
   replication_enabled          = true
-  replication_object_lock_days = 1
+  replication_object_lock_days = 7
   replication_region           = "eu-west-1"
 
   tags = local.tags

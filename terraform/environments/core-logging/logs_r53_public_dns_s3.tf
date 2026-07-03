@@ -13,7 +13,7 @@ module "s3_bucket_r53_public_dns_logs" {
   custom_kms_key               = aws_kms_key.r53_public_dns_logs.arn
   custom_replication_kms_key   = aws_kms_key.r53_public_dns_logs_replication.arn
   replication_enabled          = true
-  replication_object_lock_days = 1
+  replication_object_lock_days = 7
   replication_region           = "eu-west-1"
   versioning_enabled           = true
 
