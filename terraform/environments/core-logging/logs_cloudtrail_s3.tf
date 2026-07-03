@@ -11,7 +11,7 @@ module "s3-bucket-cloudtrail" {
   custom_kms_key               = aws_kms_key.s3_logging_cloudtrail.arn
   custom_replication_kms_key   = aws_kms_key.s3_logging_cloudtrail_eu-west-1_replication.arn
   replication_enabled          = true
-  replication_object_lock_days = 1
+  replication_object_lock_days = 7
   replication_region           = "eu-west-1"
   ownership_controls           = "BucketOwnerEnforced"
   log_bucket                   = module.s3-bucket-cloudtrail-logging.bucket.id

@@ -353,7 +353,7 @@ module "state-bucket" {
   sse_algorithm                = "aws:kms"
   enforce_kms_request_headers  = false
   replication_enabled          = true
-  replication_object_lock_days = 1
+  replication_object_lock_days = 7
   replication_region           = "eu-west-1"
   custom_kms_key               = aws_kms_key.s3_state_bucket_multi_region.arn
   custom_replication_kms_key   = aws_kms_replica_key.s3_state_bucket_multi_region_replica.arn
