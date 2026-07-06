@@ -165,7 +165,7 @@ resource "aws_route53_record" "amend_a_claim_laa" {
   ]
 }
 
-resource "aws_route53_record" "amend_a_claim_laa" {
+resource "aws_route53_record" "laa_service_txt" {
   allow_overwrite = true
   name            = "laa.service.justice.gov.uk"
   ttl             = 30
