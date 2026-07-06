@@ -259,20 +259,20 @@ resource "aws_network_acl_rule" "laa_custom_tcp_rules" {
 }
 
 resource "aws_network_acl_rule" "laa_workspaces_tcp_rules_general_private" {
-  for_each       = local.laa_workspaces_rules_to_apply
-  cidr_block     = each.value.cidr_block
-  egress         = each.value.egress
-  from_port      = each.value.from_port
+  for_each   = local.laa_workspaces_rules_to_apply
+  cidr_block = each.value.cidr_block
+  egress     = each.value.egress
+  from_port  = each.value.from_port
   network_acl_id = {
     "general-private" = aws_network_acl.general-private.id
     "general-data"    = aws_network_acl.general-data.id
     "general-public"  = aws_network_acl.general-public.id
     "protected"       = aws_network_acl.protected.id
   }[each.value.subnet_name]
-  protocol       = each.value.protocol
-  rule_action    = each.value.rule_action
-  rule_number    = each.value.rule_number
-  to_port        = each.value.to_port
+  protocol    = each.value.protocol
+  rule_action = each.value.rule_action
+  rule_number = each.value.rule_number
+  to_port     = each.value.to_port
 }
 
 resource "aws_network_acl_rule" "cica_custom_ap_db_rules" {

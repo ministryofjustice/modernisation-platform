@@ -81,8 +81,8 @@ locals {
   laa_custom_tcp_rules_to_apply = local.apply_laa_custom_tcp_rules ? local.laa_custom_egress_tcp_acl_rules : {}
 
 
- # LAA ingress rules from Workspaces. Add/change these as required.
- # Note - only rule numbers between 2200 and 2219
+  # LAA ingress rules from Workspaces. Add/change these as required.
+  # Note - only rule numbers between 2200 and 2219
 
   laa_workspaces_ingress_rule_list = [
     {
@@ -119,7 +119,7 @@ locals {
     }
   ]
 
- # LAA egress rules for Workspaces traffic. These are typically stable ephemeral ranges.
+  # LAA egress rules for Workspaces traffic. These are typically stable ephemeral ranges.
   laa_workspaces_egress_rule_list = [
     {
       laa_vpc_name    = "laa-development"
