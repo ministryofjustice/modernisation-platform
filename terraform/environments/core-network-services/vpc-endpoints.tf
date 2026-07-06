@@ -20,9 +20,31 @@ locals {
     replace(endpoint_name, ".", "_") => "com.amazonaws.${data.aws_region.current.region}.${endpoint_name}"
   }
 
+  centralised_endpoint_service_private_dns_zone_overrides = {
+    detective          = "api.detective.${data.aws_region.current.region}.amazonaws.com"
+    ecr_api            = "api.ecr.${data.aws_region.current.region}.amazonaws.com"
+    ecr_dkr            = "dkr.ecr.${data.aws_region.current.region}.amazonaws.com"
+    "eks-auth"         = "eks-auth.${data.aws_region.current.region}.api.aws"
+    "kinesis-firehose" = "firehose.${data.aws_region.current.region}.amazonaws.com"
+  }
+
   centralised_endpoint_service_private_dns_zones = {
     for service_name, service in local.centralised_interface_endpoint_services :
-    service_name => "${replace(service, "com.amazonaws.${data.aws_region.current.region}.", "")}.${data.aws_region.current.region}.amazonaws.com"
+    service_name => lookup(
+      local.centralised_endpoint_service_private_dns_zone_overrides,
+      service_name,
+      "${replace(service, "com.amazonaws.${data.aws_region.current.region}.", "")}.${data.aws_region.current.region}.amazonaws.com"
+    )
+  }
+
+  centralised_endpoint_service_wildcard_alias_zone_keys = toset([
+    "ecr_dkr",
+  ])
+
+  centralised_endpoint_service_wildcard_alias_zones = {
+    for service_name, zone_name in local.centralised_endpoint_service_private_dns_zones :
+    service_name => zone_name
+    if contains(local.centralised_endpoint_service_wildcard_alias_zone_keys, service_name)
   }
 }
 
@@ -144,6 +166,20 @@ resource "aws_route53_record" "centralised_endpoint_alias_records" {
 
   zone_id = aws_route53_zone.centralised_endpoint_private_zones[each.key].zone_id
   name    = each.value
+  type    = "A"
+
+  alias {
+    name                   = aws_vpc_endpoint.centralised_interface_endpoints[each.key].dns_entry[0].dns_name
+    zone_id                = aws_vpc_endpoint.centralised_interface_endpoints[each.key].dns_entry[0].hosted_zone_id
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "centralised_endpoint_wildcard_alias_records" {
+  for_each = local.centralised_endpoint_service_wildcard_alias_zones
+
+  zone_id = aws_route53_zone.centralised_endpoint_private_zones[each.key].zone_id
+  name    = "*.${each.value}"
   type    = "A"
 
   alias {
