@@ -165,6 +165,17 @@ resource "aws_route53_record" "amend_a_claim_laa" {
   ]
 }
 
+resource "aws_route53_record" "amend_a_claim_laa" {
+  allow_overwrite = true
+  name            = "laa.service.justice.gov.uk"
+  ttl             = 30
+  type            = "TXT"
+  zone_id         = aws_route53_zone.application_zones["laa"].zone_id
+  records = [
+    "ixab6noq11"
+  ]
+}
+
 # Github pages user guidance CNAME record
 
 resource "aws_route53_record" "github_pages" {
