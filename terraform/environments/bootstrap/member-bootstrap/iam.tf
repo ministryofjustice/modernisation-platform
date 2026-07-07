@@ -1196,6 +1196,13 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
   }
 
   statement {
+    sid       = "AllowOIDCUpdateLambdaFunctionCode"
+    effect    = "Allow"
+    resources = ["arn:aws:lambda:*:${local.environment_management.account_ids[terraform.workspace]}:function:*"]
+    actions   = ["lambda:UpdateFunctionCode"]
+  }
+
+  statement {
     sid    = "AllowAccountRestrictedGrafana"
     effect = "Allow"
     actions = [
