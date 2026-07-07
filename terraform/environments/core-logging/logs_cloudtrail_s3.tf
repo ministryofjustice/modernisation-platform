@@ -14,6 +14,13 @@ module "s3-bucket-cloudtrail" {
   replication_object_lock_days = 7
   replication_region           = "eu-west-1"
   ownership_controls           = "BucketOwnerEnforced"
+  log_bucket                   = module.s3-bucket-cloudtrail-logging.bucket.id
+  log_buckets = tomap({
+    "log_bucket_name" : module.s3-bucket-cloudtrail-logging.bucket.id,
+    "log_bucket_arn" : module.s3-bucket-cloudtrail-logging.bucket.arn,
+    "log_bucket_policy" : module.s3-bucket-cloudtrail-logging.bucket_policy.policy,
+  })
+  log_prefix = ""
   tags = merge(local.tags, {
     backup = "false"
   })
