@@ -34,7 +34,8 @@ allowed_access := [
   "view-only",
   "powerbi-user",
   "fleet-manager",
-  "quicksight-admin"
+  "quicksight-admin",
+  "workspace-admin"
 ]
 
 allowed_nuke := [
