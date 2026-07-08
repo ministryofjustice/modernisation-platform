@@ -82,3 +82,11 @@ output "view-only" {
 output "data_scientist" {
   value = aws_ssoadmin_permission_set.modernisation_platform_data_scientist.arn
 }
+
+output "workspace_user_admin" {
+  value = aws_ssoadmin_permission_set.modernisation_platform_workspace_user_admin.arn
+}
+
+output "workspace_admin" {
+  value = aws_ssoadmin_permission_set.modernisation_platform_workspace_admin.arn
+}
