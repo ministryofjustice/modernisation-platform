@@ -17,6 +17,10 @@
         {
           "sso_group_name": "laa-data-factory-engineering",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-data-factory-engineering",
+          "level": "reporting-operations"
         }
       ]
     }

@@ -135,6 +135,21 @@ resource "aws_route53_record" "bichard7" {
   ]
 }
 
+# External account NS delegation under modernisation-platform.service.justice.gov.uk
+resource "aws_route53_record" "modernisation_platform_ai_prototype" {
+  allow_overwrite = true
+  name            = "ai-prototype.${local.modernisation-platform-domain}"
+  ttl             = 30
+  type            = "NS"
+  zone_id         = aws_route53_zone.modernisation-platform.zone_id
+  records = [
+    "ns-1877.awsdns-42.co.uk.",
+    "ns-208.awsdns-26.com.",
+    "ns-997.awsdns-60.net.",
+    "ns-1225.awsdns-25.org."
+  ]
+}
+
 # Submit a bulk claim LAA NS delegation to CP
 resource "aws_route53_record" "submit_a_bulk_claim_laa" {
   allow_overwrite = true
