@@ -8,6 +8,10 @@
         {
           "sso_group_name": "mojo-vds-team",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "mojo-vds-team",
+          "level": "workspace-admin"
         }
       ],
       "nuke": "exclude"
@@ -18,6 +22,10 @@
         {
           "sso_group_name": "mojo-vds-team",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "mojo-vds-team",
+          "level": "workspace-admin"
         }
       ]
     }
