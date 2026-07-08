@@ -606,3 +606,79 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
     path = "/"
   }
 }
+
+# Modernisation Platform workspace-user-admin role
+# Full management of Amazon WorkSpaces resources with read-only access to Directory Services.
+resource "aws_ssoadmin_permission_set" "modernisation_platform_workspace_user_admin" {
+  provider         = aws.sso-management
+  name             = "mp-workspace-user-admin"
+  description      = "Modernisation Platform: workspace-user-admin"
+  instance_arn     = local.sso_admin_instance_arn
+  session_duration = "PT8H"
+  tags             = {}
+}
+
+resource "aws_ssoadmin_managed_policy_attachment" "modernisation_platform_workspace_user_admin" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  managed_policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_workspace_user_admin.arn
+}
+
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_workspace_user_admin" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_workspace_user_admin.arn
+  customer_managed_policy_reference {
+    name = "workspace_user_admin_policy"
+    path = "/"
+  }
+}
+
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_workspace_user_admin_common" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_workspace_user_admin.arn
+  customer_managed_policy_reference {
+    name = "common_policy"
+    path = "/"
+  }
+}
+
+# Modernisation Platform workspace-admin role
+# Full management of Amazon WorkSpaces and broad Directory Services management.
+resource "aws_ssoadmin_permission_set" "modernisation_platform_workspace_admin" {
+  provider         = aws.sso-management
+  name             = "mp-workspace-admin"
+  description      = "Modernisation Platform: workspace-admin"
+  instance_arn     = local.sso_admin_instance_arn
+  session_duration = "PT8H"
+  tags             = {}
+}
+
+resource "aws_ssoadmin_managed_policy_attachment" "modernisation_platform_workspace_admin" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  managed_policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_workspace_admin.arn
+}
+
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_workspace_admin" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_workspace_admin.arn
+  customer_managed_policy_reference {
+    name = "workspace_admin_policy"
+    path = "/"
+  }
+}
+
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_workspace_admin_common" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_workspace_admin.arn
+  customer_managed_policy_reference {
+    name = "common_policy"
+    path = "/"
+  }
+}
