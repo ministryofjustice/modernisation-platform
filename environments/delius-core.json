@@ -298,6 +298,7 @@
     "ministryofjustice/ndelius-um",
     "ministryofjustice/delius-pdm-uplift-scripts",
     "ministryofjustice/dso-modernisation-platform-automation",
-    "ministryofjustice/hmpps-probation-integration-services"
+    "ministryofjustice/hmpps-probation-integration-services",
+    "ministryofjustice/hmpps-supervision"
   ]
 }
