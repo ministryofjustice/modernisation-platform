@@ -981,7 +981,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     }
   }
   statement {
-    sid    = "AllowCloudPlatformDevelopmentClusterAccess"
+    sid    = "AllowCloudPlatformAccess"
     effect = "Allow"
     actions = [
       "s3:GetObject",
@@ -993,7 +993,8 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     principals {
       type = "AWS"
       identifiers = [
-        "arn:aws:iam::${local.environment_management.account_ids["cloud-platform-development"]}:role/github-actions-development-cluster"
+        "arn:aws:iam::${local.environment_management.account_ids["cloud-platform-development"]}:role/github-actions-development-cluster",
+        "arn:aws:iam::${local.environment_management.account_ids["cloud-platform-live"]}:role/github-actions-container-platform-identity-apply"
       ]
     }
   }
