@@ -20,6 +20,8 @@
     "slack-channel": "ask-integration-hub",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [],
+  "github-oidc-team-repositories": [
+    "ministryofjustice/integration-hub-file-transfer-api"
+  ],
   "go-live-date": ""
 }
