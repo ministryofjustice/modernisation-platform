@@ -295,6 +295,7 @@ data "aws_iam_policy_document" "member-access-data" {
       "elasticache:*",
       "elasticfilesystem:*",
       "es:*",
+      "firehose:*",
       "fsx:*",
       "glacier:*",
       "glue:*",
@@ -304,14 +305,14 @@ data "aws_iam_policy_document" "member-access-data" {
       "lakeformation:*",
       "macie2:*",
       "quicksight:*",
-      "rds-db:*",
       "rds:*",
       "rds-data:*",
+      "rds-db:*",
       "redshift:*",
       "redshift-data:*",
       "redshift-serverless:*",
       "s3:*",
-      "firehose:*"
+      "schemas:*"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
