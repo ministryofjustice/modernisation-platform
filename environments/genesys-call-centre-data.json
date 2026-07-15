@@ -1,7 +1,6 @@
 {
   "account-type": "member",
   "isolated-network": "true",
-  "codeowners": [""],
   "environments": [
     {
       "name": "development",
