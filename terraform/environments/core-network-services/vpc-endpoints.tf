@@ -24,11 +24,8 @@ locals {
   # Endpoints in this set use private_dns_enabled = true and are associated to the
   # profile directly, avoiding self-managed PHZ/alias records.
   centralised_endpoint_profile_native_service_keys = toset([
-    "detective",
-    "ecr_api",
-    "ecr_dkr",
-    "eks-auth",
-    "kinesis-firehose",
+    "sns",
+    "sqs",
   ])
 
   centralised_interface_endpoint_services_profile_native = {
