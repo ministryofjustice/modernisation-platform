@@ -23,7 +23,10 @@ locals {
   # Pilot migration cohort for native Route53 Profile <-> VPC endpoint integration.
   # Endpoints in this set use private_dns_enabled = true and are associated to the
   # profile directly, avoiding self-managed PHZ/alias records.
-  centralised_endpoint_profile_native_service_keys = toset([])
+  centralised_endpoint_profile_native_service_keys = toset([
+    "sns",
+    "sqs",
+  ])
 
   centralised_interface_endpoint_services_profile_native = {
     for service_name, service in local.centralised_interface_endpoint_services :

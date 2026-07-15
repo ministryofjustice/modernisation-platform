@@ -26,6 +26,8 @@
     "rds-data",
     "secretsmanager",
     "securityhub",
+    "sns",
+    "sqs",
     "ssm",
     "sts",
     "transcribe",
