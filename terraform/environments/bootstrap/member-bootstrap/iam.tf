@@ -336,6 +336,7 @@ data "aws_iam_policy_document" "member-access-network" {
       "aoss:*",
       "bcm-data-exports:*",
       "bedrock:*",
+      "bedrock-mantle:*",
       "chatbot:*",
       "cur:DeleteReportDefinition",
       "cur:DescribeReportDefinitions",

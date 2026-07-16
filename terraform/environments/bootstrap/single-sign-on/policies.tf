@@ -727,6 +727,7 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "aws-marketplace:ViewSubscriptions",
       "backup:*",
       "bedrock:*",
+      "bedrock-mantle:*",
       "ce:*",
       "cloudformation:*",
       "cloudfront:*",
