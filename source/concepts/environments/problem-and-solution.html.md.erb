@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Environments (AWS accounts)
-last_reviewed_on: 2025-07-16
+last_reviewed_on: 2026-07-16
 review_in: 12 months
 ---
 
@@ -69,7 +69,7 @@ Since Data Transfer isn't taggable, you can't easily trace it back to the origin
 
 When holding all applications in a SDLC account, it becomes difficult to retire application infrastructure, even if they're covered by a good tagging policy. When deploying to the cloud, all infrastructure should be considered ephemeral and everything should be rebuildable from code.
 
-If you destroy the wrong infrastructure when retiring an application, it becomes costly to recreate. If you accidently miss some infrastructure during de-provisioning, you inadvertently create ongoing cloud waste which is also costly.
+If you destroy the wrong infrastructure when retiring an application, it becomes costly to recreate. If you accidentally miss some infrastructure during de-provisioning, you inadvertently create ongoing cloud waste which is also costly.
 
 Until you've retired all applications within a shared AWS account, you can't close it, so there's always a chance there are some resources left unaccounted for after an application has been refactored, replaced, or retired.
 
