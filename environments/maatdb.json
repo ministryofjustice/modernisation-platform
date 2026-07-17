@@ -37,6 +37,10 @@
           "github_action_reviewer": "true"
         },
         {
+          "sso_group_name": "laa-ccms-ebs-developers",
+          "level": "developer"
+        },
+        {
           "sso_group_name": "laa-maat-migrations",
           "level": "sandbox",
           "github_action_reviewer": "true"
@@ -78,6 +82,10 @@
           "github_action_reviewer": "true"
         },
         {
+          "sso_group_name": "laa-ccms-ebs-developers",
+          "level": "developer"
+        },
+        {
           "sso_group_name": "laa-maat-migrations",
           "level": "developer",
           "github_action_reviewer": "true"
@@ -116,6 +124,10 @@
           "sso_group_name": "laa-dba",
           "level": "instance-management",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
+          "level": "developer"
         },
         {
           "sso_group_name": "laa-maat-migrations",
@@ -161,6 +173,10 @@
           "sso_group_name": "laa-maat-migrations",
           "level": "developer",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
+          "level": "developer"
         },
         {
           "sso_group_name": "octo-cyber-team",

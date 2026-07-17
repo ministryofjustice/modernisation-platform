@@ -16,6 +16,10 @@
           "level": "sandbox"
         },
         {
+          "sso_group_name": "laa-ccms-ebs-developers",
+          "level": "developer"
+        },
+        {
           "sso_group_name": "laa-ccms-developers",
           "level": "developer"
         },
@@ -42,6 +46,10 @@
           "level": "developer"
         },
         {
+          "sso_group_name": "laa-ccms-ebs-developers",
+          "level": "developer"
+        },
+        {
           "sso_group_name": "laa-sre-admins",
           "level": "instance-management"
         },
@@ -64,6 +72,10 @@
       "access": [
         {
           "sso_group_name": "laa-sre-admins",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
           "level": "developer"
         },
         {
@@ -102,6 +114,10 @@
         },
         {
           "sso_group_name": "laa-dba",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
           "level": "developer"
         },
         {
