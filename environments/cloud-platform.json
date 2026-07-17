@@ -5,6 +5,9 @@
       "name": "cluster"
     },
     {
+      "name": "cluster-base"
+    },
+    {
       "name": "cluster-core"
     },
     {
