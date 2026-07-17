@@ -16,7 +16,7 @@ permissions:
 jobs:
 
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@d682f41c6f6b8c6bc0e06ae38ef41a464aa8a204 # v6.1.6
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@fix/tflint-2591-workaround # test tflint workaround
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}  
@@ -33,7 +33,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Run Analysis
-        uses: ministryofjustice/modernisation-platform-github-actions/terraform-static-analysis@d682f41c6f6b8c6bc0e06ae38ef41a464aa8a204 # v6.1.6
+        uses: ministryofjustice/modernisation-platform-github-actions/terraform-static-analysis@fix/tflint-2591-workaround # test tflint workaround
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -57,7 +57,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Run Analysis
-        uses: ministryofjustice/modernisation-platform-github-actions/terraform-static-analysis@d682f41c6f6b8c6bc0e06ae38ef41a464aa8a204 # v6.1.6
+        uses: ministryofjustice/modernisation-platform-github-actions/terraform-static-analysis@fix/tflint-2591-workaround # test tflint workaround
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -77,12 +77,12 @@ jobs:
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d682f41c6f6b8c6bc0e06ae38ef41a464aa8a204 # v6.1.6
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@fix/tflint-2591-workaround # test tflint workaround
         with:
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Run Analysis
-        uses: ministryofjustice/modernisation-platform-github-actions/terraform-static-analysis@d682f41c6f6b8c6bc0e06ae38ef41a464aa8a204 # v6.1.6
+        uses: ministryofjustice/modernisation-platform-github-actions/terraform-static-analysis@fix/tflint-2591-workaround # test tflint workaround
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
