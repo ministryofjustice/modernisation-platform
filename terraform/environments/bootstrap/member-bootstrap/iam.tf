@@ -1577,6 +1577,7 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
       "quicksight:ListTagsForResource",
       "redshift-data:Describe*",
       "secretsmanager:GetSecretValue",
+      "states:TestState",
       "workspaces-web:Get*",
       "workspaces-web:List*"
     ]
