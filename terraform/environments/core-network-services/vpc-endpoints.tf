@@ -20,6 +20,26 @@ locals {
     replace(endpoint_name, ".", "_") => "com.amazonaws.${data.aws_region.current.region}.${endpoint_name}"
   }
 
+  # Pilot migration cohort for native Route53 Profile <-> VPC endpoint integration.
+  # Endpoints in this set use private_dns_enabled = true and are associated to the
+  # profile directly, avoiding self-managed PHZ/alias records.
+  centralised_endpoint_profile_native_service_keys = toset([
+    "sns",
+    "sqs",
+  ])
+
+  centralised_interface_endpoint_services_profile_native = {
+    for service_name, service in local.centralised_interface_endpoint_services :
+    service_name => service
+    if contains(local.centralised_endpoint_profile_native_service_keys, service_name)
+  }
+
+  centralised_interface_endpoint_services_legacy_dns = {
+    for service_name, service in local.centralised_interface_endpoint_services :
+    service_name => service
+    if !contains(local.centralised_endpoint_profile_native_service_keys, service_name)
+  }
+
   centralised_endpoint_service_private_dns_zone_overrides = {
     detective          = "api.detective.${data.aws_region.current.region}.amazonaws.com"
     ecr_api            = "api.ecr.${data.aws_region.current.region}.amazonaws.com"
@@ -28,8 +48,8 @@ locals {
     "kinesis-firehose" = "firehose.${data.aws_region.current.region}.amazonaws.com"
   }
 
-  centralised_endpoint_service_private_dns_zones = {
-    for service_name, service in local.centralised_interface_endpoint_services :
+  centralised_endpoint_service_private_dns_zones_legacy = {
+    for service_name, service in local.centralised_interface_endpoint_services_legacy_dns :
     service_name => lookup(
       local.centralised_endpoint_service_private_dns_zone_overrides,
       service_name,
@@ -42,7 +62,7 @@ locals {
   ])
 
   centralised_endpoint_service_wildcard_alias_zones = {
-    for service_name, zone_name in local.centralised_endpoint_service_private_dns_zones :
+    for service_name, zone_name in local.centralised_endpoint_service_private_dns_zones_legacy :
     service_name => zone_name
     if contains(local.centralised_endpoint_service_wildcard_alias_zone_keys, service_name)
   }
@@ -127,7 +147,7 @@ resource "aws_security_group_rule" "centralised_endpoint_interface_ingress" {
 }
 
 resource "aws_vpc_endpoint" "centralised_interface_endpoints" {
-  for_each = local.centralised_interface_endpoint_services
+  for_each = local.centralised_interface_endpoint_services_legacy_dns
 
   vpc_id              = module.vpc_centralised_endpoints.vpc_id
   service_name        = each.value
@@ -144,8 +164,26 @@ resource "aws_vpc_endpoint" "centralised_interface_endpoints" {
   )
 }
 
+resource "aws_vpc_endpoint" "centralised_interface_endpoints_profile_native" {
+  for_each = local.centralised_interface_endpoint_services_profile_native
+
+  vpc_id              = module.vpc_centralised_endpoints.vpc_id
+  service_name        = each.value
+  vpc_endpoint_type   = "Interface"
+  private_dns_enabled = true
+  subnet_ids          = module.vpc_centralised_endpoints.non_tgw_subnet_ids_map["private"]
+  security_group_ids  = [aws_security_group.centralised_endpoint_interface.id]
+
+  tags = merge(
+    local.tags,
+    {
+      Name = "${local.application_name}-${each.key}-centralised-endpoint"
+    }
+  )
+}
+
 resource "aws_route53_zone" "centralised_endpoint_private_zones" {
-  for_each = local.centralised_endpoint_service_private_dns_zones
+  for_each = local.centralised_endpoint_service_private_dns_zones_legacy
 
   name = each.value
 
@@ -162,7 +200,7 @@ resource "aws_route53_zone" "centralised_endpoint_private_zones" {
 }
 
 resource "aws_route53_record" "centralised_endpoint_alias_records" {
-  for_each = local.centralised_endpoint_service_private_dns_zones
+  for_each = local.centralised_endpoint_service_private_dns_zones_legacy
 
   zone_id = aws_route53_zone.centralised_endpoint_private_zones[each.key].zone_id
   name    = each.value
@@ -199,6 +237,14 @@ resource "aws_route53profiles_resource_association" "centralised_endpoint_privat
   for_each = aws_route53_zone.centralised_endpoint_private_zones
 
   name         = "${local.application_name}-${each.key}-private-zone"
+  profile_id   = aws_route53profiles_profile.centralised_endpoint_dns_profile.id
+  resource_arn = each.value.arn
+}
+
+resource "aws_route53profiles_resource_association" "centralised_endpoint_profile_native_associations" {
+  for_each = aws_vpc_endpoint.centralised_interface_endpoints_profile_native
+
+  name         = "${local.application_name}-${each.key}-endpoint"
   profile_id   = aws_route53profiles_profile.centralised_endpoint_dns_profile.id
   resource_arn = each.value.arn
 }

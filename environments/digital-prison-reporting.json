@@ -1,5 +1,11 @@
 {
   "account-type": "member",
+  "components": [
+    {
+      "name": "ppud-pipeline",
+      "sso_group_name": "probation-de"
+    }
+  ],
   "environments": [
     {
       "name": "development",

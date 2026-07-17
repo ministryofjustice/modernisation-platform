@@ -86,10 +86,16 @@ output "centralised_endpoint_vpc_id" {
 }
 
 output "centralised_interface_endpoint_arns" {
-  value = {
-    for name, endpoint in aws_vpc_endpoint.centralised_interface_endpoints :
-    name => endpoint.arn
-  }
+  value = merge(
+    {
+      for name, endpoint in aws_vpc_endpoint.centralised_interface_endpoints :
+      name => endpoint.arn
+    },
+    {
+      for name, endpoint in aws_vpc_endpoint.centralised_interface_endpoints_profile_native :
+      name => endpoint.arn
+    }
+  )
 }
 
 
