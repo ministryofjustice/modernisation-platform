@@ -20,13 +20,11 @@ locals {
     replace(endpoint_name, ".", "_") => "com.amazonaws.${data.aws_region.current.region}.${endpoint_name}"
   }
 
-  # Pilot migration cohort for native Route53 Profile <-> VPC endpoint integration.
-  # Endpoints in this set use private_dns_enabled = true and are associated to the
+  # Services in this set use private_dns_enabled = true and are associated to the
   # profile directly, avoiding self-managed PHZ/alias records.
-  centralised_endpoint_profile_native_service_keys = toset([
-    "sns",
-    "sqs",
-  ])
+  centralised_endpoint_profile_native_service_keys = toset(
+    keys(local.centralised_interface_endpoint_services)
+  )
 
   centralised_interface_endpoint_services_profile_native = {
     for service_name, service in local.centralised_interface_endpoint_services :
@@ -66,6 +64,16 @@ locals {
     service_name => zone_name
     if contains(local.centralised_endpoint_service_wildcard_alias_zone_keys, service_name)
   }
+}
+
+moved {
+  from = aws_vpc_endpoint.centralised_interface_endpoints_profile_native["sns"]
+  to   = aws_vpc_endpoint.centralised_interface_endpoints["sns"]
+}
+
+moved {
+  from = aws_vpc_endpoint.centralised_interface_endpoints_profile_native["sqs"]
+  to   = aws_vpc_endpoint.centralised_interface_endpoints["sqs"]
 }
 
 module "vpc_centralised_endpoints" {
@@ -147,32 +155,18 @@ resource "aws_security_group_rule" "centralised_endpoint_interface_ingress" {
 }
 
 resource "aws_vpc_endpoint" "centralised_interface_endpoints" {
-  for_each = local.centralised_interface_endpoint_services_legacy_dns
+  for_each = local.centralised_interface_endpoint_services
 
   vpc_id              = module.vpc_centralised_endpoints.vpc_id
   service_name        = each.value
   vpc_endpoint_type   = "Interface"
-  private_dns_enabled = false
+  private_dns_enabled = contains(local.centralised_endpoint_profile_native_service_keys, each.key)
   subnet_ids          = module.vpc_centralised_endpoints.non_tgw_subnet_ids_map["private"]
   security_group_ids  = [aws_security_group.centralised_endpoint_interface.id]
 
-  tags = merge(
-    local.tags,
-    {
-      Name = "${local.application_name}-${each.key}-centralised-endpoint"
-    }
-  )
-}
-
-resource "aws_vpc_endpoint" "centralised_interface_endpoints_profile_native" {
-  for_each = local.centralised_interface_endpoint_services_profile_native
-
-  vpc_id              = module.vpc_centralised_endpoints.vpc_id
-  service_name        = each.value
-  vpc_endpoint_type   = "Interface"
-  private_dns_enabled = true
-  subnet_ids          = module.vpc_centralised_endpoints.non_tgw_subnet_ids_map["private"]
-  security_group_ids  = [aws_security_group.centralised_endpoint_interface.id]
+  depends_on = [
+    aws_route53_zone.centralised_endpoint_private_zones,
+  ]
 
   tags = merge(
     local.tags,
@@ -242,11 +236,11 @@ resource "aws_route53profiles_resource_association" "centralised_endpoint_privat
 }
 
 resource "aws_route53profiles_resource_association" "centralised_endpoint_profile_native_associations" {
-  for_each = aws_vpc_endpoint.centralised_interface_endpoints_profile_native
+  for_each = local.centralised_interface_endpoint_services_profile_native
 
   name         = "${local.application_name}-${each.key}-endpoint"
   profile_id   = aws_route53profiles_profile.centralised_endpoint_dns_profile.id
-  resource_arn = each.value.arn
+  resource_arn = aws_vpc_endpoint.centralised_interface_endpoints[each.key].arn
 }
 
 resource "aws_ram_resource_share" "centralised_endpoint_dns_profile" {
