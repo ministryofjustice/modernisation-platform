@@ -11,6 +11,9 @@
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
+        },        {
+          "sso_group_name": "laa-ccms-ebs-developers",
+          "level": "developer"
         },
         {
           "sso_group_name": "laa-apex-developer",
@@ -24,6 +27,10 @@
       "access": [
         {
           "sso_group_name": "laa-sre-admins",
+          "level": "developer"
+        },        
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
           "level": "developer"
         },
         {
@@ -41,6 +48,10 @@
       "access": [
         {
           "sso_group_name": "laa-sre-admins",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
           "level": "developer"
         },
         {
@@ -67,6 +78,10 @@
         },
         {
           "sso_group_name": "laa-apex-developer",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
           "level": "developer"
         },
         {

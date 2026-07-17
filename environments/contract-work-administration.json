@@ -9,6 +9,10 @@
           "level": "sandbox"
         },
         {
+          "sso_group_name": "laa-ccms-ebs-developers",
+          "level": "developer"
+        },
+        {
           "sso_group_name": "laa-cwa-developer",
           "level": "developer",
           "github_action_reviewer": "false"
@@ -32,6 +36,10 @@
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
+          "level": "developer"
         },
         {
           "sso_group_name": "laa-cwa-developer",
