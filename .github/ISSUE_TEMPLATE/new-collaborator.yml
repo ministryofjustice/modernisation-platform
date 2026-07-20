@@ -37,14 +37,12 @@ body:
     placeholder: e.g., Frodo Baggins
   validations:
     required: true
-- type: dropdown
+- type: input
   id: collaborator-email
   attributes:
     label: Collaborator email address
-    description: Can you provide a valid email address for the new external collaborator?
-    options:
-    - "Yes"
-    - "No"
+    description: The email address of the new external collaborator.
+    placeholder: e.g., collaborator@example.gov.uk
   validations:
     required: true
 - type: input
