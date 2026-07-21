@@ -156,8 +156,8 @@ setup_environment_reviewers() {
   # Initialize teams variable
   teams=""
 
-  # First, check if top-level github_action_reviewer exists
-  top_level_reviewer=$(jq -r '.github_action_reviewer // empty' "$json_file")
+  # First, check if top-level github_action_reviewer exists (supports string or array)
+  top_level_reviewer=$(jq -r '.github_action_reviewer | if type == "array" then .[] else . end | select(. != null and . != "")' "$json_file" 2>/dev/null)
   if [ -n "$top_level_reviewer" ] && [ "$top_level_reviewer" != "null" ]; then
     echo "Found top-level github_action_reviewer: ${top_level_reviewer}"
     teams="$top_level_reviewer"
