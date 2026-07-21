@@ -156,8 +156,13 @@ setup_environment_reviewers() {
   # Initialize teams variable
   teams=""
 
+  # First, check if top-level github_action_reviewer exists
+  top_level_reviewer=$(jq -r '.github_action_reviewer // empty' "$json_file")
+  if [ -n "$top_level_reviewer" ] && [ "$top_level_reviewer" != "null" ]; then
+    echo "Found top-level github_action_reviewer: ${top_level_reviewer}"
+    teams="$top_level_reviewer"
   # For component environments, first check if component has github_action_reviewer=true
-  if [ -n "$component_name" ]; then
+  elif [ -n "$component_name" ]; then
     echo "Checking component for github_action_reviewer=true..."
     component_reviewer_team=$(jq -r --arg c "${component_name}" '.components[] | select(.name == $c) | select(.github_action_reviewer=="true") | .sso_group_name' "$json_file")
         
@@ -167,9 +172,9 @@ setup_environment_reviewers() {
     fi
   fi
 
-  # If no component reviewer team found, proceed with normal logic
+  # If no reviewer team found yet, proceed with per-environment fallback logic
   if [ -z "$teams" ]; then
-    echo "No component reviewer team found, checking environment teams..."
+    echo "No top-level or component reviewer found, checking environment teams..."
     
     # Check if any environment access has github_action_reviewer=true
     reviewer_teams=$(jq -r --arg e "${env}" '.environments[] | select(.name == $e) | .access[] | select(.github_action_reviewer=="true") | .sso_group_name' "$json_file")
