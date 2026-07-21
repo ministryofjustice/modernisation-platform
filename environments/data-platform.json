@@ -33,10 +33,6 @@
       "name": "development",
       "access": [
         {
-          "sso_group_name": "data-platform-engineering",
-          "level": "platform-engineer-admin"
-        },
-        {
           "sso_group_name": "azure-aws-sso-data-platform-engineering",
           "level": "platform-engineer-admin"
         }
@@ -48,10 +44,6 @@
       "name": "test",
       "access": [
         {
-          "sso_group_name": "data-platform-engineering",
-          "level": "platform-engineer-admin"
-        },
-        {
           "sso_group_name": "azure-aws-sso-data-platform-engineering",
           "level": "platform-engineer-admin"
         }
@@ -62,10 +54,6 @@
       "name": "preproduction",
       "access": [
         {
-          "sso_group_name": "data-platform-engineering",
-          "level": "platform-engineer-admin"
-        },
-        {
           "sso_group_name": "azure-aws-sso-data-platform-engineering",
           "level": "platform-engineer-admin"
         }
@@ -75,10 +63,6 @@
     {
       "name": "production",
       "access": [
-        {
-          "sso_group_name": "data-platform-engineering",
-          "level": "platform-engineer-admin"
-        },
         {
           "sso_group_name": "azure-aws-sso-data-platform-engineering",
           "level": "platform-engineer-admin"
