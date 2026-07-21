@@ -1,0 +1,63 @@
+{% extends "layout.njk" %}
+
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block pageTitle %}Check your answers - {{ serviceName }}{% endblock %}
+
+{% block backLink %}
+  <a href="/new-environment" class="govuk-back-link">Back</a>
+{% endblock %}
+
+{% macro row(key, value) %}
+  {
+    "key":   { "text": {{ key | dump | safe }} },
+    "value": { "text": {{ (value or "Not provided") | dump | safe }} },
+    "actions": { "items": [{ "href": "/new-environment", "text": "Change", "visuallyHiddenText": {{ key | dump | safe }} }] }
+  }
+{% endmacro %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">Check your answers</h1>
+
+      {% set arr = data.environments | join(", ") %}
+      {% set accDev = data.accessDev | join(", ") %}
+      {% set accTest = data.accessTest | join(", ") %}
+      {% set accPre = data.accessPreprod | join(", ") %}
+      {% set accProd = data.accessProd | join(", ") %}
+      {% set feats = data.additionalFeatures | join(", ") %}
+
+      {{ govukSummaryList({
+        rows: [
+          { key: { text: "Environment details" }, value: { text: data.environmentDetails } },
+          { key: { text: "Application name" }, value: { text: data.appName } },
+          { key: { text: "Description" }, value: { text: data.appDescription } },
+          { key: { text: "SSO group name" }, value: { text: data.ssoGroupName } },
+          { key: { text: "Code owner team" }, value: { text: data.codeowners or "Not provided" } },
+          { key: { text: "Actions reviewer team" }, value: { text: data.githubActionReviewers or "Not provided" } },
+          { key: { text: "Environments" }, value: { text: arr or "None" } },
+          { key: { text: "Access - Development" }, value: { text: accDev or "None" } },
+          { key: { text: "Access - Test" }, value: { text: accTest or "None" } },
+          { key: { text: "Access - Preproduction" }, value: { text: accPre or "None" } },
+          { key: { text: "Access - Production" }, value: { text: accProd or "None" } },
+          { key: { text: "Tag: application" }, value: { text: data.tagApplication } },
+          { key: { text: "Tag: business-unit" }, value: { text: data.tagBusinessUnit } },
+          { key: { text: "Tag: service-area" }, value: { text: data.tagServiceArea } },
+          { key: { text: "Tag: infrastructure-support" }, value: { text: data.tagInfrastructureSupport } },
+          { key: { text: "Tag: owner" }, value: { text: data.tagOwner } },
+          { key: { text: "Slack channel" }, value: { text: data.slackChannel or "Not provided" } },
+          { key: { text: "Isolated networking" }, value: { text: data.subnetSets } },
+          { key: { text: "User connectivity" }, value: { text: data.appConnect } },
+          { key: { text: "Additional features" }, value: { text: feats or "None" } },
+          { key: { text: "Other information" }, value: { text: data.otherInfo or "Not provided" } }
+        ]
+      }) }}
+
+      <form method="post" action="/new-environment/submit">
+        {{ govukButton({ text: "Submit request" }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

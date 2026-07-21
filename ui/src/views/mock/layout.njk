@@ -1,0 +1,25 @@
+{% extends "layout.njk" %}
+
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+
+{% block pageTitle %}{{ title }} - {{ serviceName }}{% endblock %}
+
+{% block backLink %}
+  <a href="/" class="govuk-back-link">Back to home</a>
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-l">Preview / mock-up</span>
+      <h1 class="govuk-heading-xl">{{ title }}</h1>
+
+      {{ govukWarningText({
+        text: "This is a design mock-up. Submissions do not create anything - use it to review the flow and give feedback.",
+        iconFallbackText: "Warning"
+      }) }}
+
+      {% block mockContent %}{% endblock %}
+    </div>
+  </div>
+{% endblock %}

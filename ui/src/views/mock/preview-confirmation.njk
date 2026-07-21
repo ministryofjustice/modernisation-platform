@@ -1,0 +1,26 @@
+{% extends "layout.njk" %}
+
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+
+{% block pageTitle %}Preview submitted - {{ serviceName }}{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {{ govukPanel({
+        titleText: "Preview submitted",
+        html: "Your reference<br><strong>" + reference + "</strong>"
+      }) }}
+
+      <h2 class="govuk-heading-m">This was a mock submission</h2>
+      {{ govukInsetText({
+        text: "Nothing was created. In a live version, the '" + title + "' journey would submit to the platform backend."
+      }) }}
+
+      <p class="govuk-body">
+        <a class="govuk-link" href="/">Return to the self-service home</a>
+      </p>
+    </div>
+  </div>
+{% endblock %}

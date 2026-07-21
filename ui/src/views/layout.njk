@@ -1,0 +1,47 @@
+{% extends "govuk/template.njk" %}
+
+{% from "govuk/components/header/macro.njk" import govukHeader %}
+{% from "govuk/components/footer/macro.njk" import govukFooter %}
+{% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
+
+{% block pageTitle %}{{ pageTitle or "New environment request" }} - {{ serviceName }}{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="/govuk-frontend/govuk-frontend.min.css">
+{% endblock %}
+
+{% block header %}
+  {{ govukHeader({
+    homepageUrl: "/",
+    serviceName: serviceName,
+    serviceUrl: "/"
+  }) }}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Alpha" },
+    html: 'This is a proof of concept &ndash; feedback welcome via the platform team.'
+  }) }}
+  {% block backLink %}{% endblock %}
+{% endblock %}
+
+{% block content %}{% endblock %}
+
+{% block footer %}
+  {{ govukFooter({
+    meta: {
+      items: [
+        { href: "https://github.com/ministryofjustice/modernisation-platform", text: "Source on GitHub" }
+      ]
+    }
+  }) }}
+{% endblock %}
+
+{% block bodyEnd %}
+  <script type="module" src="/govuk-frontend/govuk-frontend.min.js"></script>
+  <script type="module">
+    import { initAll } from '/govuk-frontend/govuk-frontend.min.js'
+    initAll()
+  </script>
+{% endblock %}

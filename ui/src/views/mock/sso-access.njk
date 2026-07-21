@@ -1,0 +1,72 @@
+{% extends "mock/layout.njk" %}
+
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block mockContent %}
+  <p class="govuk-body-l">
+    Add or remove people from a Modernisation Platform environment, or change
+    the access level assigned to an SSO group.
+  </p>
+
+  <form method="post" action="/sso-access" novalidate>
+
+    {% set accountOptions = [{ value: "", text: "Choose an environment" }] %}
+    {% for a in ctx.accounts %}
+      {% set accountOptions = (accountOptions.push({ value: a, text: a }), accountOptions) %}
+    {% endfor %}
+
+    {{ govukSelect({
+      id: "account",
+      name: "account",
+      label: { text: "Which environment does this apply to?", classes: "govuk-label--m" },
+      items: accountOptions
+    }) }}
+
+    {{ govukRadios({
+      idPrefix: "action",
+      name: "action",
+      fieldset: { legend: { text: "What do you want to do?", classes: "govuk-fieldset__legend--m" } },
+      items: [
+        { value: "add",    text: "Add a new SSO group" },
+        { value: "remove", text: "Remove an SSO group" },
+        { value: "change", text: "Change the access levels for an existing SSO group" }
+      ]
+    }) }}
+
+    {{ govukInput({
+      id: "ssoGroup",
+      name: "ssoGroup",
+      label: { text: "SSO group name (GitHub team slug)", classes: "govuk-label--m" },
+      hint: { text: "For example: modernisation-platform-example-app" },
+      classes: "govuk-input--width-30"
+    }) }}
+
+    {% set levelItems = [] %}
+    {% for lvl in ctx.accessLevels %}
+      {% set levelItems = (levelItems.push({ value: lvl, text: lvl }), levelItems) %}
+    {% endfor %}
+
+    {{ govukCheckboxes({
+      idPrefix: "accessLevels",
+      name: "accessLevels",
+      fieldset: { legend: { text: "Access levels to assign", classes: "govuk-fieldset__legend--m" } },
+      hint: { text: "Only relevant when adding a group or changing an existing one." },
+      classes: "govuk-checkboxes--small",
+      items: levelItems
+    }) }}
+
+    {{ govukTextarea({
+      id: "justification",
+      name: "justification",
+      label: { text: "Reason for the change", classes: "govuk-label--m" },
+      hint: { text: "Helps the platform team review production access requests." }
+    }) }}
+
+    {{ govukButton({ text: "Submit request (mock)" }) }}
+  </form>
+{% endblock %}

@@ -1,0 +1,243 @@
+{% extends "layout.njk" %}
+
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+
+{% block pageTitle %}Request a new environment - {{ serviceName }}{% endblock %}
+
+{% block backLink %}
+  <a href="/" class="govuk-back-link">Back</a>
+{% endblock %}
+
+{% macro selectOptions(values, selected) %}
+  {% set opts = [{ value: "", text: "Choose an option" }] %}
+  {% for v in values %}
+    {% set opts = (opts.push({ value: v, text: v, selected: (selected == v) }), opts) %}
+  {% endfor %}
+  {{ opts | dump | safe }}
+{% endmacro %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      {% if errors %}
+        {% set errorList = [] %}
+        {% for key, message in errors %}
+          {% set errorList = (errorList.push({ text: message, href: "#" + key }), errorList) %}
+        {% endfor %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errorList
+        }) }}
+      {% endif %}
+
+      <h1 class="govuk-heading-xl">Request a new environment</h1>
+
+      <form method="post" action="/new-environment" novalidate>
+
+        {{ govukTextarea({
+          id: "environmentDetails",
+          name: "environmentDetails",
+          label: { text: "Environment details", classes: "govuk-label--m" },
+          value: data.environmentDetails,
+          errorMessage: errors.environmentDetails and { text: errors.environmentDetails }
+        }) }}
+
+        {{ govukInput({
+          id: "appName",
+          name: "appName",
+          label: { text: "Application name", classes: "govuk-label--m" },
+          hint: { text: "Lowercase, maximum 30 characters. Follow MoJ naming guidance." },
+          value: data.appName,
+          errorMessage: errors.appName and { text: errors.appName },
+          classes: "govuk-input--width-20"
+        }) }}
+
+        {{ govukTextarea({
+          id: "appDescription",
+          name: "appDescription",
+          label: { text: "Description of application", classes: "govuk-label--m" },
+          hint: { text: "What does the application do? What technologies does it use?" },
+          value: data.appDescription,
+          errorMessage: errors.appDescription and { text: errors.appDescription }
+        }) }}
+
+        {{ govukInput({
+          id: "ssoGroupName",
+          name: "ssoGroupName",
+          label: { text: "SSO group name", classes: "govuk-label--m" },
+          hint: { text: "The Identity Center group name (can be a GitHub team). Must be in the ministryofjustice org." },
+          value: data.ssoGroupName,
+          errorMessage: errors.ssoGroupName and { text: errors.ssoGroupName }
+        }) }}
+
+        {{ govukInput({
+          id: "codeowners",
+          name: "codeowners",
+          label: { text: "GitHub code owner team slug (optional)", classes: "govuk-label--m" },
+          hint: { text: "Only needed if a different team should approve pull requests." },
+          value: data.codeowners
+        }) }}
+
+        {{ govukInput({
+          id: "githubActionReviewers",
+          name: "githubActionReviewers",
+          label: { text: "GitHub Actions reviewer team slug (optional)", classes: "govuk-label--m" },
+          hint: { text: "Only needed if a different team should approve Action runs." },
+          value: data.githubActionReviewers
+        }) }}
+
+        <h2 class="govuk-heading-l">Environments</h2>
+
+        {# Native multi-select. size controls the number of visible rows;
+           min-height guarantees a comfortable size on all browsers. #}
+        {% macro accessSelect(id, values, selected) %}
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-label--s" for="{{ id }}">Access levels</label>
+            <div class="govuk-hint">Hold Ctrl (Windows) or Cmd (Mac) to select multiple.</div>
+            <select class="govuk-select" id="{{ id }}" name="{{ id }}" multiple size="12" style="min-height: 18rem; width: 100%;">
+              {% for v in values %}
+                <option value="{{ v }}" {% if v in (selected or []) %}selected{% endif %}>{{ v }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endmacro %}
+
+        {% set devAccessHtml %}{{ accessSelect("accessDev",     fields.accessLevels,       data.accessDev) }}{% endset %}
+        {% set testAccessHtml %}{{ accessSelect("accessTest",    fields.accessLevelsNonDev, data.accessTest) }}{% endset %}
+        {% set preAccessHtml %}{{ accessSelect("accessPreprod", fields.accessLevelsNonDev, data.accessPreprod) }}{% endset %}
+        {% set prodAccessHtml %}{{ accessSelect("accessProd",    fields.accessLevelsNonDev, data.accessProd) }}{% endset %}
+
+        {{ govukCheckboxes({
+          idPrefix: "environments",
+          name: "environments",
+          fieldset: { legend: { text: "Which environments do you need?", classes: "govuk-fieldset__legend--m" } },
+          hint: { text: "We recommend production plus one non-production environment." },
+          errorMessage: errors.environments and { text: errors.environments },
+          items: [
+            { value: "Development",   text: "Development",   checked: ("Development"   in (data.environments or [])), conditional: { html: devAccessHtml } },
+            { value: "Test",          text: "Test",          checked: ("Test"          in (data.environments or [])), conditional: { html: testAccessHtml } },
+            { value: "Preproduction", text: "Preproduction", checked: ("Preproduction" in (data.environments or [])), conditional: { html: preAccessHtml } },
+            { value: "Production",    text: "Production",    checked: ("Production"    in (data.environments or [])), conditional: { html: prodAccessHtml } }
+          ]
+        }) }}
+
+        <h2 class="govuk-heading-l">Tags</h2>
+
+        {{ govukInput({
+          id: "tagApplication",
+          name: "tagApplication",
+          label: { text: "application", classes: "govuk-label--s" },
+          value: data.tagApplication,
+          errorMessage: errors.tagApplication and { text: errors.tagApplication }
+        }) }}
+
+        <div class="govuk-form-group{% if errors.tagBusinessUnit %} govuk-form-group--error{% endif %}">
+          <label class="govuk-label govuk-label--s" for="tagBusinessUnit">business-unit</label>
+          {% if errors.tagBusinessUnit %}
+            <p class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> {{ errors.tagBusinessUnit }}</p>
+          {% endif %}
+          <select class="govuk-select" id="tagBusinessUnit" name="tagBusinessUnit">
+            <option value="">Choose an option</option>
+            {% for bu in fields.businessUnits %}
+              <option value="{{ bu }}" {% if data.tagBusinessUnit == bu %}selected{% endif %}>{{ bu }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        {{ govukInput({
+          id: "tagServiceArea",
+          name: "tagServiceArea",
+          label: { text: "service-area", classes: "govuk-label--s" },
+          hint: { text: "Full name of the Service Area (e.g. Manage a Workforce, Hosting)." },
+          value: data.tagServiceArea,
+          errorMessage: errors.tagServiceArea and { text: errors.tagServiceArea }
+        }) }}
+
+        {{ govukInput({
+          id: "tagInfrastructureSupport",
+          name: "tagInfrastructureSupport",
+          label: { text: "infrastructure-support", classes: "govuk-label--s" },
+          hint: { text: "Email address that will receive AWS Health Operations emails." },
+          value: data.tagInfrastructureSupport,
+          errorMessage: errors.tagInfrastructureSupport and { text: errors.tagInfrastructureSupport }
+        }) }}
+
+        {{ govukInput({
+          id: "tagOwner",
+          name: "tagOwner",
+          label: { text: "owner", classes: "govuk-label--s" },
+          value: data.tagOwner,
+          errorMessage: errors.tagOwner and { text: errors.tagOwner }
+        }) }}
+
+        {{ govukInput({
+          id: "slackChannel",
+          name: "slackChannel",
+          label: { text: "Slack channel (optional)", classes: "govuk-label--m" },
+          hint: { text: "Without the leading #, e.g. my-app-support." },
+          value: data.slackChannel
+        }) }}
+
+        <h2 class="govuk-heading-l">Networking</h2>
+
+        {{ govukRadios({
+          idPrefix: "subnetSets",
+          name: "subnetSets",
+          fieldset: { legend: { text: "Do you require isolated networking?", classes: "govuk-fieldset__legend--m" } },
+          hint: { text: "Most applications use the general subnet set for their business unit." },
+          errorMessage: errors.subnetSets and { text: errors.subnetSets },
+          items: [
+            { value: "No",  text: "No",  checked: (data.subnetSets == "No") },
+            { value: "Yes", text: "Yes", checked: (data.subnetSets == "Yes") }
+          ]
+        }) }}
+
+        {% set connectItems = [] %}
+        {% for opt in fields.userConnectivity %}
+          {% set connectItems = (connectItems.push({ value: opt, text: opt, checked: (data.appConnect == opt) }), connectItems) %}
+        {% endfor %}
+
+        {{ govukRadios({
+          idPrefix: "appConnect",
+          name: "appConnect",
+          fieldset: { legend: { text: "How do users connect to the application?", classes: "govuk-fieldset__legend--m" } },
+          errorMessage: errors.appConnect and { text: errors.appConnect },
+          items: connectItems
+        }) }}
+
+        <h2 class="govuk-heading-l">Additional features</h2>
+
+        {% set featItems = [] %}
+        {% for f in fields.additionalFeatures %}
+          {% set featItems = (featItems.push({ value: f, text: f, checked: (f in (data.additionalFeatures or [])) }), featItems) %}
+        {% endfor %}
+
+        {{ govukCheckboxes({
+          idPrefix: "additionalFeatures",
+          name: "additionalFeatures",
+          fieldset: { legend: { text: "Optional platform features", classes: "govuk-fieldset__legend--m" } },
+          hint: { text: "Leave blank if you are not sure - these can be added later." },
+          items: featItems
+        }) }}
+
+        {{ govukTextarea({
+          id: "otherInfo",
+          name: "otherInfo",
+          label: { text: "Other information (optional)", classes: "govuk-label--m" },
+          hint: { text: "Remember this is a public repository." },
+          value: data.otherInfo
+        }) }}
+
+        {{ govukButton({ text: "Continue" }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

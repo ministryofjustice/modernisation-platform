@@ -1,0 +1,12 @@
+{% extends "layout.njk" %}
+
+{% block pageTitle %}Sorry - {{ serviceName }}{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">{{ message }}</h1>
+      <p class="govuk-body"><a class="govuk-link" href="/">Return to the start page</a></p>
+    </div>
+  </div>
+{% endblock %}

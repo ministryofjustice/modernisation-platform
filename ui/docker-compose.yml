@@ -1,0 +1,12 @@
+services:
+  ui:
+    build: .
+    image: modernisation-platform-ui:dev
+    container_name: modernisation-platform-ui
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      SESSION_SECRET: "change-me-in-real-deployments"
+    restart: unless-stopped

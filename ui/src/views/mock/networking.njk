@@ -1,0 +1,84 @@
+{% extends "mock/layout.njk" %}
+
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block mockContent %}
+  <p class="govuk-body-l">
+    Request a change to your environment&rsquo;s networking &mdash; extra VPC
+    endpoints, DNS zones, or extended connectivity to other accounts.
+  </p>
+
+  <form method="post" action="/networking" novalidate>
+
+    {% set accountOptions = [{ value: "", text: "Choose an environment" }] %}
+    {% for a in ctx.accounts %}
+      {% set accountOptions = (accountOptions.push({ value: a, text: a }), accountOptions) %}
+    {% endfor %}
+
+    {{ govukSelect({
+      id: "account",
+      name: "account",
+      label: { text: "Which environment?", classes: "govuk-label--m" },
+      items: accountOptions
+    }) }}
+
+    {# Conditional reveal HTML snippets captured via set...endset #}
+    {% set vpcConditionalHtml %}
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-label--s" for="vpcEndpoints">Which endpoints?</label>
+        <select class="govuk-select" id="vpcEndpoints" name="vpcEndpoints" multiple size="6" style="min-height: 10rem; width: 100%;">
+          {% for svc in ctx.vpcEndpointServices %}
+            <option value="{{ svc }}">{{ svc }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    {% endset %}
+
+    {% set dnsConditionalHtml %}
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-label--s" for="dnsZones">DNS zone name(s)</label>
+        <input class="govuk-input" id="dnsZones" name="dnsZones" type="text">
+      </div>
+    {% endset %}
+
+    {% set crossAcctConditionalHtml %}
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-label--s" for="peerAccount">Which account or team should you connect to?</label>
+        <input class="govuk-input" id="peerAccount" name="peerAccount" type="text">
+      </div>
+    {% endset %}
+
+    {{ govukCheckboxes({
+      idPrefix: "changeTypes",
+      name: "changeTypes",
+      fieldset: { legend: { text: "What kind of change do you need?", classes: "govuk-fieldset__legend--m" } },
+      items: [
+        { value: "vpc-endpoints",    text: "Additional VPC endpoints",           conditional: { html: vpcConditionalHtml } },
+        { value: "dns-zones",        text: "Additional DNS zone(s)",             conditional: { html: dnsConditionalHtml } },
+        { value: "cross-account",    text: "Cross-account connectivity",         conditional: { html: crossAcctConditionalHtml } },
+        { value: "external-partner", text: "External partner / internet connectivity" }
+      ]
+    }) }}
+
+    {{ govukTextarea({
+      id: "justification",
+      name: "justification",
+      label: { text: "Business justification", classes: "govuk-label--m" },
+      hint: { text: "Why does the application need this networking change?" }
+    }) }}
+
+    {{ govukInput({
+      id: "changeBy",
+      name: "changeBy",
+      label: { text: "Ideally needed by (optional)", classes: "govuk-label--m" },
+      hint: { text: "For example, 30 September 2026" },
+      classes: "govuk-input--width-20"
+    }) }}
+
+    {{ govukButton({ text: "Submit networking request (mock)" }) }}
+  </form>
+{% endblock %}

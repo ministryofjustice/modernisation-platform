@@ -1,0 +1,30 @@
+{% extends "layout.njk" %}
+
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+{% block pageTitle %}Request submitted - {{ serviceName }}{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {{ govukPanel({
+        titleText: "Request submitted",
+        html: "Your reference<br><strong>" + reference + "</strong>"
+      }) }}
+
+      <p class="govuk-body">
+        This is a proof of concept. In a live version this page would show a
+        link to the created GitHub issue or pull request.
+      </p>
+
+      <h2 class="govuk-heading-m">What happens next</h2>
+      <p class="govuk-body">
+        The Modernisation Platform team will review your request and be in touch.
+      </p>
+
+      <p class="govuk-body">
+        <a class="govuk-link" href="/">Return to the start</a>
+      </p>
+    </div>
+  </div>
+{% endblock %}

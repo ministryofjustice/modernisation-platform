@@ -1,0 +1,79 @@
+{% extends "mock/layout.njk" %}
+
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block mockContent %}
+  <p class="govuk-body-l">
+    Update the standard MoJ tags on one of your Modernisation Platform
+    environments. Leave a field blank to keep the existing value.
+  </p>
+
+  <form method="post" action="/update-tags" novalidate>
+
+    {% set accountOptions = [{ value: "", text: "Choose an environment" }] %}
+    {% for a in ctx.accounts %}
+      {% set accountOptions = (accountOptions.push({ value: a, text: a }), accountOptions) %}
+    {% endfor %}
+
+    {{ govukSelect({
+      id: "account",
+      name: "account",
+      label: { text: "Which environment do you want to update?", classes: "govuk-label--m" },
+      items: accountOptions
+    }) }}
+
+    <h2 class="govuk-heading-l">New tag values</h2>
+
+    {{ govukInput({
+      id: "tagApplication",
+      name: "tagApplication",
+      label: { text: "application", classes: "govuk-label--s" },
+      classes: "govuk-input--width-30"
+    }) }}
+
+    {% set buOptions = [{ value: "", text: "Choose a business unit" }] %}
+    {% for bu in ctx.businessUnits %}
+      {% set buOptions = (buOptions.push({ value: bu, text: bu }), buOptions) %}
+    {% endfor %}
+
+    {{ govukSelect({
+      id: "tagBusinessUnit",
+      name: "tagBusinessUnit",
+      label: { text: "business-unit", classes: "govuk-label--s" },
+      items: buOptions
+    }) }}
+
+    {{ govukInput({
+      id: "tagServiceArea",
+      name: "tagServiceArea",
+      label: { text: "service-area", classes: "govuk-label--s" },
+      classes: "govuk-input--width-30"
+    }) }}
+
+    {{ govukInput({
+      id: "tagInfrastructureSupport",
+      name: "tagInfrastructureSupport",
+      label: { text: "infrastructure-support", classes: "govuk-label--s" },
+      hint: { text: "Email that receives AWS Health notifications." },
+      classes: "govuk-input--width-30"
+    }) }}
+
+    {{ govukInput({
+      id: "tagOwner",
+      name: "tagOwner",
+      label: { text: "owner", classes: "govuk-label--s" },
+      classes: "govuk-input--width-30"
+    }) }}
+
+    {{ govukTextarea({
+      id: "notes",
+      name: "notes",
+      label: { text: "Notes for the platform team (optional)", classes: "govuk-label--m" }
+    }) }}
+
+    {{ govukButton({ text: "Submit change (mock)" }) }}
+  </form>
+{% endblock %}

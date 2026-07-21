@@ -1,0 +1,213 @@
+{% extends "layout.njk" %}
+
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+{% from "govuk/components/tag/macro.njk" import govukTag %}
+
+{% block pageTitle %}Modernisation Platform - self-service portal{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="/govuk-frontend/govuk-frontend.min.css">
+  <style>
+    /* Small POC styles - would move to a stylesheet in a real build */
+    .mp-hero {
+      background: #1d70b8;
+      color: #ffffff;
+      padding: 40px 30px;
+      margin-bottom: 30px;
+    }
+    .mp-hero h1, .mp-hero p { color: #ffffff; }
+    .mp-hero .govuk-button--start {
+      background: #ffffff;
+      color: #0b0c0c;
+      box-shadow: 0 2px 0 #003078;
+    }
+    .mp-hero .govuk-button--start:hover { background: #f3f2f1; }
+
+    .mp-card-grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(1, 1fr);
+      grid-auto-rows: 1fr;
+      align-items: stretch;
+      margin-bottom: 40px;
+    }
+    @media (min-width: 40.0625em) { .mp-card-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 60em)      { .mp-card-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    .mp-card {
+      border: 1px solid #b1b4b6;
+      border-left: 5px solid #1d70b8;
+      padding: 20px;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      box-sizing: border-box;
+    }
+    .mp-card--muted { border-left-color: #b1b4b6; opacity: 0.9; }
+    .mp-card h3 { margin-top: 10px; }
+    .mp-card p { flex-grow: 0; }
+    .mp-card p.mp-card__body { flex-grow: 1; }
+    .mp-card a.govuk-link { font-weight: bold; }
+
+    .mp-stats { display: grid; gap: 15px; grid-template-columns: repeat(1, 1fr); margin-bottom: 40px; }
+    @media (min-width: 40.0625em) { .mp-stats { grid-template-columns: repeat(3, 1fr); } }
+    .mp-stat { background: #f3f2f1; padding: 20px; text-align: center; }
+    .mp-stat .mp-stat__number { font-size: 2.4rem; font-weight: 700; color: #1d70b8; display: block; }
+    .mp-stat .mp-stat__label { color: #505a5f; }
+
+    /* Ensure GOV.UK headings have breathing room when following our grids */
+    .mp-section-heading { margin-top: 30px; }
+  </style>
+{% endblock %}
+
+{% block content %}
+
+  {# ---- Hero banner ---- #}
+  <div class="mp-hero">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">Modernisation Platform self-service</h1>
+        <p class="govuk-body-l">
+          Request new AWS accounts, change permissions and manage your team&rsquo;s
+          Modernisation Platform environments &mdash; all in one place.
+        </p>
+        <a href="/new-environment" role="button" draggable="false"
+           class="govuk-button govuk-button--start" data-module="govuk-button">
+          Request a new environment
+          <svg class="govuk-button__start-icon" xmlns="http://www.w3.org/2000/svg"
+               width="17.5" height="19" viewBox="0 0 33 40" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+
+      {{ govukNotificationBanner({
+        titleText: "Alpha",
+        html: '<p class="govuk-notification-banner__heading">This is an early proof of concept. <a class="govuk-notification-banner__link" href="https://github.com/ministryofjustice/modernisation-platform/issues/new">Give feedback</a> to help shape it.</p>'
+      }) }}
+
+      {# ---- Quick stats (illustrative) ---- #}
+      <div class="mp-stats">
+        <div class="mp-stat">
+          <span class="mp-stat__number">200+</span>
+          <span class="mp-stat__label">AWS accounts on the platform</span>
+        </div>
+        <div class="mp-stat">
+          <span class="mp-stat__number">50+</span>
+          <span class="mp-stat__label">Teams onboarded</span>
+        </div>
+        <div class="mp-stat">
+          <span class="mp-stat__number">24&#47;7</span>
+          <span class="mp-stat__label">Platform availability</span>
+        </div>
+      </div>
+
+      {# ---- Action cards ---- #}
+      <h2 class="govuk-heading-l mp-section-heading">What you can do</h2>
+
+      <div class="mp-card-grid">
+
+        <div class="mp-card">
+          {{ govukTag({ text: "Available", classes: "govuk-tag--green" }) }}
+          <h3 class="govuk-heading-m govuk-!-margin-top-3">Request a new environment</h3>
+          <p class="govuk-body mp-card__body">
+            Onboard a new application or add a development, test, preproduction
+            or production environment to an existing account.
+          </p>
+          <p><a class="govuk-link" href="/new-environment">Start a new environment request &rarr;</a></p>
+        </div>
+
+        <div class="mp-card">
+          {{ govukTag({ text: "Preview", classes: "govuk-tag--blue" }) }}
+          <h3 class="govuk-heading-m govuk-!-margin-top-3">Change SSO access</h3>
+          <p class="govuk-body mp-card__body">
+            Add or remove people from an existing environment, or change their
+            access level (developer, sandbox, view-only and more).
+          </p>
+          <p><a class="govuk-link" href="/sso-access">View the mock-up &rarr;</a></p>
+        </div>
+
+        <div class="mp-card">
+          {{ govukTag({ text: "Preview", classes: "govuk-tag--blue" }) }}
+          <h3 class="govuk-heading-m govuk-!-margin-top-3">Update account tags</h3>
+          <p class="govuk-body mp-card__body">
+            Update the application, business-unit, service-area,
+            infrastructure-support and owner tags on your accounts.
+          </p>
+          <p><a class="govuk-link" href="/update-tags">View the mock-up &rarr;</a></p>
+        </div>
+
+        <div class="mp-card">
+          {{ govukTag({ text: "Preview", classes: "govuk-tag--blue" }) }}
+          <h3 class="govuk-heading-m govuk-!-margin-top-3">Networking changes</h3>
+          <p class="govuk-body mp-card__body">
+            Request extra VPC endpoints, DNS zones or extended connectivity
+            between accounts.
+          </p>
+          <p><a class="govuk-link" href="/networking">View the mock-up &rarr;</a></p>
+        </div>
+
+        <div class="mp-card">
+          {{ govukTag({ text: "Preview", classes: "govuk-tag--blue" }) }}
+          <h3 class="govuk-heading-m govuk-!-margin-top-3">Decommission an account</h3>
+          <p class="govuk-body mp-card__body">
+            Retire an application or environment that&rsquo;s no longer needed.
+          </p>
+          <p><a class="govuk-link" href="/decommission">View the mock-up &rarr;</a></p>
+        </div>
+
+        <div class="mp-card">
+          {{ govukTag({ text: "External", classes: "govuk-tag--blue" }) }}
+          <h3 class="govuk-heading-m govuk-!-margin-top-3">Raise a support issue</h3>
+          <p class="govuk-body mp-card__body">
+            Something not working? Raise an issue on GitHub or contact the
+            platform team on Slack.
+          </p>
+          <p><a class="govuk-link"
+                href="https://github.com/ministryofjustice/modernisation-platform/issues/new/choose">
+              Raise a GitHub issue &rarr;
+          </a></p>
+        </div>
+
+      </div>
+
+      {# ---- Help section ---- #}
+      <h2 class="govuk-heading-l mp-section-heading">Help and support</h2>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <ul class="govuk-list govuk-list--bullet">
+            <li>
+              <a class="govuk-link"
+                 href="https://user-guide.modernisation-platform.service.justice.gov.uk/">
+                Modernisation Platform user guide
+              </a>
+            </li>
+            <li>
+              <a class="govuk-link"
+                 href="https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/platform-user-roles.html">
+                Platform user roles &amp; access levels
+              </a>
+            </li>
+            <li>
+              <a class="govuk-link"
+                 href="https://github.com/ministryofjustice/modernisation-platform">
+                Source code on GitHub
+              </a>
+            </li>
+            <li>
+              Chat with the team on Slack: <code>#ask-modernisation-platform</code>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}

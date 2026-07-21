@@ -1,0 +1,82 @@
+{% extends "mock/layout.njk" %}
+
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block mockContent %}
+  <p class="govuk-body-l">
+    Retire an application or environment that&rsquo;s no longer needed. The
+    platform team will schedule the tear-down after reviewing your request.
+  </p>
+
+  <form method="post" action="/decommission" novalidate>
+
+    {% set accountOptions = [{ value: "", text: "Choose an environment" }] %}
+    {% for a in ctx.accounts %}
+      {% set accountOptions = (accountOptions.push({ value: a, text: a }), accountOptions) %}
+    {% endfor %}
+
+    {{ govukSelect({
+      id: "account",
+      name: "account",
+      label: { text: "Which environment should be decommissioned?", classes: "govuk-label--m" },
+      items: accountOptions
+    }) }}
+
+    {{ govukRadios({
+      idPrefix: "scope",
+      name: "scope",
+      fieldset: { legend: { text: "Scope of decommission", classes: "govuk-fieldset__legend--m" } },
+      items: [
+        { value: "environment",  text: "Just this environment" },
+        { value: "application",  text: "The whole application (all environments)" }
+      ]
+    }) }}
+
+    {{ govukRadios({
+      idPrefix: "dataHandling",
+      name: "dataHandling",
+      fieldset: { legend: { text: "How should data be handled?", classes: "govuk-fieldset__legend--m" } },
+      items: [
+        { value: "delete-all",   text: "Delete all data on tear-down" },
+        { value: "snapshot",     text: "Take final snapshots first, then delete" },
+        { value: "migrate",      text: "Migrate data to another account (specify below)",
+          conditional: { html:
+            '<div class="govuk-form-group">' +
+              '<label class="govuk-label govuk-label--s" for="migrateTo">Destination account</label>' +
+              '<input class="govuk-input" id="migrateTo" name="migrateTo" type="text">' +
+            '</div>'
+          }
+        }
+      ]
+    }) }}
+
+    {{ govukInput({
+      id: "targetDate",
+      name: "targetDate",
+      label: { text: "Requested completion date", classes: "govuk-label--m" },
+      hint: { text: "For example, 31 December 2026" },
+      classes: "govuk-input--width-20"
+    }) }}
+
+    {{ govukTextarea({
+      id: "notes",
+      name: "notes",
+      label: { text: "Anything else the platform team should know?", classes: "govuk-label--m" }
+    }) }}
+
+    {{ govukWarningText({
+      text: "Decommissioning is not reversible. The platform team will confirm before any data is deleted.",
+      iconFallbackText: "Warning"
+    }) }}
+
+    {{ govukButton({
+      text: "Submit decommission request (mock)",
+      classes: "govuk-button--warning"
+    }) }}
+  </form>
+{% endblock %}
