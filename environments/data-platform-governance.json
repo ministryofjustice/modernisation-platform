@@ -1,6 +1,7 @@
 {
   "account-type": "member",
   "codeowners": "data-platform-engineering",
+  "github_action_reviewer": "data-platform-engineering",
   "components": [
     {
       "name": "lakeformation"
@@ -10,11 +11,6 @@
     {
       "name": "development",
       "access": [
-        {
-          "sso_group_name": "data-platform-engineering",
-          "level": "platform-engineer-admin",
-          "github_action_reviewer": "true"
-        },
         {
           "sso_group_name": "azure-aws-sso-data-platform-engineering",
           "level": "platform-engineer-admin"
@@ -27,11 +23,6 @@
       "name": "test",
       "access": [
         {
-          "sso_group_name": "data-platform-engineering",
-          "level": "platform-engineer-admin",
-          "github_action_reviewer": "true"
-        },
-        {
           "sso_group_name": "azure-aws-sso-data-platform-engineering",
           "level": "platform-engineer-admin"
         }
@@ -42,11 +33,6 @@
       "name": "preproduction",
       "access": [
         {
-          "sso_group_name": "data-platform-engineering",
-          "level": "platform-engineer-admin",
-          "github_action_reviewer": "true"
-        },
-        {
           "sso_group_name": "azure-aws-sso-data-platform-engineering",
           "level": "platform-engineer-admin"
         }
@@ -56,11 +42,6 @@
     {
       "name": "production",
       "access": [
-        {
-          "sso_group_name": "data-platform-engineering",
-          "level": "platform-engineer-admin",
-          "github_action_reviewer": "true"
-        },
         {
           "sso_group_name": "azure-aws-sso-data-platform-engineering",
           "level": "platform-engineer-admin"
