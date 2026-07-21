@@ -34,7 +34,7 @@ permissions:
 
 jobs:
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@3f4b0b80deea0ac74630e80189e1edeee3378793 # v6.1.5
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@d682f41c6f6b8c6bc0e06ae38ef41a464aa8a204 # v6.1.6
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}  
@@ -46,7 +46,7 @@ jobs:
         with:
           fetch-depth: 0 # or "2" To retrieve the preceding commit.
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@3f4b0b80deea0ac74630e80189e1edeee3378793 # v6.1.5
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d682f41c6f6b8c6bc0e06ae38ef41a464aa8a204 # v6.1.6
         with:
           mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -77,7 +77,7 @@ jobs:
           GH_TOKEN: ${{ steps.app-envts.outputs.token }}
       - name: Slack failure notification
         if: ${{ failure() }}
-        uses: slackapi/slack-github-action@45a88b9581bfab2566dc881e2cd66d334e621e2c # v3.0.3
+        uses: slackapi/slack-github-action@0d95c9a7becc1e6e297d76df9bc735c44f4cbcbc # v3.0.5
         with:
           webhook-type: incoming-webhook
           payload: |

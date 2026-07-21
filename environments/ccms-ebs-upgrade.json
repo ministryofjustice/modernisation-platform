@@ -19,6 +19,10 @@
           "level": "sandbox"
         },
         {
+          "sso_group_name": "laa-ccms-ebs-developers",
+          "level": "developer"
+        },
+        {
           "sso_group_name": "laa-sre-admins",
           "level": "sandbox"
         },
@@ -36,6 +40,10 @@
           "sso_group_name": "laa-ccms-migration-team",
           "level": "developer",
           "nuke": "exclude"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
+          "level": "developer"
         },
         {
           "sso_group_name": "laa-sre-admins",
