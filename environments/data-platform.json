@@ -26,6 +26,9 @@
     },
     {
       "name": "monitoring"
+    },
+    {
+      "name": "sagemaker"
     }
   ],
   "environments": [
