@@ -1249,3 +1249,25 @@ module "modernisation-platform-slackbot-integration" {
   tags_common = local.tags
 }
 
+module "create_a_derived_table_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "create-a-derived-table"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-test"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-preproduction"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/modernisation-platform-oidc-cicd"
+  ]
+
+  pull_principals = [
+    local.environment_management.account_ids["electronic-monitoring-data-development"],
+    local.environment_management.account_ids["electronic-monitoring-data-test"],
+    local.environment_management.account_ids["electronic-monitoring-data-preproduction"],
+    local.environment_management.account_ids["electronic-monitoring-data-production"],
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
