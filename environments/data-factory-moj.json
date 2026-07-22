@@ -40,7 +40,7 @@
           "level": "security-audit"
         },
         {
-          "sso_group_name": "data-platform-engineering",
+          "sso_group_name": "azure-aws-sso-data-platform-engineering",
           "level": "platform-engineer-admin"
         },
         {
