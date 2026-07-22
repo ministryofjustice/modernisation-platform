@@ -14,19 +14,11 @@
       "name": "development",
       "access": [
         {
-          "sso_group_name": "analytical-platform-engineers",
-          "level": "platform-engineer-admin"
-        },
-        {
           "sso_group_name": "azure-aws-sso-analytical-platform-engineers",
           "level": "platform-engineer-admin"
         },
         {
           "sso_group_name": "azure-aws-sso-analytical-platform-engineers",
-          "level": "sandbox"
-        },
-        {
-          "sso_group_name": "analytical-platform-engineers",
           "level": "sandbox"
         },
         {
@@ -45,19 +37,11 @@
       "name": "production",
       "access": [
         {
-          "sso_group_name": "analytical-platform-engineers",
-          "level": "platform-engineer-admin"
-        },
-        {
           "sso_group_name": "azure-aws-sso-analytical-platform-engineers",
           "level": "platform-engineer-admin"
         },
         {
           "sso_group_name": "azure-aws-sso-analytical-platform-engineers",
-          "level": "developer"
-        },
-        {
-          "sso_group_name": "analytical-platform-engineers",
           "level": "developer"
         },
         {
