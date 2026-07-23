@@ -107,7 +107,11 @@ resource "aws_kms_alias" "transform_bucket" {
   target_key_id = aws_kms_key.transform_bucket.key_id
 }
 
+# checkov:skip=CKV_AWS_109: "Key policy requires asterisk resource"
+# checkov:skip=CKV_AWS_111: "Key policy requires asterisk resource"
+# checkov:skip=CKV_AWS_356: "Key policy requires asterisk resource"
 data "aws_iam_policy_document" "transform_kms_key_policy" {
+
   statement {
     sid    = "EnableRootPermissions"
     effect = "Allow"
