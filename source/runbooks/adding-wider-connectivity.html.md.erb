@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Adding Wider Connectivity to the Modernisation Platform
-last_reviewed_on: 2026-01-23
+last_reviewed_on: 2026-07-23
 review_in: 6 months
 ---
 
@@ -13,7 +13,7 @@ The Modernisation Platform connects the different core platform VPCs and core ne
 
 In order to expand connectivity beyond the Modernisation Platform, we have [peered](https://docs.aws.amazon.com/vpc/latest/tgw/tgw-peering.html) the Modernisation Platform Transit Gateway (MP TGW) to the central [MoJ PTTP Transit Gateway](https://github.com/ministryofjustice/deployment-tgw) (Prison Technology Transformation Project) (PTTP TGW).
 
-Whilst we could directly connect things to our Modernisation Transit Gateway, this would end up with lots of cross networking between platforms and additional complexity. It makes sense to use the PTTP TWG as a central hub for connectivity across the MoJ.
+Whilst we could directly connect things to our Modernisation Transit Gateway, this would end up with lots of cross networking between platforms and additional complexity. It makes sense to use the PTTP TGW as a central hub for connectivity across the MoJ.
 
 ## Required Routing
 
@@ -21,7 +21,7 @@ Whilst we could directly connect things to our Modernisation Transit Gateway, th
 
 All private traffic that is not destined for a Modernisation Platform VPC is routed through to the PTTP TGW.
 
-Additional non private IP ranges that need to be routed through to the PTTP TGW should be added [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/transit_gateway_connections.tf#L52)
+Additional non private IP ranges that need to be routed through to the PTTP TGW should be added to the appropriate live or non-live static route map [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/transit_gateway_connections.tf#L52-L64).
 
 ### From PTTP TGW to the new connectivity location
 
