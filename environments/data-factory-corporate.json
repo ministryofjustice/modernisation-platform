@@ -1,5 +1,17 @@
 {
   "account-type": "member",
+  "components": [
+    {
+      "name": "people",
+      "sso_group_name": "corporate-data-factory-admins"
+    },
+    {
+      "name": "finance"
+    },
+    {
+      "name": "commercial"
+    }
+  ],
   "environments": [
     {
       "name": "development",
