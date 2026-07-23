@@ -566,6 +566,13 @@
     "destination_port": "1521",
     "protocol": "TCP"
   },
+  "laa_test_to_cloud_platform_postgres": {
+    "action": "PASS",
+    "source_ip": "${laa-test}",
+    "destination_ip": "${cloud-platform}",
+    "destination_port": "5432",
+    "protocol": "TCP"
+  },
   "laa_test_to_laa_ecp_2484": {
     "action": "PASS",
     "source_ip": "${laa-test}",

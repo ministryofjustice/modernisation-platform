@@ -341,7 +341,7 @@ resource "aws_kms_alias" "s3_state_bucket_eu-west-1_replication" {
 }
 
 module "state-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=355197b5695fcce014ad838c7b586b95f9eb4988" # v10.2.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=c8889e65f4d8a3d53d2cbd93b7be714e990020b7" # v10.2.1
 
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
@@ -353,7 +353,7 @@ module "state-bucket" {
   sse_algorithm                = "aws:kms"
   enforce_kms_request_headers  = false
   replication_enabled          = true
-  replication_object_lock_days = 1
+  replication_object_lock_days = 7
   replication_region           = "eu-west-1"
   custom_kms_key               = aws_kms_key.s3_state_bucket_multi_region.arn
   custom_replication_kms_key   = aws_kms_replica_key.s3_state_bucket_multi_region_replica.arn
@@ -386,6 +386,77 @@ module "state-bucket" {
       }
     }
   ]
+}
+
+data "aws_iam_policy_document" "state_bucket_replication_kms" {
+  statement {
+    sid    = "AllowDecryptSourceStateBucketObjects"
+    effect = "Allow"
+
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey"
+    ]
+
+    resources = [
+      aws_kms_key.s3_state_bucket_multi_region.arn
+    ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state",
+        "arn:aws:s3:::modernisation-platform-terraform-state/*"
+      ]
+    }
+  }
+
+  statement {
+    sid    = "AllowEncryptStateBucketReplicas"
+    effect = "Allow"
+
+    actions = [
+      "kms:Decrypt",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*",
+      "kms:DescribeKey"
+    ]
+
+    resources = [
+      aws_kms_replica_key.s3_state_bucket_multi_region_replica.arn
+    ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-1.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values = [
+        "arn:aws:s3:::modernisation-platform-terraform-state-replication",
+        "arn:aws:s3:::modernisation-platform-terraform-state-replication/*"
+      ]
+    }
+  }
+}
+
+resource "aws_iam_role_policy" "state_bucket_replication_kms" {
+  provider = aws.modernisation-platform-eu-west-1
+
+  name   = "AWSS3BucketReplication-terraform-state-kms"
+  role   = module.state-bucket.role[0].id
+  policy = data.aws_iam_policy_document.state_bucket_replication_kms.json
 }
 
 # Allow access to the bucket from the MoJ root account
@@ -910,7 +981,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     }
   }
   statement {
-    sid    = "AllowCloudPlatformDevelopmentClusterAccess"
+    sid    = "AllowCloudPlatformAccess"
     effect = "Allow"
     actions = [
       "s3:GetObject",
@@ -922,7 +993,8 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     principals {
       type = "AWS"
       identifiers = [
-        "arn:aws:iam::${local.environment_management.account_ids["cloud-platform-development"]}:role/github-actions-development-cluster"
+        "arn:aws:iam::${local.environment_management.account_ids["cloud-platform-development"]}:role/github-actions-development-cluster",
+        "arn:aws:iam::${local.environment_management.account_ids["cloud-platform-live"]}:role/github-actions-container-platform-identity-apply"
       ]
     }
   }

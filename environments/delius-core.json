@@ -181,6 +181,10 @@
           "github_action_reviewer": "true"
         },
         {
+          "sso_group_name": "hmpps-dba",
+          "level": "reporting-operations"
+        },
+        {
           "sso_group_name": "unilink",
           "level": "developer"
         },
@@ -244,6 +248,10 @@
           "github_action_reviewer": "true"
         },
         {
+          "sso_group_name": "hmpps-dba",
+          "level": "reporting-operations"
+        },
+        {
           "sso_group_name": "unilink",
           "level": "developer"
         },
@@ -290,6 +298,8 @@
     "ministryofjustice/ndelius-um",
     "ministryofjustice/delius-pdm-uplift-scripts",
     "ministryofjustice/dso-modernisation-platform-automation",
-    "ministryofjustice/hmpps-probation-integration-services"
+    "ministryofjustice/hmpps-probation-integration-services",
+    "ministryofjustice/hmpps-supervision",
+    "ministryofjustice/delius-releases"
   ]
 }

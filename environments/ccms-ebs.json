@@ -41,6 +41,10 @@
         {
           "sso_group_name": "modernisation-platform-security",
           "level": "view-only"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ],
       "nuke": "exclude"
@@ -83,6 +87,10 @@
         {
           "sso_group_name": "modernisation-platform-security",
           "level": "view-only"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     },
@@ -120,6 +128,10 @@
         {
           "sso_group_name": "modernisation-platform-security",
           "level": "view-only"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     },

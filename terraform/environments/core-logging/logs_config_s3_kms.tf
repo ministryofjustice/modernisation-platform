@@ -51,9 +51,15 @@ data "aws_iam_policy_document" "kms_config_logs" {
   }
 
   statement {
-    sid       = "AllowReplicationAccess"
-    effect    = "Allow"
-    actions   = ["kms:Decrypt"]
+    sid    = "AllowReplicationAccess"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:Encrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey"
+    ]
     resources = ["*"]
     principals {
       type = "AWS"
@@ -97,9 +103,15 @@ data "aws_iam_policy_document" "kms_config_logs_replication" {
   }
 
   statement {
-    sid       = "AllowReplicationAccess"
-    effect    = "Allow"
-    actions   = ["kms:ReEncrypt*", "kms:Encrypt", "kms:Describe"]
+    sid    = "AllowReplicationAccess"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:Encrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey"
+    ]
     resources = ["*"]
     principals {
       type = "AWS"

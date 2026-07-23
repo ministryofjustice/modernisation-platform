@@ -19,6 +19,10 @@
         {
           "sso_group_name": "laa-dba",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ],
       "nuke": "exclude"
@@ -41,6 +45,10 @@
         {
           "sso_group_name": "laa-dba",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     },
@@ -62,6 +70,10 @@
         {
           "sso_group_name": "laa-dba",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     },

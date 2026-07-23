@@ -304,10 +304,12 @@ data "aws_iam_policy_document" "developer_additional" {
       "sso:ListDirectoryAssociations",
       "support:*",
       "support-console:*",
+      "states:*Execution",
       "states:Describe*",
       "states:List*",
       "states:Stop*",
       "states:Start*",
+      "states:Test*",
       "wellarchitected:Get*",
       "wellarchitected:List*",
       "wellarchitected:ExportLens",
@@ -788,6 +790,7 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "redshift:*",
       "rhelkb:GetRhelURL",
       "route53:*",
+      "route53profiles:*",
       "s3:*",
       "sagemaker:*",
       "scheduler:*",
@@ -954,6 +957,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "redshift:*",
       "rhelkb:GetRhelURL",
       "route53:*",
+      "route53profiles:*",
       "s3:*",
       "sagemaker:*",
       "scheduler:*",
@@ -972,6 +976,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "support-console:*",
       "textract:*",
       "transfer:*",
+      "transform:*",
       "wafv2:*",
       "wellarchitected:*",
       "workspaces-web:*",
@@ -991,7 +996,21 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "arn:aws:sso::${local.environment_management.aws_organizations_root_account_id}:application/ssoins-7535d9af4f41fb26/*" #tfsec:ignore:AWS099 tfsec:ignore:AWS097
     ]
   }
+
+  statement {
+    sid    = "sandboxCodeConnectionsAllow"
+    effect = "Allow"
+    actions = [
+      "codeconnections:UseConnection",
+      "codeconnections:StartOAuthHandshake"
+    ]
+    resources = [
+      "arn:aws:codestar-connections:*:*:connection/*",
+      "arn:aws:codeconnections:*:*:connection/*"
+    ]
+  }
 }
+
 
 # migration policy - member SSO and collaborators
 # developer role plus additional migration permissions
@@ -1936,6 +1955,267 @@ data "aws_iam_policy_document" "data_scientist" {
     ]
     resources = [
       "arn:aws:s3:::emds-*-athena-query-results-*/*"
+    ]
+  }
+}
+
+# workspace user admin policy - member SSO and collaborators
+# Full management of Amazon WorkSpaces resources, but only list/describe access to Directory Services.
+resource "aws_iam_policy" "workspace_user_admin" {
+  provider = aws.workspace
+  name     = "workspace_user_admin_policy"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.workspace_user_admin.json
+}
+
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "workspace_user_admin" {
+  #checkov:skip=CKV_AWS_108
+  #checkov:skip=CKV_AWS_109
+  #checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_110
+  #checkov:skip=CKV_AWS_356: Needs to access multiple resources
+  statement {
+    sid    = "WorkspacesFullAccess"
+    effect = "Allow"
+    actions = [
+      "workspaces:*",
+      "workspaces-web:*",
+      "workspaces-instances:*",
+      "workdocs:*",
+      "workmail:*"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "DirectoryServicesListOnly"
+    effect = "Allow"
+    actions = [
+      "ds:DescribeDirectories",
+      "ds:DescribeTrusts",
+      "ds:DescribeConditionalForwarders",
+      "ds:DescribeDomainControllers",
+      "ds:DescribeEventTopics",
+      "ds:DescribeSharedDirectories",
+      "ds:DescribeSnapshots",
+      "ds:DescribeCertificate",
+      "ds:DescribeLDAPSSettings",
+      "ds:DescribeRegions",
+      "ds:ListAuthorizedApplications",
+      "ds:ListCertificates",
+      "ds:ListIpRoutes",
+      "ds:ListLogSubscriptions",
+      "ds:ListSchemaExtensions",
+      "ds:ListTagsForResource",
+      "ds:GetDirectoryLimits",
+      "ds:GetSnapshotLimits",
+      "ds:CheckAlias"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "Ec2WorkspacesSupport"
+    effect = "Allow"
+    actions = [
+      "ec2:DescribeVpcs",
+      "ec2:DescribeSubnets",
+      "ec2:DescribeSecurityGroups",
+      "ec2:DescribeNetworkInterfaces",
+      "ec2:DescribeAvailabilityZones",
+      "ec2:DescribeRouteTables",
+      "ec2:DescribeInternetGateways",
+      "ec2:DescribeAccountAttributes",
+      "ec2:CreateNetworkInterface",
+      "ec2:DeleteNetworkInterface",
+      "ec2:AttachNetworkInterface",
+      "ec2:DetachNetworkInterface",
+      "ec2:AssociateAddress",
+      "ec2:DisassociateAddress",
+      "ec2:CreateTags",
+      "ec2:DeleteTags",
+      "ec2:DescribeTags"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "KmsForWorkspaces"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:Encrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey",
+      "kms:ListAliases",
+      "kms:ListKeys",
+      "kms:CreateGrant"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "WorkspacesServiceLinkedRole"
+    effect = "Allow"
+    actions = [
+      "iam:CreateServiceLinkedRole"
+    ]
+    resources = [
+      "arn:aws:iam::*:role/aws-service-role/workspaces.amazonaws.com/AWSServiceRoleForAmazonWorkSpaces",
+      "arn:aws:iam::*:role/aws-service-role/workspaces-web.amazonaws.com/AWSServiceRoleForAmazonWorkSpacesWeb"
+    ]
+  }
+}
+
+# workspace admin policy - member SSO and collaborators
+# Full management of Amazon WorkSpaces and broad (non-destructive account-level) management of Directory Services.
+resource "aws_iam_policy" "workspace_admin" {
+  provider = aws.workspace
+  name     = "workspace_admin_policy"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.workspace_admin.json
+}
+
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "workspace_admin" {
+  #checkov:skip=CKV_AWS_108
+  #checkov:skip=CKV_AWS_109
+  #checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_110
+  #checkov:skip=CKV_AWS_356: Needs to access multiple resources
+  statement {
+    sid    = "WorkspacesFullAccess"
+    effect = "Allow"
+    actions = [
+      "workspaces:*",
+      "workspaces-web:*",
+      "workspaces-instances:*",
+      "workdocs:*",
+      "workmail:*"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "DirectoryServicesAdmin"
+    effect = "Allow"
+    actions = [
+      "ds:AcceptSharedDirectory",
+      "ds:AccessDSData",
+      "ds:AddIpRoutes",
+      "ds:AddRegion",
+      "ds:AddTagsToResource",
+      "ds:CancelSchemaExtension",
+      "ds:CheckAlias",
+      "ds:ConnectDirectory",
+      "ds:CreateAlias",
+      "ds:CreateComputer",
+      "ds:CreateConditionalForwarder",
+      "ds:CreateDirectory",
+      "ds:CreateLogSubscription",
+      "ds:CreateMicrosoftAD",
+      "ds:CreateSnapshot",
+      "ds:CreateTrust",
+      "ds:DeleteConditionalForwarder",
+      "ds:DeleteDirectory",
+      "ds:DeleteLogSubscription",
+      "ds:DeleteSnapshot",
+      "ds:DeleteTrust",
+      "ds:DeregisterCertificate",
+      "ds:DeregisterEventTopic",
+      "ds:Describe*",
+      "ds:DisableClientAuthentication",
+      "ds:DisableLDAPS",
+      "ds:DisableRadius",
+      "ds:DisableSso",
+      "ds:EnableClientAuthentication",
+      "ds:EnableLDAPS",
+      "ds:EnableRadius",
+      "ds:EnableSso",
+      "ds:GetDirectoryLimits",
+      "ds:GetSnapshotLimits",
+      "ds:List*",
+      "ds:RegisterCertificate",
+      "ds:RegisterEventTopic",
+      "ds:RejectSharedDirectory",
+      "ds:RemoveIpRoutes",
+      "ds:RemoveRegion",
+      "ds:RemoveTagsFromResource",
+      "ds:ResetUserPassword",
+      "ds:RestoreFromSnapshot",
+      "ds:ShareDirectory",
+      "ds:StartSchemaExtension",
+      "ds:UnshareDirectory",
+      "ds:UpdateConditionalForwarder",
+      "ds:UpdateNumberOfDomainControllers",
+      "ds:UpdateRadius",
+      "ds:UpdateTrust",
+      "ds:VerifyTrust",
+      "ds-data:*"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "Ec2WorkspacesSupport"
+    effect = "Allow"
+    actions = [
+      "ec2:DescribeVpcs",
+      "ec2:DescribeSubnets",
+      "ec2:DescribeSecurityGroups",
+      "ec2:DescribeNetworkInterfaces",
+      "ec2:DescribeAvailabilityZones",
+      "ec2:DescribeRouteTables",
+      "ec2:DescribeInternetGateways",
+      "ec2:DescribeAccountAttributes",
+      "ec2:CreateNetworkInterface",
+      "ec2:DeleteNetworkInterface",
+      "ec2:AttachNetworkInterface",
+      "ec2:DetachNetworkInterface",
+      "ec2:ModifyNetworkInterfaceAttribute",
+      "ec2:AssociateAddress",
+      "ec2:DisassociateAddress",
+      "ec2:CreateSecurityGroup",
+      "ec2:DeleteSecurityGroup",
+      "ec2:AuthorizeSecurityGroupIngress",
+      "ec2:AuthorizeSecurityGroupEgress",
+      "ec2:RevokeSecurityGroupIngress",
+      "ec2:RevokeSecurityGroupEgress",
+      "ec2:CreateTags",
+      "ec2:DeleteTags",
+      "ec2:DescribeTags"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "KmsForWorkspaces"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:Encrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey",
+      "kms:ListAliases",
+      "kms:ListKeys",
+      "kms:CreateGrant"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "WorkspacesServiceLinkedRole"
+    effect = "Allow"
+    actions = [
+      "iam:CreateServiceLinkedRole"
+    ]
+    resources = [
+      "arn:aws:iam::*:role/aws-service-role/workspaces.amazonaws.com/AWSServiceRoleForAmazonWorkSpaces",
+      "arn:aws:iam::*:role/aws-service-role/workspaces-web.amazonaws.com/AWSServiceRoleForAmazonWorkSpacesWeb",
+      "arn:aws:iam::*:role/aws-service-role/ds.amazonaws.com/AWSServiceRoleForDirectoryService"
     ]
   }
 }

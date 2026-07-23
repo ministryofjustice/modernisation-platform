@@ -175,18 +175,6 @@ resource "aws_iam_policy" "athena_lambda_policy" {
           "${module.s3-bucket-athena.bucket.arn}/*",
           module.s3-bucket-athena.bucket.arn
         ]
-      },
-      {
-        Action = [
-          "s3:GetBucketLocation",
-          "s3:List*",
-          "s3:Get*"
-        ]
-        Effect = "Allow"
-        Resource = [
-          module.s3-bucket-cloudtrail-logging.bucket.arn,
-          "${module.s3-bucket-cloudtrail-logging.bucket.arn}/*"
-        ]
       }
     ]
   })

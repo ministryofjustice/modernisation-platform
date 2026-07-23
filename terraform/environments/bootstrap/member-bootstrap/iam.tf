@@ -295,6 +295,7 @@ data "aws_iam_policy_document" "member-access-data" {
       "elasticache:*",
       "elasticfilesystem:*",
       "es:*",
+      "firehose:*",
       "fsx:*",
       "glacier:*",
       "glue:*",
@@ -304,14 +305,14 @@ data "aws_iam_policy_document" "member-access-data" {
       "lakeformation:*",
       "macie2:*",
       "quicksight:*",
-      "rds-db:*",
       "rds:*",
       "rds-data:*",
+      "rds-db:*",
       "redshift:*",
       "redshift-data:*",
       "redshift-serverless:*",
       "s3:*",
-      "firehose:*"
+      "schemas:*"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
@@ -386,6 +387,7 @@ data "aws_iam_policy_document" "member-access-network" {
       "ram:UpdateResourceShare",
       "route53:*",
       "route53resolver:*",
+      "route53profiles:*",
       "scheduler:*",
       "secretsmanager:*",
       "ses:*",
@@ -1195,6 +1197,13 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
   }
 
   statement {
+    sid       = "AllowOIDCUpdateLambdaFunctionCode"
+    effect    = "Allow"
+    resources = ["arn:aws:lambda:*:${local.environment_management.account_ids[terraform.workspace]}:function:*"]
+    actions   = ["lambda:UpdateFunctionCode"]
+  }
+
+  statement {
     sid    = "AllowAccountRestrictedGrafana"
     effect = "Allow"
     actions = [
@@ -1568,6 +1577,7 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
       "quicksight:ListTagsForResource",
       "redshift-data:Describe*",
       "secretsmanager:GetSecretValue",
+      "states:TestState",
       "workspaces-web:Get*",
       "workspaces-web:List*"
     ]

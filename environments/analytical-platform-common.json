@@ -1,22 +1,18 @@
 {
   "account-type": "member",
   "codeowners": ["analytical-platform-engineers"],
+  "github_action_reviewer": "analytical-platform-engineers",
   "environments": [
     {
       "name": "production",
       "access": [
         {
-          "sso_group_name": "analytical-platform-engineers",
-          "level": "developer"
-        },
-        {
-          "sso_group_name": "analytical-platform-engineers",
-          "level": "platform-engineer-admin",
-          "github_action_reviewer": "true"
+          "sso_group_name": "azure-aws-sso-analytical-platform-engineers",
+          "level": "platform-engineer-admin"
         },
         {
           "sso_group_name": "azure-aws-sso-analytical-platform-engineers",
-          "level": "platform-engineer-admin"
+          "level": "developer"
         },
         {
           "sso_group_name": "analytical-platform-airflow",

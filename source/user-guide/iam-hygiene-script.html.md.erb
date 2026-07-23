@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: IAM Access Key Hygiene Script
-last_reviewed_on: 2026-01-07
+last_reviewed_on: 2026-07-08
 review_in: 6 months
 ---
 
@@ -114,16 +114,16 @@ To reduce execution time and avoid API throttling:
 
 Each matrix job invokes the reusable workflow and passes the script command:
 
-    bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run 
+    bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh
 
 ### Important notes
 
-- The current configuration runs in **dry-run mode**
-- No IAM resources are modified
-- No GOV.UK Notify emails are sent
+- The current workflow configuration runs in **live mode**
+- IAM resources can be modified when inactivity thresholds are met
+- GOV.UK Notify emails can be sent when the API key and template ID are configured
 - Output files are still generated for review
 
-To enable live enforcement, remove `--dry-run`.
+To run without making changes or sending emails, add `--dry-run` to the script command, or set `DRY_RUN=true`.
 
 ---
 
@@ -217,7 +217,8 @@ Depending on configuration, it can:
 
 Dry-run is enabled when:
 
-- The first argument is `--dry-run` or `dry-run`, OR
+- The first argument is `--dry-run` or `dry-run`
+- The `DRY_RUN` environment variable is set to `true`
 
 In dry-run mode:
 
@@ -235,13 +236,13 @@ Defaults (in days):
 
 - Notify: `KEY_NOTIFY_DAYS=30`
 - Disable: `KEY_DISABLE_DAYS=60`
-- Delete: `KEY_DELETE_DAYS=90`
+- Delete: `KEY_DELETE_DAYS=150`
 
 ### Users
 
 - Notify: `USER_NOTIFY_DAYS=30`
 - Disable: `USER_DISABLE_DAYS=60`
-- Delete: `USER_DELETE_DAYS=90`
+- Delete: `USER_DELETE_DAYS=150`
 
 Thresholds can be overridden via environment variables.
 
