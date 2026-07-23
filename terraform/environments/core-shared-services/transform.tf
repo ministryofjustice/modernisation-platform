@@ -87,7 +87,7 @@ data "aws_iam_policy_document" "transform_s3_bucket_policy" {
       variable = "aws:SourceAccount"
       values = [
         data.aws_caller_identity.current.account_id,
-        data.aws_organizations_organization.root_account.id
+        data.aws_organizations_organization.root_account.master_account_id
       ]
     }
   }
@@ -152,13 +152,8 @@ data "aws_iam_policy_document" "transform_kms_key_policy" {
       variable = "aws:SourceAccount"
       values = [
         data.aws_caller_identity.current.account_id,
-        data.aws_organizations_organization.root_account.id
+        data.aws_organizations_organization.root_account.master_account_id
       ]
     }
   }
 }
-
-
-
-
-
