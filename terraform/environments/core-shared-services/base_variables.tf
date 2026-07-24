@@ -19,3 +19,9 @@ variable "account_arns" {
   type        = list(string)
   default     = []
 }
+
+variable "transform_user_management_enabled" {
+  description = "Enable Transform Identity Center group lookups and user-management mappings"
+  type        = bool
+  default     = true
+}
