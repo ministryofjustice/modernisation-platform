@@ -1,7 +1,60 @@
 ## Terraform to Create Central AWS Transform Resources in core-shared-services
 
-# SSM parameters to hold the Transform Resource ARNs
-#
+data "aws_ssoadmin_instances" "transform_hub" {
+  provider = aws.transform-hub-sso-lookup
+}
+
+locals {
+  transform_hub_groups_config           = jsondecode(file("${path.module}/transform/sso-groups.json"))
+  transform_hub_workspace_access_config = jsondecode(file("${path.module}/transform/workspace-access.json"))
+
+  transform_hub_application_arn = aws_ssm_parameter.transform_hub_application_arn.value
+  transform_hub_profile_arn     = aws_ssm_parameter.transform_hub_profile_arn.value
+
+  transform_hub_sso_group_names = length(try(local.transform_hub_groups_config.sso_group_names, [])) > 0 ? local.transform_hub_groups_config.sso_group_names : ["transform-admins"]
+  transform_hub_workspaces      = try(local.transform_hub_workspace_access_config.workspaces, {})
+
+  transform_hub_workspace_group_pairs = flatten([
+    for workspace_name, workspace_config in local.transform_hub_workspaces : [
+      for group_mapping in(
+        can(workspace_config.group_roles)
+        ? [for group_name, workspace_role in workspace_config.group_roles : {
+          group_name     = group_name
+          workspace_role = workspace_role
+        }]
+        : [for group_name in workspace_config.sso_group_names : {
+          group_name     = group_name
+          workspace_role = workspace_config.workspace_role
+        }]
+      ) : {
+        workspace      = workspace_name
+        group_name     = group_mapping.group_name
+        workspace_role = group_mapping.workspace_role
+      }
+    ]
+  ])
+
+  transform_hub_distinct_group_names = distinct(concat(
+    local.transform_hub_sso_group_names,
+    [for pair in local.transform_hub_workspace_group_pairs : pair.group_name]
+  ))
+}
+
+data "aws_identitystore_group" "transform_hub_groups" {
+  provider = aws.transform-hub-sso-lookup
+
+  for_each = toset(local.transform_hub_distinct_group_names)
+
+  identity_store_id = one(data.aws_ssoadmin_instances.transform_hub.identity_store_ids)
+
+  alternate_identifier {
+    unique_attribute {
+      attribute_path  = "DisplayName"
+      attribute_value = each.value
+    }
+  }
+}
+
 # These parameters are necessary because the AWS Terraform provider (as of v6.x) has limited support
 # for AWS Transform resources:
 # - The Transform Application can be imported using aws_ssoadmin_application but requires manual import
@@ -42,7 +95,43 @@ resource "aws_ssm_parameter" "transform_hub_profile_arn" {
   tags = local.tags
 }
 
-# Central S3 as used in Transform Hub Configuration
+resource "aws_ssoadmin_application_assignment" "transform_hub_access" {
+  for_each = toset(local.transform_hub_distinct_group_names)
+
+  application_arn = local.transform_hub_application_arn
+  principal_id    = data.aws_identitystore_group.transform_hub_groups[each.value].group_id
+  principal_type  = "GROUP"
+}
+
+resource "terraform_data" "transform_hub_workspace_role_mapping" {
+  for_each = {
+    for pair in local.transform_hub_workspace_group_pairs :
+    "${pair.workspace}/${pair.group_name}" => pair
+  }
+
+  triggers_replace = [
+    each.value.workspace,
+    each.value.group_name,
+    data.aws_identitystore_group.transform_hub_groups[each.value.group_name].group_id,
+    each.value.workspace_role,
+    local.transform_hub_profile_arn
+  ]
+
+  provisioner "local-exec" {
+    command = <<-EOT
+      aws transform put-user-role-mappings \
+        --profile-arn "${local.transform_hub_profile_arn}" \
+        --workspace-name "${each.value.workspace}" \
+        --principal-id "${data.aws_identitystore_group.transform_hub_groups[each.value.group_name].group_id}" \
+        --principal-type GROUP \
+        --role "${each.value.workspace_role}"
+    EOT
+  }
+
+  depends_on = [aws_ssoadmin_application_assignment.transform_hub_access]
+}
+
+# Central S3 as used in Transform Configuration
 
 module "transform_s3_bucket" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=c8889e65f4d8a3d53d2cbd93b7be714e990020b7" # v10.2.1
@@ -198,3 +287,5 @@ data "aws_iam_policy_document" "transform_kms_key_policy" {
     }
   }
 }
+
+
