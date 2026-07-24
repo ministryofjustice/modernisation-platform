@@ -124,6 +124,17 @@
         </div>
 
         <div class="mp-card">
+          {{ govukTag({ text: "New - Preview", classes: "govuk-tag--pink" }) }}
+          <h3 class="govuk-heading-m govuk-!-margin-top-3">Deploy starter infrastructure</h3>
+          <p class="govuk-body mp-card__body">
+            Tick the building blocks you need &mdash; EC2, RDS, ECS, ACM+R53,
+            S3 &mdash; and get a working, secure baseline without learning our
+            Terraform modules.
+          </p>
+          <p><a class="govuk-link" href="/starter-infra">Build my starter pack &rarr;</a></p>
+        </div>
+
+        <div class="mp-card">
           {{ govukTag({ text: "Preview", classes: "govuk-tag--blue" }) }}
           <h3 class="govuk-heading-m govuk-!-margin-top-3">Change SSO access</h3>
           <p class="govuk-body mp-card__body">

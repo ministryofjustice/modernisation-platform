@@ -31,6 +31,11 @@ const mocks = [
     slug: 'decommission',
     view: 'mock/decommission.njk',
     title: 'Decommission an account'
+  },
+  {
+    slug: 'starter-infra',
+    view: 'mock/starter-infra.njk',
+    title: 'Deploy starter infrastructure'
   }
 ];
 

@@ -1,0 +1,178 @@
+{% extends "mock/layout.njk" %}
+
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/tag/macro.njk" import govukTag %}
+
+{% block mockContent %}
+  <p class="govuk-body-l">
+    Get a working, secure baseline in your Modernisation Platform environment
+    without having to learn our Terraform modules. Pick the building blocks
+    you need and we&rsquo;ll deploy small / micro versions that you can
+    resize later.
+  </p>
+
+  {{ govukInsetText({
+    html: '<strong>Small footprint by default.</strong> Everything provisioned here uses free-tier or micro/small sizing (t3.micro compute, db.t3.small databases, sub-30 GB EBS) so you can start building without surprise bills.'
+  }) }}
+
+  <form method="post" action="/starter-infra" novalidate>
+
+    <h2 class="govuk-heading-l">Where to deploy</h2>
+
+    {% set accountOptions = [{ value: "", text: "Choose an environment" }] %}
+    {% for a in ctx.accounts %}
+      {% set accountOptions = (accountOptions.push({ value: a, text: a }), accountOptions) %}
+    {% endfor %}
+
+    {{ govukSelect({
+      id: "account",
+      name: "account",
+      label: { text: "Target environment", classes: "govuk-label--m" },
+      items: accountOptions
+    }) }}
+
+    {{ govukRadios({
+      idPrefix: "region",
+      name: "region",
+      classes: "govuk-radios--inline",
+      fieldset: { legend: { text: "AWS region", classes: "govuk-fieldset__legend--m" } },
+      items: [
+        { value: "eu-west-2", text: "eu-west-2 (London)", checked: true },
+        { value: "eu-west-1", text: "eu-west-1 (Ireland)" }
+      ]
+    }) }}
+
+    <h2 class="govuk-heading-l">Compute</h2>
+
+    {% set ec2Reveal %}
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-label--s" for="ec2Count">How many instances?</label>
+        <input class="govuk-input govuk-input--width-3" id="ec2Count" name="ec2Count" type="number" min="1" max="4" value="1">
+        <div class="govuk-hint govuk-!-margin-top-1">t3.micro, Amazon Linux 2023, 20 GB EBS. SSM Session Manager enabled.</div>
+      </div>
+    {% endset %}
+
+    {% set ecsReveal %}
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-label--s" for="ecsService">Service name</label>
+        <input class="govuk-input govuk-input--width-20" id="ecsService" name="ecsService" type="text" placeholder="my-service">
+        <div class="govuk-hint govuk-!-margin-top-1">Fargate, 0.25 vCPU / 0.5 GB, private subnets. Empty ECR repo created for you.</div>
+      </div>
+    {% endset %}
+
+    {% set lambdaReveal %}
+      <div class="govuk-hint">Node.js 20 runtime, 128 MB, CloudWatch logs for 14 days.</div>
+    {% endset %}
+
+    {{ govukCheckboxes({
+      idPrefix: "compute",
+      name: "compute",
+      fieldset: { legend: { text: "What compute do you need?", classes: "govuk-fieldset__legend--m" } },
+      items: [
+        { value: "ec2",    text: "EC2 instance(s)",           conditional: { html: ec2Reveal } },
+        { value: "ecs",    text: "ECS Fargate service",       conditional: { html: ecsReveal } },
+        { value: "lambda", text: "Lambda function skeleton",  conditional: { html: lambdaReveal } }
+      ]
+    }) }}
+
+    <h2 class="govuk-heading-l">Data</h2>
+
+    {% set rdsReveal %}
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-label--s" for="rdsEngine">Database engine</label>
+        <select class="govuk-select" id="rdsEngine" name="rdsEngine">
+          <option value="postgres">PostgreSQL 16</option>
+          <option value="mysql">MySQL 8.0</option>
+        </select>
+        <div class="govuk-hint govuk-!-margin-top-1">db.t3.small, 20 GB gp3, encrypted, private subnets, automated backups (7 days).</div>
+      </div>
+    {% endset %}
+
+    {% set s3Reveal %}
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-label--s" for="s3BucketName">Bucket name suffix</label>
+        <input class="govuk-input govuk-input--width-20" id="s3BucketName" name="s3BucketName" type="text" placeholder="uploads">
+        <div class="govuk-hint govuk-!-margin-top-1">Private, versioned, SSE-KMS encrypted, block public access on.</div>
+      </div>
+    {% endset %}
+
+    {% set dynamoReveal %}
+      <div class="govuk-hint">Pay-per-request, point-in-time recovery enabled.</div>
+    {% endset %}
+
+    {{ govukCheckboxes({
+      idPrefix: "data",
+      name: "data",
+      fieldset: { legend: { text: "Data stores", classes: "govuk-fieldset__legend--m" } },
+      items: [
+        { value: "rds",       text: "RDS database",       conditional: { html: rdsReveal } },
+        { value: "s3",        text: "S3 bucket",          conditional: { html: s3Reveal } },
+        { value: "dynamodb",  text: "DynamoDB table",     conditional: { html: dynamoReveal } }
+      ]
+    }) }}
+
+    <h2 class="govuk-heading-l">Networking &amp; DNS</h2>
+
+    {% set albReveal %}
+      <div class="govuk-hint">Public ALB in the general subnets, HTTPS only, WAF baseline rules attached.</div>
+    {% endset %}
+
+    {% set acmReveal %}
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-label--s" for="hostname">Hostname</label>
+        <input class="govuk-input govuk-input--width-30" id="hostname" name="hostname" type="text" placeholder="myapp.modernisation-platform.service.justice.gov.uk">
+        <div class="govuk-hint govuk-!-margin-top-1">We&rsquo;ll create the ACM certificate and validate it with a Route 53 record automatically.</div>
+      </div>
+    {% endset %}
+
+    {{ govukCheckboxes({
+      idPrefix: "networking",
+      name: "networking",
+      fieldset: { legend: { text: "Networking building blocks", classes: "govuk-fieldset__legend--m" } },
+      items: [
+        { value: "alb",     text: "Application Load Balancer",              conditional: { html: albReveal } },
+        { value: "acm-r53", text: "ACM certificate with Route 53 validation", conditional: { html: acmReveal } },
+        { value: "cloudfront", text: "CloudFront distribution (in front of ALB or S3)" }
+      ]
+    }) }}
+
+    <h2 class="govuk-heading-l">Security &amp; operations</h2>
+
+    {{ govukCheckboxes({
+      idPrefix: "ops",
+      name: "ops",
+      classes: "govuk-checkboxes--small",
+      fieldset: { legend: { text: "Add these &mdash; recommended defaults", classes: "govuk-fieldset__legend--m", isPageHeading: false } },
+      items: [
+        { value: "secrets",   text: "Secrets Manager secret (empty placeholder)",  checked: true },
+        { value: "kms",       text: "Customer-managed KMS key",                    checked: true },
+        { value: "backup",    text: "AWS Backup plan (daily, 7-day retention)",    checked: true },
+        { value: "cw-dash",   text: "CloudWatch dashboard with the basics",        checked: true },
+        { value: "budget",    text: "&pound;50 / month budget alert to the infrastructure-support email", checked: true }
+      ]
+    }) }}
+
+    <h2 class="govuk-heading-l">Delivery</h2>
+
+    {{ govukRadios({
+      idPrefix: "delivery",
+      name: "delivery",
+      fieldset: { legend: { text: "How would you like the code delivered?", classes: "govuk-fieldset__legend--m" } },
+      items: [
+        { value: "pr",   text: "Raise a pull request against my environments repo", checked: true, hint: { text: "Recommended - you can review the Terraform before it&rsquo;s applied." } },
+        { value: "apply", text: "Apply immediately (advanced)", hint: { text: "We&rsquo;ll open a PR and auto-merge it once plan is clean." } }
+      ]
+    }) }}
+
+    <div class="govuk-button-group">
+      {{ govukButton({ text: "Preview my starter pack" }) }}
+      {{ govukButton({ text: "Save for later", classes: "govuk-button--secondary" }) }}
+    </div>
+
+  </form>
+{% endblock %}
