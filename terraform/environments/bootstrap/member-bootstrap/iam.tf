@@ -194,6 +194,7 @@ data "aws_iam_policy_document" "member-access-compute" {
       "cloudtrail:Get*",
       "cloudtrail:List*",
       "codebuild:*",
+      "codeconnections:*",
       "codedeploy:*",
       "codepipeline:*",
       "cognito-idp:*",
