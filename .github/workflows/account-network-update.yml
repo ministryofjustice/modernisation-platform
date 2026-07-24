@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
 
@@ -66,7 +66,7 @@ jobs:
 
       - name: Commit and push network changes
         if: env.SKIP != 'true' && env.ISOLATED_ACCOUNT == 'No'
-        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@40972648982915f26e5b5e22bd92f3af9297a707 # v6.1.7
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@0d6fd59fa082417466d12e0e1a5e76da3f1712db # v6.1.8
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "Automated Signed Commit"
