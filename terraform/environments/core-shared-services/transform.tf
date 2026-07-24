@@ -1,7 +1,48 @@
 ## Terraform to Create Central AWS Transform Resources in core-shared-services
 
+# SSM parameters to hold the Transform Resource ARNs
+#
+# These parameters are necessary because the AWS Terraform provider (as of v6.x) has limited support
+# for AWS Transform resources:
+# - The Transform Application can be imported using aws_ssoadmin_application but requires manual import
+# - Transform Profiles have NO resource or data source support (aws_transform_profile does not exist)
+# - There are no data sources to discover/lookup existing Transform resources dynamically
+#
+# Therefore, we use SSM parameters to store the ARNs of manually-created Transform resources
+# (created via AWS console) and reference them via data lookups. This approach:
+# - Avoids hardcoding ARNs in Terraform code
+# - Provides a centralized place to manage these values
+# - Allows Terraform to reference resources it cannot directly manage
 
-# Central S3 as used in Transform Org-Wide Configuration
+resource "aws_ssm_parameter" "transform_hub_application_arn" {
+  #checkov:skip=CKV_AWS_337: "Default SSM encryption is sufficient for storing ARNs"
+  name        = "/transform/hub/application-arn"
+  description = "Transform Hub Application ARN (manually created via console)"
+  type        = "SecureString"
+  value       = "PLACEHOLDER" # Set this to the actual ARN after first apply
+
+  lifecycle {
+    ignore_changes = [value]
+  }
+
+  tags = local.tags
+}
+
+resource "aws_ssm_parameter" "transform_hub_profile_arn" {
+  #checkov:skip=CKV_AWS_337: "Default SSM encryption is sufficient for storing ARNs"
+  name        = "/transform/hub/profile-arn"
+  description = "Transform Hub Profile ARN (manually created via console)"
+  type        = "SecureString"
+  value       = "PLACEHOLDER" # Set this to the actual ARN after first apply
+
+  lifecycle {
+    ignore_changes = [value]
+  }
+
+  tags = local.tags
+}
+
+# Central S3 as used in Transform Hub Configuration
 
 module "transform_s3_bucket" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=c8889e65f4d8a3d53d2cbd93b7be714e990020b7" # v10.2.1
