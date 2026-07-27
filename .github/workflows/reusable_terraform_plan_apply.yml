@@ -159,6 +159,11 @@ jobs:
         run: |
           terraform -chdir="${{ inputs.working-directory }}" workspace select ${WORKSPACE_NAME}
 
+      - name: Disable Transform User Management in PR Validation
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "TF_VAR_transform_user_management_enabled=false" >> $GITHUB_ENV
+
       - name: Run Terratest
         if: ${{ steps.vars.outputs.run_terratest == 'true' }}
         run: |

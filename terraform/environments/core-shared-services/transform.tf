@@ -39,12 +39,14 @@ locals {
     local.transform_hub_sso_group_names,
     [for pair in local.transform_hub_workspace_group_pairs : pair.group_name]
   ))
+
+  transform_hub_user_management_enabled = var.transform_user_management_enabled
 }
 
 data "aws_identitystore_group" "transform_hub_groups" {
   provider = aws.transform-hub-sso-lookup
 
-  for_each = toset(local.transform_hub_distinct_group_names)
+  for_each = local.transform_hub_user_management_enabled ? toset(local.transform_hub_distinct_group_names) : toset([])
 
   identity_store_id = one(data.aws_ssoadmin_instances.transform_hub.identity_store_ids)
 
@@ -101,7 +103,7 @@ resource "aws_ssm_parameter" "transform_hub_profile_arn" {
 # Baseline access to open the Transform application for each configured group.
 # Workspace-level permissions are applied separately below via role mappings.
 resource "aws_ssoadmin_application_assignment" "transform_hub_access" {
-  for_each = toset(local.transform_hub_distinct_group_names)
+  for_each = local.transform_hub_user_management_enabled ? toset(local.transform_hub_distinct_group_names) : toset([])
 
   application_arn = local.transform_hub_application_arn
   principal_id    = data.aws_identitystore_group.transform_hub_groups[each.value].group_id
@@ -109,10 +111,10 @@ resource "aws_ssoadmin_application_assignment" "transform_hub_access" {
 }
 
 resource "terraform_data" "transform_hub_workspace_role_mapping" {
-  for_each = {
+  for_each = local.transform_hub_user_management_enabled ? {
     for pair in local.transform_hub_workspace_group_pairs :
     "${pair.workspace}/${pair.group_name}" => pair
-  }
+  } : {}
 
   triggers_replace = [
     each.value.workspace,

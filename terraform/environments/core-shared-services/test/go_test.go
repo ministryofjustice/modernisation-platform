@@ -3,14 +3,18 @@ package test
 import (
 	"testing"
 
+	"regexp"
+
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
-	"regexp"
 )
 
 func TestTransitGateway(t *testing.T) {
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: "../",
+		Vars: map[string]interface{}{
+			"transform_user_management_enabled": false,
+		},
 	})
 
 	terraform.RunTerraformCommand(t, terraformOptions, "refresh")
