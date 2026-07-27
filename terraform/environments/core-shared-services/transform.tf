@@ -11,7 +11,8 @@ locals {
   transform_hub_application_arn = aws_ssm_parameter.transform_hub_application_arn.value
   transform_hub_profile_arn     = aws_ssm_parameter.transform_hub_profile_arn.value
 
-  transform_hub_sso_group_names = length(try(local.transform_hub_groups_config.sso_group_names, [])) > 0 ? local.transform_hub_groups_config.sso_group_names : ["transform-admins"]
+  transform_hub_sso_group_names_raw = length(try(local.transform_hub_groups_config.sso_group_names, [])) > 0 ? local.transform_hub_groups_config.sso_group_names : ["transform-admins"]
+  transform_hub_sso_group_names     = distinct(compact([for group_name in local.transform_hub_sso_group_names_raw : trimspace(group_name)]))
   transform_hub_workspaces      = try(local.transform_hub_workspace_access_config.workspaces, {})
 
   transform_hub_workspace_group_pairs = flatten([
@@ -23,12 +24,12 @@ locals {
           workspace_role = workspace_role
         }]
         : [for group_name in workspace_config.sso_group_names : {
-          group_name     = group_name
+          group_name     = trimspace(group_name)
           workspace_role = workspace_config.workspace_role
         }]
       ) : {
         workspace      = workspace_name
-        group_name     = group_mapping.group_name
+        group_name     = trimspace(group_mapping.group_name)
         workspace_role = group_mapping.workspace_role
       }
     ]
