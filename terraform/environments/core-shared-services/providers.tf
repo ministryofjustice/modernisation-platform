@@ -49,3 +49,16 @@ provider "aws" {
   }
   default_tags { tags = local.tags }
 }
+
+# AWS provider used for Transform Identity Center lookups.
+# This assumes a dedicated read-only role in the management account.
+provider "aws" {
+  alias  = "transform-hub-sso-lookup"
+  region = "eu-west-2"
+
+  assume_role {
+    role_arn = "arn:aws:iam::${data.aws_organizations_organization.root_account.master_account_id}:role/ModernisationPlatformSSOReadOnly"
+  }
+
+  default_tags { tags = local.tags }
+}

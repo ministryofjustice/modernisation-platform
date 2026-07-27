@@ -1,0 +1,10 @@
+{
+  "workspaces": {
+    "example-development-erp-modernization": {
+      "group_roles": {
+        "azure-aws-sso-cdpt": "Contributor",
+        "modernisation-platform-engineers": "Admin"
+      }
+    }
+  }
+}
