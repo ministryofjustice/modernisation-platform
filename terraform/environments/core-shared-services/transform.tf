@@ -95,6 +95,10 @@ resource "aws_ssm_parameter" "transform_hub_profile_arn" {
   tags = local.tags
 }
 
+##Transform Administrator and User Access Management
+
+# Baseline access to open the Transform application for each configured group.
+# Workspace-level permissions are applied separately below via role mappings.
 resource "aws_ssoadmin_application_assignment" "transform_hub_access" {
   for_each = toset(local.transform_hub_distinct_group_names)
 
@@ -132,7 +136,6 @@ resource "terraform_data" "transform_hub_workspace_role_mapping" {
 }
 
 # Central S3 as used in Transform Configuration
-
 module "transform_s3_bucket" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=c8889e65f4d8a3d53d2cbd93b7be714e990020b7" # v10.2.1
 
