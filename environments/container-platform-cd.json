@@ -1,0 +1,16 @@
+{
+  "account-type": "member",
+  "codeowners": ", ",
+  "environments": [],
+  "tags": {
+    "application": "container-platform-cd",
+    "business-unit": "Platforms",
+    "service-area": "Hosting",
+    "infrastructure-support": "cloudplatform@justice.gov.uk",
+    "owner": "cloudplatform@justice.gov.uk",
+    "slack-channel": "cloud-platform",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
