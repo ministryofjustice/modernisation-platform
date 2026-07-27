@@ -8,8 +8,9 @@ locals {
   transform_hub_groups_config           = jsondecode(file("${path.module}/transform/sso-groups.json"))
   transform_hub_workspace_access_config = jsondecode(file("${path.module}/transform/workspace-access.json"))
 
-  transform_hub_application_arn = aws_ssm_parameter.transform_hub_application_arn.value
-  transform_hub_profile_arn     = aws_ssm_parameter.transform_hub_profile_arn.value
+  transform_hub_application_arn   = aws_ssm_parameter.transform_hub_application_arn.value
+  transform_hub_profile_arn       = aws_ssm_parameter.transform_hub_profile_arn.value
+  transform_hub_identity_store_id = one(data.aws_ssoadmin_instances.transform_hub.identity_store_ids)
 
   transform_hub_sso_group_names_raw = length(try(local.transform_hub_groups_config.sso_group_names, [])) > 0 ? local.transform_hub_groups_config.sso_group_names : ["transform-admins"]
   transform_hub_sso_group_names     = distinct(compact([for group_name in local.transform_hub_sso_group_names_raw : trimspace(group_name)]))
@@ -20,7 +21,7 @@ locals {
       for group_mapping in(
         can(workspace_config.group_roles)
         ? [for group_name, workspace_role in workspace_config.group_roles : {
-          group_name     = group_name
+          group_name     = trimspace(group_name)
           workspace_role = workspace_role
         }]
         : [for group_name in workspace_config.sso_group_names : {
@@ -43,18 +44,20 @@ locals {
   transform_hub_user_management_enabled = var.transform_user_management_enabled
 }
 
-data "aws_identitystore_group" "transform_hub_groups" {
+# Using the plural data source (ListGroups) rather than the singular aws_identitystore_group
+# (GetGroupId) data source: GetGroupId consistently returns ResourceNotFoundException for
+# these groups via the transform-hub-sso-lookup provider, even with a confirmed-correct,
+# exact-match DisplayName. Listing all groups and filtering locally avoids that API call.
+data "aws_identitystore_groups" "transform_hub_groups" {
   provider = aws.transform-hub-sso-lookup
 
-  for_each = local.transform_hub_user_management_enabled ? toset(local.transform_hub_distinct_group_names) : toset([])
+  identity_store_id = local.transform_hub_identity_store_id
+}
 
-  identity_store_id = one(data.aws_ssoadmin_instances.transform_hub.identity_store_ids)
-
-  alternate_identifier {
-    unique_attribute {
-      attribute_path  = "DisplayName"
-      attribute_value = each.value
-    }
+locals {
+  transform_hub_group_id_by_name = {
+    for group in data.aws_identitystore_groups.transform_hub_groups.groups :
+    group.display_name => group.group_id
   }
 }
 
@@ -106,7 +109,7 @@ resource "aws_ssoadmin_application_assignment" "transform_hub_access" {
   for_each = local.transform_hub_user_management_enabled ? toset(local.transform_hub_distinct_group_names) : toset([])
 
   application_arn = local.transform_hub_application_arn
-  principal_id    = data.aws_identitystore_group.transform_hub_groups[each.value].group_id
+  principal_id    = local.transform_hub_group_id_by_name[each.value]
   principal_type  = "GROUP"
 }
 
@@ -119,7 +122,7 @@ resource "terraform_data" "transform_hub_workspace_role_mapping" {
   triggers_replace = [
     each.value.workspace,
     each.value.group_name,
-    data.aws_identitystore_group.transform_hub_groups[each.value.group_name].group_id,
+    local.transform_hub_group_id_by_name[each.value.group_name],
     each.value.workspace_role,
     local.transform_hub_profile_arn
   ]
@@ -129,7 +132,7 @@ resource "terraform_data" "transform_hub_workspace_role_mapping" {
       aws transform put-user-role-mappings \
         --profile-arn "${local.transform_hub_profile_arn}" \
         --workspace-name "${each.value.workspace}" \
-        --principal-id "${data.aws_identitystore_group.transform_hub_groups[each.value.group_name].group_id}" \
+        --principal-id "${local.transform_hub_group_id_by_name[each.value.group_name]}" \
         --principal-type GROUP \
         --role "${each.value.workspace_role}"
     EOT

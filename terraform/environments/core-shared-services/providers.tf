@@ -55,10 +55,8 @@ provider "aws" {
 provider "aws" {
   alias  = "transform-hub-sso-lookup"
   region = "eu-west-2"
-
   assume_role {
     role_arn = "arn:aws:iam::${data.aws_organizations_organization.root_account.master_account_id}:role/ModernisationPlatformSSOReadOnly"
   }
-
   default_tags { tags = local.tags }
 }
