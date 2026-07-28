@@ -44,6 +44,10 @@
           "level": "platform-engineer-admin"
         },
         {
+          "sso_group_name": "data-platform-engineering",
+          "level": "read-only"
+        },
+        {
           "sso_group_name": "data-factory-aker-team",
           "level": "sandbox"
         }
