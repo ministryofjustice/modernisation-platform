@@ -1,7 +1,26 @@
 {
   "account-type": "member",
-  "codeowners": ", ",
-  "environments": [],
+  "isolated-network": "true",
+  "codeowners": "cloud-platform-engineers",  "environments": [
+    {
+      "name": "nonlive",
+      "access": [
+        {
+          "sso_group_name": "cloud-platform-engineers",
+          "level": "platform-engineer-admin"
+        }
+      ]
+    },
+    {
+      "name": "live",
+      "access": [
+        {
+          "sso_group_name": "cloud-platform-engineers",
+          "level": "platform-engineer-admin"
+        }
+      ]
+    }  
+  ],
   "tags": {
     "application": "container-platform-cd",
     "business-unit": "Platforms",
