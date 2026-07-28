@@ -34,6 +34,7 @@ expected :=
     "cloud-platform-live",
     "cloud-platform-non-live",
     "coat",
+    "container-platform-cd",
     "container-platform-hmpps",
     "container-platform-laa",
     "container-platform-octo",
