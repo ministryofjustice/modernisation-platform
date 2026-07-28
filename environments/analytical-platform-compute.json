@@ -35,8 +35,8 @@
       "name": "next"
     }
   ],
-  "codeowners": ["data-platform-engineering", "analytical-platform-engineers"],
-  "github_action_reviewer": ["data-platform-engineering", "analytical-platform-engineers"],
+  "codeowners": ["analytical-platform-engineers"],
+  "github_action_reviewer": "analytical-platform-engineers",
   "environments": [
     {
       "name": "development",
