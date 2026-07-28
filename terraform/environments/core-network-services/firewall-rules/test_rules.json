@@ -265,13 +265,6 @@
     "destination_port": "ANY",
     "protocol": "IP"
   },
-  "laa_shared_services_prod_to_mp_laa_test": {
-    "action": "PASS",
-    "source_ip": "${laa-lz-shared-services-prod}",
-    "destination_ip": "${laa-test}",
-    "destination_port": "ANY",
-    "protocol": "IP"
-  },
   "hmpps_test_to_saas_agent_tcp": {
     "action": "PASS",
     "source_ip": "${hmpps-test}",
