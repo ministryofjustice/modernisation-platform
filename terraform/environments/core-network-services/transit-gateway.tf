@@ -5,12 +5,13 @@ resource "aws_ec2_transit_gateway" "transit-gateway" {
   #checkov:skip=CKV_AWS_331
   description = "Managed by Terraform"
 
-  amazon_side_asn                 = "64589"
-  auto_accept_shared_attachments  = "enable"
-  default_route_table_association = "disable"
-  default_route_table_propagation = "disable"
-  dns_support                     = "enable"
-  vpn_ecmp_support                = "enable"
+  amazon_side_asn                    = "64589"
+  auto_accept_shared_attachments     = "enable"
+  default_route_table_association    = "disable"
+  default_route_table_propagation    = "disable"
+  dns_support                        = "enable"
+  security_group_referencing_support = "enable"
+  vpn_ecmp_support                   = "enable"
 
   tags = merge(
     local.tags,
