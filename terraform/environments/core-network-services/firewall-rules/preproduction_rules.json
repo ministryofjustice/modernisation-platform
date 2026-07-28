@@ -365,6 +365,20 @@
     "destination_port": "389",
     "protocol": "TCP"
   },
+  "hmpps_preproduction_to_delius_stage_nfs": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${delius-stage}",
+    "destination_port": "2049",
+    "protocol": "TCP"
+  },
+  "hmpps_preproduction_to_delius_preproduction_nfs": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${delius-pre-prod}",
+    "destination_port": "2049",
+    "protocol": "TCP"
+  },
   "cp_to_mp_hmpps_preproduction_ldap": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
