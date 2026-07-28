@@ -29,7 +29,8 @@
       "access": [
         {
           "sso_group_name": "laa-sre-admins",
-          "level": "sandbox"
+          "level": "sandbox",
+          "github_action_reviewer": "true"
         }
       ],
       "nuke": "exclude"

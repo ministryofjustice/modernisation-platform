@@ -6,7 +6,8 @@
       "access": [
         {
           "sso_group_name": "laa-sre-admins",
-          "level": "sandbox"
+          "level": "sandbox",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-aws-infrastructure",
@@ -28,7 +29,8 @@
       "access": [
         {
           "sso_group_name": "laa-sre-admins",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-ccms-ebs-developers",
@@ -49,7 +51,8 @@
       "access": [
         {
           "sso_group_name": "laa-sre-admins",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-ccms-ebs-developers",
