@@ -23,7 +23,9 @@ resource "aws_ram_principal_association" "transit-gateway" {
     container-platform-laa-nonlive   = local.environment_management.account_ids["container-platform-laa-nonlive"],
     container-platform-laa-live      = local.environment_management.account_ids["container-platform-laa-live"],
     container-platform-hmpps-nonlive = local.environment_management.account_ids["container-platform-hmpps-nonlive"],
-    container-platform-hmpps-live    = local.environment_management.account_ids["container-platform-hmpps-live"]
+    container-platform-hmpps-live    = local.environment_management.account_ids["container-platform-hmpps-live"],
+    container-platform-cd-nonlive    = local.environment_management.account_ids["container-platform-cd-nonlive"],
+    container-platform-cd-live       = local.environment_management.account_ids["container-platform-cd-live"]
   }
 
   principal          = each.value
