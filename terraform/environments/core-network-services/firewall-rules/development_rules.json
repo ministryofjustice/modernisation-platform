@@ -384,6 +384,13 @@
     "destination_port": "1522",
     "protocol": "TCP"
   },
+  "hmpps_development_to_delius_mis_dev_nfs": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${delius-mis-dev}",
+    "destination_port": "2049",
+    "protocol": "TCP"
+  },
   "delius_mis_dev_to_hmpps_development_ldap": {
     "action": "PASS",
     "source_ip": "${delius-mis-dev}",

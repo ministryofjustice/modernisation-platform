@@ -336,6 +336,13 @@
     "destination_port": "636",
     "protocol": "TCP"
   },
+  "hmpps_production_to_delius_production_nfs": {
+    "action": "PASS",
+    "source_ip": "${hmpps-production}",
+    "destination_ip": "${delius-prod}",
+    "destination_port": "2049",
+    "protocol": "TCP"
+  },
   "delius_prod_to_hmpps_production_ldap": {
     "action": "PASS",
     "source_ip": "${delius-prod}",
