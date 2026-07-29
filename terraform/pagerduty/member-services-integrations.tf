@@ -1857,9 +1857,10 @@ locals {
     "george.hill2"     = local.justice_email_suffix
     "annesa.mariyam"   = local.justice_email_suffix
   }
-  octo_infrastructure_support_team_members = {
-    "george.hill2"   = local.justice_email_suffix
-    "annesa.mariyam" = local.justice_email_suffix
+  octo_platform_operations_team_members = {
+    "george.hill2"     = local.justice_email_suffix
+    "annesa.mariyam"   = local.justice_email_suffix
+    "antony.gowland"   = local.digital_email_suffix
   }
   # repeat users, e.g. for a 3 day stint of concierge
   dso_schedule_user_order = [
@@ -1882,9 +1883,7 @@ locals {
     "william.gibbon",
     "william.gibbon",
   ]
-  octo_infrastructure_support_schedule_user_order = [
-    "george.hill2",
-    "george.hill2",
+  octo_platform_operations_schedule_user_order = [
     "george.hill2",
     "george.hill2",
     "george.hill2",
@@ -1893,6 +1892,13 @@ locals {
     "annesa.mariyam",
     "annesa.mariyam",
     "annesa.mariyam",
+    "antony.gowland",
+    "antony.gowland",
+    "antony.gowland",
+    "antony.gowland",
+    "george.hill2",
+    "george.hill2",
+
   ]
 
   services = {
@@ -2180,27 +2186,27 @@ resource "pagerduty_event_orchestration_service" "az_dso_alerts" {
 
 # END - DSO Azure alerts
 
-# OCTO Infrastructure Support
+# OCTO Platform Operations
 
-data "pagerduty_user" "octo_infrastructure_support" {
-  for_each = local.octo_infrastructure_support_team_members
+data "pagerduty_user" "octo_platform_operations" {
+  for_each = local.octo_platform_operations_team_members
   email    = "${each.key}${each.value}"
 }
 
-resource "pagerduty_team" "octo_infrastructure_support" {
-  name        = "OCTO Infrastructure Support"
-  description = "OCTO Infrastructure Support squad (HMPPS) responsible for infrastructure support of Nomis, Oasys, CSR, PlanetFM, NonCore. Managed in terraform"
+resource "pagerduty_team" "octo_platform_operations" {
+  name        = "OCTO Platform Operations"
+  description = "OCTO Platform Operations squad (HMPPS) responsible for infrastructure support of Nomis, Oasys, CSR, PlanetFM, NonCore. Managed in terraform"
 }
 
-resource "pagerduty_team_membership" "octo_infrastructure_support" {
-  for_each = data.pagerduty_user.octo_infrastructure_support
-  team_id  = pagerduty_team.octo_infrastructure_support.id
+resource "pagerduty_team_membership" "octo_platform_operations" {
+  for_each = data.pagerduty_user.octo_platform_operations
+  team_id  = pagerduty_team.octo_platform_operations.id
   user_id  = each.value.id
 }
 
-resource "pagerduty_schedule" "octo_infrastructure_support" {
-  name        = "OCTO Infrastructure Support Concierge (In Hours Rota)"
-  description = "#ask-octo-infrastructure-support Concierge in-hours rota. Managed in terraform"
+resource "pagerduty_schedule" "octo_platform_operations" {
+  name        = "OCTO Platform Operations Concierge (In Hours Rota)"
+  description = "#ask-octo-platform-operations Concierge in-hours rota. Managed in terraform"
   time_zone   = "Europe/London"
 
   # Incidents will not be created if there is no one on call. Adding a fall back layer to ensure there is always a user on call.
@@ -2222,7 +2228,7 @@ resource "pagerduty_schedule" "octo_infrastructure_support" {
     rotation_turn_length_seconds = 86400
 
     users = [
-      for user in local.octo_infrastructure_support_schedule_user_order : data.pagerduty_user.octo_infrastructure_support[user].id
+      for user in local.octo_platform_operations_schedule_user_order : data.pagerduty_user.octo_platform_operations[user].id
     ]
 
     restriction {
@@ -2257,23 +2263,23 @@ resource "pagerduty_schedule" "octo_infrastructure_support" {
     }
   }
 
-  teams = [pagerduty_team.octo_infrastructure_support.id]
+  teams = [pagerduty_team.octo_platform_operations.id]
 }
 
-resource "pagerduty_escalation_policy" "octo_infrastructure_support" {
-  name  = "OCTO Infrastructure Support Escalation Policy"
-  teams = [pagerduty_team.octo_infrastructure_support.id]
+resource "pagerduty_escalation_policy" "octo_platform_operations" {
+  name  = "OCTO Platform Operations Escalation Policy"
+  teams = [pagerduty_team.octo_platform_operations.id]
 
   rule {
     escalation_delay_in_minutes = 120 # since no on-call and primary notification is via slack integration
     target {
       type = "schedule_reference"
-      id   = pagerduty_schedule.octo_infrastructure_support.id
+      id   = pagerduty_schedule.octo_platform_operations.id
     }
   }
 }
 
-# END - OCTO Infrastructure Support
+# END - OCTO Platform Operations
 
 resource "pagerduty_service" "sprinkler-development" {
   name                    = "sprinkler-development"
