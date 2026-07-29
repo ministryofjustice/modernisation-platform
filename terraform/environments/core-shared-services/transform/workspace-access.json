@@ -1,0 +1,10 @@
+{
+  "workspaces": {
+    "example-development-migration": {
+      "group_roles": {
+        "azure-aws-sso-cdpt": "Contributor",
+        "modernisation-platform-engineers": "Admin"
+      }
+    }
+  }
+}
