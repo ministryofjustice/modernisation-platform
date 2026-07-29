@@ -12,9 +12,6 @@ import (
 func TestTransitGateway(t *testing.T) {
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: "../",
-		Vars: map[string]interface{}{
-			"transform_user_management_enabled": false,
-		},
 	})
 
 	terraform.RunTerraformCommand(t, terraformOptions, "refresh")
