@@ -11,6 +11,8 @@ locals {
     container-platform-laa-nonlive   = local.environment_management.account_ids["container-platform-laa-nonlive"]
     container-platform-octo-nonlive  = local.environment_management.account_ids["container-platform-octo-nonlive"]
     container-platform-octo-live     = local.environment_management.account_ids["container-platform-octo-live"]
+    container-platform-cd-nonlive    = local.environment_management.account_ids["container-platform-cd-nonlive"]
+    container-platform-cd-live       = local.environment_management.account_ids["container-platform-cd-live"]
   }
 
   centralised_endpoint_configuration = jsondecode(file("${path.module}/centralised-vpc-endpoints.json"))
