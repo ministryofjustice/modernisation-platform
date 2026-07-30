@@ -1266,8 +1266,7 @@ module "create_a_derived_table_ecr_repo" {
     local.environment_management.account_ids["electronic-monitoring-data-test"],
     local.environment_management.account_ids["electronic-monitoring-data-preproduction"],
     local.environment_management.account_ids["electronic-monitoring-data-production"],
-    # Note adding the wildcard back to the role below as this currently does not exist in the account and is fauling an apply failure 
-    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-development"]}:role/ecs_execution_cadt*"
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-development"]}:role/ecs_execution_cadt"
   ]
 
   # Tags
