@@ -31,15 +31,14 @@ locals {
   }
 }
 
+#checkov:skip=CKV_AWS_60:Cross-account trust is intentional. Access is restricted to approved business unit AWS accounts.
 resource "aws_iam_role" "shared_services_secrets_access" {
   for_each = local.grouped_accounts
   name = "${lower(each.key)}-shared-configuration-access"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
-
     Statement = [{
       Effect = "Allow"
-
       Principal = {
         AWS = [
           for account_name in each.value :
@@ -62,6 +61,7 @@ resource "aws_iam_role_policy_attachment" "shared_secrets_access" {
   policy_arn = aws_iam_policy.shared_secrets_access[each.key].arn
 }
 
+#checkov:skip=CKV_AWS_355:AWS Secrets Manager ListSecrets and SSM DescribeParameters require wildcard resource permissions
 resource "aws_iam_policy" "shared_secrets_access" {
 
   for_each = local.grouped_accounts
