@@ -1,15 +1,15 @@
 locals {
-  environment_files = fileset("../../../environments", "*.json")
+  platform_environment_files = fileset("../../../environments", "*.json")
 
-  environments = {
-    for file in local.environment_files :
+  platform_environments = {
+    for file in local.platform_environment_files :
     trimsuffix(file, ".json") => jsondecode(
       file("../../../environments/${file}")
     )
   }
 
   accounts = flatten([
-    for app_name, config in local.environments : [
+    for app_name, config in local.platform_environments : [
       for env in config.environments : {
         business_unit = config.tags["business-unit"]
         account_name = "${app_name}-${env.name}"
@@ -17,12 +17,12 @@ locals {
     ]
   ])
 
-  business_units = distinct([
+  platform_business_units = distinct([
     for a in local.accounts : a.business_unit
   ])
 
   grouped_accounts = {
-    for bu in local.business_units :
+    for bu in local.platform_business_units :
     bu => [
       for a in local.accounts :
       a.account_name
