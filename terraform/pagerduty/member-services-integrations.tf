@@ -1862,6 +1862,10 @@ locals {
     "annesa.mariyam"   = local.justice_email_suffix
     "antony.gowland"   = local.digital_email_suffix
     "steve.williams4"  = local.justice_email_suffix
+    "dominic.robinson" = local.digital_email_suffix
+    "prem.basumatary"  = local.digital_email_suffix
+    "sebastian.norris" = local.digital_email_suffix
+    "david.teeling1"   = local.justice_email_suffix
   }
   # repeat users, e.g. for a 3 day stint of concierge
   dso_schedule_user_order = [
@@ -1884,11 +1888,17 @@ locals {
     "william.gibbon",
     "william.gibbon",
   ]
-  octo_platform_operations_schedule_user_order = [
+  octo_platform_operations_primary_schedule_user_order = [
     "george.hill2",
     "annesa.mariyam",
     "antony.gowland",
     "steve.williams4",
+  ]
+  octo_platform_operations_secondary_schedule_user_order = [
+    "dominic.robinson"
+    "prem.basumatary"
+    "sebastian.norris"
+    "david.teeling1"
   ]
 
   services = {
@@ -2196,9 +2206,9 @@ resource "pagerduty_team_membership" "octo_platform_operations" {
   user_id  = each.value.id
 }
 
-resource "pagerduty_schedule" "octo_platform_operations" {
-  name        = "OCTO Platform Operations Concierge (In Hours Rota)"
-  description = "#ask-octo-platform-operations Concierge in-hours rota. Managed in terraform"
+resource "pagerduty_schedule" "octo_platform_operations_primary" {
+  name        = "OCTO Platform Operations Concierge (In Hours Rota) Primary"
+  description = "#ask-octo-platform-operations Concierge in-hours rota for the Primary Engineer. Managed in terraform"
   time_zone   = "Europe/London"
 
   # Incidents will not be created if there is no one on call. Adding a fall back layer to ensure there is always a user on call.
@@ -2220,7 +2230,69 @@ resource "pagerduty_schedule" "octo_platform_operations" {
     rotation_turn_length_seconds = 86400
 
     users = [
-      for user in local.octo_platform_operations_schedule_user_order : data.pagerduty_user.octo_platform_operations[user].id
+      for user in local.octo_platform_operations_primary_schedule_user_order : data.pagerduty_user.octo_platform_operations[user].id
+    ]
+
+    restriction {
+      type              = "weekly_restriction"
+      start_day_of_week = 1
+      start_time_of_day = "08:00:00"
+      duration_seconds  = 28800
+    }
+    restriction {
+      type              = "weekly_restriction"
+      start_day_of_week = 2
+      start_time_of_day = "08:00:00"
+      duration_seconds  = 28800
+    }
+    restriction {
+      type              = "weekly_restriction"
+      start_day_of_week = 3
+      start_time_of_day = "08:00:00"
+      duration_seconds  = 28800
+    }
+    restriction {
+      type              = "weekly_restriction"
+      start_day_of_week = 4
+      start_time_of_day = "08:00:00"
+      duration_seconds  = 28800
+    }
+    restriction {
+      type              = "weekly_restriction"
+      start_day_of_week = 5
+      start_time_of_day = "08:00:00"
+      duration_seconds  = 28800
+    }
+  }
+
+  teams = [pagerduty_team.octo_platform_operations.id]
+}
+
+resource "pagerduty_schedule" "octo_platform_operations_secondary" {
+  name        = "OCTO Platform Operations Concierge (In Hours Rota) Secondary"
+  description = "#ask-octo-platform-operations Concierge in-hours rota for the Secondary Engineer. Managed in terraform"
+  time_zone   = "Europe/London"
+
+  # Incidents will not be created if there is no one on call. Adding a fall back layer to ensure there is always a user on call.
+  layer {
+    name                         = "Fallback layer"
+    start                        = "2025-05-15T06:00:00Z"
+    rotation_virtual_start       = "2025-05-15T06:00:00Z"
+    rotation_turn_length_seconds = 604800
+
+    users = [
+      pagerduty_user.pager_duty_users["modernisation_platform"].id
+    ]
+  }
+
+  layer {
+    name                         = "Secondary Schedule"
+    start                        = "2026-05-12T00:00:00Z"
+    rotation_virtual_start       = "2026-05-12T00:00:00Z"
+    rotation_turn_length_seconds = 86400
+
+    users = [
+      for user in local.octo_platform_operations_secondary_schedule_user_order : data.pagerduty_user.octo_platform_operations[user].id
     ]
 
     restriction {
@@ -2266,7 +2338,7 @@ resource "pagerduty_escalation_policy" "octo_platform_operations" {
     escalation_delay_in_minutes = 120 # since no on-call and primary notification is via slack integration
     target {
       type = "schedule_reference"
-      id   = pagerduty_schedule.octo_platform_operations.id
+      id   = pagerduty_schedule.octo_platform_operations_primary.id
     }
   }
 }
