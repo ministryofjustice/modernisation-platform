@@ -1861,6 +1861,7 @@ locals {
     "george.hill2"     = local.justice_email_suffix
     "annesa.mariyam"   = local.justice_email_suffix
     "antony.gowland"   = local.digital_email_suffix
+    "steve.williams4"  = local.justice_email_suffix
   }
   # repeat users, e.g. for a 3 day stint of concierge
   dso_schedule_user_order = [
@@ -1885,20 +1886,9 @@ locals {
   ]
   octo_platform_operations_schedule_user_order = [
     "george.hill2",
-    "george.hill2",
-    "george.hill2",
-    "annesa.mariyam",
-    "annesa.mariyam",
-    "annesa.mariyam",
-    "annesa.mariyam",
     "annesa.mariyam",
     "antony.gowland",
-    "antony.gowland",
-    "antony.gowland",
-    "antony.gowland",
-    "george.hill2",
-    "george.hill2",
-
+    "steve.williams4",
   ]
 
   services = {
