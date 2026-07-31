@@ -2335,10 +2335,17 @@ resource "pagerduty_escalation_policy" "octo_platform_operations" {
   teams = [pagerduty_team.octo_platform_operations.id]
 
   rule {
-    escalation_delay_in_minutes = 120 # since no on-call and primary notification is via slack integration
+    escalation_delay_in_minutes = 20 # TODO: Review? - old comment - since no on-call and primary notification is via slack integration
     target {
       type = "schedule_reference"
       id   = pagerduty_schedule.octo_platform_operations_primary.id
+    }
+  }
+  rule {
+    escalation_delay_in_minutes = 10
+    target {
+      type = "schedule_reference"
+      id   = pagerduty_schedule.octo_platform_operations_secondary.id
     }
   }
 }
