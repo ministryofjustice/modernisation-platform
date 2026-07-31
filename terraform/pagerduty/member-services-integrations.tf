@@ -2279,6 +2279,58 @@ resource "pagerduty_escalation_policy" "octo_platform_operations" {
   }
 }
 
+resource "pagerduty_service" "octo_platform_operations_services" {
+  for_each = local.services
+
+  name                    = each.key
+  description             = "${each.key}-alarms"
+  auto_resolve_timeout    = "null"
+  acknowledgement_timeout = "null"
+  escalation_policy       = lookup(each.value, "escalation_policy", pagerduty_escalation_policy.octo_platform_operations.id)
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "octo_platform_operations_integrations" {
+  for_each = pagerduty_service.octo_platform_operations_services
+
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = each.value.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "octo_platform_operations_connections" {
+  for_each = local.services
+
+  source_id         = pagerduty_service.octo_platform_operations_services[each.key].id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = each.value.slack_channel_id
+  notification_type = "responder"
+  config {
+    events     = local.slack_events
+    priorities = ["*"]
+  }
+}
+
+resource "pagerduty_event_orchestration_service" "octo_platform_operations_default" {
+  for_each = pagerduty_service.octo_platform_operations_services
+
+  service                                = each.value.id
+  enable_event_orchestration_for_service = true
+  set {
+    id = "start"
+    rule {
+      label = "Set the default priority to P5 so breaches appear in the PagerDuty UI"
+      actions {
+        priority = data.pagerduty_priority.p5.id
+      }
+    }
+  }
+  catch_all {
+    actions {}
+  }
+}
+
 # END - OCTO Platform Operations
 
 resource "pagerduty_service" "sprinkler-development" {
