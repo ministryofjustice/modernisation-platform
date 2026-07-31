@@ -2040,6 +2040,7 @@ resource "pagerduty_escalation_policy" "dso" {
   }
 }
 
+# TODO: Review if this can exist at the same time as octo_platform_operations_services
 resource "pagerduty_service" "services" {
   for_each = local.services
 
@@ -2105,6 +2106,7 @@ locals {
   }
 }
 
+# TODO: Review if this can exist at the same time as octo_platform_operations_az_dso_alerts
 resource "pagerduty_service" "az_dso_alerts" {
   for_each = local.dso_az_alerts.channel_ids
 
