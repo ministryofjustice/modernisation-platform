@@ -196,7 +196,7 @@ resource "pagerduty_service" "jitbit_nonprod" {
   description             = "Delius Jitbit Non Prod Alarms"
   auto_resolve_timeout    = 345600
   acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  escalation_policy       = pagerduty_escalation_policy.octo_platform_operations.id
   alert_creation          = "create_alerts_and_incidents"
 }
 
@@ -247,7 +247,7 @@ resource "pagerduty_service" "jitbit_prod" {
   description             = "Delius Jitbit Prod Alarms"
   auto_resolve_timeout    = 345600
   acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  escalation_policy       = pagerduty_escalation_policy.octo_platform_operations.id
   alert_creation          = "create_alerts_and_incidents"
 }
 
@@ -298,7 +298,7 @@ resource "pagerduty_service" "iaps_nonprod" {
   description             = "Delius IAPS Non Prod Alarms"
   auto_resolve_timeout    = 345600
   acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  escalation_policy       = pagerduty_escalation_policy.octo_platform_operations.id
   alert_creation          = "create_alerts_and_incidents"
 }
 
@@ -349,7 +349,7 @@ resource "pagerduty_service" "iaps_prod" {
   description             = "Delius IAPS Prod Alarms"
   auto_resolve_timeout    = 345600
   acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  escalation_policy       = pagerduty_escalation_policy.octo_platform_operations.id
   alert_creation          = "create_alerts_and_incidents"
 }
 
@@ -402,7 +402,7 @@ resource "pagerduty_service" "delius_mis_prod" {
   description             = "Delius MIS Production Alarms"
   auto_resolve_timeout    = 345600
   acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  escalation_policy       = pagerduty_escalation_policy.octo_platform_operations.id
   alert_creation          = "create_alerts_and_incidents"
 }
 
@@ -448,7 +448,7 @@ resource "pagerduty_service" "delius_mis_non_prod" {
   description             = "Delius MIS Non-production Alarms"
   auto_resolve_timeout    = 345600
   acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  escalation_policy       = pagerduty_escalation_policy.octo_platform_operations.id
   alert_creation          = "create_alerts_and_incidents"
 }
 
@@ -1379,7 +1379,7 @@ resource "pagerduty_service" "delius_core_nonprod" {
   description             = "Delius Core Non Prod Alarms"
   auto_resolve_timeout    = 345600
   acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  escalation_policy       = pagerduty_escalation_policy.octo_platform_operations.id
   alert_creation          = "create_alerts_and_incidents"
 }
 
@@ -1430,7 +1430,7 @@ resource "pagerduty_service" "delius_core_prod" {
   description             = "Delius Core Prod Alarms"
   auto_resolve_timeout    = 345600
   acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  escalation_policy       = pagerduty_escalation_policy.octo_platform_operations.id
   alert_creation          = "create_alerts_and_incidents"
 }
 
