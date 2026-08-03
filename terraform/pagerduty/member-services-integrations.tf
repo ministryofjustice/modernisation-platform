@@ -1862,7 +1862,6 @@ locals {
     "annesa.mariyam"   = local.justice_email_suffix
     "antony.gowland"   = local.digital_email_suffix
     "steve.williams4"  = local.justice_email_suffix
-    "dominic.robinson" = local.digital_email_suffix
     "prem.basumatary"  = local.digital_email_suffix
     "sebastian.norris" = local.digital_email_suffix
     "david.teeling1"   = local.justice_email_suffix
@@ -1895,7 +1894,6 @@ locals {
     "steve.williams4",
   ]
   octo_platform_operations_secondary_schedule_user_order = [
-    "dominic.robinson",
     "prem.basumatary",
     "sebastian.norris",
     "david.teeling1",
