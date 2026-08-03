@@ -1,7 +1,11 @@
 {
   "account-type": "member",
   "codeowners": "justice-engineering-ai-enablement, justice-engineering-ai-enablement",
-  "components": ["ai-gateway-integration"],
+  "components": [
+    {
+      "name": "ai-gateway"
+    }
+  ],
   "environments": [
     {
       "name": "development",
