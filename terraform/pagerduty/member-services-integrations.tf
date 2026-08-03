@@ -1895,10 +1895,10 @@ locals {
     "steve.williams4",
   ]
   octo_platform_operations_secondary_schedule_user_order = [
-    "dominic.robinson"
-    "prem.basumatary"
-    "sebastian.norris"
-    "david.teeling1"
+    "dominic.robinson",
+    "prem.basumatary",
+    "sebastian.norris",
+    "david.teeling1",
   ]
 
   services = {
