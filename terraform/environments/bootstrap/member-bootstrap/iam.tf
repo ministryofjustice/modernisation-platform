@@ -1110,7 +1110,8 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
       format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id),
       format("arn:aws:iam::%s:role/ModernisationPlatformSSOReadOnly", local.environment_management.aws_organizations_root_account_id),
       # the following are required as cooker have development accounts but are in the sandbox vpc
-      local.application_name == "cooker" ? format("arn:aws:iam::%s:role/member-delegation-house-sandbox", local.environment_management.account_ids["core-vpc-sandbox"]) : format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id)
+      local.application_name == "cooker" ? format("arn:aws:iam::%s:role/member-delegation-house-sandbox", local.environment_management.account_ids["core-vpc-sandbox"]) : format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id),
+      local.business_unit != null ? format("arn:aws:iam::%s:role/%s-shared-configuration-access", local.environment_management.account_ids["core-shared-services-production"], lower(local.business_unit)) : ""
     ])
     condition {
       test     = "StringEquals"
@@ -1487,7 +1488,8 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
       format("arn:aws:iam::%s:role/member-delegation-read-only", local.environment_management.account_ids["core-vpc-test"]),
       format("arn:aws:iam::%s:role/member-delegation-read-only", local.environment_management.account_ids["core-vpc-preproduction"]),
       format("arn:aws:iam::%s:role/member-delegation-read-only", local.environment_management.account_ids["core-vpc-production"]),
-      format("arn:aws:iam::%s:role/member-delegation-read-only", local.environment_management.account_ids["core-vpc-sandbox"])
+      format("arn:aws:iam::%s:role/member-delegation-read-only", local.environment_management.account_ids["core-vpc-sandbox"]),
+      local.business_unit != null ? format("arn:aws:iam::%s:role/%s-shared-configuration-access", local.environment_management.account_ids["core-shared-services-production"], lower(local.business_unit)) : ""
     ])
     condition {
       test     = "StringEquals"
