@@ -31,6 +31,10 @@
           "sso_group_name": "laa-sre-admins",
           "level": "sandbox",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
+          "level": "developer"
         }
       ],
       "nuke": "exclude"
