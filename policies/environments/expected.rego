@@ -76,7 +76,6 @@ expected :=
     "integration-hub-file-transfer",
     "laa-ccms-soa",
     "laa-cis",
-    "laa-cst-security-dashboard",
     "laa-enterprise-service-bus",
     "laa-mail-relay",
     "laa-new-workspaces",
