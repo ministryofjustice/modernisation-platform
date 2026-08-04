@@ -172,20 +172,50 @@ data "aws_iam_policy_document" "transform_kms_key_policy" {
       ]
     }
   }
+
+  statement {
+    sid    = "AllowSecretsManagerToUseKey"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey",
+      "kms:GenerateDataKeyWithoutPlaintext"
+    ]
+
+    resources = ["*"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["secretsmanager.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceAccount"
+      values   = [data.aws_caller_identity.current.account_id]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["secretsmanager.eu-west-2.amazonaws.com"]
+    }
+  }
 }
 
 resource "aws_secretsmanager_secret" "aws_transform_url" {
   #checkov:skip=CKV2_AWS_57: Secret rotation is managed outside Terraform for this value
   name        = "aws_transform_url"
   description = "AWS Transform workspace URL"
-
+  kms_key_id  = aws_kms_key.transform_bucket.arn
   tags = local.tags
 }
 
 resource "aws_secretsmanager_secret_version" "aws_transform_url" {
   secret_id     = aws_secretsmanager_secret.aws_transform_url.id
   secret_string = "placeholder"
-
   lifecycle {
     ignore_changes = [
       # Secret value is set/updated outside Terraform.
