@@ -123,6 +123,37 @@ resource "aws_kms_alias" "transform_bucket" {
   target_key_id = aws_kms_key.transform_bucket.key_id
 }
 
+# Required so the AWS Transform web application can read/write artifacts
+# directly from the browser via presigned S3 URLs.
+# See https://docs.aws.amazon.com/transform/latest/userguide/custom-s3-bucket.html#custom-s3-bucket-cors
+resource "aws_s3_bucket_cors_configuration" "transform_s3_bucket" {
+  bucket = module.transform_s3_bucket.bucket.id
+
+  cors_rule {
+    allowed_headers = [
+      "host",
+      "content-type",
+      "if-none-match",
+      "x-amz-checksum-sha256",
+      "x-amz-expected-bucket-owner",
+      "x-amz-server-side-encryption",
+      "x-amz-server-side-encryption-aws-kms-key-id",
+      "x-amz-server-side-encryption-context",
+      "x-amz-source-account",
+      "x-amz-source-arn"
+    ]
+    allowed_methods = ["GET", "PUT", "HEAD"]
+    allowed_origins = [local.aws_transform_url]
+    expose_headers = [
+      "ETag",
+      "x-amz-checksum-sha256",
+      "x-amz-request-id",
+      "x-amz-id-2"
+    ]
+    max_age_seconds = 3600
+  }
+}
+
 data "aws_iam_policy_document" "transform_kms_key_policy" {
 
   #checkov:skip=CKV_AWS_109: "Key policy requires asterisk resource"
@@ -174,6 +205,34 @@ data "aws_iam_policy_document" "transform_kms_key_policy" {
   }
 
   statement {
+    sid    = "AllowAWSTransformServiceAccess"
+    effect = "Allow"
+    actions = [
+      "kms:CreateGrant",
+      "kms:DescribeKey"
+    ]
+
+    resources = ["*"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["transform.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["transform.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "Bool"
+      variable = "kms:GrantIsForAWSResource"
+      values   = ["true"]
+    }
+  }
+
+  statement {
     sid    = "AllowSecretsManagerToUseKey"
     effect = "Allow"
     actions = [
@@ -217,7 +276,7 @@ resource "aws_secretsmanager_secret_version" "aws_transform_url" {
   #checkov:skip=CKV_SECRET_6: Seeded placeholder value is not a real secret; actual value is set outside Terraform
   secret_id     = aws_secretsmanager_secret.aws_transform_url.id
   #checkov:skip=CKV_SECRET_6: Seeded placeholder value is not a real secret; actual value is set outside Terraform
-  secret_string = "not-a-real-secret-value"
+  secret_string = "https://example.com"
   lifecycle {
     ignore_changes = [
       # Secret value is set/updated outside Terraform.
