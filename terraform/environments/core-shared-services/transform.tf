@@ -216,7 +216,8 @@ resource "aws_secretsmanager_secret" "aws_transform_url" {
 resource "aws_secretsmanager_secret_version" "aws_transform_url" {
   #checkov:skip=CKV_SECRET_6: Seeded placeholder value is not a real secret; actual value is set outside Terraform
   secret_id     = aws_secretsmanager_secret.aws_transform_url.id
-  secret_string = "placeholder"
+  #checkov:skip=CKV_SECRET_6: Seeded placeholder value is not a real secret; actual value is set outside Terraform
+  secret_string = "not-a-real-secret-value"
   lifecycle {
     ignore_changes = [
       # Secret value is set/updated outside Terraform.
