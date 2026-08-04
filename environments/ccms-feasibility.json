@@ -34,7 +34,7 @@
         },
         {
           "sso_group_name": "laa-dba",
-          "level": "developer"
+          "level": "sandbox"
         }
       ],
       "nuke": "exclude"
