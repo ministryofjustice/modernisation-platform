@@ -6,6 +6,18 @@
 # application-level SSO assignment in Terraform would just be a second, driftable source of
 # truth for the same access. Both are handled manually via the console instead.
 
+locals {
+  aws_transform_url = data.aws_secretsmanager_secret_version.aws_transform_url.secret_string
+}
+
+data "aws_secretsmanager_secret" "aws_transform_url" {
+  name = aws_secretsmanager_secret.aws_transform_url.name
+}
+
+data "aws_secretsmanager_secret_version" "aws_transform_url" {
+  secret_id = data.aws_secretsmanager_secret.aws_transform_url.id
+}
+
 # Central S3 as used in Transform Configuration
 module "transform_s3_bucket" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=c8889e65f4d8a3d53d2cbd93b7be714e990020b7" # v10.2.1
@@ -160,6 +172,56 @@ data "aws_iam_policy_document" "transform_kms_key_policy" {
       ]
     }
   }
+
+  statement {
+    sid    = "AllowSecretsManagerToUseKey"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey",
+      "kms:GenerateDataKeyWithoutPlaintext"
+    ]
+
+    resources = ["*"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["secretsmanager.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceAccount"
+      values   = [data.aws_caller_identity.current.account_id]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["secretsmanager.eu-west-2.amazonaws.com"]
+    }
+  }
 }
 
+resource "aws_secretsmanager_secret" "aws_transform_url" {
+  #checkov:skip=CKV2_AWS_57: Secret rotation is managed outside Terraform for this value
+  name        = "aws_transform_url"
+  description = "AWS Transform workspace URL"
+  kms_key_id  = aws_kms_key.transform_bucket.arn
+  tags = local.tags
+}
 
+resource "aws_secretsmanager_secret_version" "aws_transform_url" {
+  #checkov:skip=CKV_SECRET_6: Seeded placeholder value is not a real secret; actual value is set outside Terraform
+  secret_id     = aws_secretsmanager_secret.aws_transform_url.id
+  #checkov:skip=CKV_SECRET_6: Seeded placeholder value is not a real secret; actual value is set outside Terraform
+  secret_string = "not-a-real-secret-value"
+  lifecycle {
+    ignore_changes = [
+      # Secret value is set/updated outside Terraform.
+      secret_string,
+    ]
+  }
+}
