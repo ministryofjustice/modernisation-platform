@@ -33,7 +33,7 @@
           "github_action_reviewer": "true"
         },
         {
-          "sso_group_name": "laa-ccms-ebs-developers",
+          "sso_group_name": "laa-dba",
           "level": "developer"
         }
       ],
