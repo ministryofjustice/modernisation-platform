@@ -32,6 +32,10 @@
           "level": "developer"
         },
         {
+          "sso_group_name": "laa-soa-developers",
+          "level": "developer"
+        },
+        {
           "sso_group_name": "laa-ccms-ebs-developers",
           "level": "developer"
         },
