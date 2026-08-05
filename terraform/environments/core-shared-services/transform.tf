@@ -354,7 +354,7 @@ resource "aws_iam_role_policy" "member_shared_services_transform" {
         "Resource" : "*",
         "Condition" : {
           "StringEquals" : {
-            "aws:ResourceAccount" : "${local.environment_management.account_ids["core-shared-services-production"]}"
+            "aws:ResourceAccount" : local.environment_management.account_ids["core-shared-services-production"]
           }
         }
       }
