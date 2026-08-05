@@ -186,7 +186,8 @@
   },
   "github-oidc-team-repositories": [
     "ministryofjustice/ccms-payments-received",
-    "ministryofjustice/ccms-financial-transfers"
+    "ministryofjustice/ccms-financial-transfers",
+    "ministryofjustice/laa-ccms-ebs-scripts"
   ],
   "go-live-date": "2023-05-26"
 }
