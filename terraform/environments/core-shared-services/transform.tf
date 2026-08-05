@@ -269,12 +269,12 @@ resource "aws_secretsmanager_secret" "aws_transform_url" {
   name        = "aws_transform_url"
   description = "AWS Transform workspace URL"
   kms_key_id  = aws_kms_key.transform_bucket.arn
-  tags = local.tags
+  tags        = local.tags
 }
 
 resource "aws_secretsmanager_secret_version" "aws_transform_url" {
   #checkov:skip=CKV_SECRET_6: Seeded placeholder value is not a real secret; actual value is set outside Terraform
-  secret_id     = aws_secretsmanager_secret.aws_transform_url.id
+  secret_id = aws_secretsmanager_secret.aws_transform_url.id
   #checkov:skip=CKV_SECRET_6: Seeded placeholder value is not a real secret; actual value is set outside Terraform
   secret_string = "https://example.com"
   lifecycle {
