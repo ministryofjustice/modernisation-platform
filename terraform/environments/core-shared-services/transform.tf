@@ -284,3 +284,80 @@ resource "aws_secretsmanager_secret_version" "aws_transform_url" {
     ]
   }
 }
+
+## Creates a role that can be assumed by authenticated Modernisation Platform Users allowing them to access AWS Transform Services in the central account from their local device when using the ATX CLI.
+## Scope of use based on the existing member-shared-services role & policies
+
+resource "aws_iam_role" "member_shared_services_transform" {
+  name = "member-shared-services-transform"
+  assume_role_policy = jsonencode( # checkov:skip=CKV_AWS_60: "the policy is secured with the condition"
+    {
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          "Effect" : "Allow",
+          "Principal" : {
+            "AWS" : "*"
+          },
+          "Action" : "sts:AssumeRole",
+          "Condition" : {
+            "ForAnyValue:StringLike" : {
+              "aws:PrincipalOrgPaths" : ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+            }
+          }
+        }
+      ]
+  })
+
+  tags = merge(
+    local.tags,
+    {
+      Name = "member-shared-services"
+    },
+  )
+}
+
+#tfsec:ignore:aws-iam-no-policy-wildcards
+resource "aws_iam_role_policy" "member_shared_services_transform" {
+  # checkov:skip=CKV_AWS_355: Resources limited to core-shared-services
+  # checkov:skip=CKV_AWS_290: Resources limited to core-shared-services
+  name = "MemberSharedServicesTransform"
+  role = aws_iam_role.member_shared_services_transform.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "transform:AccessTransformProfile"
+        ],
+        "Resource" : "arn:aws:transform:${data.aws_region.current_region.region}:${local.environment_management.account_ids["core-shared-services-production"]}:profile/*"
+      },
+      {
+        # Note for this statement the permissions cannot be bound by specific resource ARNs.
+        "Effect" : "Allow",
+        "Action" : [
+          "transform:GetWebAppUrl",
+          "transform:GetUserDetails",
+          "transform:BatchGetUserDetails",
+          "transform:GetWorkspace",
+          "transform:ListWorkspaces",
+          "transform:ListJobs",
+          "transform:GetJob",
+          "transform:ListArtifacts",
+          "transform:ListJobPlanSteps",
+          "transform:ListWorklogs",
+          "transform:ListMessages",
+          "transform:BatchGetMessage"
+        ],
+        "Resource" : "*",
+        "Condition" : {
+          "StringEquals" : {
+            "aws:ResourceAccount" : local.environment_management.account_ids["core-shared-services-production"]
+          }
+        }
+      }
+    ]
+  })
+}
