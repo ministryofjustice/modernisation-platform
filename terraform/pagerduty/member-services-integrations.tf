@@ -1889,9 +1889,8 @@ locals {
   ]
   octo_platform_operations_primary_schedule_user_order = [
     "steve.williams4",
-    "annesa.mariyam",
-    "antony.gowland",
     "george.hill2",
+    "annesa.mariyam",
   ]
   octo_platform_operations_secondary_schedule_user_order = [
     "prem.basumatary",
