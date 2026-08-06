@@ -39,7 +39,7 @@ defaults:
 jobs:
 
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@40972648982915f26e5b5e22bd92f3af9297a707 # v6.1.7
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@0d6fd59fa082417466d12e0e1a5e76da3f1712db # v6.1.8
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -49,9 +49,9 @@ jobs:
     if: github.ref != 'refs/heads/main' && github.event_name != 'workflow_dispatch'
     needs: fetch-secrets
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@40972648982915f26e5b5e22bd92f3af9297a707 # v6.1.7
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0d6fd59fa082417466d12e0e1a5e76da3f1712db # v6.1.8
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
@@ -79,7 +79,7 @@ jobs:
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@517a711dbcd0e402f90c77e7e2f81e849156e31d # v6.2.2
+        uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6.2.3
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
           role-session-name: githubactionsrolesession
@@ -115,9 +115,9 @@ jobs:
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: fetch-secrets
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@40972648982915f26e5b5e22bd92f3af9297a707 # v6.1.7
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0d6fd59fa082417466d12e0e1a5e76da3f1712db # v6.1.8
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -146,7 +146,7 @@ jobs:
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@517a711dbcd0e402f90c77e7e2f81e849156e31d # v6.2.2
+        uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6.2.3
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
           role-session-name: githubactionsrolesession
@@ -160,7 +160,7 @@ jobs:
       - name: Run terraform apply in terraform/environments
         run: bash scripts/terraform-apply.sh terraform/environments
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@0d95c9a7becc1e6e297d76df9bc735c44f4cbcbc # v3.0.5
+        uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
         with:
           webhook-type: incoming-webhook
           payload: |
@@ -174,9 +174,9 @@ jobs:
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [fetch-secrets, create-environment]
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@40972648982915f26e5b5e22bd92f3af9297a707 # v6.1.7
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0d6fd59fa082417466d12e0e1a5e76da3f1712db # v6.1.8
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -187,7 +187,7 @@ jobs:
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@517a711dbcd0e402f90c77e7e2f81e849156e31d # v6.2.2
+        uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6.2.3
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-apply"
           role-session-name: githubactionsrolesession
@@ -203,7 +203,7 @@ jobs:
       - name: Provision Member Component Workspaces
         run: bash scripts/provision-member-component-workspaces.sh
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@0d95c9a7becc1e6e297d76df9bc735c44f4cbcbc # v3.0.5
+        uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
         with:
           webhook-type: incoming-webhook
           payload: |
@@ -216,11 +216,11 @@ jobs:
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [fetch-secrets, provision-workspaces]
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@40972648982915f26e5b5e22bd92f3af9297a707 # v6.1.7
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0d6fd59fa082417466d12e0e1a5e76da3f1712db # v6.1.8
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -231,7 +231,7 @@ jobs:
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@517a711dbcd0e402f90c77e7e2f81e849156e31d # v6.2.2
+        uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6.2.3
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
           role-session-name: githubactionsrolesession
@@ -258,7 +258,7 @@ jobs:
             echo "[+] There were no AWS member accounts to process"
           fi
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@0d95c9a7becc1e6e297d76df9bc735c44f4cbcbc # v3.0.5
+        uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
         with:
           webhook-type: incoming-webhook
           payload: |
@@ -271,11 +271,11 @@ jobs:
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [fetch-secrets, delegate-access]
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@40972648982915f26e5b5e22bd92f3af9297a707 # v6.1.7
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0d6fd59fa082417466d12e0e1a5e76da3f1712db # v6.1.8
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -286,7 +286,7 @@ jobs:
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@517a711dbcd0e402f90c77e7e2f81e849156e31d # v6.2.2
+        uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6.2.3
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-apply"
           role-session-name: githubactionsrolesession
@@ -313,7 +313,7 @@ jobs:
             echo "[+] There were no AWS member accounts to process"
           fi   
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@0d95c9a7becc1e6e297d76df9bc735c44f4cbcbc # v3.0.5
+        uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
         with:
           webhook-type: incoming-webhook
           payload: |
@@ -326,11 +326,11 @@ jobs:
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [fetch-secrets,delegate-access]
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@40972648982915f26e5b5e22bd92f3af9297a707 # v6.1.7
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0d6fd59fa082417466d12e0e1a5e76da3f1712db # v6.1.8
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -341,7 +341,7 @@ jobs:
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@517a711dbcd0e402f90c77e7e2f81e849156e31d # v6.2.2
+        uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6.2.3
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-apply"
           role-session-name: githubactionsrolesession
@@ -368,7 +368,7 @@ jobs:
             echo "[+] There were no AWS member accounts to process"
           fi
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@0d95c9a7becc1e6e297d76df9bc735c44f4cbcbc # v3.0.5
+        uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
         with:
           webhook-type: incoming-webhook
           payload: |
@@ -381,11 +381,11 @@ jobs:
     if: github.event.ref != 'refs/heads/main' || github.event_name != 'workflow_dispatch'
     needs: fetch-secrets
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@40972648982915f26e5b5e22bd92f3af9297a707 # v6.1.7
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0d6fd59fa082417466d12e0e1a5e76da3f1712db # v6.1.8
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -395,7 +395,7 @@ jobs:
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@517a711dbcd0e402f90c77e7e2f81e849156e31d # v6.2.2
+        uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6.2.3
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-plan"
           role-session-name: githubactionsrolesession
@@ -426,11 +426,11 @@ jobs:
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [fetch-secrets, provision-workspaces, delegate-access]
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@40972648982915f26e5b5e22bd92f3af9297a707 # v6.1.7
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0d6fd59fa082417466d12e0e1a5e76da3f1712db # v6.1.8
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -441,7 +441,7 @@ jobs:
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@517a711dbcd0e402f90c77e7e2f81e849156e31d # v6.2.2
+        uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6.2.3
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-apply"
           role-session-name: githubactionsrolesession
@@ -468,7 +468,7 @@ jobs:
             echo "[+] There were no AWS member accounts to process"
           fi
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@0d95c9a7becc1e6e297d76df9bc735c44f4cbcbc # v3.0.5
+        uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
         with:
           webhook-type: incoming-webhook
           payload: |
@@ -481,12 +481,12 @@ jobs:
     if: github.event.ref == 'refs/heads/main'
     needs: [fetch-secrets, single-sign-on]
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@40972648982915f26e5b5e22bd92f3af9297a707 # v6.1.7
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0d6fd59fa082417466d12e0e1a5e76da3f1712db # v6.1.8
         with:
           slack_webhooks: ${{ needs.fetch-secrets.outputs.slack_webhooks }}
           gov_uk_notify_api_key: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
@@ -501,7 +501,7 @@ jobs:
           printf "files=%s\n" "$files" >> "$GITHUB_OUTPUT"     
       - name: Install Python
         if: steps.environment_json_changes.outputs.files != ''
-        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.10'
       - name: Install the client
@@ -582,11 +582,11 @@ jobs:
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [fetch-secrets, secure-baselines, single-sign-on]
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@40972648982915f26e5b5e22bd92f3af9297a707 # v6.1.7
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0d6fd59fa082417466d12e0e1a5e76da3f1712db # v6.1.8
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -597,7 +597,7 @@ jobs:
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@517a711dbcd0e402f90c77e7e2f81e849156e31d # v6.2.2
+        uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6.2.3
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-apply"
           role-session-name: githubactionsrolesession
@@ -624,7 +624,7 @@ jobs:
             echo "[+] There were no AWS member accounts to process"
           fi
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@0d95c9a7becc1e6e297d76df9bc735c44f4cbcbc # v3.0.5
+        uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
         with:
           webhook-type: incoming-webhook
           payload: |

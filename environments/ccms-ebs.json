@@ -24,10 +24,15 @@
         },
         {
           "sso_group_name": "laa-sre-admins",
-          "level": "sandbox"
+          "level": "sandbox",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-ccms-developers",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-soa-developers",
           "level": "developer"
         },
         {
@@ -58,7 +63,8 @@
         },
         {
           "sso_group_name": "laa-sre-admins",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-ccms-ebs-developers",
@@ -107,7 +113,8 @@
         },
         {
           "sso_group_name": "laa-sre-admins",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-sre-admins",
@@ -183,7 +190,8 @@
   },
   "github-oidc-team-repositories": [
     "ministryofjustice/ccms-payments-received",
-    "ministryofjustice/ccms-financial-transfers"
+    "ministryofjustice/ccms-financial-transfers",
+    "ministryofjustice/laa-ccms-ebs-scripts"
   ],
   "go-live-date": "2023-05-26"
 }
