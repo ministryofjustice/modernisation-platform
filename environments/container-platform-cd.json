@@ -1,7 +1,8 @@
 {
   "account-type": "member",
   "isolated-network": "true",
-  "codeowners": "cloud-platform-engineers",  "environments": [
+  "codeowners": "cloud-platform-engineers",
+  "environments": [
     {
       "name": "nonlive",
       "access": [
@@ -19,7 +20,7 @@
           "level": "platform-engineer-admin"
         }
       ]
-    }  
+    }
   ],
   "tags": {
     "application": "container-platform-cd",
