@@ -31,6 +31,10 @@
           "sso_group_name": "laa-sre-admins",
           "level": "sandbox",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "sandbox"
         }
       ],
       "nuke": "exclude"
