@@ -1888,15 +1888,14 @@ locals {
     "william.gibbon",
   ]
   octo_platform_operations_primary_schedule_user_order = [
-    "steve.williams4",
     "annesa.mariyam",
-    "antony.gowland",
     "george.hill2",
+    "steve.williams4",
   ]
   octo_platform_operations_secondary_schedule_user_order = [
-    "prem.basumatary",
     "sebastian.norris",
     "david.teeling1",
+    "prem.basumatary",
   ]
 
   services = {
@@ -2331,17 +2330,10 @@ resource "pagerduty_escalation_policy" "octo_platform_operations" {
   teams = [pagerduty_team.octo_platform_operations.id]
 
   rule {
-    escalation_delay_in_minutes = 20
+    escalation_delay_in_minutes = 120
     target {
       type = "schedule_reference"
       id   = pagerduty_schedule.octo_platform_operations_primary.id
-    }
-  }
-  rule {
-    escalation_delay_in_minutes = 10
-    target {
-      type = "schedule_reference"
-      id   = pagerduty_schedule.octo_platform_operations_secondary.id
     }
   }
 }
