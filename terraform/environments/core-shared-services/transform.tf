@@ -361,3 +361,10 @@ resource "aws_iam_role_policy" "member_shared_services_transform" {
     ]
   })
 }
+
+## Code Connection Resources to be used by Transform for accessing github
+resource "aws_codeconnections_connection" "github" {
+  name          = "aws-transform-github"
+  provider_type = "GitHub"
+  tags = local.tags
+}
