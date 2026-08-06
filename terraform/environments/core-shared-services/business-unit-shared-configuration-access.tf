@@ -12,7 +12,7 @@ locals {
     for app_name, config in local.platform_environments : [
       for env in config.environments : {
         business_unit = config.tags["business-unit"]
-        account_name = "${app_name}-${env.name}"
+        account_name  = "${app_name}-${env.name}"
       }
     ]
   ])
@@ -34,7 +34,7 @@ locals {
 #checkov:skip=CKV_AWS_60:Cross-account trust is intentional. Access is restricted to approved business unit AWS accounts.
 resource "aws_iam_role" "shared_services_secrets_access" {
   for_each = local.grouped_accounts
-  name = "${lower(each.key)}-shared-configuration-access"
+  name     = "${lower(each.key)}-shared-configuration-access"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
@@ -48,7 +48,7 @@ resource "aws_iam_role" "shared_services_secrets_access" {
       Action = "sts:AssumeRole"
       Condition = {
         StringEquals = {
-        "aws:PrincipalOrgID" = data.aws_organizations_organization.current.id
+          "aws:PrincipalOrgID" = data.aws_organizations_organization.current.id
         }
       }
     }]
@@ -56,8 +56,8 @@ resource "aws_iam_role" "shared_services_secrets_access" {
 }
 
 resource "aws_iam_role_policy_attachment" "shared_secrets_access" {
-  for_each = local.grouped_accounts
-  role = aws_iam_role.shared_services_secrets_access[each.key].name
+  for_each   = local.grouped_accounts
+  role       = aws_iam_role.shared_services_secrets_access[each.key].name
   policy_arn = aws_iam_policy.shared_secrets_access[each.key].arn
 }
 
@@ -65,12 +65,12 @@ resource "aws_iam_role_policy_attachment" "shared_secrets_access" {
 resource "aws_iam_policy" "shared_secrets_access" {
 
   for_each = local.grouped_accounts
-  name = "${lower(each.key)}-shared-configuration-access"
+  name     = "${lower(each.key)}-shared-configuration-access"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
-        Sid = "SecretsManagerAccess"
+        Sid    = "SecretsManagerAccess"
         Effect = "Allow"
         Action = [
           "secretsmanager:CreateSecret",
@@ -90,7 +90,7 @@ resource "aws_iam_policy" "shared_secrets_access" {
         ]
       },
       {
-        Sid = "ListSecrets"
+        Sid    = "ListSecrets"
         Effect = "Allow"
         Action = [
           "secretsmanager:ListSecrets"
@@ -98,7 +98,7 @@ resource "aws_iam_policy" "shared_secrets_access" {
         Resource = "*"
       },
       {
-        Sid = "SSMParameterAccess"
+        Sid    = "SSMParameterAccess"
         Effect = "Allow"
         Action = [
           "ssm:PutParameter",
@@ -117,7 +117,7 @@ resource "aws_iam_policy" "shared_secrets_access" {
         ]
       },
       {
-        Sid = "SSMParameterList"
+        Sid    = "SSMParameterList"
         Effect = "Allow"
         Action = [
           "ssm:DescribeParameters"
