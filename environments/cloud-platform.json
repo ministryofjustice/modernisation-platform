@@ -11,6 +11,9 @@
       "name": "cluster-core"
     },
     {
+      "name": "cluster-observability"
+    },
+    {
       "name": "cluster-components"
     },
     {
