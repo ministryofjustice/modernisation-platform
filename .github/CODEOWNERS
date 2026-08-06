@@ -16,7 +16,7 @@
 /terraform/environments/core-shared-services/bichard7.tf @ministryofjustice/cjse-bichard7-next 
 /terraform/environments/core-shared-services/ccms-ebs-ai.tf @ministryofjustice/laa-sre-admins, laa-sre-admins 
 /terraform/environments/core-shared-services/ccms-ebs-upgrade.tf @ministryofjustice/laa-ccms-ebs-developers @ministryofjustice/laa-ccms-migration-team @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-audit 
-/terraform/environments/core-shared-services/ccms-ebs.tf @ministryofjustice/laa-ccms-developers @ministryofjustice/laa-ccms-ebs-developers @ministryofjustice/laa-ccms-instance-access @ministryofjustice/laa-ccms-migration-team @ministryofjustice/laa-ccms-security-testing-kpmg @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-audit @ministryofjustice/modernisation-platform-security @ministryofjustice/octo-cyber-team 
+/terraform/environments/core-shared-services/ccms-ebs.tf @ministryofjustice/laa-ccms-developers @ministryofjustice/laa-ccms-ebs-developers @ministryofjustice/laa-ccms-instance-access @ministryofjustice/laa-ccms-migration-team @ministryofjustice/laa-ccms-security-testing-kpmg @ministryofjustice/laa-soa-developers @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-audit @ministryofjustice/modernisation-platform-security @ministryofjustice/octo-cyber-team 
 /terraform/environments/core-shared-services/ccms-edrms.tf @ministryofjustice/laa-sre-admins 
 /terraform/environments/core-shared-services/ccms-feasibility.tf @ministryofjustice/laa-sre-admins 
 /terraform/environments/core-shared-services/ccms-oia.tf @ministryofjustice/laa-ccms-developers @ministryofjustice/laa-dba @ministryofjustice/laa-oia-developers @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-audit @ministryofjustice/octo-cyber-team 
@@ -39,7 +39,7 @@
 /terraform/environments/core-shared-services/cooker.tf @ministryofjustice/modernisation-platform @ministryofjustice/octo-cyber-team @ministryofjustice/tvm-purple-team 
 /terraform/environments/core-shared-services/corporate-staff-rostering.tf @ministryofjustice/csr-application-support @ministryofjustice/hosting-migrations @ministryofjustice/modernisation-platform-audit @ministryofjustice/studio-webops @ministryofjustice/syscon-devs 
 /terraform/environments/core-shared-services/dacp.tf @ministryofjustice/dts-legacy @ministryofjustice/modernisation-platform-audit 
-/terraform/environments/core-shared-services/data-factory-corporate.tf @ministryofjustice/corporate-data-factory-admins @ministryofjustice/data-factory-cloud-security 
+/terraform/environments/core-shared-services/data-factory-corporate.tf @ministryofjustice/corporate-data-factory-admins 
 /terraform/environments/core-shared-services/data-factory-laa.tf @ministryofjustice/laa-data-factory-engineering 
 /terraform/environments/core-shared-services/data-factory-moj.tf @ministryofjustice/data-engineering @ministryofjustice/data-platform-engineering 
 /terraform/environments/core-shared-services/data-platform-governance.tf @ministryofjustice/data-platform-engineering 
@@ -67,7 +67,6 @@
 /terraform/environments/core-shared-services/integration-hub.tf @ministryofjustice/integration-hub 
 /terraform/environments/core-shared-services/laa-ccms-soa.tf @ministryofjustice/laa-sre-admins 
 /terraform/environments/core-shared-services/laa-cis.tf @ministryofjustice/laa-sre-admins @ministryofjustice/v1-cis-mod 
-/terraform/environments/core-shared-services/laa-cst-security-dashboard.tf @ministryofjustice/laa-cyber-security-team 
 /terraform/environments/core-shared-services/laa-enterprise-service-bus.tf 
 /terraform/environments/core-shared-services/laa-mail-relay.tf @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-sre-admins 
 /terraform/environments/core-shared-services/laa-new-workspaces.tf @ministryofjustice/laa-aws-infrastructure 
