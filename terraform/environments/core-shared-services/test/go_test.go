@@ -3,9 +3,10 @@ package test
 import (
 	"testing"
 
+	"regexp"
+
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
-	"regexp"
 )
 
 func TestTransitGateway(t *testing.T) {

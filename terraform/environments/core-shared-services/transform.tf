@@ -1,49 +1,24 @@
 ## Terraform to Create Central AWS Transform Resources in core-shared-services
 
-# SSM parameters to hold the Transform Resource ARNs
-#
-# These parameters are necessary because the AWS Terraform provider (as of v6.x) has limited support
-# for AWS Transform resources:
-# - The Transform Application can be imported using aws_ssoadmin_application but requires manual import
-# - Transform Profiles have NO resource or data source support (aws_transform_profile does not exist)
-# - There are no data sources to discover/lookup existing Transform resources dynamically
-#
-# Therefore, we use SSM parameters to store the ARNs of manually-created Transform resources
-# (created via AWS console) and reference them via data lookups. This approach:
-# - Avoids hardcoding ARNs in Terraform code
-# - Provides a centralized place to manage these values
-# - Allows Terraform to reference resources it cannot directly manage
+# NOTE: SSO group access (application-level assignment) and workspace-level role mappings
+# are not managed here. AWS Transform has no public API/CLI for workspace role mappings,
+# so that step must be done manually in the Transform console — which means managing the
+# application-level SSO assignment in Terraform would just be a second, driftable source of
+# truth for the same access. Both are handled manually via the console instead.
 
-resource "aws_ssm_parameter" "transform_hub_application_arn" {
-  #checkov:skip=CKV_AWS_337: "Default SSM encryption is sufficient for storing ARNs"
-  name        = "/transform/hub/application-arn"
-  description = "Transform Hub Application ARN (manually created via console)"
-  type        = "SecureString"
-  value       = "PLACEHOLDER" # Set this to the actual ARN after first apply
-
-  lifecycle {
-    ignore_changes = [value]
-  }
-
-  tags = local.tags
+locals {
+  aws_transform_url = data.aws_secretsmanager_secret_version.aws_transform_url.secret_string
 }
 
-resource "aws_ssm_parameter" "transform_hub_profile_arn" {
-  #checkov:skip=CKV_AWS_337: "Default SSM encryption is sufficient for storing ARNs"
-  name        = "/transform/hub/profile-arn"
-  description = "Transform Hub Profile ARN (manually created via console)"
-  type        = "SecureString"
-  value       = "PLACEHOLDER" # Set this to the actual ARN after first apply
-
-  lifecycle {
-    ignore_changes = [value]
-  }
-
-  tags = local.tags
+data "aws_secretsmanager_secret" "aws_transform_url" {
+  name = aws_secretsmanager_secret.aws_transform_url.name
 }
 
-# Central S3 as used in Transform Hub Configuration
+data "aws_secretsmanager_secret_version" "aws_transform_url" {
+  secret_id = data.aws_secretsmanager_secret.aws_transform_url.id
+}
 
+# Central S3 as used in Transform Configuration
 module "transform_s3_bucket" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=c8889e65f4d8a3d53d2cbd93b7be714e990020b7" # v10.2.1
 
@@ -148,6 +123,37 @@ resource "aws_kms_alias" "transform_bucket" {
   target_key_id = aws_kms_key.transform_bucket.key_id
 }
 
+# Required so the AWS Transform web application can read/write artifacts
+# directly from the browser via presigned S3 URLs.
+# See https://docs.aws.amazon.com/transform/latest/userguide/custom-s3-bucket.html#custom-s3-bucket-cors
+resource "aws_s3_bucket_cors_configuration" "transform_s3_bucket" {
+  bucket = module.transform_s3_bucket.bucket.id
+
+  cors_rule {
+    allowed_headers = [
+      "host",
+      "content-type",
+      "if-none-match",
+      "x-amz-checksum-sha256",
+      "x-amz-expected-bucket-owner",
+      "x-amz-server-side-encryption",
+      "x-amz-server-side-encryption-aws-kms-key-id",
+      "x-amz-server-side-encryption-context",
+      "x-amz-source-account",
+      "x-amz-source-arn"
+    ]
+    allowed_methods = ["GET", "PUT", "HEAD"]
+    allowed_origins = [local.aws_transform_url]
+    expose_headers = [
+      "ETag",
+      "x-amz-checksum-sha256",
+      "x-amz-request-id",
+      "x-amz-id-2"
+    ]
+    max_age_seconds = 3600
+  }
+}
+
 data "aws_iam_policy_document" "transform_kms_key_policy" {
 
   #checkov:skip=CKV_AWS_109: "Key policy requires asterisk resource"
@@ -197,4 +203,161 @@ data "aws_iam_policy_document" "transform_kms_key_policy" {
       ]
     }
   }
+
+  statement {
+    sid    = "AllowAWSTransformServiceAccess"
+    effect = "Allow"
+    actions = [
+      "kms:CreateGrant",
+      "kms:DescribeKey"
+    ]
+
+    resources = ["*"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["transform.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["transform.eu-west-2.amazonaws.com"]
+    }
+
+    condition {
+      test     = "Bool"
+      variable = "kms:GrantIsForAWSResource"
+      values   = ["true"]
+    }
+  }
+
+  statement {
+    sid    = "AllowSecretsManagerToUseKey"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey",
+      "kms:GenerateDataKeyWithoutPlaintext"
+    ]
+
+    resources = ["*"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["secretsmanager.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceAccount"
+      values   = [data.aws_caller_identity.current.account_id]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["secretsmanager.eu-west-2.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_secretsmanager_secret" "aws_transform_url" {
+  #checkov:skip=CKV2_AWS_57: Secret rotation is managed outside Terraform for this value
+  name        = "aws_transform_url"
+  description = "AWS Transform workspace URL"
+  kms_key_id  = aws_kms_key.transform_bucket.arn
+  tags = local.tags
+}
+
+resource "aws_secretsmanager_secret_version" "aws_transform_url" {
+  #checkov:skip=CKV_SECRET_6: Seeded placeholder value is not a real secret; actual value is set outside Terraform
+  secret_id     = aws_secretsmanager_secret.aws_transform_url.id
+  #checkov:skip=CKV_SECRET_6: Seeded placeholder value is not a real secret; actual value is set outside Terraform
+  secret_string = "https://example.com"
+  lifecycle {
+    ignore_changes = [
+      # Secret value is set/updated outside Terraform.
+      secret_string,
+    ]
+  }
+}
+
+## Creates a role that can be assumed by authenticated Modernisation Platform Users allowing them to access AWS Transform Services in the central account from their local device when using the ATX CLI.
+## Scope of use based on the existing member-shared-services role & policies
+
+resource "aws_iam_role" "member_shared_services_transform" {
+  name = "member-shared-services-transform"
+  assume_role_policy = jsonencode( # checkov:skip=CKV_AWS_60: "the policy is secured with the condition"
+    {
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          "Effect" : "Allow",
+          "Principal" : {
+            "AWS" : "*"
+          },
+          "Action" : "sts:AssumeRole",
+          "Condition" : {
+            "ForAnyValue:StringLike" : {
+              "aws:PrincipalOrgPaths" : ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+            }
+          }
+        }
+      ]
+  })
+
+  tags = merge(
+    local.tags,
+    {
+      Name = "member-shared-services"
+    },
+  )
+}
+
+#tfsec:ignore:aws-iam-no-policy-wildcards
+resource "aws_iam_role_policy" "member_shared_services_transform" {
+  # checkov:skip=CKV_AWS_355: Resources limited to core-shared-services
+  # checkov:skip=CKV_AWS_290: Resources limited to core-shared-services
+  name = "MemberSharedServicesTransform"
+  role = aws_iam_role.member_shared_services_transform.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "transform:AccessTransformProfile"
+        ],
+        "Resource" : "arn:aws:transform:${data.aws_region.current_region.region}:${local.environment_management.account_ids["core-shared-services-production"]}:profile/*"
+      },
+      {
+        # Note for this statement the permissions cannot be bound by specific resource ARNs.
+        "Effect" : "Allow",
+        "Action" : [
+          "transform:GetWebAppUrl",
+          "transform:GetUserDetails",
+          "transform:BatchGetUserDetails",
+          "transform:GetWorkspace",
+          "transform:ListWorkspaces",
+          "transform:ListJobs",
+          "transform:GetJob",
+          "transform:ListArtifacts",
+          "transform:ListJobPlanSteps",
+          "transform:ListWorklogs",
+          "transform:ListMessages",
+          "transform:BatchGetMessage"
+        ],
+        "Resource" : "*",
+        "Condition" : {
+          "StringEquals" : {
+            "aws:ResourceAccount" : local.environment_management.account_ids["core-shared-services-production"]
+          }
+        }
+      }
+    ]
+  })
 }
