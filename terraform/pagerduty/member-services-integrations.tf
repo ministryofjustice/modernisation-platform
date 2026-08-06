@@ -1893,9 +1893,9 @@ locals {
     "annesa.mariyam",
   ]
   octo_platform_operations_secondary_schedule_user_order = [
-    "prem.basumatary",
     "sebastian.norris",
     "david.teeling1",
+    "prem.basumatary",
   ]
 
   services = {
