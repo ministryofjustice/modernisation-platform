@@ -32,6 +32,10 @@
           "level": "developer"
         },
         {
+          "sso_group_name": "laa-soa-developers",
+          "level": "developer"
+        },
+        {
           "sso_group_name": "laa-ccms-ebs-developers",
           "level": "developer"
         },
@@ -186,7 +190,8 @@
   },
   "github-oidc-team-repositories": [
     "ministryofjustice/ccms-payments-received",
-    "ministryofjustice/ccms-financial-transfers"
+    "ministryofjustice/ccms-financial-transfers",
+    "ministryofjustice/laa-ccms-ebs-scripts"
   ],
   "go-live-date": "2023-05-26"
 }

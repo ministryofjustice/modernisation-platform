@@ -11,7 +11,8 @@
         },
         {
           "sso_group_name": "laa-aws-infrastructure",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-ccms-ebs-developers",
@@ -38,7 +39,8 @@
         },
         {
           "sso_group_name": "laa-aws-infrastructure",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-apex-developer",
@@ -60,7 +62,8 @@
         },
         {
           "sso_group_name": "laa-aws-infrastructure",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-apex-developer",

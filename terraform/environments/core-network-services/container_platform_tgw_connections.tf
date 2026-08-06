@@ -18,6 +18,9 @@ locals {
     container-platform-hmpps-nonlive = {
       attachment_id = "tgw-attach-0147624fb2cebdbe4"
     }
+    container-platform-cd-nonlive = {
+      attachment_id = "tgw-attach-0070a4adb922bb95e"
+    }
   }
 
   container-platform-live-attachments = {
@@ -33,12 +36,22 @@ locals {
     container-platform-hmpps-live = {
       attachment_id = "tgw-attach-032e9a7da06ed4b63"
     }
+    container-platform-cd-live = {
+      attachment_id = "tgw-attach-075d4e80c2c920b3c"
+    }
   }
 }
 
 
 resource "aws_ec2_tag" "retag_cp_attachment" {
   for_each    = local.container-platform-nonlive-attachments
+  resource_id = each.value.attachment_id
+  key         = "Name"
+  value       = each.key
+}
+
+resource "aws_ec2_tag" "retag_cp_attachment_live" {
+  for_each    = local.container-platform-live-attachments
   resource_id = each.value.attachment_id
   key         = "Name"
   value       = each.key

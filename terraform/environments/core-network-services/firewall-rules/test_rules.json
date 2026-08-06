@@ -538,6 +538,13 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
+  "hmpps_test_to_delius_test_https": {
+    "action": "PASS",
+    "source_ip": "${hmpps-test}",
+    "destination_ip": "${delius-test}",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
   "cp_to_platforms_test_https": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",

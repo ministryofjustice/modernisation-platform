@@ -19,10 +19,6 @@
         {
           "sso_group_name": "corporate-data-factory-admins",
           "level": "sandbox"
-        },
-        {
-          "sso_group_name": "data-factory-cloud-security",
-          "level": "security-audit"
         }
       ]
     },
@@ -42,7 +38,7 @@
     "service-area": "Data Engineering",
     "infrastructure-support": "DataEngineering-gg@justice.gov.uk",
     "owner": "DataEngineering-gg@justice.gov.uk",
-    "slack-channel": "dmet-corp-notifications",
+    "slack-channel": "data-factory-corporate-alerts",
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [],
