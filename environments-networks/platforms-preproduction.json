@@ -6,6 +6,7 @@
         "accounts": [
           "data-platform-preproduction",
           "data-platform-governance-preproduction",
+          "developer-experience-preproduction",
           "integration-hub-preproduction"
         ]
       }
