@@ -4,6 +4,7 @@ locals {
   centralised_endpoint_consumer_accounts = {
     cloud-platform-development       = local.environment_management.account_ids["cloud-platform-development"]
     cloud-platform-preproduction     = local.environment_management.account_ids["cloud-platform-preproduction"]
+    cloud-platform-nonlive           = local.environment_management.account_ids["cloud-platform-nonlive"]
     cloud-platform-live              = local.environment_management.account_ids["cloud-platform-live"]
     container-platform-hmpps-live    = local.environment_management.account_ids["container-platform-hmpps-live"]
     container-platform-hmpps-nonlive = local.environment_management.account_ids["container-platform-hmpps-nonlive"]
