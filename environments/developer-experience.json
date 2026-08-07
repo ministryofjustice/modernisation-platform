@@ -1,0 +1,52 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "octo-developer-experience",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "octo-developer-experience",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "octo-developer-experience",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "octo-developer-experience",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "developer-experience",
+    "business-unit": "Platforms",
+    "service-area": "Hosting",
+    "infrastructure-support": "developerexperienceteam@justice.gov.uk",
+    "owner": "HQ",
+    "slack-channel": "developer-experience-team",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
