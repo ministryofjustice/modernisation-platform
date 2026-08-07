@@ -77,9 +77,9 @@
 /terraform/environments/core-shared-services/laa-workspaces.tf @ministryofjustice/laa-aws-infrastructure 
 /terraform/environments/core-shared-services/london-unpaid-work.tf @ministryofjustice/hmpps-migration 
 /terraform/environments/core-shared-services/long-term-storage.tf @ministryofjustice/modernisation-platform-long-term-storage @ministryofjustice/octo-cyber-team 
-/terraform/environments/core-shared-services/maat.tf @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-crime-apps-team @ministryofjustice/laa-sre-admins @ministryofjustice/octo-cyber-team 
-/terraform/environments/core-shared-services/maatdb.tf @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-crime-apps-team @ministryofjustice/laa-dba @ministryofjustice/laa-maat-migrations @ministryofjustice/laa-sre-admins 
-/terraform/environments/core-shared-services/mlra.tf @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-crime-apps-team @ministryofjustice/octo-cyber-team 
+/terraform/environments/core-shared-services/maat.tf @ministryofjustice/laa-crime-apps-team @ministryofjustice/laa-sre-admins @ministryofjustice/octo-cyber-team 
+/terraform/environments/core-shared-services/maatdb.tf @ministryofjustice/laa-crime-apps-team @ministryofjustice/laa-dba @ministryofjustice/laa-sre-admins 
+/terraform/environments/core-shared-services/mlra.tf @ministryofjustice/laa-crime-apps-team @ministryofjustice/octo-cyber-team 
 /terraform/environments/core-shared-services/moj-network-operations-centre.tf @ministryofjustice/moj-official-techops @ministryofjustice/moj-official-techops-readonly 
 /terraform/environments/core-shared-services/mojfin.tf @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-ccms-ebs-developers @ministryofjustice/laa-mojfin-database-access @ministryofjustice/laa-mojfin-developers @ministryofjustice/laa-mojfin-security @ministryofjustice/laa-sre-admins 
 /terraform/environments/core-shared-services/ncas.tf @ministryofjustice/dts-legacy 
