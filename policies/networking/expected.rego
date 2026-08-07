@@ -424,6 +424,7 @@ expected :=
           "data-factory-moj-development",
           "data-platform-development",
           "data-platform-governance-development",
+          "developer-experience-development",
           "example-development",
           "integration-hub-api-development",
           "integration-hub-development",
@@ -443,6 +444,7 @@ expected :=
           "data-factory-moj-test",
           "data-platform-test",
           "data-platform-governance-test",
+          "developer-experience-test",
           "integration-hub-test",
           "testing-test"
         ]
@@ -454,6 +456,7 @@ expected :=
         "accounts": [
           "data-platform-preproduction",
           "data-platform-governance-preproduction",
+          "developer-experience-preproduction",
           "integration-hub-preproduction"
         ]
       }
@@ -467,6 +470,7 @@ expected :=
           "coat-production",
           "data-platform-production",
           "data-platform-governance-production",
+          "developer-experience-production",
           "integration-hub-production",
           "long-term-storage-production",
           "observability-platform-production",
