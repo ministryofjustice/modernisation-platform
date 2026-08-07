@@ -59,6 +59,7 @@ expected :=
     "delius-iaps",
     "delius-jitbit",
     "delius-mis",
+    "developer-experience",
     "digital-prison-reporting",
     "edw-19c",
     "electronic-monitoring-data",
