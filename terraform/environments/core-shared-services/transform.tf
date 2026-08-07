@@ -366,5 +366,5 @@ resource "aws_iam_role_policy" "member_shared_services_transform" {
 resource "aws_codeconnections_connection" "github" {
   name          = "aws-transform-github"
   provider_type = "GitHub"
-  tags = local.tags
+  tags          = local.tags
 }
