@@ -427,7 +427,7 @@ module "r53_dns_firewall" {
 # ---------------------------------------------------------------------------------------------------------------------------
 
 locals {
-  execute_api_endpoint_access = [
+  vpc_endpoint_access = [
     {
       business_unit = "hmpps"
       environment   = "preproduction"
@@ -448,8 +448,8 @@ locals {
     }
   ]
 
-  execute_api_endpoint_access_for_workspace = {
-    for entry in local.execute_api_endpoint_access :
+  vpc_endpoint_access_for_workspace = {
+    for entry in local.vpc_endpoint_access :
     "${entry.business_unit}-${entry.environment}" => merge(entry, {
       vpc_name = "${entry.business_unit}-${entry.environment}"
     })
@@ -458,14 +458,15 @@ locals {
 }
 
 data "aws_vpc_endpoint" "vpc_endpoint" {
-  for_each = local.execute_api_endpoint_access_for_workspace
+  for_each = local.vpc_endpoint_access_for_workspace
 
   vpc_id       = module.vpc[each.value.vpc_name].vpc_id
   service_name = each.value.service_name
 }
 
 resource "aws_security_group" "vpc_endpoint_access" {
-  for_each = local.execute_api_endpoint_access_for_workspace
+  #checkov:skip=CKV2_AWS_5: "SG is associated with a VPC endpoint, not an EC2 instance"
+  for_each = local.vpc_endpoint_access_for_workspace
 
   name        = each.value.name
   description = each.value.description
@@ -480,7 +481,7 @@ resource "aws_security_group" "vpc_endpoint_access" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "vpc_endpoint_access" {
-  for_each = local.execute_api_endpoint_access_for_workspace
+  for_each = local.vpc_endpoint_access_for_workspace
 
   security_group_id = aws_security_group.vpc_endpoint_access[each.key].id
   description       = each.value.description
@@ -491,7 +492,7 @@ resource "aws_vpc_security_group_ingress_rule" "vpc_endpoint_access" {
 }
 
 resource "aws_vpc_endpoint_security_group_association" "vpc_endpoint_access" {
-  for_each = local.execute_api_endpoint_access_for_workspace
+  for_each = local.vpc_endpoint_access_for_workspace
 
   vpc_endpoint_id   = data.aws_vpc_endpoint.vpc_endpoint[each.key].id
   security_group_id = aws_security_group.vpc_endpoint_access[each.key].id
