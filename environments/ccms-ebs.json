@@ -44,10 +44,6 @@
           "level": "sandbox"
         },
         {
-          "sso_group_name": "modernisation-platform-security",
-          "level": "view-only"
-        },
-        {
           "sso_group_name": "modernisation-platform-audit",
           "level": "security-audit"
         }
@@ -91,10 +87,6 @@
           "level": "instance-management"
         },
         {
-          "sso_group_name": "modernisation-platform-security",
-          "level": "view-only"
-        },
-        {
           "sso_group_name": "modernisation-platform-audit",
           "level": "security-audit"
         }
@@ -133,10 +125,6 @@
           "level": "instance-management"
         },
         {
-          "sso_group_name": "modernisation-platform-security",
-          "level": "view-only"
-        },
-        {
           "sso_group_name": "modernisation-platform-audit",
           "level": "security-audit"
         }
@@ -165,10 +153,6 @@
         {
           "sso_group_name": "laa-ccms-migration-team",
           "level": "instance-management"
-        },
-        {
-          "sso_group_name": "modernisation-platform-security",
-          "level": "view-only"
         },
         {
           "sso_group_name": "laa-ccms-ebs-developers",
