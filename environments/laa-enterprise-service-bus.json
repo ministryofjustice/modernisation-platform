@@ -11,10 +11,6 @@
       "name": "development",
       "access": [
         {
-          "sso_group_name": "laa-aws-infrastructure",
-          "level": "sandbox"
-        },
-        {
           "sso_group_name": "v1-hub20-developers",
           "level": "sandbox"
         },
@@ -41,10 +37,6 @@
       "name": "test",
       "access": [
         {
-          "sso_group_name": "laa-aws-infrastructure",
-          "level": "developer"
-        },
-        {
           "sso_group_name": "v1-hub20-developers",
           "level": "developer"
         },
@@ -57,10 +49,6 @@
     {
       "name": "production",
       "access": [
-        {
-          "sso_group_name": "laa-aws-infrastructure",
-          "level": "developer"
-        },
         {
           "sso_group_name": "v1-hub20-developers",
           "level": "developer"
