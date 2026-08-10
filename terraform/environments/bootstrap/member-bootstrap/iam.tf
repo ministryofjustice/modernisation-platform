@@ -719,6 +719,33 @@ data "aws_iam_policy_document" "member-access-us-east" {
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
   statement {
+    #checkov:skip=CKV_AWS_356: KMS key lifecycle actions don't support resource-level restriction at creation time
+    # Lets members create/manage customer-managed KMS keys for us-east-1 resources (e.g. CloudWatch Logs
+    # encryption for CloudFront-scoped WAF log groups, which must live in us-east-1).
+    effect = "Allow"
+    actions = [
+      "kms:CreateKey",
+      "kms:DescribeKey",
+      "kms:GetKeyPolicy",
+      "kms:PutKeyPolicy",
+      "kms:GetKeyRotationStatus",
+      "kms:EnableKeyRotation",
+      "kms:DisableKeyRotation",
+      "kms:EnableKey",
+      "kms:DisableKey",
+      "kms:TagResource",
+      "kms:UntagResource",
+      "kms:ListResourceTags",
+      "kms:ScheduleKeyDeletion",
+      "kms:CancelKeyDeletion",
+      "kms:CreateAlias",
+      "kms:DeleteAlias",
+      "kms:UpdateAlias",
+      "kms:ListAliases"
+    ]
+    resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
+  }
+  statement {
     effect = "Deny"
     actions = [
       "iam:AddClientIDToOpenIDConnectProvider",
