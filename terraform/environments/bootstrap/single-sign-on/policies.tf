@@ -1330,6 +1330,7 @@ data "aws_iam_policy_document" "instance-management-document" {
       "kms:Encrypt",
       "kms:GenerateDataKey*",
       "kms:ReEncrypt*",
+      "rds:AddTagsToResource",
       "rds:CopyDBClusterSnapshot",
       "rds:CopyDBSnapshot",
       "rds:CreateDBClusterSnapshot",
