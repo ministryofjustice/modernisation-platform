@@ -429,22 +429,24 @@ module "r53_dns_firewall" {
 locals {
   vpc_endpoint_access = [
     {
-      business_unit = "hmpps"
-      environment   = "preproduction"
-      cidr_block    = "172.20.0.0/16"
-      port          = 443
-      service_name  = "com.amazonaws.eu-west-2.execute-api"
-      name          = "hmpps-preproduction-execute-api-cp-access"
-      description   = "Allow Container Platform access to execute-api endpoint"
+      business_unit              = "hmpps"
+      environment                = "preproduction"
+      cidr_block                 = "172.20.0.0/16"
+      port                       = 443
+      service_name               = "com.amazonaws.eu-west-2.execute-api"
+      name                       = "hmpps-preproduction-execute-api-cp-access"
+      description                = "Allow Container Platform access to execute-api endpoint"
+      private_subnet_association = true
     },
     {
-      business_unit = "hmpps"
-      environment   = "production"
-      cidr_block    = "172.20.0.0/16"
-      port          = 443
-      service_name  = "com.amazonaws.eu-west-2.execute-api"
-      name          = "hmpps-production-execute-api-cp-access"
-      description   = "Allow Container Platform access to execute-api endpoint"
+      business_unit              = "hmpps"
+      environment                = "production"
+      cidr_block                 = "172.20.0.0/16"
+      port                       = 443
+      service_name               = "com.amazonaws.eu-west-2.execute-api"
+      name                       = "hmpps-production-execute-api-cp-access"
+      description                = "Allow Container Platform access to execute-api endpoint"
+      private_subnet_association = true
     }
   ]
 
@@ -455,6 +457,20 @@ locals {
     })
     if "core-vpc-${entry.environment}" == terraform.workspace
   }
+
+  private_subnet_association = {
+    for pair in flatten([
+      for key, entry in local.vpc_endpoint_access_for_workspace : [
+        for subnet_id in module.vpc[entry.vpc_name].private_subnet_ids : {
+          key       = "${key}-${subnet_id}"
+          endpoint  = key
+          subnet_id = subnet_id
+        }
+      ]
+      if entry.private_subnet_association
+    ]) : pair.key => pair
+  }
+
 }
 
 data "aws_vpc_endpoint" "vpc_endpoint" {
@@ -462,6 +478,14 @@ data "aws_vpc_endpoint" "vpc_endpoint" {
 
   vpc_id       = module.vpc[each.value.vpc_name].vpc_id
   service_name = each.value.service_name
+}
+
+# This is required to ensure the endpoint is associated with subnets that have routing outside of the VPC.
+resource "aws_vpc_endpoint_subnet_association" "vpc_endpoint_access" {
+  for_each = local.private_subnet_association
+
+  vpc_endpoint_id = data.aws_vpc_endpoint.vpc_endpoint[each.value.endpoint].id
+  subnet_id       = each.value.subnet_id
 }
 
 resource "aws_security_group" "vpc_endpoint_access" {
