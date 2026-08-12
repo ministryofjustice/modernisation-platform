@@ -39,15 +39,15 @@ Whilst these are listed in the AWS Console, they can only be added from Transfor
 
 Similarly, associating users with workspaces and their permissions in a workspace is also undertaken via the Transform app.
 
-## AWS CodeConnectors
+## AWS CodeConnections
 
-For certain migration types, Transform makes use of AWS CodeConnectors to support access to github repositories. When created, the CodeConnector is then linked to a github app via a user with github org admin permissions.
+For certain migration types, Transform makes use of AWS CodeConnections to support access to github repositories. When created, the CodeConnection is then linked to a github app via a user with github org admin permissions.
 
-CodeConnector itself does not hold any permissions to github.
+CodeConnection itself does not hold any permissions to github.
 
-Two CodeConnectors have been created to date. These are also in the above-mentioned terraform file (transform.tf)
+Two CodeConnections have been created to date. These are also in the above-mentioned terraform file (transform.tf)
 
-The CodeConnector "mp-aws-transform-github" should be the default one used.
+The CodeConnection "mp-aws-transform-github" should be the default one used.
 
 ## Assumable IAM Role MemberSharedServicesTransform
 
