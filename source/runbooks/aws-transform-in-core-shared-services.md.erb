@@ -1,0 +1,61 @@
+---
+owner_slack: "#modernisation-platform"
+title: Deployment of AWS Transform in Core-Shared-Services
+last_reviewed_on: 2026-08-12
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+## Introduction
+
+This guide sets out the resources that have been deployed & configured to allow use of AWS Transform from our core-shared-services account.
+
+It is not meant to be a comprehensive guide on the use of Transform, but rather what we have set up in that account, the reasons why and any issues to be aware of.
+
+## How AWS Transform was Deployed
+
+As of writing, Transform is a relatively new service offered by AWS and as such there is little to no support for the product either in terraform, nor in the AWS CLI.
+
+The Transform service was deployed in core-shared-services via the console with the following features enabled:
+
+- Deployed into region eu-west-2
+
+- A central S3 bucket, bucket policy plus a kms key & policy to hold configurations was added, the terraform for which is in ../../terraform/environments/core-shared-services/transform.tf
+
+- Link to Identity Centre in MOJ Master for SSO access to Transform. This will be the means of access most typically used.
+
+- Access to Transform via IAM Role to allow use of the service via the AdministratorAccess role should SSO be unavailable.
+
+## End User Access to Transform
+
+AWS provides URLs to access the Transform application. This service is hosted externally and not in a VPC. This URL can be found in the settings page of the console (https://eu-west-2.console.aws.amazon.com/transform/serviceManagement?region=eu-west-2)
+
+SSO users or groups are added and there is a direct lookup to Identity Centre when a user or group name is entered.
+
+## Transform Workspaces, Jobs and Connectors.
+
+Whilst these are listed in the AWS Console, they can only be added from Transform as part of its workflow.
+
+Similarly, associating users with workspaces and their permissions in a workspace is also undertaken via the Transform app.
+
+## AWS CodeConnectors
+
+For certain migration types, Transform makes use of AWS CodeConnectors to support access to github repositories. When created, the CodeConnector is then linked to a github app via a user with github org admin permissions.
+
+CodeConnector itself does not hold any permissions to github.
+
+Two CodeConnectors have been created to date. These are also in the above-mentioned terraform file (transform.tf)
+
+The CodeConnector "mp-aws-transform-github" should be the default one used.
+
+## Assumable IAM Role MemberSharedServicesTransform
+
+Transform has its own CLI (https://docs.aws.amazon.com/transform/latest/userguide/custom-get-started.html) that can be used from the user's own device to access Transform features. 
+
+To support this use, an additional role (MemberSharedServicesTransform) was added via the above terraform to allow the user to access these permissions.
+
+## References
+
+- https://docs.aws.amazon.com/transform
+
