@@ -465,10 +465,16 @@ locals {
           key       = "${key}-${subnet_id}"
           endpoint  = key
           subnet_id = subnet_id
+          az        = data.aws_subnet.candidate_private_subnets["${key}-${subnet_id}"].availability_zone
         }
       ]
       if entry.private_subnet_association
     ]) : pair.key => pair
+    if !contains([
+      for existing_key, existing in data.aws_subnet.existing_endpoint_subnets :
+      existing.availability_zone
+      if startswith(existing_key, "${pair.endpoint}-")
+    ], pair.az)
   }
 
 }
@@ -478,6 +484,37 @@ data "aws_vpc_endpoint" "vpc_endpoint" {
 
   vpc_id       = module.vpc[each.value.vpc_name].vpc_id
   service_name = each.value.service_name
+}
+
+data "aws_subnet" "existing_endpoint_subnets" {
+  for_each = {
+    for pair in flatten([
+      for key, ep in data.aws_vpc_endpoint.vpc_endpoint : [
+        for subnet_id in ep.subnet_ids : {
+          key       = "${key}-${subnet_id}"
+          subnet_id = subnet_id
+        }
+      ]
+    ]) : pair.key => pair.subnet_id
+  }
+
+  id = each.value
+}
+
+data "aws_subnet" "candidate_private_subnets" {
+  for_each = {
+    for pair in flatten([
+      for key, entry in local.vpc_endpoint_access_for_workspace : [
+        for subnet_id in module.vpc[entry.vpc_name].private_subnet_ids : {
+          key       = "${key}-${subnet_id}"
+          subnet_id = subnet_id
+        }
+      ]
+      if entry.private_subnet_association
+    ]) : pair.key => pair.subnet_id
+  }
+
+  id = each.value
 }
 
 # This is required to ensure the endpoint is associated with subnets that have routing outside of the VPC.
