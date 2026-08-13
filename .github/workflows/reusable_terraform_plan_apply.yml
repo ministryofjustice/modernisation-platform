@@ -167,7 +167,7 @@ jobs:
         with:
           terraform_directory: ${{ inputs.working-directory }}
           terraform_workspace: ${{ env.WORKSPACE_NAME || 'default' }}
-
+          terraform_plan_backend: 'remote'
       - name: Run Terratest
         if: ${{ steps.vars.outputs.run_terratest == 'true' }}
         run: |
