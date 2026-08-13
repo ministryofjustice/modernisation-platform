@@ -1,5 +1,11 @@
 {
   "account-type": "member",
+    "components": [
+    {
+      "name": "ccms-oia-ssl",
+      "sso_group_name": "laa-sre-admins"
+    }
+  ],
   "environments": [
     {
       "name": "development",
@@ -15,7 +21,7 @@
         },
         {
           "sso_group_name": "laa-oia-developers",
-          "level": "developer"
+          "level": "sandbox"
         },
         {
           "sso_group_name": "laa-dba",
