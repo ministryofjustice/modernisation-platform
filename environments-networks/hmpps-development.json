@@ -48,7 +48,9 @@
       "com.amazonaws.eu-west-2.transfer.server",
       "com.amazonaws.eu-west-2.appstream.streaming",
       "com.amazonaws.eu-west-2.sns",
-      "com.amazonaws.eu-west-2.sqs"
+      "com.amazonaws.eu-west-2.sqs",
+      "com.amazonaws.eu-west-2.logs",
+      "com.amazonaws.eu-west-2.sts"
     ],
     "additional_private_zones": [],
     "additional_vpcs": [],
