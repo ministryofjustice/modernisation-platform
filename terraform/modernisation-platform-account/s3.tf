@@ -341,7 +341,7 @@ resource "aws_kms_alias" "s3_state_bucket_eu-west-1_replication" {
 }
 
 module "state-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=c8889e65f4d8a3d53d2cbd93b7be714e990020b7" # v10.2.1
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=66bd5c6aa0d0396442f0d4a63642029ff38d2a8a" # v11.1.0
 
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
@@ -353,6 +353,7 @@ module "state-bucket" {
   sse_algorithm                = "aws:kms"
   enforce_kms_request_headers  = false
   replication_enabled          = true
+  replication_metrics_enabled  = true
   replication_object_lock_days = 7
   replication_region           = "eu-west-1"
   custom_kms_key               = aws_kms_key.s3_state_bucket_multi_region.arn
