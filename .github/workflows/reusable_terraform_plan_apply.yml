@@ -158,6 +158,15 @@ jobs:
         if: ${{ inputs.environment }}
         run: |
           terraform -chdir="${{ inputs.working-directory }}" workspace select ${WORKSPACE_NAME}
+      
+      - name: Validate Tags
+        id: validate
+        if: github.event.ref != 'refs/heads/main'
+        uses: ministryofjustice/coat-tag-validator@354cc92dc6a1ebcca99ad3a0db4bd36a9c8418c4 # v2.2.2
+        continue-on-error: true
+        with:
+          terraform_directory: ${{ inputs.working-directory }}
+          terraform_workspace: ${{ env.WORKSPACE_NAME || 'default' }}
 
       - name: Run Terratest
         if: ${{ steps.vars.outputs.run_terratest == 'true' }}
