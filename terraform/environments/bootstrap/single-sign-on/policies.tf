@@ -2015,7 +2015,15 @@ data "aws_iam_policy_document" "workspace_user_admin" {
     ]
     resources = ["*"]
   }
-
+  statement {
+    sid    = "Createsecret"
+    effect = "Allow"
+    actions = [
+      "secretsmanager:CreateSecret",
+      "secretsmanager:TagResource"
+    ]
+    resources = ["*"]
+  }
   statement {
     sid    = "Ec2WorkspacesSupport"
     effect = "Allow"
@@ -2155,6 +2163,15 @@ data "aws_iam_policy_document" "workspace_admin" {
       "ds:UpdateTrust",
       "ds:VerifyTrust",
       "ds-data:*"
+    ]
+    resources = ["*"]
+  }
+  statement {
+    sid    = "Createsecret"
+    effect = "Allow"
+    actions = [
+      "secretsmanager:CreateSecret",
+      "secretsmanager:TagResource"
     ]
     resources = ["*"]
   }
