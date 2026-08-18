@@ -169,6 +169,7 @@ locals {
 
   yjb_vpn_static_route_srx02 = ["10.20.224.0/22"]
 
+  nec_nonprod_vpn_static_routes = ["10.120.0.0/24"] #TODO Needs to be confirmed by NEC.
 
   core-vpcs = {
     for file in fileset("../../../environments-networks", "*.json") :
