@@ -881,6 +881,7 @@ data "aws_iam_policy_document" "policy" {
       "elasticfilesystem:restore",
       "elasticloadbalancing:AddTags",
       "elasticloadbalancing:CreateRule",
+      "elasticloadbalancing:DeleteRule",
       "elasticloadbalancing:SetRulePriorities",
       "elasticloadbalancing:ModifyRule",
       "elasticloadbalancing:ModifyListener",
