@@ -66,11 +66,13 @@ resource "aws_kinesis_firehose_delivery_stream" "session_manager_logs_to_s3" {
   destination = "extended_s3"
 
   extended_s3_configuration {
-    role_arn           = aws_iam_role.firehose_to_s3_session_manager.arn
-    bucket_arn         = module.s3_bucket_session_manager_logs.bucket.arn
-    buffering_size     = 5
-    buffering_interval = 300
-    compression_format = "UNCOMPRESSED"
-    kms_key_arn        = aws_kms_key.session_manager_logs.arn
+    role_arn            = aws_iam_role.firehose_to_s3_session_manager.arn
+    bucket_arn          = module.s3_bucket_session_manager_logs.bucket.arn
+    prefix              = "session-manager-logs/"
+    error_output_prefix = "session-manager-logs-error/"
+    buffering_size      = 5
+    buffering_interval  = 300
+    compression_format  = "UNCOMPRESSED"
+    kms_key_arn         = aws_kms_key.session_manager_logs.arn
   }
 }
