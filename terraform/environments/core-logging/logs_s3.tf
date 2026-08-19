@@ -1,5 +1,5 @@
 locals {
-  cortex_logging_buckets = toset(["vpc-flow-logs", "r53-resolver-logs", "generic-logs", "session-manager-logs"])
+  cortex_logging_buckets = toset(["vpc-flow-logs", "r53-resolver-logs", "generic-logs"])
 }
 
 resource "aws_s3_bucket" "logging" {

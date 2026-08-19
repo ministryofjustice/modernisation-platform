@@ -28,7 +28,7 @@ resource "aws_iam_role_policy" "firehose_to_s3_session_manager_policy" {
           "s3:PutObject",
           "s3:PutObjectAcl"
         ]
-        Resource = "${aws_s3_bucket.logging["session-manager-logs"].arn}/*"
+        Resource = "${module.s3_bucket_session_manager_logs.bucket.arn}/*"
       },
       {
         Effect = "Allow"
@@ -38,7 +38,7 @@ resource "aws_iam_role_policy" "firehose_to_s3_session_manager_policy" {
           "kms:GenerateDataKey*",
           "kms:DescribeKey"
         ]
-        Resource = aws_kms_key.logging["session-manager-logs"].arn
+        Resource = aws_kms_key.session_manager_logs.arn
       },
       {
         Effect = "Allow"
@@ -67,10 +67,10 @@ resource "aws_kinesis_firehose_delivery_stream" "session_manager_logs_to_s3" {
 
   extended_s3_configuration {
     role_arn           = aws_iam_role.firehose_to_s3_session_manager.arn
-    bucket_arn         = aws_s3_bucket.logging["session-manager-logs"].arn
+    bucket_arn         = module.s3_bucket_session_manager_logs.bucket.arn
     buffering_size     = 5
     buffering_interval = 300
     compression_format = "UNCOMPRESSED"
-    kms_key_arn        = aws_kms_key.logging["session-manager-logs"].arn
+    kms_key_arn        = aws_kms_key.session_manager_logs.arn
   }
 }
