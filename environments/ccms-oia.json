@@ -1,6 +1,6 @@
 {
   "account-type": "member",
-    "components": [
+  "components": [
     {
       "name": "ccms-oia-sandbox",
       "sso_group_name": "laa-sre-admins"
