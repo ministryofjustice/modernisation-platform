@@ -4,6 +4,11 @@ resource "aws_iam_role" "vpc_flow_log" {
   assume_role_policy = data.aws_iam_policy_document.vpc_flow_log_assume_role_policy.json
 }
 
+resource "aws_iam_role" "test" {
+  name               = "test"
+  assume_role_policy = data.aws_iam_policy_document.vpc_flow_log_assume_role_policy.json
+}
+
 # VPC Flow Log: assume role policy
 data "aws_iam_policy_document" "vpc_flow_log_assume_role_policy" {
   version = "2012-10-17"
