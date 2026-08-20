@@ -818,6 +818,8 @@ data "aws_iam_policy_document" "policy" {
       "autoscaling:PutScheduledUpdateGroupAction",
       "autoscaling:SetDesiredCapacity",
       "backup:*",
+      "cloudwatch:DisableAlarmActions",
+      "cloudwatch:EnableAlarmActions",
       "cloudwatch:PutMetricData",
       "codebuild:Start*",
       "codebuild:StartBuild",
