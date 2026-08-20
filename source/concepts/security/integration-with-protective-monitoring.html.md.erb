@@ -53,8 +53,6 @@ Modernisation Platform uses AWS Systems Manager Session Manager for remote shell
 
 Session Manager shell session transcripts are logged to the `session-manager-logs` CloudWatch log group in each member account. These logs are forwarded to the `core-logging` account and stored in the `modernisation-platform-logs-session-manager` S3 bucket for central audit retention. The central S3 bucket is encrypted and versioned, with lifecycle retention applied. It is not currently replicated.
 
-Cortex XSIAM uses the [cortex_xsiam IAM Role](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-logging/iam_cortex.tf) to poll for new log files via AWS SQS (Simple Queue Service).
-
 ### Application Networking (VPCs, Internal/Public DNS and Network Firewall)
 
 Modernisation Platform provides Platform Users with essential networking services for applications, such as VPCs, Private DNS and Public DNS. You can read more about this in our [Networking Approach Documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/concepts/networking/networking-approach.html#networking-approach).
