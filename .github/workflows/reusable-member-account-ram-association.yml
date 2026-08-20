@@ -54,10 +54,19 @@ jobs:
           echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
 
       - name: Configure AWS Credentials
+        if: github.event.ref != 'refs/heads/main'
         uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6.2.3
         with:
-          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
-          role-session-name: githubactionsrolesession
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-plan"
+          role-session-name: githubactionsplanrolesession
+          aws-region: ${{ inputs.aws_region }}
+      
+      - name: Configure AWS Credentials
+        if: github.event.ref == 'refs/heads/main'
+        uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6.2.3
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-apply"
+          role-session-name: githubactionsapplyrolesession
           aws-region: ${{ inputs.aws_region }}
 
       - name: Setup Terraform
