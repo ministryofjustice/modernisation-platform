@@ -15,7 +15,7 @@ module "instance_scheduler" {
   reserved_concurrent_executions = 1
   additional_trust_roles         = [module.github-oidc.github_actions_role]
   image_uri                      = "${local.environment_management.account_ids[terraform.workspace]}.dkr.ecr.eu-west-2.amazonaws.com/${module.instance_scheduler_ecr_repo.ecr_repository_name}:latest"
-  timeout                        = 600
+  timeout                        = 500
   tracing_mode                   = "Active"
 
   sns_topic_on_failure = aws_sns_topic.on_failure.arn
