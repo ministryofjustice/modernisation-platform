@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Creating new DNS zones
-last_reviewed_on: 2026-02-20
+last_reviewed_on: 2026-08-20
 review_in: 6 months
 ---
 
@@ -39,7 +39,7 @@ Email the domains team with the name of the new zone and the associated `NS` rec
 
 Records should be added to new zones by the requestor in code through the [Modernisation Platform Environments](https://github.com/ministryofjustice/modernisation-platform-environments/tree/main/terraform/environments) repository.
 
-####
+#### Example
 
 ```terraform
 data "aws_route53_zone" "example_zone" {
@@ -52,5 +52,7 @@ resource "aws_route53_record" "example_record" {
   zone_id  = data.aws_route53_zone.example_zone.zone_id
   name     = "record-in.an-example-domain.service.justice.gov.uk"
   type     = "A"
+  ttl      = 300
+  records  = ["192.0.2.10"]
 }
 ```
