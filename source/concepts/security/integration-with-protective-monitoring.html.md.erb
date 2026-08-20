@@ -51,7 +51,8 @@ Cortex XSIAM uses the [cortex_xsiam IAM Role](https://github.com/ministryofjusti
 
 Modernisation Platform uses AWS Systems Manager Session Manager for remote shell access to EC2 instances. This avoids the need to open inbound SSH ports or manage SSH keys for standard instance access.
 
-Session Manager shell session transcripts are logged to the `session-manager-logs` CloudWatch log group in member accounts. These logs are forwarded to the `core-logging` account and stored in the `modernisation-platform-logs-session-manager` S3 bucket for central audit retention.
+Session Manager shell session transcripts are logged to the `session-manager-logs` CloudWatch log group in each member account. These logs are forwarded to the `core-logging` account and stored in the `modernisation-platform-logs-session-manager` S3 bucket for central audit retention. The central S3 bucket is encrypted and versioned, with lifecycle retention applied. It is not currently replicated.
+
 Cortex XSIAM uses the [cortex_xsiam IAM Role](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-logging/iam_cortex.tf) to poll for new log files via AWS SQS (Simple Queue Service).
 
 ### Application Networking (VPCs, Internal/Public DNS and Network Firewall)
