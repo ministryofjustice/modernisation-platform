@@ -1,11 +1,11 @@
 
 # ---------------------------------------------------------------------------------------------------------------------------
-# Terraform to create custom VPC Endpoints, Subnet & Security Group Associations.
+# Terraform to create custom VPC Endpoints and Security Group Associations.
 #
 # For each entry in the vpc_endpoint_access local, this creates an Interface VPC endpoint (for the given service_name) owned
-# directly by core-vpc, and associates it with the general-private subnets (across all three AZs) of the relevant member VPC.
+# directly by core-vpc, with subnet_ids set to the general-private subnets (across all three AZs) of the relevant member VPC.
 #
-# This is used for endpoints that need subnet associations other than Protected - e.g. endpoints that need to be accessible
+# This is used for endpoints that need subnet placement other than Protected - e.g. endpoints that need to be accessible
 # from member account services or other MoJ Platforms - and is independent of the member-vpc module's additional_endpoints.
 #
 # It also creates a dedicated, core-vpc-owned security group per business unit/environment and associates it with the endpoint.
@@ -55,7 +55,7 @@ locals {
   # member-vpc only ever creates subnets in the first 3 AZs (a, b, c) of the region, so exclude any others (e.g. eu-west-2d)
   availability_zones = [for az in sort(data.aws_availability_zones.available.names) : az if contains(["a", "b", "c"], substr(az, -1, 1))]
 
-  # one entry per vpc_endpoint_access entry x availability zone, to look up the general-private subnet in each az
+  # one entry per vpc_endpoint_access entry x availability zone, used to look up the general-private subnet id in each az
   vpc_endpoint_access_subnets = {
     for entry in flatten([
       for key, value in local.vpc_endpoint_access_for_workspace : [
@@ -67,6 +67,15 @@ locals {
         }
       ]
     ]) : entry.key => entry
+  }
+
+  # subnet ids per endpoint (set on aws_vpc_endpoint.subnet_ids below), grouped back up from the per-az lookups above
+  vpc_endpoint_access_subnet_ids = {
+    for key in keys(local.vpc_endpoint_access_for_workspace) : key => [
+      for subnet_key, subnet in local.vpc_endpoint_access_subnets :
+      data.aws_subnet.vpc_endpoint_access[subnet_key].id
+      if subnet.endpoint_key == key
+    ]
   }
 }
 
@@ -87,9 +96,11 @@ data "aws_subnet" "vpc_endpoint_access" {
 resource "aws_vpc_endpoint" "vpc_endpoint_access" {
   for_each = local.vpc_endpoint_access_for_workspace
 
-  vpc_id            = module.vpc[each.value.vpc_name].vpc_id
-  service_name      = each.value.service_name
-  vpc_endpoint_type = "Interface"
+  vpc_id              = module.vpc[each.value.vpc_name].vpc_id
+  service_name        = each.value.service_name
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = local.vpc_endpoint_access_subnet_ids[each.key]
+  private_dns_enabled = true
 
   tags = merge(
     local.tags,
@@ -97,13 +108,6 @@ resource "aws_vpc_endpoint" "vpc_endpoint_access" {
       Name = each.value.name
     }
   )
-}
-
-resource "aws_vpc_endpoint_subnet_association" "vpc_endpoint_access" {
-  for_each = local.vpc_endpoint_access_subnets
-
-  vpc_endpoint_id = aws_vpc_endpoint.vpc_endpoint_access[each.value.endpoint_key].id
-  subnet_id       = data.aws_subnet.vpc_endpoint_access[each.key].id
 }
 
 resource "aws_security_group" "vpc_endpoint_access" {
