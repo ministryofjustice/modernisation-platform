@@ -14,7 +14,7 @@ func TestTransitGateway(t *testing.T) {
 		TerraformDir: "../",
 	})
 
-	terraform.RunTerraformCommand(t, terraformOptions, "refresh")
+	
 	terraform.Plan(t, terraformOptions)
 
 	//Test transit-gateway will not be affected
@@ -32,7 +32,7 @@ func TestInspectionVPCs(t *testing.T) {
 		TerraformDir: "../",
 	})
 
-	terraform.RunTerraformCommand(t, terraformOptions, "refresh")
+	
 	terraform.Plan(t, terraformOptions)
 
 	// Retrieve the VPC output as a map
