@@ -29,7 +29,7 @@ locals {
       port               = 443
       service_name       = "com.amazonaws.eu-west-2.execute-api"
       name               = "hmpps-preproduction-execute-api-cp-access"
-      description        = "Created for electronic-monitoring-data"
+      description        = "Allow Container Platform access to execute-api endpoint"
       subnet_name_prefix = "general-private"
     },
     {
@@ -39,7 +39,7 @@ locals {
       port               = 443
       service_name       = "com.amazonaws.eu-west-2.execute-api"
       name               = "hmpps-production-execute-api-cp-access"
-      description        = "Created for electronic-monitoring-data"
+      description        = "Allow Container Platform access to execute-api endpoint"
       subnet_name_prefix = "general-private"
     }
   ]
