@@ -6,7 +6,7 @@ data "aws_kms_key" "cloudtrail_key" {
 
 #trivy:ignore:AVD-AWS-0136
 module "baselines" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=b86a581b071922c2e29b56b67a8902b0ccc8c8b8" # v10.1.3
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=06f1c148a4aff830dec1683b971916b5c80b522a" # v10.1.2
   providers = {
     # Default and replication regions
     aws                    = aws.workspace-eu-west-2
@@ -76,9 +76,6 @@ module "baselines" {
 
   # Enable Session Manager transcript logging
   enable_session_manager_logging = true
-  session_manager_log_forwarding_destination_arns = {
-    eu-west-2 = "arn:aws:logs:eu-west-2:${local.environment_management.account_ids["core-logging-production"]}:destination:session-manager-logs-destination"
-  }
 
   # Pass in pagerduty integration key for security hub alerts
   pagerduty_integration_key = local.pagerduty_integration_keys["security_hub_members"]
