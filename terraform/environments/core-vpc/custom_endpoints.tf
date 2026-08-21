@@ -24,10 +24,30 @@ locals {
   vpc_endpoint_access = [
     {
       business_unit      = "hmpps"
+      environment        = "development"
+      cidr_block         = "172.20.0.0/16"
+      port               = 443
+      service_name       = "com.amazonaws.${data.aws_region.current.region}.execute-api"
+      name               = "hmpps-development-execute-api-cp-access"
+      description        = "Allow Container Platform access to execute-api endpoint"
+      subnet_name_prefix = "general-private"
+    },
+    {
+      business_unit      = "hmpps"
+      environment        = "test"
+      cidr_block         = "172.20.0.0/16"
+      port               = 443
+      service_name       = "com.amazonaws.${data.aws_region.current.region}.execute-api"
+      name               = "hmpps-test-execute-api-cp-access"
+      description        = "Allow Container Platform access to execute-api endpoint"
+      subnet_name_prefix = "general-private"
+    },
+    {
+      business_unit      = "hmpps"
       environment        = "preproduction"
       cidr_block         = "172.20.0.0/16"
       port               = 443
-      service_name       = "com.amazonaws.eu-west-2.execute-api"
+      service_name       = "com.amazonaws.${data.aws_region.current.region}.execute-api"
       name               = "hmpps-preproduction-execute-api-cp-access"
       description        = "Allow Container Platform access to execute-api endpoint"
       subnet_name_prefix = "general-private"
@@ -37,7 +57,7 @@ locals {
       environment        = "production"
       cidr_block         = "172.20.0.0/16"
       port               = 443
-      service_name       = "com.amazonaws.eu-west-2.execute-api"
+      service_name       = "com.amazonaws.${data.aws_region.current.region}.execute-api"
       name               = "hmpps-production-execute-api-cp-access"
       description        = "Allow Container Platform access to execute-api endpoint"
       subnet_name_prefix = "general-private"
@@ -83,6 +103,8 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
+data "aws_region" "current" {}
+
 data "aws_subnet" "vpc_endpoint_access" {
   for_each = local.vpc_endpoint_access_subnets
 
@@ -105,7 +127,7 @@ resource "aws_vpc_endpoint" "vpc_endpoint_access" {
   tags = merge(
     local.tags,
     {
-      Name = each.value.name
+      Name = "${each.value.business_unit}-${each.value.environment}-com.amazonaws.${data.aws_region.current.region}.execute-api"
     }
   )
 }
