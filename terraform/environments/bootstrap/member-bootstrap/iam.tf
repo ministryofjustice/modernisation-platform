@@ -1246,6 +1246,19 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
       ]
     }
   }
+
+  statement {
+    sid    = "AllowOIDCBedrockGuardrailManagement"
+    effect = "Allow"
+    actions = [
+      "bedrock:CreateGuardrail",
+      "bedrock:CreateGuardrailVersion",
+      "bedrock:GetGuardrail",
+      "bedrock:ListTagsForResource",
+      "bedrock:UpdateGuardrail"
+    ]
+    resources = ["*"]
+  }
 }
 
 # AWS Shield Advanced SRT (Shield Response Team) support role
@@ -1607,6 +1620,8 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
     actions = [
       "airflow:Get*",
       "airflow:List*",
+      "bedrock:GetGuardrail",
+      "bedrock:ListTagsForResource",
       "glue:GetConnection",
       "lakeformation:GetLFTag",
       "lakeformation:ListLFTags",
@@ -1644,6 +1659,7 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
       ]
     }
   }
+
 }
 
 # Role github-actions-apply to support OIDC access from Modernisation-Platform-Environments for:
