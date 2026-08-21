@@ -46,7 +46,7 @@ locals {
 
   vpc_endpoint_access_for_workspace = {
     for entry in local.vpc_endpoint_access :
-    entry.name => merge(entry, {
+    "${entry.business_unit}-${entry.environment}" => merge(entry, {
       vpc_name = "${entry.business_unit}-${entry.environment}"
     })
     if "core-vpc-${entry.environment}" == terraform.workspace
