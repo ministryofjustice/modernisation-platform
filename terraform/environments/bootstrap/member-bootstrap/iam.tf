@@ -1607,6 +1607,8 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
     actions = [
       "airflow:Get*",
       "airflow:List*",
+      "bedrock:GetGuardrail",
+      "bedrock:ListTagsForResource",
       "glue:GetConnection",
       "lakeformation:GetLFTag",
       "lakeformation:ListLFTags",
@@ -1643,6 +1645,19 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
         local.environment_management.account_ids["observability-platform-production"],
       ]
     }
+  }
+
+  statement {
+    sid    = "AllowOIDCBedrockGuardrailManagement"
+    effect = "Allow"
+    actions = [
+      "bedrock:CreateGuardrail",
+      "bedrock:CreateGuardrailVersion",
+      "bedrock:GetGuardrail",
+      "bedrock:ListTagsForResource",
+      "bedrock:UpdateGuardrail"
+    ]
+    resources = ["*"]
   }
 }
 
