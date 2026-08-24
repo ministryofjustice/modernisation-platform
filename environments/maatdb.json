@@ -1,10 +1,6 @@
 {
   "account-type": "member",
-  "codeowners": [
-    "laa-crime-apps-team",
-    "laa-sre-admins",
-    "laa-dba"
-  ],
+  "codeowners": ["laa-crime-apps-team", "laa-sre-admins", "laa-dba"],
   "environments": [
     {
       "name": "development",
