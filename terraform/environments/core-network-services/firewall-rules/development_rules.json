@@ -265,6 +265,13 @@
     "destination_port": "1521",
     "protocol": "TCP"
   },
+  "hmpps_development_to_cp_https": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${cloud-platform}",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
   "hmpps_development_to_pgres_tcp": {
     "action": "PASS",
     "source_ip": "${hmpps-development}",

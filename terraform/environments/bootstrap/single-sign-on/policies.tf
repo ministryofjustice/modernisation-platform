@@ -404,7 +404,9 @@ data "aws_iam_policy_document" "developer_additional" {
     sid    = "AtxCliMinimum"
     effect = "Allow"
     actions = [
+      "transform-custom:CompleteTransformationPackageUpload",
       "transform-custom:ConverseStream",
+      "transform-custom:CreateTransformationPackageUrl",
       "transform-custom:ExecuteTransformation",
       "transform-custom:GetCampaign",
       "transform-custom:UpdateCampaignRepositoryStatus",
