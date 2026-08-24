@@ -14,7 +14,6 @@ func TestTransitGateway(t *testing.T) {
 		TerraformDir: "../",
 	})
 
-	terraform.RunTerraformCommand(t, terraformOptions, "refresh")
 	terraform.Plan(t, terraformOptions)
 
 	//Test private route tables

@@ -104,7 +104,7 @@ module "vpc" {
     aws.transit-gateway-host = aws.core-network-services
   }
   for_each             = local.vpcs[terraform.workspace]
-  source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=410bd64f9a9eab204390822a46bf5ccca6fea12b" # v5.1.0
+  source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=18f3f5dd010235f73eb591d3688f324a15064ff3" # v5.2.0
   additional_endpoints = each.value.options.additional_endpoints
   subnet_sets          = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
   transit_gateway_id   = data.aws_ec2_transit_gateway.transit-gateway.id
@@ -414,86 +414,4 @@ module "r53_dns_firewall" {
 
   tags_prefix = each.key
   tags_common = local.tags
-}
-
-# ---------------------------------------------------------------------------------------------------------------------------
-# VPC Endpoint & Security Group Associations.
-# Creates a dedicated, core-vpc-owned security group per business unit/environment and associates it with the shared VPC endpoint. 
-# A dedicated SG (rather than the shared "endpoints" SG used by all consumers) keeps access grants isolated and auditable.
-#
-# NOTE: the security group MUST be owned by core-vpc (this account) - shared VPCs do not allow the VPC owner to attach a security group created by a participant account to
-# resources it owns (see https://docs.aws.amazon.com/vpc/latest/userguide/vpc-share-limitations.html).
-#
-# ---------------------------------------------------------------------------------------------------------------------------
-
-locals {
-  vpc_endpoint_access = [
-    {
-      business_unit = "hmpps"
-      environment   = "preproduction"
-      cidr_block    = "172.20.0.0/16"
-      port          = 443
-      service_name  = "com.amazonaws.eu-west-2.execute-api"
-      name          = "hmpps-preproduction-execute-api-cp-access"
-      description   = "Allow Container Platform access to execute-api endpoint"
-    },
-    {
-      business_unit = "hmpps"
-      environment   = "production"
-      cidr_block    = "172.20.0.0/16"
-      port          = 443
-      service_name  = "com.amazonaws.eu-west-2.execute-api"
-      name          = "hmpps-production-execute-api-cp-access"
-      description   = "Allow Container Platform access to execute-api endpoint"
-    }
-  ]
-
-  vpc_endpoint_access_for_workspace = {
-    for entry in local.vpc_endpoint_access :
-    "${entry.business_unit}-${entry.environment}" => merge(entry, {
-      vpc_name = "${entry.business_unit}-${entry.environment}"
-    })
-    if "core-vpc-${entry.environment}" == terraform.workspace
-  }
-}
-
-data "aws_vpc_endpoint" "vpc_endpoint" {
-  for_each = local.vpc_endpoint_access_for_workspace
-
-  vpc_id       = module.vpc[each.value.vpc_name].vpc_id
-  service_name = each.value.service_name
-}
-
-resource "aws_security_group" "vpc_endpoint_access" {
-  #checkov:skip=CKV2_AWS_5: "SG is associated with a VPC endpoint, not an EC2 instance"
-  for_each = local.vpc_endpoint_access_for_workspace
-
-  name        = each.value.name
-  description = each.value.description
-  vpc_id      = module.vpc[each.value.vpc_name].vpc_id
-
-  tags = merge(
-    local.tags,
-    {
-      Name = each.value.name
-    }
-  )
-}
-
-resource "aws_vpc_security_group_ingress_rule" "vpc_endpoint_access" {
-  for_each = local.vpc_endpoint_access_for_workspace
-
-  security_group_id = aws_security_group.vpc_endpoint_access[each.key].id
-  description       = each.value.description
-  cidr_ipv4         = each.value.cidr_block
-  from_port         = each.value.port
-  to_port           = each.value.port
-  ip_protocol       = "tcp"
-}
-
-resource "aws_vpc_endpoint_security_group_association" "vpc_endpoint_access" {
-  for_each = local.vpc_endpoint_access_for_workspace
-
-  vpc_endpoint_id   = data.aws_vpc_endpoint.vpc_endpoint[each.key].id
-  security_group_id = aws_security_group.vpc_endpoint_access[each.key].id
 }
