@@ -49,6 +49,13 @@
     "slack-channel": "",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [],
+  "github-oidc-team-repositories": [
+    "ministryofjustice/laa-ccms-soa-docker",
+    "ministryofjustice/laa-ccms-provider-ui",
+    "ministryofjustice/laa-ccms-edrms-web-service",
+    "ministryofjustice/oracle-policy-automation-docker",
+    "ministryofjustice/laa-ccms-connector",
+    "ministryofjustice/laa-ccms-service-adapter"
+  ],
   "go-live-date": ""
 }
