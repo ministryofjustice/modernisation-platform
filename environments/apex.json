@@ -37,11 +37,6 @@
           "level": "instance-management"
         },
         {
-          "sso_group_name": "laa-aws-infrastructure",
-          "level": "developer",
-          "github_action_reviewer": "true"
-        },
-        {
           "sso_group_name": "laa-apex-developer",
           "level": "developer"
         }
@@ -64,11 +59,6 @@
           "level": "instance-management"
         },
         {
-          "sso_group_name": "laa-aws-infrastructure",
-          "level": "developer",
-          "github_action_reviewer": "true"
-        },
-        {
           "sso_group_name": "laa-apex-developer",
           "level": "developer"
         }
@@ -81,10 +71,6 @@
           "sso_group_name": "laa-sre-admins",
           "level": "developer",
           "github_action_reviewer": "true"
-        },
-        {
-          "sso_group_name": "laa-aws-infrastructure",
-          "level": "developer"
         },
         {
           "sso_group_name": "laa-sre-admins",
