@@ -398,6 +398,40 @@ data "aws_iam_policy_document" "developer_additional" {
     }
   }
 
+  # The following two statements add support for the AWS Transform CLI (CTX). These are the minimum set of permissions needed to use the product.
+  statement {
+    #checkov:skip=CKV_AWS_356: Needs to access multiple resources
+    sid    = "AtxCliMinimum"
+    effect = "Allow"
+    actions = [
+      "transform-custom:CompleteTransformationPackageUpload",
+      "transform-custom:ConverseStream",
+      "transform-custom:CreateTransformationPackageUrl",
+      "transform-custom:ExecuteTransformation",
+      "transform-custom:GetCampaign",
+      "transform-custom:UpdateCampaignRepositoryStatus",
+      "transform-custom:UpdateCampaign",
+      "transform-custom:ListTransformationPackageMetadata",
+      "transform-custom:GetTransformationPackageUrl",
+    ]
+    resources = ["*"]
+  }
+  statement {
+    sid    = "AllowCreateServiceLinkedRole"
+    effect = "Allow"
+    actions = [
+      "iam:CreateServiceLinkedRole",
+    ]
+    resources = [
+      "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/aws-service-role/transform-custom.amazonaws.com/AWSServiceRoleForAWSTransformCustom",
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "iam:AWSServiceName"
+      values   = ["transform-custom.amazonaws.com"]
+    }
+  }
+
 }
 
 # data engineering policy (developer + glue + some athena)
@@ -2015,7 +2049,15 @@ data "aws_iam_policy_document" "workspace_user_admin" {
     ]
     resources = ["*"]
   }
-
+  statement {
+    sid    = "Createsecret"
+    effect = "Allow"
+    actions = [
+      "secretsmanager:CreateSecret",
+      "secretsmanager:TagResource"
+    ]
+    resources = ["*"]
+  }
   statement {
     sid    = "Ec2WorkspacesSupport"
     effect = "Allow"
@@ -2155,6 +2197,15 @@ data "aws_iam_policy_document" "workspace_admin" {
       "ds:UpdateTrust",
       "ds:VerifyTrust",
       "ds-data:*"
+    ]
+    resources = ["*"]
+  }
+  statement {
+    sid    = "Createsecret"
+    effect = "Allow"
+    actions = [
+      "secretsmanager:CreateSecret",
+      "secretsmanager:TagResource"
     ]
     resources = ["*"]
   }
