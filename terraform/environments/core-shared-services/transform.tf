@@ -368,3 +368,10 @@ resource "aws_codeconnections_connection" "github" {
   provider_type = "GitHub"
   tags          = local.tags
 }
+
+## Replacement CodeConnection resource that will link to the correct github app
+resource "aws_codeconnections_connection" "github_transform" {
+  name          = "mp-aws-transform-github"
+  provider_type = "GitHub"
+  tags          = local.tags
+}

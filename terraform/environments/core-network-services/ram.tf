@@ -17,6 +17,7 @@ resource "aws_ram_principal_association" "transit-gateway" {
   for_each = {
     cloud-platform-development       = local.environment_management.account_ids["cloud-platform-development"],
     cloud-platform-preproduction     = local.environment_management.account_ids["cloud-platform-preproduction"],
+    cloud-platform-nonlive           = local.environment_management.account_ids["cloud-platform-nonlive"],
     cloud-platform-live              = local.environment_management.account_ids["cloud-platform-live"],
     container-platform-octo-nonlive  = local.environment_management.account_ids["container-platform-octo-nonlive"],
     container-platform-octo-live     = local.environment_management.account_ids["container-platform-octo-live"],

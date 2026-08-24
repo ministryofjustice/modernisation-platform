@@ -1,8 +1,20 @@
 locals {
   s3_replication_rules = {
+    cloudtrail = {
+      source_bucket      = "modernisation-platform-logs-cloudtrail"
+      destination_bucket = "modernisation-platform-logs-cloudtrail-replication"
+    }
     config = {
       source_bucket      = "modernisation-platform-logs-config"
       destination_bucket = "modernisation-platform-logs-config-replication"
+    }
+    r53_public_dns = {
+      source_bucket      = "modernisation-platform-logs-r53-public-dns-logs"
+      destination_bucket = "modernisation-platform-logs-r53-public-dns-logs-replication"
+    }
+    waf = {
+      source_bucket      = "modernisation-platform-waf-logs"
+      destination_bucket = "modernisation-platform-waf-logs-replication"
     }
   }
 }
@@ -23,7 +35,7 @@ resource "aws_cloudwatch_metric_alarm" "s3_replication_failures" {
 
   threshold           = 1
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  treat_missing_data  = "notBreaching"
+  treat_missing_data  = "ignore"
 
   dimensions = {
     SourceBucket      = each.value.source_bucket
@@ -80,7 +92,7 @@ module "pagerduty_s3_replication_failures" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=d88bd90d490268896670a898edfaba24bba2f8ab" # v3.0.0
 
   sns_topics                = [aws_sns_topic.s3_replication_failures.name]
-  pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
+  pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_high_priority_cloudwatch"]
 
   depends_on = [aws_sns_topic.s3_replication_failures]
 }

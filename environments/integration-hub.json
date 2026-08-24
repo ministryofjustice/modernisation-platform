@@ -6,6 +6,9 @@
       "name": "api-platform"
     },
     {
+      "name": "downstream-mock-api"
+    },
+    {
       "name": "events-platform"
     },
     {
