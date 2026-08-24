@@ -1,10 +1,9 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Accessing the Observability Platform
-last_reviewed_on: 2026-02-13
+last_reviewed_on: 2026-08-13
 review_in: 6 months
 ---
-
 # <%= current_page.data.title %>
 
 ## How to access the Observability Platform
@@ -22,3 +21,42 @@ Once you have accessed Grafana you can navigate to our dashboards:
 1. Click on the _hamburger_ menu icon in the top left corner
 1. Select `"Dashboards"`
 1. Finally click on the relevant dashboard of interest
+
+## Creating Dashboards in Code
+
+If you would like your dashboards to be version-controlled and reviewed like any other infrastructure, you can manage them as code by adding JSON or template files to the `dashboards/` directory in the environments repository.
+
+Dashboards are automatically created in Grafana based on their location in this folder:
+
+dashboards/
+dashboard.json → Created at root level (no folder)
+team-name/
+dashboard.json → Created in team-name's Grafana folder
+
+### Platform-wide dashboards
+
+For dashboards intended as landing pages or global overviews:
+
+- Place JSON files at the root level: `dashboards/your-dashboard.json`
+- These appear at the top level in Grafana with no folder assignment
+
+### Team-specific dashboards
+
+For dashboards scoped to a particular team:
+
+- Place JSON files in team subfolders: `dashboards/{team-name}/your-dashboard.json`
+- The team name must match a tenant name from `environment-configurations.tf`
+- These are automatically placed in the team's Grafana folder with appropriate permissions
+
+### Template files
+
+In addition to plain JSON dashboards, the platform supports template files that allow variable substitution, reducing duplication across similar dashboards.
+
+## Alerting
+
+The Observability Platform supports alerting as code alongside dashboards as code. Alerts can be configured to notify via:
+
+- **PagerDuty** — for high-priority, on-call alerts
+- **Slack** — for lower-priority notifications
+
+Alerting rules are version-controlled and reviewed in the same way as dashboard definitions.
