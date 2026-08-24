@@ -999,7 +999,9 @@ module "soa_admin_ecr_repo" {
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:root",
-    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:role/modernisation-platform-oidc-cicd"
+    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   pull_principals = [
@@ -1007,7 +1009,9 @@ module "soa_admin_ecr_repo" {
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-test"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-preproduction"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-production"]}:root",
-    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:role/modernisation-platform-oidc-cicd"
+    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:role/modernisation-platform-oidc-cicd"
   ]
   tags_common = local.tags
 }
@@ -1019,7 +1023,9 @@ module "soa_managed_ecr_repo" {
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:root",
-    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:role/modernisation-platform-oidc-cicd"
+    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   pull_principals = [
@@ -1027,7 +1033,9 @@ module "soa_managed_ecr_repo" {
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-test"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-preproduction"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-production"]}:root",
-    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:role/modernisation-platform-oidc-cicd"
+    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:role/modernisation-platform-oidc-cicd"
   ]
   tags_common = local.tags
 }
@@ -1038,14 +1046,18 @@ module "edrms_ecr_repo" {
   app_name = "ccms-edrms"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["ccms-edrms-development"]}:root"
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-edrms-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   pull_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["ccms-edrms-development"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["ccms-edrms-test"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["ccms-edrms-preproduction"]}:root",
-    "arn:aws:iam::${local.environment_management.account_ids["ccms-edrms-production"]}:root"
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-edrms-production"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:role/modernisation-platform-oidc-cicd"
   ]
   tags_common = local.tags
 }
@@ -1059,7 +1071,9 @@ module "pui_ecr_repo" {
     "arn:aws:iam::${local.environment_management.account_ids["ccms-pui-development"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["ccms-pui-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["ccms-pui-internal-development"]}:root",
-    "arn:aws:iam::${local.environment_management.account_ids["ccms-pui-internal-development"]}:role/modernisation-platform-oidc-cicd"
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-pui-internal-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   pull_principals = [
@@ -1072,7 +1086,9 @@ module "pui_ecr_repo" {
     "arn:aws:iam::${local.environment_management.account_ids["ccms-pui-internal-development"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["ccms-pui-internal-test"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["ccms-pui-internal-preproduction"]}:root",
-    "arn:aws:iam::${local.environment_management.account_ids["ccms-pui-internal-production"]}:root"
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-pui-internal-production"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:role/modernisation-platform-oidc-cicd"
   ]
   tags_common = local.tags
 }
@@ -1084,7 +1100,9 @@ module "oia_ecr_repo" {
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:root",
-    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:role/modernisation-platform-oidc-cicd"
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   pull_principals = [
@@ -1092,7 +1110,9 @@ module "oia_ecr_repo" {
     "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-test"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-preproduction"]}:root",
-    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-production"]}:root"
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-production"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:role/modernisation-platform-oidc-cicd"
   ]
   tags_common = local.tags
 }
@@ -1104,7 +1124,9 @@ module "connector_ecr_repo" {
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:root",
-    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:role/modernisation-platform-oidc-cicd"
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   pull_principals = [
@@ -1112,7 +1134,9 @@ module "connector_ecr_repo" {
     "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-test"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-preproduction"]}:root",
-    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-production"]}:root"
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-production"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:role/modernisation-platform-oidc-cicd"
   ]
   tags_common = local.tags
 }
@@ -1124,7 +1148,9 @@ module "assess_services_ecr_repo" {
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:root",
-    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:role/modernisation-platform-oidc-cicd"
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   pull_principals = [
@@ -1132,7 +1158,9 @@ module "assess_services_ecr_repo" {
     "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-test"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-preproduction"]}:root",
-    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-production"]}:root"
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-production"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:role/modernisation-platform-oidc-cicd"
   ]
   tags_common = local.tags
 }
