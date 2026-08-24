@@ -270,37 +270,6 @@ data "aws_iam_policy_document" "member-access-compute" {
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
-  # The following two statements add support for the AWS Transform CLI (CTX). These are the minimum set of permissions needed to use the product.
-  statement {
-    #checkov:skip=CKV_AWS_356: Needs to access multiple resources
-    sid    = "AtxCliMinimum"
-    effect = "Allow"
-    actions = [
-      "transform-custom:ConverseStream",
-      "transform-custom:ExecuteTransformation",
-      "transform-custom:GetCampaign",
-      "transform-custom:UpdateCampaignRepositoryStatus",
-      "transform-custom:UpdateCampaign",
-      "transform-custom:ListTransformationPackageMetadata",
-      "transform-custom:GetTransformationPackageUrl",
-    ]
-    resources = ["*"]
-  }
-  statement {
-    sid    = "AllowCreateServiceLinkedRole"
-    effect = "Allow"
-    actions = [
-      "iam:CreateServiceLinkedRole",
-    ]
-    resources = [
-      "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/aws-service-role/transform-custom.amazonaws.com/AWSServiceRoleForAWSTransformCustom",
-    ]
-    condition {
-      test     = "StringEquals"
-      variable = "iam:AWSServiceName"
-      values   = ["transform-custom.amazonaws.com"]
-    }
-  }
 }
 
 # Policy 2: Data and Analytics Services
@@ -849,6 +818,8 @@ data "aws_iam_policy_document" "policy" {
       "autoscaling:PutScheduledUpdateGroupAction",
       "autoscaling:SetDesiredCapacity",
       "backup:*",
+      "cloudwatch:DisableAlarmActions",
+      "cloudwatch:EnableAlarmActions",
       "cloudwatch:PutMetricData",
       "codebuild:Start*",
       "codebuild:StartBuild",
@@ -910,6 +881,9 @@ data "aws_iam_policy_document" "policy" {
       "elasticfilesystem:Create*",
       "elasticfilesystem:Delete*",
       "elasticfilesystem:restore",
+      "elasticloadbalancing:AddTags",
+      "elasticloadbalancing:CreateRule",
+      "elasticloadbalancing:DeleteRule",
       "elasticloadbalancing:SetRulePriorities",
       "elasticloadbalancing:ModifyRule",
       "elasticloadbalancing:ModifyListener",
@@ -1272,6 +1246,19 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
       ]
     }
   }
+
+  statement {
+    sid    = "AllowOIDCBedrockGuardrailManagement"
+    effect = "Allow"
+    actions = [
+      "bedrock:CreateGuardrail",
+      "bedrock:CreateGuardrailVersion",
+      "bedrock:GetGuardrail",
+      "bedrock:ListTagsForResource",
+      "bedrock:UpdateGuardrail"
+    ]
+    resources = ["*"]
+  }
 }
 
 # AWS Shield Advanced SRT (Shield Response Team) support role
@@ -1633,6 +1620,8 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
     actions = [
       "airflow:Get*",
       "airflow:List*",
+      "bedrock:GetGuardrail",
+      "bedrock:ListTagsForResource",
       "glue:GetConnection",
       "lakeformation:GetLFTag",
       "lakeformation:ListLFTags",
@@ -1670,6 +1659,7 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
       ]
     }
   }
+
 }
 
 # Role github-actions-apply to support OIDC access from Modernisation-Platform-Environments for:
