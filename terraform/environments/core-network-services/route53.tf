@@ -11,10 +11,10 @@ locals {
     dacp                              = "divorce-section-search.service.justice.gov.uk",
     delius-jitbit                     = "jitbit.cr.probation.service.justice.gov.uk",
     equip                             = "equip.service.justice.gov.uk",
-    integration-hub-mft-development   = "development.managed-file-transfer.service.justice.gov.uk",
-    integration-hub-mft-preproduction = "preproduction.managed-file-transfer.service.justice.gov.uk",
-    integration-hub-mft-prod          = "managed-file-transfer.service.justice.gov.uk",
-    integration-hub-mft-test          = "test.managed-file-transfer.service.justice.gov.uk",
+    integration-hub-file-transfer-development   = "development.file-transfer.service.justice.gov.uk",
+    integration-hub-file-transfer-preproduction = "preproduction.file-transfer.service.justice.gov.uk",
+    integration-hub-file-transfer-production    = "file-transfer.service.justice.gov.uk",
+    integration-hub-file-transfer-test          = "test.file-transfer.service.justice.gov.uk",
     laa-apex                          = "laa-apex.service.justice.gov.uk",
     maat                              = "means-assessment-administration.service.justice.gov.uk",
     mlra                              = "maat-libra-administration-tool.service.justice.gov.uk",
@@ -315,14 +315,14 @@ resource "aws_route53_record" "cwa-prod-db2" {
   }
 }
 
-module "r53_delegations_integration_hub_mft" {
+module "r53_delegations_integration_hub_file_transfer" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-route53.git?ref=301fdd6f0876acfd737005dace317e6ac8cae186" # v6.5.0
 
   # Do not create the parent zone here; use the existing one.
   create_zone = false
-  name        = local.application-zones["integration-hub-mft-prod"]
+  name        = local.application-zones["integration-hub-file-transfer-production"]
 
-  depends_on = [aws_route53_zone.application_zones["integration-hub-mft-prod"]]
+  depends_on = [aws_route53_zone.application_zones["integration-hub-file-transfer-production"]]
 
   records = {
     for zone_key in toset([
@@ -335,7 +335,7 @@ module "r53_delegations_integration_hub_mft" {
       ttl             = 30
       allow_overwrite = true
 
-      records = aws_route53_zone.application_zones["integration-hub-mft-${zone_key}"].name_servers
+      records = aws_route53_zone.application_zones["integration-hub-file-transfer-${zone_key}"].name_servers
     }
   }
 
