@@ -42,7 +42,7 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
 # Modernisation Platform secrets manager editor
 resource "aws_ssoadmin_permission_set" "modernisation_platform_secrets_manager_editor" {
   provider         = aws.sso-management
-  name             = "modernisation-platform-secrets-manager-editor"
+  name             = "mp-secrets-manager-editor"
   description      = "Modernisation Platform: read-only plus edit Secrets Manager values"
   instance_arn     = local.sso_admin_instance_arn
   session_duration = "PT8H"
