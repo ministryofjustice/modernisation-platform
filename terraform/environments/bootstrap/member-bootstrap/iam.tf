@@ -16,7 +16,6 @@ locals {
     "laa-ccms-soa",
     "laa-cst-security-dashboard",
     "laa-enterprise-service-bus",
-    "laa-mail-relay",
     "laa-oem",
     "laa-pui-secure-browser",
     "laa-stabilisation-cdc-poc",
