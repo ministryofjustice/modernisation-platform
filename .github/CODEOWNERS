@@ -12,7 +12,7 @@
 /terraform/environments/core-shared-services/analytical-platform-next-poc-hub.tf @ministryofjustice/analytical-platform-engineers 
 /terraform/environments/core-shared-services/analytical-platform-next-poc-producer.tf @ministryofjustice/analytical-platform-engineers 
 /terraform/environments/core-shared-services/analytical-platform.tf @ministryofjustice/analytical-platform-data-development-data-engineer @ministryofjustice/analytical-platform-engineers @ministryofjustice/data-platform-audit-and-security 
-/terraform/environments/core-shared-services/apex.tf @ministryofjustice/laa-apex-developer @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-ccms-ebs-developers @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-audit 
+/terraform/environments/core-shared-services/apex.tf @ministryofjustice/laa-apex-developer @ministryofjustice/laa-ccms-ebs-developers @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-audit 
 /terraform/environments/core-shared-services/bichard7.tf @ministryofjustice/cjse-bichard7-next 
 /terraform/environments/core-shared-services/ccms-ebs-ai.tf @ministryofjustice/laa-sre-admins, laa-sre-admins 
 /terraform/environments/core-shared-services/ccms-ebs-upgrade.tf @ministryofjustice/laa-ccms-ebs-developers @ministryofjustice/laa-ccms-migration-team @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-audit 
@@ -81,7 +81,7 @@
 /terraform/environments/core-shared-services/maatdb.tf @ministryofjustice/laa-crime-apps-team @ministryofjustice/laa-dba @ministryofjustice/laa-sre-admins 
 /terraform/environments/core-shared-services/mlra.tf @ministryofjustice/laa-crime-apps-team @ministryofjustice/octo-cyber-team 
 /terraform/environments/core-shared-services/moj-network-operations-centre.tf @ministryofjustice/moj-official-techops @ministryofjustice/moj-official-techops-readonly 
-/terraform/environments/core-shared-services/mojfin.tf @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-ccms-ebs-developers @ministryofjustice/laa-mojfin-database-access @ministryofjustice/laa-mojfin-developers @ministryofjustice/laa-mojfin-security @ministryofjustice/laa-sre-admins 
+/terraform/environments/core-shared-services/mojfin.tf @ministryofjustice/laa-ccms-ebs-developers @ministryofjustice/laa-mojfin-database-access @ministryofjustice/laa-mojfin-developers @ministryofjustice/laa-mojfin-security @ministryofjustice/laa-sre-admins 
 /terraform/environments/core-shared-services/ncas.tf @ministryofjustice/dts-legacy 
 /terraform/environments/core-shared-services/nomis-combined-reporting.tf @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
 /terraform/environments/core-shared-services/nomis-data-hub.tf @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
