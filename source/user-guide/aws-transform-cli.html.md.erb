@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Using the AWS Transform CLI
-last_reviewed_on: 2026-08-17
+last_reviewed_on: 2026-08-25
 review_in: 6 months
 ---
 
@@ -14,6 +14,12 @@ AWS Transform custom can be used from your local machine with the AWS Transform 
 The AWS Transform CLI uses AWS credentials to authenticate. You do not need to use the AWS Transform web application or AWS IAM Identity Center to use the CLI.
 
 The required AWS Transform permissions have been added to the Modernisation Platform developer role. Use temporary credentials for that role, as described in [Getting AWS Credentials](getting-aws-credentials.html), and select the account and region where you want to run the transformation.
+
+## Note regarding Regions
+
+The [getting started guide](https://docs.aws.amazon.com/transform/latest/userguide/custom-get-started.html\#custom-region-configuration) shows the regions where Transform us supported.
+
+As of writing and following the experiences of users, we recommend setting the default region to eu-central-1 (Frankfurt) as using eu-west-2 has been known to result in errors.
 
 ## Prerequisites
 
