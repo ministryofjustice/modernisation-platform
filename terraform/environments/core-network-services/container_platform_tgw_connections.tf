@@ -9,6 +9,9 @@ locals {
     cloud-platform-preproduction = {
       attachment_id = "tgw-attach-0dafba0c55531888f"
     },
+    cloud-platform-nonlive = {
+      attachment_id = "tgw-attach-0f6fc1810f52cfc31"
+    },
     container-platform-octo-nonlive = {
       attachment_id = "tgw-attach-0e373debb35a1ecbd"
     }

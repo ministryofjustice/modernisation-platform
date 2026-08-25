@@ -6,6 +6,12 @@
       "name": "api-platform"
     },
     {
+      "name": "api-hosting-platform"
+    },
+    {
+      "name": "downstream-mock-api"
+    },
+    {
       "name": "events-platform"
     },
     {
@@ -60,6 +66,7 @@
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [
+    "ministryofjustice/integration-hub-api-platform",
     "ministryofjustice/integration-hub-file-transfer-api"
   ],
   "go-live-date": ""
