@@ -14,7 +14,6 @@
           "edw-19c-production",
           "laa-ccms-soa-production",
           "laa-enterprise-service-bus-production",
-          "laa-mail-relay-production",
           "laa-oem-production",
           "laa-pui-secure-browser-production",
           "maat-production",
@@ -42,7 +41,9 @@
       "com.amazonaws.eu-west-2.ecr.dkr",
       "com.amazonaws.eu-west-2.logs"
     ],
-    "additional_private_zones": ["aws.prd.legalservices.gov.uk"],
+    "additional_private_zones": [
+      "aws.prd.legalservices.gov.uk"
+    ],
     "additional_vpcs": [],
     "dns_zone_extend": []
   }

@@ -78,7 +78,6 @@ expected :=
     "laa-ccms-soa",
     "laa-cis",
     "laa-enterprise-service-bus",
-    "laa-mail-relay",
     "laa-new-workspaces",
     "laa-oem",
     "laa-pui-secure-browser",
