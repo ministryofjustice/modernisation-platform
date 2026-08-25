@@ -39,6 +39,33 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
   }
 }
 
+# Modernisation Platform secrets manager editor
+resource "aws_ssoadmin_permission_set" "modernisation_platform_secrets_manager_editor" {
+  provider         = aws.sso-management
+  name             = "modernisation-platform-secrets-manager-editor"
+  description      = "Modernisation Platform: read-only plus edit Secrets Manager values"
+  instance_arn     = local.sso_admin_instance_arn
+  session_duration = "PT8H"
+  tags             = {}
+}
+
+resource "aws_ssoadmin_managed_policy_attachment" "modernisation_platform_secrets_manager_editor" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  managed_policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_secrets_manager_editor.arn
+}
+
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_secrets_manager_editor" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_secrets_manager_editor.arn
+  customer_managed_policy_reference {
+    name = "secrets_manager_editor_policy"
+    path = "/"
+  }
+}
+
 # Modernisation Platform data engineer
 resource "aws_ssoadmin_permission_set" "modernisation_platform_data_engineer" {
   provider         = aws.sso-management
