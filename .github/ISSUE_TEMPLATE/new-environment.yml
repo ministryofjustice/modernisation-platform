@@ -87,6 +87,7 @@ body:
     multiple: true
     options:
     - view-only
+    - secrets-manager-editor
     - developer
     - sandbox
     - migration
@@ -109,6 +110,7 @@ body:
     multiple: true
     options:
     - view-only
+    - secrets-manager-editor
     - developer
     - migration
     - instance-management
@@ -130,6 +132,7 @@ body:
     multiple: true
     options:
     - view-only
+    - secrets-manager-editor
     - developer
     - migration
     - instance-management
@@ -151,6 +154,7 @@ body:
     multiple: true
     options:
     - view-only
+    - secrets-manager-editor
     - developer
     - migration
     - instance-management
