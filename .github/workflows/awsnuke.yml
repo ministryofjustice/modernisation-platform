@@ -41,7 +41,6 @@ jobs:
         with:
           github_token: ${{ steps.app-token.outputs.token }}
           remote_repository: "ministryofjustice/modernisation-platform-environments"
-          remote_repository_path: "./modernisation-platform-environments"
           pr_title: "Automated PR test"
           pr_body: |
             This PR was automatically created by the test onboarding workflow.
