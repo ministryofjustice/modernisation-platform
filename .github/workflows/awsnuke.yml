@@ -8,7 +8,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: dpr-onboarding
     steps:
-      # Get App token
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: core-repo
+      
       - name: Generate GitHub App token
         id: app-token
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
@@ -18,29 +21,36 @@ jobs:
           owner: ministryofjustice
           repositories: modernisation-platform-environments
 
-      # Target repository
+     
       - name: Checkout environments repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: ministryofjustice/modernisation-platform-environments
+          path: modernisation-platform-environments
           token: ${{ steps.app-token.outputs.token }}
+
+      - name: test
+        run: |
+          ls -l
+          ls -l modernisation-platform-environments
 
       - name: Create new configuration
         run: |
-          mkdir -p ./terraform/environments/sprinkler
-          cat >> ./terraform/environments/sprinkler/test.tf <<EOF
-            data "http" "environments_file" {
-              url = "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments/sprinkler.json"
-            }
+          mkdir -p ./modernisation-platform-environments/terraform/environments/sprinkler
+          cat > ./modernisation-platform-environments/terraform/environments/sprinkler/test.tf <<EOF
+          data "http" "environments_file" {
+            url = "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments/sprinkler.json"
+          }
           EOF
       - name: Commit changes to GitHub
-        run: bash ./scripts/git-setup.sh
-      # Commit + push + PR
+        run: bash ./core-repo/scripts/git-setup.sh
+      
       - name: Commit and Create PR
         uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@2988728879704953e739f82ac926d37931c6d01b
         with:
           github_token: ${{ steps.app-token.outputs.token }}
           remote_repository: "ministryofjustice/modernisation-platform-environments"
+          remote_repository_path: "./modernisation-platform-environments"
           pr_title: "Automated PR test"
           pr_body: |
             This PR was automatically created by the test onboarding workflow.
