@@ -176,12 +176,15 @@ resource "aws_iam_policy" "secrets_manager_editor" {
 }
 
 data "aws_iam_policy_document" "secrets_manager_editor_additional" {
+  #checkov:skip=CKV_AWS_108: Required to read member-environment secrets
   #checkov:skip=CKV_AWS_111: Required to allow secrets updates across member-environment secrets
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
   statement {
     sid    = "secretsManagerEditorAllow"
     effect = "Allow"
     actions = [
+      "kms:Decrypt",
+      "secretsmanager:GetSecretValue",
       "secretsmanager:PutSecretValue",
       "secretsmanager:UpdateSecret",
       "secretsmanager:RestoreSecret"
