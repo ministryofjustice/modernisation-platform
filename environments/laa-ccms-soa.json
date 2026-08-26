@@ -22,7 +22,7 @@
         },
         {
           "sso_group_name": "laa-ccms-developers",
-          "level": "developer"
+          "level": "secrets-manager-editor"
         },
         {
           "sso_group_name": "laa-dba",
@@ -57,7 +57,7 @@
         },
         {
           "sso_group_name": "laa-ccms-developers",
-          "level": "developer"
+          "level": "secrets-manager-editor"
         },
         {
           "sso_group_name": "laa-dba",
@@ -87,7 +87,7 @@
         },
         {
           "sso_group_name": "laa-ccms-developers",
-          "level": "developer"
+          "level": "secrets-manager-editor"
         },
         {
           "sso_group_name": "laa-dba",
@@ -113,7 +113,7 @@
         },
         {
           "sso_group_name": "laa-ccms-developers",
-          "level": "developer"
+          "level": "secrets-manager-editor"
         },
         {
           "sso_group_name": "laa-dba",

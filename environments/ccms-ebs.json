@@ -29,7 +29,7 @@
         },
         {
           "sso_group_name": "laa-ccms-developers",
-          "level": "developer"
+          "level": "secrets-manager-editor"
         },
         {
           "sso_group_name": "laa-soa-developers",
@@ -76,7 +76,7 @@
         },
         {
           "sso_group_name": "laa-ccms-developers",
-          "level": "developer"
+          "level": "secrets-manager-editor"
         },
         {
           "sso_group_name": "laa-ccms-instance-access",
@@ -114,7 +114,7 @@
         },
         {
           "sso_group_name": "laa-ccms-developers",
-          "level": "developer"
+          "level": "secrets-manager-editor"
         },
         {
           "sso_group_name": "laa-ccms-instance-access",
@@ -148,7 +148,7 @@
         },
         {
           "sso_group_name": "laa-ccms-developers",
-          "level": "developer"
+          "level": "secrets-manager-editor"
         },
         {
           "sso_group_name": "laa-ccms-migration-team",
