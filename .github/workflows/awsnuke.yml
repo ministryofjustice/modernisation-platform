@@ -40,6 +40,8 @@ jobs:
         uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@2988728879704953e739f82ac926d37931c6d01b
         with:
           github_token: ${{ steps.app-token.outputs.token }}
+          remote_repository: "ministryofjustice/modernisation-platform-environments"
+          remote_repository_path: "./modernisation-platform-environments"
           pr_title: "Automated PR test"
           pr_body: |
             This PR was automatically created by the test onboarding workflow.
