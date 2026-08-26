@@ -49,3 +49,13 @@ You can raise a pull request similar to [this example](https://github.com/minist
 Changes to VPC endpoints will be made through GitHub Actions. You can track the relevant `core-vpc-*` workflow [here](https://github.com/ministryofjustice/modernisation-platform/actions).
 
 You can also follow our guidance on [Viewing Core Account resources as a Member Account Developer](./member-read-only-core-accounts.html) to review the VPC endpoints in the relevant `core-vpc-*` account.
+
+## Accessibility to endpoints from outside the VPC
+
+By default, endpoints created in Protected subnets share the following characteristics:
+
+- they are not shared with member accounts, and
+
+- they are not accessible from outside the VPC.
+
+If resources in member accounts need private endpoints that are accessible from other VPCs or from within the wider MoJ, custom endpoints can be created. Please speak to the Modernisation Platform Team in the first instance.
