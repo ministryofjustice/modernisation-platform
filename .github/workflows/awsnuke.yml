@@ -29,16 +29,12 @@ jobs:
           path: modernisation-platform-environments
           token: ${{ steps.app-token.outputs.token }}
 
-      - name: test
-        run: |
-          ls -l
-          ls -l modernisation-platform-environments
 
       - name: Create new configuration
         run: |
           mkdir -p ./modernisation-platform-environments/terraform/environments/sprinkler
           cat > ./modernisation-platform-environments/terraform/environments/sprinkler/test.tf <<EOF
-          data "http" "environments_file" {
+          data "http" "test" {
             url = "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments/sprinkler.json"
           }
           EOF
