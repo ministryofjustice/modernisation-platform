@@ -162,6 +162,13 @@
     "destination_port": "$AZURE_FIXNGO_MP_TCP",
     "protocol": "TCP"
   },
+  "mp_hmpps_preproduction_to_cp_https": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${cloud-platform}",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
   "mp_hmpps_preproduction_to_noms_mgmt_live": {
     "action": "PASS",
     "source_ip": "${hmpps-preproduction}",
