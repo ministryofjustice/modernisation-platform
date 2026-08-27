@@ -42,7 +42,7 @@ jobs:
         run: bash ./core-repo/scripts/git-setup.sh
       
       - name: Commit and Create PR
-        uses: ministryofjustice/modernisation-platform-github-actions/automated-pr@test/automated-pr
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@2988728879704953e739f82ac926d37931c6d01b
         with:
           github_token: ${{ steps.app-token.outputs.token }}
           remote_repository: "ministryofjustice/modernisation-platform-environments"
