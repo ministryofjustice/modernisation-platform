@@ -2652,3 +2652,94 @@ resource "pagerduty_slack_connection" "hub2_prod" {
 }
 
 # Slack channel: #laa-alerts-hub2-prod
+
+# Integration Hub File Transfer Production
+# Slack channel: #integration-hub-high-priority-alerts
+resource "pagerduty_service" "integration_hub_high_priority_alerts" {
+  name                    = "Integration Hub File Transfer High Priority Alerts"
+  description             = "Sends alerts to #integration-hub-high-priority-alerts"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "integration_hub_high_priority_alerts" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.integration_hub_high_priority_alerts.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "integration_hub_high_priority_alerts" {
+  source_id         = pagerduty_service.integration_hub_high_priority_alerts.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C0BDYBK6GPJ"
+  notification_type = "responder"
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
+
+# Slack channel: #integration-hub-low-priority-alerts
+resource "pagerduty_service" "integration_hub_low_priority_alerts" {
+  name                    = "Integration Hub File Transfer Low Priority Alerts"
+  description             = "Sends alerts to #integration-hub-low-priority-alerts"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "integration_hub_low_priority_alerts" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.integration_hub_low_priority_alerts.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "integration_hub_low_priority_alerts" {
+  source_id         = pagerduty_service.integration_hub_low_priority_alerts.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C0B7PM6VD0E"
+  notification_type = "responder"
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
