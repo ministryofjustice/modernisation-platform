@@ -29,7 +29,7 @@
         },
         {
           "sso_group_name": "laa-ccms-developers",
-          "level": "secrets-manager-editor"
+          "level": "developer"
         },
         {
           "sso_group_name": "laa-soa-developers",
