@@ -13,6 +13,13 @@
     "destination_port": "80",
     "protocol": "TCP"
   },
+    "moj_wifi_to_laa_preproduction_mp_https": {
+    "action": "PASS",
+    "source_ip": "${moj-wifi}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
   "psn_to_mp_hmpps_preproduction_https": {
     "action": "PASS",
     "source_ip": "${psn}",
