@@ -55,6 +55,13 @@
     "destination_port": "80",
     "protocol": "TCP"
   },
+  "moj_wifi_to_laa_test_mp_https": {
+    "action": "PASS",
+    "source_ip": "${moj-wifi}",
+    "destination_ip": "${laa-test}",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
   "noms_test_vnet_to_mp_hmpps_test": {
     "action": "PASS",
     "source_ip": "${noms-test-vnet}",
