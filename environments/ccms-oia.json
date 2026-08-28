@@ -57,6 +57,10 @@
         {
           "sso_group_name": "modernisation-platform-audit",
           "level": "security-audit"
+        },
+        {
+          "sso_group_name": "laa-oia-developers",
+          "level": "secrets-manager-editor"
         }
       ]
     },
@@ -83,6 +87,10 @@
         {
           "sso_group_name": "modernisation-platform-audit",
           "level": "security-audit"
+        },
+        {
+          "sso_group_name": "laa-oia-developers",
+          "level": "secrets-manager-editor"
         }
       ]
     },
@@ -109,6 +117,10 @@
         {
           "sso_group_name": "octo-cyber-team",
           "level": "security-audit"
+        },
+        {
+          "sso_group_name": "laa-oia-developers",
+          "level": "secrets-manager-editor"
         }
       ]
     }
