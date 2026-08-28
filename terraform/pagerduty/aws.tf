@@ -17,14 +17,14 @@ resource "aws_secretsmanager_secret" "pagerduty_integration_keys" {
 resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
   secret_id = aws_secretsmanager_secret.pagerduty_integration_keys.id
   secret_string = jsonencode(merge({
-    cdpt-ifs-alarms                       = pagerduty_service_integration.cdpt_ifs_cloudwatch.integration_key
-    core_alerts_cloudwatch                = pagerduty_service_integration.core_alerts_cloudwatch.integration_key,
-    core_alerts_high_priority_cloudwatch  = pagerduty_service_integration.core_alerts_high_priority_cloudwatch.integration_key,
-    dacp_non_prod_alarms                  = pagerduty_service_integration.dacp_non_prod_cloudwatch.integration_key,
-    dacp_prod_alarms                      = pagerduty_service_integration.dacp_prod_cloudwatch.integration_key,
-    ddos_cloudwatch                       = pagerduty_service_integration.ddos_cloudwatch.integration_key,
-    delius_core_nonprod_alarms            = pagerduty_service_integration.delius_core_nonprod_cloudwatch.integration_key
-    delius_core_prod_alarms               = pagerduty_service_integration.delius_core_prod_cloudwatch.integration_key
+    cdpt-ifs-alarms                      = pagerduty_service_integration.cdpt_ifs_cloudwatch.integration_key
+    core_alerts_cloudwatch               = pagerduty_service_integration.core_alerts_cloudwatch.integration_key,
+    core_alerts_high_priority_cloudwatch = pagerduty_service_integration.core_alerts_high_priority_cloudwatch.integration_key,
+    dacp_non_prod_alarms                 = pagerduty_service_integration.dacp_non_prod_cloudwatch.integration_key,
+    dacp_prod_alarms                     = pagerduty_service_integration.dacp_prod_cloudwatch.integration_key,
+    ddos_cloudwatch                      = pagerduty_service_integration.ddos_cloudwatch.integration_key,
+    delius_core_nonprod_alarms           = pagerduty_service_integration.delius_core_nonprod_cloudwatch.integration_key
+    delius_core_prod_alarms              = pagerduty_service_integration.delius_core_prod_cloudwatch.integration_key
     # delius_mis_non_prod                 = pagerduty_event_orchestration_integration.delius_mis_non_prod_integration.parameters[0].routing_key
     delius_mis_nonprod_alarms             = pagerduty_service_integration.delius_mis_non_prod.integration_key
     delius_mis_prod_alarms                = pagerduty_service_integration.delius_mis_prod.integration_key
