@@ -42,7 +42,6 @@ expected :=
     "cooker",
     "core-logging",
     "core-network-services",
-    "core-sandbox",
     "core-security",
     "core-shared-services",
     "core-vpc",
