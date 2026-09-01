@@ -2,6 +2,9 @@
   "account-type": "member",
   "components": [
     {
+      "name": "github-audit-log-stream"
+    },
+    {
       "name": "github-management"
     }
   ],
