@@ -1278,6 +1278,22 @@ data "aws_iam_policy_document" "instance-access-document" {
   }
 
   statement {
+    sid     = "SSMResumeSession"
+    effect  = "Allow"
+    actions = [ 
+      "ssm:ResumeSession"
+    ]
+    resources = [ 
+      "arn:aws:ssm:*:*:session/*"
+    ]
+    condition {
+      test      =  "StringEquals"
+      variable  =  "ssm:SessionOwner"
+      values    =  ["$${aws:userid}"]
+    }
+  }
+
+  statement {
     sid    = "SSMSendCommand"
     effect = "Allow"
     actions = [
