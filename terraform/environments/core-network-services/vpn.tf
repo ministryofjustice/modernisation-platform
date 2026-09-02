@@ -93,6 +93,25 @@ resource "aws_ec2_transit_gateway_route" "azure_static_routes" {
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
 
+# MOJ-WiFi return routing (HMPPS prisons)
+#
+# The Azure VPN propagates the 10.154.0.0/15 MOJ-WiFi space into the
+# external_inspection_out route table as more-specific /23 and /21 BGP routes.
+# TGW route selection uses longest-prefix match (regardless of static vs
+# propagated), so those VPN routes win over the 10.154.0.0/15 static route
+# above and return traffic from hmpps-production is sent down the Azure VPN
+# tunnel instead of back via the MOJ TGW peering attachment (asymmetric routing).
+#
+# These equally-specific static routes point the same prefixes at the MOJ TGW
+# peering attachment so they win longest-prefix-match against the propagated
+# VPN routes, restoring symmetric return routing. See local.moj_wifi_static_routes.
+resource "aws_ec2_transit_gateway_route" "moj_wifi_static_routes" {
+  for_each                       = toset(local.moj_wifi_static_routes)
+  destination_cidr_block         = each.value
+  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.moj_tgw.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
+}
+
 resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_noms_routes_to_firewall" {
   depends_on                     = [aws_ec2_transit_gateway_route.azure_static_routes]
   for_each                       = local.noms_vpn_attachment_ids
