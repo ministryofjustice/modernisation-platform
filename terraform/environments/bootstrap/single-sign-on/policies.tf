@@ -1262,6 +1262,22 @@ data "aws_iam_policy_document" "instance-access-document" {
   }
 
   statement {
+    sid     = "SSMTerminateSession"
+    effect  = "Allow"
+    actions = [ 
+      "ssm:TerminateSession"
+    ]
+    resources = [ 
+      "arn:aws:ssm:*:*:session/*"
+    ]
+    condition {
+      test      =  "StringEquals"
+      variable  =  "ssm:SessionOwner"
+      values    =  ["$${aws:userid}"]
+    }
+  }
+
+  statement {
     sid    = "SSMSendCommand"
     effect = "Allow"
     actions = [
