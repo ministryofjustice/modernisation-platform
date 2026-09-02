@@ -1261,35 +1261,20 @@ data "aws_iam_policy_document" "instance-access-document" {
     }
   }
 
-  statement {
-    sid     = "SSMTerminateSession"
-    effect  = "Allow"
-    actions = [ 
-      "ssm:TerminateSession"
-    ]
-    resources = [ 
-      "arn:aws:ssm:*:*:session/*"
-    ]
-    condition {
-      test      =  "StringEquals"
-      variable  =  "ssm:SessionOwner"
-      values    =  ["$${aws:userid}"]
-    }
-  }
-
-  statement {
-    sid     = "SSMResumeSession"
-    effect  = "Allow"
-    actions = [ 
+    statement {
+    sid    = "SSMTerminateResumeSession"
+    effect = "Allow"
+    actions = [
+      "ssm:TerminateSession",
       "ssm:ResumeSession"
     ]
-    resources = [ 
+    resources = [
       "arn:aws:ssm:*:*:session/*"
     ]
     condition {
-      test      =  "StringEquals"
-      variable  =  "ssm:SessionOwner"
-      values    =  ["$${aws:userid}"]
+      test     = "StringEquals"
+      variable = "ssm:SessionOwner"
+      values   = ["$${aws:userid}"]
     }
   }
 
