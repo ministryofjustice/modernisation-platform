@@ -145,6 +145,49 @@ locals {
     "195.59.116.244/32"
   ]
 
+  # MOJ-WiFi return routing (HMPPS prisons)
+  #
+  # The Azure VPN propagates the 10.154.0.0/15 MOJ-WiFi space into the
+  # external_inspection_out route table as more-specific /23 and /21 BGP routes.
+  # Because TGW route selection uses longest-prefix match (regardless of static
+  # vs propagated), those VPN routes win over the 10.154.0.0/15 static route in
+  # local.azure_static_routes that points at the MOJ TGW peering attachment.
+  #
+  # The result is asymmetric routing: ingress from MOJ-WiFi arrives via the MOJ
+  # TGW peering attachment, but return traffic from hmpps-production is sent back
+  # down the Azure VPN tunnel and never reaches the user.
+  #
+  # These entries are the exact prefixes the VPN advertises. They are added as
+  # equally-specific static routes pointing at the MOJ TGW peering attachment so
+  # they win longest-prefix-match against the propagated VPN routes and restore
+  # symmetric return routing. Keep this list in sync with the VPN's advertised
+  # subnets (compare against `aws ec2 search-transit-gateway-routes` on the
+  # external_inspection_out route table).
+  moj_wifi_static_routes = [
+    "10.154.0.0/23",
+    "10.154.16.0/23",
+    "10.154.32.0/23",
+    "10.154.48.0/23",
+    "10.154.64.0/23",
+    "10.154.80.0/23",
+    "10.154.96.0/23",
+    "10.154.112.0/23",
+    "10.154.128.0/23",
+    "10.154.144.0/23",
+    "10.154.160.0/23",
+    "10.154.176.0/23",
+    "10.154.192.0/23",
+    "10.154.208.0/23",
+    "10.154.224.0/21",
+    "10.154.240.0/21",
+    "10.155.0.0/23",
+    "10.155.32.0/23",
+    "10.155.36.0/23",
+    "10.155.48.0/23",
+    "10.155.252.0/23",
+    "10.155.254.0/23",
+  ]
+
   parole_board_vpn_static_routes = ["10.50.0.0/16"]
 
   yjb_vpn_static_route_srx01 = ["10.20.228.0/22"]
