@@ -117,7 +117,7 @@
   "NEC-Prod-VPN": {
     "bgp_asn": "64678",
     "customer_gateway_ip": "152.114.58.100",
-    "remote_ipv4_network_cidr": "0.0.0.0/0",
+    "modernisation_platform_vpc": "laa-production",
     "tunnel1_inside_cidr": "169.254.124.168/30",
     "tunnel2_inside_cidr": "169.254.31.40/30",
     "tunnel_dpd_timeout_action": "clear",
