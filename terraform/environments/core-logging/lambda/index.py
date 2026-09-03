@@ -185,13 +185,13 @@ def create_athena_table(list_accounts):
               'projection.account.type' = 'enum',
               'projection.account.values' = '%s',
               'projection.region.type' = 'enum',
-              'projection.region.values' = 'eu-west-1, eu-west-2',
+              'projection.region.values' = 'eu-west-1,eu-west-2',
               'projection.timestamp.format'='yyyy/MM/dd',
               'projection.timestamp.interval'='1',
               'projection.timestamp.interval.unit'='DAYS',
               'projection.timestamp.range'='2020/01/01,NOW',
               'projection.timestamp.type'='date',
-              'storage.location.template'='s3://modernisation-platform-logs-cloudtrail/AWSLogs/${account}/CloudTrail/${region}/${timestamp}')
+              'storage.location.template'='s3://modernisation-platform-logs-cloudtrail/AWSLogs/${account}/CloudTrail/${region}/${timestamp}/')
       """ % list_accounts
     try:
         response = athena_client.start_query_execution(
