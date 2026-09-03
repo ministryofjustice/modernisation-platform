@@ -30,6 +30,7 @@ jobs:
         with:
           repository: 'ministryofjustice/modernisation-platform-github'
           token: ${{ steps.app.outputs.token }}
+          # collaborators.json is owned and updated in this target repository.
           path: 'modernisation-platform-github'
 
       - name: Extract collaborator fields
@@ -232,11 +233,12 @@ jobs:
           echo "is_valid=false" >> "$GITHUB_OUTPUT"
           exit 0
 
-      - name: Checkout modernisation-platform repository (scripts)
+      - name: Checkout workflow source repository (scripts)
         if: steps.validate_email.outputs.is_valid == 'true'
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          path: 'modernisation-platform'
+          # The updater script is versioned with this workflow, not the target repo.
+          path: 'workflow-source'
 
       - name: Update collaborators.json
         if: steps.validate_email.outputs.is_valid == 'true'
@@ -246,7 +248,8 @@ jobs:
           COLLABORATOR_APPLICATION: ${{ steps.extract_fields.outputs.collaborator_application }}
           ENVIRONMENTS: ${{ steps.extract_fields.outputs.environments }}
         run: |
-          python3 modernisation-platform/scripts/update-collaborators.py \
+          # The script comes from workflow-source; the data file is in the target checkout.
+          python3 workflow-source/scripts/update-collaborators.py \
             --file modernisation-platform-github/collaborators.json \
             --username "$COLLABORATOR_NAME" \
             --github-username "$COLLABORATOR_GITHUB" \
