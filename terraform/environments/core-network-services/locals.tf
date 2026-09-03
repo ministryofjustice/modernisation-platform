@@ -86,6 +86,12 @@ locals {
 
   nec_vpn_attachment_ids = toset([for k in aws_vpn_connection.this : k.transit_gateway_attachment_id if(length(regexall("(?:NEC)", k.tags.Name)) > 0)])
 
+  # Overriding Azure BGP: Force traffic to the primary AWS TGW path.
+  # Without this static route, the TGW may prefer the Azure VPN BGP route,
+  # causing traffic destined for AWS resources to route back to Azure.
+  #
+  # NOTE: these routes must exactly match the routes advertised from Azure,
+  # do not be tempted to roll them up.
   azure_static_routes = [
     "10.0.0.0/11",
     "10.64.0.0/11",
