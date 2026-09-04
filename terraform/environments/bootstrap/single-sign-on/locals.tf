@@ -20,6 +20,22 @@ locals {
     if(data.name == local.env_name)
   }
 
+  analytics_engineering_kms_keys = {
+    dpr-prod = {
+      account_name = "digital-prison-reporting-production"
+      key_id       = "a9d617dd-1399-4116-bd2a-16ad43f710c9"
+    }
+    dpr-preprod = {
+      account_name = "digital-prison-reporting-preproduction"
+      key_id       = "7f78035f-f870-41b2-b00b-b7398cd6eb2d"
+    }
+  }
+
+  analytics_engineering_kms_key_arns = [
+    for kms_key in values(local.analytics_engineering_kms_keys) :
+    "arn:aws:kms:eu-west-2:${local.environment_management.account_ids[kms_key.account_name]}:key/${kms_key.key_id}"
+  ]
+
   tags = {
     business-unit = "Platforms"
     service-area  = "Hosting"

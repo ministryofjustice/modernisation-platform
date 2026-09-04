@@ -704,6 +704,22 @@ data "aws_iam_policy_document" "analytics_engineering_athena_additional" {
       "arn:aws:s3:::dpr-structured-historical-preproduction/*"
     ]
   }
+  statement {
+    sid    = "AthenaDprKmsAllow"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:Encrypt",
+      "kms:GenerateDataKey",
+      "kms:DescribeKey",
+    ]
+    resources = local.analytics_engineering_kms_key_arns
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+  }
 }
 
 # quicksight administrator policy (IAM permissions needed to manage QuickSight subscription)
