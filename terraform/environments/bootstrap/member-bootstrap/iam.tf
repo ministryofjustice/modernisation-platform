@@ -706,6 +706,7 @@ data "aws_iam_policy_document" "member-access-us-east" {
       "acm:*",
       "events:*",
       "iam:ListRoles",
+      "kms:*",
       "lambda:*",
       "logs:*",
       "waf:*",
