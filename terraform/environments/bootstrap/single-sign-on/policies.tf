@@ -1261,7 +1261,7 @@ data "aws_iam_policy_document" "instance-access-document" {
     }
   }
 
-    statement {
+  statement {
     sid    = "SSMTerminateResumeSession"
     effect = "Allow"
     actions = [
