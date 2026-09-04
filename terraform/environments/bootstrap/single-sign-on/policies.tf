@@ -685,8 +685,10 @@ data "aws_iam_policy_document" "analytics_engineering_athena_additional" {
     ]
     resources = [
       "arn:aws:s3:::probation-datalake-*",
-      "arn:aws:s3:::dpr-structured-historical-production/data/*",
-      "arn:aws:s3:::dpr-structured-historical-preproduction/data/*",
+      "arn:aws:s3:::dpr-working-production/analytics/*",
+      "arn:aws:s3:::dpr-structured-historical-production/*",
+      "arn:aws:s3:::dpr-working-preproduction/analytics/*",
+      "arn:aws:s3:::dpr-structured-historical-preproduction/*"
     ]
   }
 }
