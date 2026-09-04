@@ -1273,7 +1273,7 @@ data "aws_iam_policy_document" "instance-access-document" {
       "ssm:ResumeSession"
     ]
     resources = [
-      "arn:aws:ssm:*:*:session/*"
+      "arn:aws:ssm:*:*:session/$${aws:userid}-*"
     ]
     condition {
       test     = "StringEquals"
