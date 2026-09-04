@@ -2,6 +2,9 @@
   "account-type": "member",
   "components": [
     {
+      "name": "auth0-event-stream"
+    },
+    {
       "name": "github-audit-log-stream"
     },
     {
