@@ -22,6 +22,7 @@
 /terraform/environments/core-shared-services/ccms-oia.tf @ministryofjustice/laa-ccms-developers @ministryofjustice/laa-dba @ministryofjustice/laa-oia-developers @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-audit @ministryofjustice/octo-cyber-team 
 /terraform/environments/core-shared-services/ccms-pui-internal.tf @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-audit 
 /terraform/environments/core-shared-services/ccms-pui.tf @ministryofjustice/laa-ccms-developers @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-audit @ministryofjustice/octo-cyber-team 
+/terraform/environments/core-shared-services/ccms-upg.tf @ministryofjustice/laa-sre-admins, laa-sre-admins 
 /terraform/environments/core-shared-services/cdpt-chaps.tf @ministryofjustice/central-digital-product-team @ministryofjustice/modernisation-platform-audit 
 /terraform/environments/core-shared-services/cdpt-ifs.tf @ministryofjustice/central-digital-product-team @ministryofjustice/modernisation-platform-audit 
 /terraform/environments/core-shared-services/cfo-data-management-system.tf @ministryofjustice/hmpps-creating-future-opportunities-devs @ministryofjustice/hmpps-creating-future-opportunities-live 
