@@ -773,7 +773,10 @@ data "aws_iam_policy_document" "member-access-us-east" {
     condition {
       test     = "StringEquals"
       variable = "iam:PassedToService"
-      values   = ["lambda.amazonaws.com"]
+      values   = [
+        "events.amazonaws.com",
+        "lambda.amazonaws.com"
+      ]
     }
   }
 
