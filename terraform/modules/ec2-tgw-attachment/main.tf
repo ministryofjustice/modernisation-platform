@@ -32,9 +32,10 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "default" {
   transit_gateway_id = var.transit_gateway_id
   vpc_id             = var.vpc_id
 
-  appliance_mode_support = "disable"
-  dns_support            = "enable"
-  ipv6_support           = "disable"
+  appliance_mode_support             = "disable"
+  dns_support                        = "enable"
+  ipv6_support                       = "disable"
+  security_group_referencing_support = var.security_group_referencing_support
 
   # You can't change these with a RAM-shared Transit Gateway, but we'll
   # leave them here to be explicit.

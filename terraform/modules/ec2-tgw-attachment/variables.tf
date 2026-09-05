@@ -32,3 +32,14 @@ variable "vpc_name" {
   description = "VPC name (used for tagging)"
   type        = string
 }
+
+variable "security_group_referencing_support" {
+  description = "Whether to enable Security Group Referencing across the Transit Gateway"
+  type        = string
+  default     = "disable"
+
+  validation {
+    condition     = contains(["enable", "disable"], var.security_group_referencing_support)
+    error_message = "Accepted values are enable, disable."
+  }
+}
