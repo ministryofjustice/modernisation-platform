@@ -174,6 +174,10 @@ locals {
 
   parole_board_vpn_static_routes = ["10.50.0.0/16"]
 
+  laa_nec_prod_vpn_static_routes = ["10.110.0.0/24"]
+
+  laa_nec_nonprod_vpn_static_routes = ["10.120.0.0/24"]
+
   yjb_vpn_static_route_srx01 = ["10.20.228.0/22"]
 
   yjb_vpn_static_route_srx02 = ["10.20.224.0/22"]

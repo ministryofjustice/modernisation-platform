@@ -113,6 +113,28 @@ resource "aws_ec2_transit_gateway_route" "parole_board_routes" {
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
 
+resource "aws_ec2_transit_gateway_route" "laa_nec_prod_routes" {
+  for_each                       = toset(local.laa_nec_prod_vpn_static_routes)
+  destination_cidr_block         = each.key
+  transit_gateway_attachment_id  = aws_vpn_connection.this["NEC-Prod-VPN"].transit_gateway_attachment_id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+resource "aws_ec2_transit_gateway_route" "laa_nec_nonprod_routes" {
+  for_each                       = toset(local.laa_nec_nonprod_vpn_static_routes)
+  destination_cidr_block         = each.key
+  transit_gateway_attachment_id  = aws_vpn_connection.this["NEC-NonProd-VPN"].transit_gateway_attachment_id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
 resource "aws_ec2_transit_gateway_route" "yjb_routes_srx01" {
   for_each                       = toset(local.yjb_vpn_static_route_srx01)
   destination_cidr_block         = each.key
