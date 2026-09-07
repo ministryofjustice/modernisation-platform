@@ -33,12 +33,24 @@ locals {
     "long-term-storage-production",
     "^core-.*"
   ]
+  environment_files = [
+    for file in fileset("../../../environments", "*.json") :
+    merge({ name = replace(file, ".json", "") }, jsondecode(file("../../../environments/${file}")))
+  ]
+  laa_workspaces = sort(distinct(flatten([
+    for app in local.environment_files : [
+      for env in app.environments :
+      lower("${app.name}-${env.name}")
+    ]
+    if lower(try(app.tags["business-unit"], "")) == "laa"
+  ])))
+  is_laa_account  = contains(local.laa_workspaces, lower(terraform.workspace))
   is_core_account = length(regexall(join("|", local.mp_owned_workspaces), terraform.workspace)) > 0
 
   # Locals that are passed to the Baselines module for slack alerts for SecurityHub issues.
   securityhub_slack_alerts_accounts        = local.is_core_account && !strcontains(terraform.workspace, "core-shared-services") # All core accounts excluding terraform workspaces containing core-shared-services.
   securityhub_slack_alerts_scope           = ["CRITICAL", "HIGH"]                                                               # The type of alert to generate alerts for. 
-  enable_securityhub_event_forwarding      = local.is_core_account
+  enable_securityhub_event_forwarding      = local.is_core_account || local.is_laa_account
   securityhub_central_event_bus_account_id = local.environment_management.account_ids["observability-platform-production"]
   securityhub_central_event_bus_arn = format(
     "arn:aws:events:%s:%s:event-bus/securityhub-central",
