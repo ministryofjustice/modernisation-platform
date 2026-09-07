@@ -34,8 +34,8 @@ locals {
     "^core-.*"
   ]
   environment_files = [
-    for file in fileset("../../../environments", "*.json") :
-    merge({ name = replace(file, ".json", "") }, jsondecode(file("../../../environments/${file}")))
+    for file in fileset("../../../../environments", "*.json") :
+    merge({ name = replace(file, ".json", "") }, jsondecode(file("../../../../environments/${file}")))
   ]
   laa_workspaces = sort(distinct(flatten([
     for app in local.environment_files : [
