@@ -657,19 +657,32 @@ data "aws_iam_policy_document" "analytics_engineering_athena_additional" {
   #checkov:skip=CKV_AWS_110
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
   statement {
-    sid    = "AthenaQueryResultsAllow"
+    sid    = "AthenaQueryResultsBucketAllow"
     effect = "Allow"
     actions = [
       "s3:GetBucketLocation",
-      "s3:GetObject",
       "s3:ListBucket",
       "s3:ListBucketMultipartUploads",
+    ]
+    resources = [
+      "arn:aws:s3:::probation-query-results-*",
+      "arn:aws:s3:::dpr-working-production",
+      "arn:aws:s3:::dpr-structured-historical-production",
+      "arn:aws:s3:::dpr-working-preproduction",
+      "arn:aws:s3:::dpr-structured-historical-preproduction"
+    ]
+  }
+  statement {
+    sid    = "AthenaQueryResultsObjectAllow"
+    effect = "Allow"
+    actions = [
+      "s3:GetObject",
       "s3:ListMultipartUploadParts",
       "s3:AbortMultipartUpload",
       "s3:PutObject",
     ]
     resources = [
-      "arn:aws:s3:::probation-query-results-*",
+      "arn:aws:s3:::probation-query-results-*/*",
       "arn:aws:s3:::dpr-working-production/analytics/*",
       "arn:aws:s3:::dpr-structured-historical-production/*",
       "arn:aws:s3:::dpr-working-preproduction/analytics/*",
@@ -677,19 +690,35 @@ data "aws_iam_policy_document" "analytics_engineering_athena_additional" {
     ]
   }
   statement {
-    sid    = "AthenaS3Allow"
+    sid    = "AthenaS3ObjectAllow"
     effect = "Allow"
     actions = [
       "s3:PutObject",
       "s3:DeleteObject",
     ]
     resources = [
-      "arn:aws:s3:::probation-datalake-*",
+      "arn:aws:s3:::probation-datalake-*/*",
       "arn:aws:s3:::dpr-working-production/analytics/*",
       "arn:aws:s3:::dpr-structured-historical-production/*",
       "arn:aws:s3:::dpr-working-preproduction/analytics/*",
       "arn:aws:s3:::dpr-structured-historical-preproduction/*"
     ]
+  }
+  statement {
+    sid    = "AthenaDprKmsAllow"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:Encrypt",
+      "kms:GenerateDataKey",
+      "kms:DescribeKey",
+    ]
+    resources = local.analytics_engineering_kms_key_arns
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
   }
 }
 
