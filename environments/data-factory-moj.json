@@ -28,7 +28,7 @@
     },
     {
       "name": "dms-core",
-      "sso_group_name": "data-factory-aker-team"
+      "sso_group_name": "probation-de"
     }
   ],
   "environments": [
