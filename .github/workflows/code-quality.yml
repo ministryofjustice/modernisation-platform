@@ -1,0 +1,27 @@
+name: Code Quality
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, edited, reopened, synchronize]
+  schedule:
+    - cron: "0 7 * * 1-5"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  code-quality:
+    permissions:
+      actions: read
+      contents: write
+      issues: write
+      pull-requests: write
+      security-events: write
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/reusable-code-quality.yml@e49ac27b104b38bac12fc1e3257a13be6289a59c # v6.2.2
+    with:
+      validate_all_codebase: ${{ github.event_name != 'pull_request' && 'true' || 'false' }}
+      filter_regex_exclude: "^README.md$"
+      codeql_languages: '["actions"]'
+      checkov_arguments: >-
+        --skip-check CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39
