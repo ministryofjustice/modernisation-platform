@@ -42,7 +42,7 @@ jq -c '.[]' "output.json" | while IFS= read -r row; do
 
 - Create a pull request with the change and contact us on the #ask-modernisation-team slack channel to review it.
 
-For further information please read this [documentation](https://technical-guidance.service.justice.gov.uk/documentation/standards/documenting-infrastructure-owners.html#tags-you-should-use)."
+For further information please read this [documentation](https://cloud-optimisation-and-accountability.justice.gov.uk/documentation/finops-and-greenops-at-moj/standards/tagging.html#tagging-standard)."
 )
 
         # Now we send a notification email via Gov.UK Notify. (https://www.notifications.service.gov.uk/)
