@@ -22,5 +22,6 @@ jobs:
     with:
       validate_all_codebase: ${{ github.event_name != 'pull_request' && 'true' || 'false' }}
       filter_regex_exclude: "^README.md$"
+      codeql_languages: '["actions"]'
       checkov_arguments: >-
         --skip-check CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39
