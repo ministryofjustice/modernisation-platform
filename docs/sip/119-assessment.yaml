@@ -46,7 +46,7 @@ implementation:
     - Reuse the existing automation role filter and notification topics.
     - Add baseline module tests for disabled and enabled configurations.
     - Release the baseline module and update both consumer pins.
-    - Enable the control only in the approved development or test workspace.
+    - Propose an approved development or test workspace in the implementation PR.
 
 validation:
   automated:
@@ -60,7 +60,7 @@ validation:
     - Confirm the existing DeleteUser behaviour remains unchanged.
 
 rollout:
-  initial_scope: One MP-approved development or test workspace.
+  initial_scope: Not selected in this analysis-only POC; the implementation PR must name an approved development or test workspace.
   rollback: Disable the feature flag and apply the previous consumer configuration.
 
 risks:

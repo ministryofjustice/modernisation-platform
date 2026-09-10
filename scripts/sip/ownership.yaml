@@ -100,8 +100,10 @@ routes:
 
   investigation:
     description: A spike whose output is evidence and a decision rather than production code.
-    implementation:
+    tracking:
       repository: ministryofjustice/modernisation-platform-security
+    implementation:
+      repository: determine-from-investigation
     validation:
       - document evidence and limitations
       - record team decision

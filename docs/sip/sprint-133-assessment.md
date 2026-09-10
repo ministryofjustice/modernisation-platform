@@ -51,7 +51,7 @@ SIP issue 119 is the implementation example because the baseline module already 
 2. Add module tests proving disabled and enabled behaviour.
 3. Release the module after review.
 4. Update the two baseline pins in `modernisation-platform`.
-5. Enable only in one MP-approved development or test workspace.
+5. Select and enable only one MP-approved development or test workspace in the implementation PR.
 6. Review the Terraform plan before deployment.
 7. Verify matching and excluded CloudTrail events and notification delivery.
 

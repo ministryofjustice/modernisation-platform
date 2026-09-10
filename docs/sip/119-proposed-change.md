@@ -92,20 +92,15 @@ resource "aws_cloudwatch_metric_alarm" "iam_user_creation_by_untrusted_role" {
 
 Before merging, validate the filter against representative CloudTrail events for each account type. In particular, confirm that `local.automation_role_filter` excludes only the intended roles.
 
-## Consumer opt-in
+## Future consumer opt-in
 
-After releasing the baseline module and updating its pinned version in `modernisation-platform`, pass the feature flag from `terraform/environments/bootstrap/secure-baselines/main.tf`:
+After releasing the baseline module and updating its pinned version in `modernisation-platform`, a separate implementation PR should pass the feature flag from `terraform/environments/bootstrap/secure-baselines/main.tf`.
 
 ```hcl
-enable_iam_user_creation_alarm = contains(
-  [
-    "sprinkler-development",
-  ],
-  terraform.workspace,
-)
+enable_iam_user_creation_alarm = contains(local.approved_iam_user_creation_alarm_test_workspaces, terraform.workspace)
 ```
 
-Do not enable the variable in `terraform/modernisation-platform-account/baselines.tf` during the POC.
+That implementation PR must name the approved development or test workspaces and define `local.approved_iam_user_creation_alarm_test_workspaces`. This analysis-only POC does not select a workspace or enable the control. Do not enable the variable in `terraform/modernisation-platform-account/baselines.tf` during initial testing.
 
 ## Required tests
 
@@ -120,4 +115,4 @@ The baseline module test suite should prove that:
 - Representative events from every trusted automation role do not match.
 - The existing `DeleteUser` filter and alarm remain unchanged.
 
-The consumer plan for `sprinkler-development` must show only the expected filter and alarm before anyone approves deployment.
+The consumer plan for the workspace approved in the implementation PR must show only the expected filter and alarm before anyone approves deployment.
