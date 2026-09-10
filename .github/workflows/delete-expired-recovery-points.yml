@@ -6,9 +6,7 @@ on:
 
 env:
   AWS_REGION: "eu-west-2"
-permissions:
-  id-token: write 
-  contents: read 
+permissions: {}
 
 defaults:
   run:
@@ -18,6 +16,9 @@ jobs:
 
   fetch-secrets:
     uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
+    permissions:
+      id-token: write
+      contents: read
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -25,6 +26,9 @@ jobs:
   delete-expired-recovery-points:
     runs-on: ubuntu-latest
     needs: fetch-secrets
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

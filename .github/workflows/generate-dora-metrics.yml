@@ -54,6 +54,24 @@ jobs:
                   client-id: ${{ env.APP_ID }}
                   private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
                   owner: "ministryofjustice"
+                  permission-actions: read
+                  permission-contents: read
+                  permission-pull-requests: read
+                  repositories: >-
+                      modernisation-platform,modernisation-platform-ami-builds,modernisation-platform-cp-network-test,
+                      modernisation-platform-github-oidc-provider,modernisation-platform-github-oidc-role,
+                      modernisation-platform-instance-scheduler,modernisation-platform-terraform-aws-vm-import,
+                      modernisation-platform-terraform-baselines,modernisation-platform-terraform-bastion-linux,
+                      modernisation-platform-terraform-cross-account-access,modernisation-platform-terraform-dns-certificates,
+                      modernisation-platform-terraform-ec2-autoscaling-group,modernisation-platform-terraform-ec2-instance,
+                      modernisation-platform-terraform-ecs-cluster,modernisation-platform-terraform-environments,
+                      modernisation-platform-terraform-iam-superadmins,modernisation-platform-terraform-lambda-function,
+                      modernisation-platform-terraform-loadbalancer,modernisation-platform-terraform-member-vpc,
+                      modernisation-platform-terraform-pagerduty-integration,modernisation-platform-terraform-s3-bucket,
+                      modernisation-platform-terraform-s3-bucket-replication-role,modernisation-platform-terraform-ssm-patching,
+                      modernisation-platform-terraform-aws-chatbot,modernisation-platform-terraform-aws-waf,
+                      modernisation-platform-terraform-certificate-dns-validations,
+                      modernisation-platform-terraform-aws-data-firehose,modernisation-platform-github-actions
 
             - name: Set up Python
               uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 #v7.0.0
@@ -75,9 +93,11 @@ jobs:
 
             - name: Parse date_range input
               if: github.event.inputs.date_range != ''
+              env:
+                  DATE_RANGE: ${{ github.event.inputs.date_range }}
               run: |
-                  start_date=$(echo "${{ github.event.inputs.date_range }}" | cut -d. -f1)
-                  end_date=$(echo "${{ github.event.inputs.date_range }}" | rev | cut -d. -f1 | rev)
+                  start_date=$(echo "$DATE_RANGE" | cut -d. -f1)
+                  end_date=$(echo "$DATE_RANGE" | rev | cut -d. -f1 | rev)
                   echo "start_date=$start_date" >> "$GITHUB_ENV"
                   echo "end_date=$end_date" >> "$GITHUB_ENV"
 

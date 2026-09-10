@@ -77,12 +77,15 @@ jobs:
       - name: Plan RAM principal associations (targeted)
         if: github.ref != 'refs/heads/main'
         env:
+          ENVIRONMENT: ${{ inputs.environment }}
           TERRAFORM_ACTION: plan
-        run: bash scripts/get-applications-and-run-ram.sh ${{ inputs.environment }}
+        run: bash scripts/get-applications-and-run-ram.sh "$ENVIRONMENT"
 
       - name: Apply RAM associations and subnet tagging
         if: github.ref == 'refs/heads/main'
-        run: bash scripts/get-applications-and-run-ram.sh ${{ inputs.environment }}
+        env:
+          ENVIRONMENT: ${{ inputs.environment }}
+        run: bash scripts/get-applications-and-run-ram.sh "$ENVIRONMENT"
 
       - name: Slack failure notification
         uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0

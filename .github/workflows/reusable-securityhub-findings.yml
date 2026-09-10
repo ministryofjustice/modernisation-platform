@@ -44,12 +44,16 @@ jobs:
       steps:
 
         - name: Log Job Name
+          env:
+            ACCOUNT_NAME: ${{ inputs.account_name }}
           run: | 
-            echo "Job Name: ${{ inputs.account_name }}"
+            echo "Job Name: $ACCOUNT_NAME"
 
         - name: Set aws_region to env
+          env:
+            AWS_REGION_INPUT: ${{ inputs.aws_region }}
           run: |
-             echo "AWS_REGION=${{ inputs.aws_region }}" >> "$GITHUB_ENV"
+             echo "AWS_REGION=$AWS_REGION_INPUT" >> "$GITHUB_ENV"
 
         - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
@@ -62,15 +66,19 @@ jobs:
 
         - name: Determine Environment Config File
           id: derive-json-filename
+          env:
+            ACCOUNT_NAME: ${{ inputs.account_name }}
           run: |
-            FILENAME=$(echo "${{ inputs.account_name }}" | sed 's/-[^-]*$//').json
+            FILENAME="${ACCOUNT_NAME%-*}.json"
             echo "JSON filename: $FILENAME"
             echo "json_filename=$FILENAME" >> "$GITHUB_OUTPUT"
 
         - name: Check Slack Channel Configuration
           id: verify-slack-config
+          env:
+            JSON_FILENAME: ${{ steps.derive-json-filename.outputs.json_filename }}
           run: |
-            FILE_PATH="environments/${{ steps.derive-json-filename.outputs.json_filename }}"
+            FILE_PATH="environments/$JSON_FILENAME"
             if [ -f "$FILE_PATH" ]; then
                 if jq -e '.tags | has("securityhub-slack-channel")' "$FILE_PATH" > /dev/null; then
                 echo "Slack channel configured in environment tags"
@@ -89,9 +97,11 @@ jobs:
         - name: Retrieve Slack Webhook URL
           id: fetch-webhook-url
           if: steps.verify-slack-config.outputs.channel_exists == 'true'
+          env:
+            CHANNEL_NAME: ${{ steps.verify-slack-config.outputs.channel_name }}
           run: |
-            echo "Using channel name: ${{ steps.verify-slack-config.outputs.channel_name }}"
-            WEBHOOK=$(echo "$SECURITYHUB_SLACK_WEBHOOKS_JSON" | jq -r '.["${{ steps.verify-slack-config.outputs.channel_name }}"]')
+            echo "Using channel name: $CHANNEL_NAME"
+            WEBHOOK=$(echo "$SECURITYHUB_SLACK_WEBHOOKS_JSON" | jq -r --arg channel "$CHANNEL_NAME" '.[$channel]')
             if [ "$WEBHOOK" = "null" ] || [ -z "$WEBHOOK" ]; then
                 echo "No webhook found for this channel. Skipping."
                 exit 0
@@ -100,11 +110,13 @@ jobs:
 
         - name: Get Account ID
           if: steps.fetch-webhook-url.outputs.webhook_url != ''
+          env:
+            ACCOUNT_NAME: ${{ inputs.account_name }}
           run: |
             # Note that this uses a slightly different method to getting the account ID than usual
-            ACCOUNT_NUMBER=$(jq -r -e --arg n "${{ inputs.account_name }}" '.account_ids[$n] // empty' <<< "$ENVIRONMENT_MANAGEMENT")
+            ACCOUNT_NUMBER=$(jq -r -e --arg n "$ACCOUNT_NAME" '.account_ids[$n] // empty' <<< "$ENVIRONMENT_MANAGEMENT")
             if [ -z "$ACCOUNT_NUMBER" ]; then
-              echo "Account '${{ inputs.account_name }}' not found in ENVIRONMENT_MANAGEMENT.account_ids" >&2
+              echo "Account '$ACCOUNT_NAME' not found in ENVIRONMENT_MANAGEMENT.account_ids" >&2
               exit 1
             fi
             echo "::add-mask::$ACCOUNT_NUMBER"
@@ -135,6 +147,7 @@ jobs:
             SLACK_WEBHOOK_URL: ${{ steps.fetch-webhook-url.outputs.webhook_url }}
             ACCOUNT_NAME: ${{ inputs.account_name }}
             ACCOUNT_NUMBER: ${{ env.ACCOUNT_NUMBER }}
+            FINDINGS_OUTPUT: ${{ steps.analyze-findings.outputs.output }}
           run: |
-            MESSAGE="*Security Hub Severity Summary - $ACCOUNT_NAME ($ACCOUNT_NUMBER)*\n\`\`\`\n${{ steps.analyze-findings.outputs.output }}\n\`\`\`"
+            MESSAGE="*Security Hub Severity Summary - $ACCOUNT_NAME ($ACCOUNT_NUMBER)*\n\`\`\`\n$FINDINGS_OUTPUT\n\`\`\`"
             curl -X POST -H 'Content-type: application/json' --data "{\"text\": \"$MESSAGE\"}" "$SLACK_WEBHOOK_URL"

@@ -40,11 +40,11 @@ jobs:
 
       - name: Determine Terraform path and workspace
         id: setup
+        env:
+          APP_NAME: ${{ github.event.inputs.application_name }}
+          COMPONENT: ${{ github.event.inputs.component }}
+          ENVIRONMENT_NAME: ${{ github.event.inputs.environment }}
         run: |
-          COMPONENT="${{ github.event.inputs.component }}"
-          APP_NAME="${{ github.event.inputs.application_name }}"
-          ENV="${{ github.event.inputs.environment }}"
-
           if [[ "$COMPONENT" == "github" || "$COMPONENT" == "pagerduty" || "$COMPONENT" == "single-sign-on" || "$COMPONENT" == "modernisation-platform-account" ]]; then
             {
               echo "TF_PATH=terraform/$COMPONENT"
@@ -53,11 +53,11 @@ jobs:
             } >> "$GITHUB_ENV"
 
           elif [[ "$COMPONENT" == "environments" ]]; then
-            if [[ -n "$APP_NAME" && -n "$ENV" ]]; then
+            if [[ -n "$APP_NAME" && -n "$ENVIRONMENT_NAME" ]]; then
               {
                 echo "TF_PATH=terraform/environments/$APP_NAME"
-                echo "TF_WORKSPACE=${APP_NAME}-${ENV}"
-                echo "S3_LOCK_KEY=environments/accounts/$APP_NAME/${APP_NAME}-${ENV}/terraform.tfstate.tflock"
+                echo "TF_WORKSPACE=${APP_NAME}-${ENVIRONMENT_NAME}"
+                echo "S3_LOCK_KEY=environments/accounts/$APP_NAME/${APP_NAME}-${ENVIRONMENT_NAME}/terraform.tfstate.tflock"
               } >> "$GITHUB_ENV"
             else
               {
@@ -68,15 +68,15 @@ jobs:
             fi
 
           elif [[ "$COMPONENT" == bootstrap/* ]]; then
-            if [[ -z "$APP_NAME" || -z "$ENV" ]]; then
+            if [[ -z "$APP_NAME" || -z "$ENVIRONMENT_NAME" ]]; then
               echo "You must provide 'application_name' and 'environment' for bootstrap"
               exit 1
             fi
             BOOTSTRAP_COMPONENT="${COMPONENT#bootstrap/}"
             {
               echo "TF_PATH=terraform/environments/$COMPONENT"
-              echo "TF_WORKSPACE=${APP_NAME}-${ENV}"
-              echo "S3_LOCK_KEY=environments/bootstrap/$BOOTSTRAP_COMPONENT/${APP_NAME}-${ENV}/terraform.tfstate.tflock"
+              echo "TF_WORKSPACE=${APP_NAME}-${ENVIRONMENT_NAME}"
+              echo "S3_LOCK_KEY=environments/bootstrap/$BOOTSTRAP_COMPONENT/${APP_NAME}-${ENVIRONMENT_NAME}/terraform.tfstate.tflock"
             } >> "$GITHUB_ENV"
 
           else
@@ -116,10 +116,14 @@ jobs:
       - name: Force Unlock State
         if: steps.check_lock.outputs.LOCK_EXISTS == 'true'
         working-directory: ${{ env.TF_PATH }}
-        run: terraform force-unlock -force "${{ github.event.inputs.lock_id }}"
+        env:
+          LOCK_ID: ${{ github.event.inputs.lock_id }}
+        run: terraform force-unlock -force "$LOCK_ID"
 
       - name: Lock already removed
         if: steps.check_lock.outputs.LOCK_EXISTS == 'false'
+        env:
+          LOCK_ID: ${{ github.event.inputs.lock_id }}
         run: |
           echo "✅ The Terraform state lock has already been removed."
-          echo "Lock ID ${{ github.event.inputs.lock_id }} is not present in the state."
+          echo "Lock ID $LOCK_ID is not present in the state."

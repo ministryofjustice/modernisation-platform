@@ -27,10 +27,7 @@ env:
   RATE_THRESHOLD: 100
   APP_ID: 2013696
 
-permissions:
-  id-token: write # This is required for requesting the JWT
-  contents: read # This is required for actions/checkout
-  pull-requests: write # This is required for updating PR comments
+permissions: {}
 
 defaults:
   run:
@@ -40,6 +37,9 @@ jobs:
 
   fetch-secrets:
     uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # This is required for actions/checkout
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -48,6 +48,10 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref != 'refs/heads/main' && github.event_name != 'workflow_dispatch'
     needs: fetch-secrets
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # This is required for actions/checkout
+      pull-requests: write # This is required for updating PR comments
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Decrypt Secrets
@@ -63,6 +67,9 @@ jobs:
           client-id: ${{ env.APP_ID }}               
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
           owner: "ministryofjustice"
+          permission-contents: read
+          permission-pull-requests: write
+          repositories: "modernisation-platform,modernisation-platform-github"
       - name: Authenticate GitHub CLI as the App and Check the Rate Usage
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}
@@ -114,6 +121,9 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: fetch-secrets
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # This is required for actions/checkout
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Decrypt Secrets
@@ -130,6 +140,9 @@ jobs:
           client-id: ${{ env.APP_ID }}               
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
           owner: "ministryofjustice"
+          permission-contents: read
+          permission-pull-requests: write
+          repositories: "modernisation-platform,modernisation-platform-github"
       - name: Authenticate GitHub CLI as the App and Check the Rate Usage
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}
@@ -173,6 +186,9 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [fetch-secrets, create-environment]
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # This is required for actions/checkout
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Decrypt Secrets
@@ -215,6 +231,9 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [fetch-secrets, provision-workspaces]
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # This is required for actions/checkout
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -270,6 +289,9 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [fetch-secrets, delegate-access]
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # This is required for actions/checkout
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -325,6 +347,9 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [fetch-secrets,delegate-access]
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # This is required for actions/checkout
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -380,6 +405,9 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.ref != 'refs/heads/main' || github.event_name != 'workflow_dispatch'
     needs: fetch-secrets
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # This is required for actions/checkout
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -425,6 +453,9 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [fetch-secrets, provision-workspaces, delegate-access]
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # This is required for actions/checkout
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -480,6 +511,9 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main'
     needs: [fetch-secrets, single-sign-on]
+    permissions:
+      contents: read # This is required for actions/checkout
+      pull-requests: read # This is required for looking up the merged PR
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -581,6 +615,9 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [fetch-secrets, secure-baselines, single-sign-on]
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # This is required for actions/checkout
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -639,8 +676,8 @@ jobs:
     with:
       working-directory: "terraform/modernisation-platform-account"
       workflow_id: "modernisation-platform-account"
-      set_github_app_token: ${{ 'true' }}
-      download_collaborators: ${{ 'true' }}
+      set_github_app_token: true
+      download_collaborators: true
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}

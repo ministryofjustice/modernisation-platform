@@ -24,12 +24,15 @@ jobs:
 
       - name: Get files to check
         id: files
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          EVENT_NAME: ${{ github.event_name }}
         run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
+          if [ "$EVENT_NAME" = "pull_request" ]; then
             # For PRs, only check changed markdown files
-            git fetch origin ${{ github.base_ref }} --depth=1
-            FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD -- '*.md' '*.md.erb')
-          elif [ "${{ github.event_name }}" = "push" ]; then
+            git fetch origin "$BASE_REF" --depth=1
+            FILES=$(git diff --name-only "origin/${BASE_REF}...HEAD" -- '*.md' '*.md.erb')
+          elif [ "$EVENT_NAME" = "push" ]; then
             # Temporarily scan all markdown files on push for testing
             FILES=$(git ls-files '*.md' '*.md.erb')
           else
