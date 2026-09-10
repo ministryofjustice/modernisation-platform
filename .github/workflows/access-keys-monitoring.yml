@@ -82,9 +82,9 @@ jobs:
       # Step 5: Set Account Number
       - name: Set Account Number
         run: |
-          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "::add-mask::$ACCOUNT_NUMBER"
-          echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
 
       # Step 6: Configure AWS Credentials
       - name: Configure AWS Credentials
@@ -98,7 +98,7 @@ jobs:
       - name: Remove Collaborator Access Keys
         run: bash ./scripts/iam-monitoring/access-key-monitoring/delete_access_keys.sh
         env:
-          threshold: 90
+          threshold: 45
           group_name: "collaborators"
 
       # Step 8: Remove Superadmin Access Keys
