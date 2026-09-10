@@ -86,12 +86,9 @@ jobs:
         with:
           client-id: ${{ env.APP_ID }}               
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
-          owner: "ministryofjustice"
-          permission-actions: write
           permission-contents: read
           permission-pull-requests: write
-          permission-secrets: write
-          repositories: "modernisation-platform,modernisation-platform-github,modernisation-platform-ami-builds,modernisation-platform-configuration-management,modernisation-platform-security"
+          repositories: "modernisation-platform,modernisation-platform-github"
       
       - name: Download collaborators.json from modernisation-platform-github
         if: ${{ inputs.download_collaborators && inputs.set_github_app_token }}
