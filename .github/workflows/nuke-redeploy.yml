@@ -60,7 +60,7 @@ jobs:
           nuke_rebuild_account_ids: ${{ needs.fetch-secrets.outputs.nuke_rebuild_account_ids }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - id: set-matrix
-        run: echo "matrix=$(jq -c '.rebuild_accounts | sort' <<< $NUKE_REBUILD_ACCOUNT_IDS)" >> $GITHUB_OUTPUT
+        run: echo "matrix=$(jq -c '.rebuild_accounts | sort' <<< "$NUKE_REBUILD_ACCOUNT_IDS")" >> "$GITHUB_OUTPUT"
 
   redeploy-after-nuke:
     permissions:
@@ -89,9 +89,9 @@ jobs:
 
       - name: Set Account Number
         run: |
-          ACCOUNT_NUMBER=$(jq -r -e --arg account_name "${ACCOUNT_NAME}" '.account_ids[$account_name]' <<< $ENVIRONMENT_MANAGEMENT)
+          ACCOUNT_NUMBER=$(jq -r -e --arg account_name "${ACCOUNT_NAME}" '.account_ids[$account_name]' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "::add-mask::$ACCOUNT_NUMBER"
-          echo "ACCOUNT_NUMBER=${ACCOUNT_NUMBER}" >> $GITHUB_ENV
+          echo "ACCOUNT_NUMBER=${ACCOUNT_NUMBER}" >> "$GITHUB_ENV"
 
       - name: configure aws credentials
         if: github.ref == 'refs/heads/main'
@@ -111,18 +111,18 @@ jobs:
         run: |
           terraform --version
           echo "Terraform Plan - ${ACCOUNT_NAME%-development}" # removes the -development suffix in order to get the directory name
-          bash scripts/terraform-init.sh terraform/environments/${ACCOUNT_NAME%-development}
+          bash scripts/terraform-init.sh "terraform/environments/${ACCOUNT_NAME%-development}"
           terraform -chdir="terraform/environments/${ACCOUNT_NAME%-development}" workspace select "${ACCOUNT_NAME}"
-          bash scripts/terraform-plan.sh terraform/environments/${ACCOUNT_NAME%-development}
+          bash scripts/terraform-plan.sh "terraform/environments/${ACCOUNT_NAME%-development}"
 
       - name: Apply after nuke - ${{ matrix.nuke_accts }}
         if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.mode == 'nuke-no-dry-run') }}
         run: |
           terraform --version
           echo "Terraform apply - ${ACCOUNT_NAME%-development}" # removes the -development suffix in order to get the directory name
-          bash scripts/terraform-init.sh terraform/environments/${ACCOUNT_NAME%-development}
+          bash scripts/terraform-init.sh "terraform/environments/${ACCOUNT_NAME%-development}"
           terraform -chdir="terraform/environments/${ACCOUNT_NAME%-development}" workspace select "${ACCOUNT_NAME}"
-          bash scripts/terraform-apply.sh terraform/environments/${ACCOUNT_NAME%-development}
+          bash scripts/terraform-apply.sh "terraform/environments/${ACCOUNT_NAME%-development}"
 
       - name: Slack failure notification
         uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0

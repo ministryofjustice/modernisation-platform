@@ -78,8 +78,8 @@ jobs:
               run: |
                   start_date=$(echo "${{ github.event.inputs.date_range }}" | cut -d. -f1)
                   end_date=$(echo "${{ github.event.inputs.date_range }}" | rev | cut -d. -f1 | rev)
-                  echo "start_date=$start_date" >> $GITHUB_ENV
-                  echo "end_date=$end_date" >> $GITHUB_ENV
+                  echo "start_date=$start_date" >> "$GITHUB_ENV"
+                  echo "end_date=$end_date" >> "$GITHUB_ENV"
 
             - name: Run scripts and build summary
               env:

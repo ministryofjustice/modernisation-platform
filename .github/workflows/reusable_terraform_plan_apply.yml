@@ -105,23 +105,23 @@ jobs:
       - name: Set TF_VAR_github_token
         if: ${{ inputs.set_github_app_token == 'true' }}
         run: |
-          echo "TF_VAR_github_token=${{ steps.app.outputs.token }}" >> $GITHUB_ENV
+          echo "TF_VAR_github_token=${{ steps.app.outputs.token }}" >> "$GITHUB_ENV"
 
       - name: set env variables
         run: |
-          echo "TF_VAR_pagerduty_token=$PAGERDUTY_TOKEN" >> $GITHUB_ENV
-          echo "TF_VAR_pagerduty_user_token=$PAGERDUTY_USERAPI_TOKEN" >> $GITHUB_ENV
+          echo "TF_VAR_pagerduty_token=$PAGERDUTY_TOKEN" >> "$GITHUB_ENV"
+          echo "TF_VAR_pagerduty_user_token=$PAGERDUTY_USERAPI_TOKEN" >> "$GITHUB_ENV"
 
       - name: Set up variables
         id: vars
         if: ${{ inputs.environment }}
         run: |
-          account_name=$(basename ${{ inputs.working-directory }})
-          echo "ACCOUNT_NAME=${account_name}"  >> $GITHUB_ENV
-          echo "WORKSPACE_NAME=${account_name}-${{ inputs.environment }}" >> $GITHUB_ENV
+          account_name=$(basename "${{ inputs.working-directory }}")
+          echo "ACCOUNT_NAME=${account_name}"  >> "$GITHUB_ENV"
+          echo "WORKSPACE_NAME=${account_name}-${{ inputs.environment }}" >> "$GITHUB_ENV"
           # Check if test directory exists
-          if [ ${GITHUB_REF} != 'refs/heads/main' ] && [ -d "${{ inputs.working-directory }}/test" ]; then
-              echo "run_terratest=true" >> $GITHUB_OUTPUT
+          if [ "${GITHUB_REF}" != 'refs/heads/main' ] && [ -d "${{ inputs.working-directory }}/test" ]; then
+              echo "run_terratest=true" >> "$GITHUB_OUTPUT"
           fi
     
       - name: Setup Go
@@ -133,9 +133,9 @@ jobs:
 
       - name: Set Account Number
         run: |
-          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "::add-mask::$ACCOUNT_NUMBER"
-          echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
 
       - name: configure aws credentials
         if: github.event.ref != 'refs/heads/main'
@@ -161,12 +161,12 @@ jobs:
 
       - name: Initialize Terraform
         run: |
-          bash scripts/terraform-init.sh ${{ inputs.working-directory }}
+          bash scripts/terraform-init.sh "${{ inputs.working-directory }}"
 
       - name: Terraform Workspace Select
         if: ${{ inputs.environment }}
         run: |
-          terraform -chdir="${{ inputs.working-directory }}" workspace select ${WORKSPACE_NAME}
+          terraform -chdir="${{ inputs.working-directory }}" workspace select "${WORKSPACE_NAME}"
       
       - name: Validate Tags
         id: validate
@@ -180,9 +180,9 @@ jobs:
       - name: Run Terratest
         if: ${{ steps.vars.outputs.run_terratest == 'true' }}
         run: |
-          pushd ${{ inputs.working-directory }}/test
+          pushd "${{ inputs.working-directory }}/test"
           go mod tidy
-          TEST=`go test | ${{ github.workspace }}/scripts/redact-output.sh | tee /dev/stderr | tail -n 1`
+          TEST=$(go test | "${{ github.workspace }}/scripts/redact-output.sh" | tee /dev/stderr | tail -n 1)
           popd
           TEST="> TERRATEST RESULT - ${ACCOUNT_NAME}
           ${TEST}"
@@ -194,7 +194,7 @@ jobs:
         if: github.event.ref != 'refs/heads/main'
         id: show
         run: |
-          bash scripts/terraform-plan.sh ${{ inputs.working-directory }}
+          bash scripts/terraform-plan.sh "${{ inputs.working-directory }}"
 
       - name: Get Destroy Count
         if: github.event_name == 'pull_request'
@@ -255,7 +255,7 @@ jobs:
 
       - name: terraform apply
         if: github.event.ref == 'refs/heads/main'
-        run: bash scripts/terraform-apply.sh ${{ inputs.working-directory }}
+        run: bash scripts/terraform-apply.sh "${{ inputs.working-directory }}"
 
       - name: Slack failure notification
         if: ${{ failure() && github.ref == 'refs/heads/main' }}
