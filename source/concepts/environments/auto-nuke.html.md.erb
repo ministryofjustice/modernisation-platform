@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Auto-nuke and redeploy development environments on weekly basis
-last_reviewed_on: 2026-02-11
+last_reviewed_on: 2026-08-11
 review_in: 6 months
 ---
 
@@ -9,7 +9,7 @@ review_in: 6 months
 
 ## Feature description
 
-This feature automatically destroys all resources in development environments on a weekly basis, and provides a utitily to recreate resources in these environments. This is useful for environments with the sandbox permission, which allow users to provision resources directly through the AWS web console alongside infrastructure as code (IaC). In such cases, the auto-nuke will make ensure the manually created resources will be regularly removed. If requested, resources defined in terraform can then be recreated.
+This feature automatically destroys all resources in development environments on a weekly basis, and provides a utility to recreate resources in these environments. This is useful for environments with the sandbox permission, which allow users to provision resources directly through the AWS web console alongside infrastructure as code (IaC). In such cases, auto-nuke ensures manually created resources are regularly removed. If requested, resources defined in Terraform can then be recreated.
 
 
 
@@ -25,7 +25,7 @@ An outline of the 'nuke' algorithm is as follows:
 
 ## Configuration
 
-Auto-nuke consumes the following dynamically generated Github secrets stored in the Modernisation Platorm Environments repository, the selection criteria set [here](https://github.com/ministryofjustice/modernisation-platform-terraform-environments/blob/main/main.tf) in the modernisation-platform-terraform-environments repository:
+Auto-nuke consumes the following dynamically generated GitHub secrets stored in the Modernisation Platform Environments repository. The selection criteria are set [here](https://github.com/ministryofjustice/modernisation-platform-terraform-environments/blob/main/main.tf) in the modernisation-platform-terraform-environments repository:
 
 - `MODERNISATION_PLATFORM_AUTONUKE_BLOCKLIST`: Account aliases to always exclude from auto-nuke. This takes precedence over all other configuration options. Due to the destructive nature of the tool, [AWS-Nuke](https://github.com/ekristen/aws-nuke) requires at least one account ID in the configured blocklist. Our blocklist contains all production, preproduction, and core accounts.
 

@@ -8,6 +8,7 @@
     "detective",
     "dms",
     "ec2",
+    "ec2messages",
     "ecr.api",
     "ecr.dkr",
     "eks",
@@ -29,6 +30,7 @@
     "sns",
     "sqs",
     "ssm",
+    "ssmmessages",
     "sts",
     "transcribe",
     "wafv2"

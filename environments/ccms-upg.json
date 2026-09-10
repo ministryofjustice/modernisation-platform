@@ -1,0 +1,41 @@
+{
+  "account-type": "member",
+  "codeowners": "laa-sre-admins, laa-sre-admins",
+  "components": [
+    {
+      "name": "ccms-ebs-ref",
+      "sso_group_name": "laa-sre-admins"
+    },
+    {
+      "name": "ccms-ebs-fin",
+      "sso_group_name": "laa-sre-admins"
+    }
+  ],
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "sandbox"
+        }
+      ],
+      "nuke": "exclude"
+    }
+  ],
+  "tags": {
+    "application": "ccms-upg",
+    "business-unit": "LAA",
+    "service-area": "LAA",
+    "infrastructure-support": "ApplicationOperations@justice.gov.uk",
+    "owner": "ApplicationOperations@justice.gov.uk",
+    "slack-channel": "",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}

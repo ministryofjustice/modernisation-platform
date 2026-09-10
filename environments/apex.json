@@ -6,11 +6,8 @@
       "access": [
         {
           "sso_group_name": "laa-sre-admins",
-          "level": "sandbox"
-        },
-        {
-          "sso_group_name": "laa-aws-infrastructure",
-          "level": "developer"
+          "level": "sandbox",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-ccms-ebs-developers",
@@ -28,15 +25,16 @@
       "access": [
         {
           "sso_group_name": "laa-sre-admins",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-ccms-ebs-developers",
           "level": "developer"
         },
         {
-          "sso_group_name": "laa-aws-infrastructure",
-          "level": "developer"
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
         },
         {
           "sso_group_name": "laa-apex-developer",
@@ -49,15 +47,16 @@
       "access": [
         {
           "sso_group_name": "laa-sre-admins",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-ccms-ebs-developers",
           "level": "developer"
         },
         {
-          "sso_group_name": "laa-aws-infrastructure",
-          "level": "developer"
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
         },
         {
           "sso_group_name": "laa-apex-developer",
@@ -74,8 +73,8 @@
           "github_action_reviewer": "true"
         },
         {
-          "sso_group_name": "laa-aws-infrastructure",
-          "level": "developer"
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
         },
         {
           "sso_group_name": "laa-apex-developer",
@@ -95,8 +94,8 @@
   "tags": {
     "application": "apex",
     "business-unit": "LAA",
-    "infrastructure-support": "laa_ops@digital.justice.gov.uk",
-    "owner": "laa_ops@digital.justice.gov.uk",
+    "infrastructure-support": "ApplicationOperations@justice.gov.uk",
+    "owner": "ApplicationOperations@justice.gov.uk",
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": ["ministryofjustice/laa-apex"],

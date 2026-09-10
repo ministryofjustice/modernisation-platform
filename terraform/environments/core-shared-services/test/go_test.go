@@ -3,9 +3,10 @@ package test
 import (
 	"testing"
 
+	"regexp"
+
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
-	"regexp"
 )
 
 func TestTransitGateway(t *testing.T) {
@@ -13,7 +14,6 @@ func TestTransitGateway(t *testing.T) {
 		TerraformDir: "../",
 	})
 
-	terraform.RunTerraformCommand(t, terraformOptions, "refresh")
 	terraform.Plan(t, terraformOptions)
 
 	//Test private route tables

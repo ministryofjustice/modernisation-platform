@@ -16,7 +16,6 @@ locals {
     "laa-ccms-soa",
     "laa-cst-security-dashboard",
     "laa-enterprise-service-bus",
-    "laa-mail-relay",
     "laa-oem",
     "laa-pui-secure-browser",
     "laa-stabilisation-cdc-poc",
@@ -194,6 +193,7 @@ data "aws_iam_policy_document" "member-access-compute" {
       "cloudtrail:Get*",
       "cloudtrail:List*",
       "codebuild:*",
+      "codeconnections:*",
       "codedeploy:*",
       "codepipeline:*",
       "cognito-idp:*",
@@ -706,6 +706,7 @@ data "aws_iam_policy_document" "member-access-us-east" {
       "acm:*",
       "events:*",
       "iam:ListRoles",
+      "kms:*",
       "lambda:*",
       "logs:*",
       "waf:*",
@@ -772,7 +773,10 @@ data "aws_iam_policy_document" "member-access-us-east" {
     condition {
       test     = "StringEquals"
       variable = "iam:PassedToService"
-      values   = ["lambda.amazonaws.com"]
+      values = [
+        "events.amazonaws.com",
+        "lambda.amazonaws.com"
+      ]
     }
   }
 
@@ -817,6 +821,8 @@ data "aws_iam_policy_document" "policy" {
       "autoscaling:PutScheduledUpdateGroupAction",
       "autoscaling:SetDesiredCapacity",
       "backup:*",
+      "cloudwatch:DisableAlarmActions",
+      "cloudwatch:EnableAlarmActions",
       "cloudwatch:PutMetricData",
       "codebuild:Start*",
       "codebuild:StartBuild",
@@ -878,6 +884,9 @@ data "aws_iam_policy_document" "policy" {
       "elasticfilesystem:Create*",
       "elasticfilesystem:Delete*",
       "elasticfilesystem:restore",
+      "elasticloadbalancing:AddTags",
+      "elasticloadbalancing:CreateRule",
+      "elasticloadbalancing:DeleteRule",
       "elasticloadbalancing:SetRulePriorities",
       "elasticloadbalancing:ModifyRule",
       "elasticloadbalancing:ModifyListener",
@@ -1107,9 +1116,11 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
       local.application_name != "cloud-platform" && !startswith(local.application_name, "container-platform-") ? format("arn:aws:iam::%s:role/member-delegation-%s-%s", local.environment_management.account_ids[format("core-vpc-%s", local.application_environment)], lower(local.business_unit), local.application_environment) : "",
       format("arn:aws:iam::%s:role/modify-dns-records", local.environment_management.account_ids["core-network-services-production"]),
       format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id),
+      format("arn:aws:iam::%s:role/ModernisationPlatformSSOApplicationAssignment", local.environment_management.aws_organizations_root_account_id),
       format("arn:aws:iam::%s:role/ModernisationPlatformSSOReadOnly", local.environment_management.aws_organizations_root_account_id),
       # the following are required as cooker have development accounts but are in the sandbox vpc
-      local.application_name == "cooker" ? format("arn:aws:iam::%s:role/member-delegation-house-sandbox", local.environment_management.account_ids["core-vpc-sandbox"]) : format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id)
+      local.application_name == "cooker" ? format("arn:aws:iam::%s:role/member-delegation-house-sandbox", local.environment_management.account_ids["core-vpc-sandbox"]) : format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id),
+      local.business_unit != null ? format("arn:aws:iam::%s:role/%s-shared-configuration-access", local.environment_management.account_ids["core-shared-services-production"], lower(local.business_unit)) : ""
     ])
     condition {
       test     = "StringEquals"
@@ -1117,6 +1128,20 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
       values   = [data.aws_organizations_organization.root_account.id]
     }
     actions = ["sts:AssumeRole"]
+  }
+
+  statement {
+    sid    = "AllowOIDCToTagSession"
+    effect = "Allow"
+    resources = compact([
+      format("arn:aws:iam::%s:role/ModernisationPlatformSSOApplicationAssignment", local.environment_management.aws_organizations_root_account_id)
+    ])
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [data.aws_organizations_organization.root_account.id]
+    }
+    actions = ["sts:TagSession"]
   }
 
   # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
@@ -1223,6 +1248,19 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
         local.environment_management.account_ids["observability-platform-production"],
       ]
     }
+  }
+
+  statement {
+    sid    = "AllowOIDCBedrockGuardrailManagement"
+    effect = "Allow"
+    actions = [
+      "bedrock:CreateGuardrail",
+      "bedrock:CreateGuardrailVersion",
+      "bedrock:GetGuardrail",
+      "bedrock:ListTagsForResource",
+      "bedrock:UpdateGuardrail"
+    ]
+    resources = ["*"]
   }
 }
 
@@ -1480,13 +1518,15 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
     effect = "Allow"
     resources = compact([
       format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id),
+      format("arn:aws:iam::%s:role/ModernisationPlatformSSOApplicationAssignment", local.environment_management.aws_organizations_root_account_id),
       format("arn:aws:iam::%s:role/ModernisationPlatformSSOReadOnly", local.environment_management.aws_organizations_root_account_id),
       format("arn:aws:iam::%s:role/read-log-records", local.environment_management.account_ids["core-network-services-production"]),
       format("arn:aws:iam::%s:role/member-delegation-read-only", local.environment_management.account_ids["core-vpc-development"]),
       format("arn:aws:iam::%s:role/member-delegation-read-only", local.environment_management.account_ids["core-vpc-test"]),
       format("arn:aws:iam::%s:role/member-delegation-read-only", local.environment_management.account_ids["core-vpc-preproduction"]),
       format("arn:aws:iam::%s:role/member-delegation-read-only", local.environment_management.account_ids["core-vpc-production"]),
-      format("arn:aws:iam::%s:role/member-delegation-read-only", local.environment_management.account_ids["core-vpc-sandbox"])
+      format("arn:aws:iam::%s:role/member-delegation-read-only", local.environment_management.account_ids["core-vpc-sandbox"]),
+      local.business_unit != null ? format("arn:aws:iam::%s:role/%s-shared-configuration-access", local.environment_management.account_ids["core-shared-services-production"], lower(local.business_unit)) : ""
     ])
     condition {
       test     = "StringEquals"
@@ -1494,6 +1534,20 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
       values   = [data.aws_organizations_organization.root_account.id]
     }
     actions = ["sts:AssumeRole"]
+  }
+
+  statement {
+    sid    = "AllowOIDCToTagSession"
+    effect = "Allow"
+    resources = compact([
+      format("arn:aws:iam::%s:role/ModernisationPlatformSSOApplicationAssignment", local.environment_management.aws_organizations_root_account_id)
+    ])
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [data.aws_organizations_organization.root_account.id]
+    }
+    actions = ["sts:TagSession"]
   }
 
   # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
@@ -1569,6 +1623,8 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
     actions = [
       "airflow:Get*",
       "airflow:List*",
+      "bedrock:GetGuardrail",
+      "bedrock:ListTagsForResource",
       "glue:GetConnection",
       "lakeformation:GetLFTag",
       "lakeformation:ListLFTags",
@@ -1606,6 +1662,7 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
       ]
     }
   }
+
 }
 
 # Role github-actions-apply to support OIDC access from Modernisation-Platform-Environments for:
@@ -1645,6 +1702,7 @@ data "aws_iam_policy_document" "oidc_assume_nuke_role_member" {
       local.application_name != "cloud-platform" && !startswith(local.application_name, "container-platform-") ? format("arn:aws:iam::%s:role/member-delegation-%s-%s", local.environment_management.account_ids[format("core-vpc-%s", local.application_environment)], lower(local.business_unit), local.application_environment) : "",
       format("arn:aws:iam::%s:role/modify-dns-records", local.environment_management.account_ids["core-network-services-production"]),
       format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id),
+      format("arn:aws:iam::%s:role/ModernisationPlatformSSOApplicationAssignment", local.environment_management.aws_organizations_root_account_id),
       format("arn:aws:iam::%s:role/ModernisationPlatformSSOReadOnly", local.environment_management.aws_organizations_root_account_id),
       #read-only-roles
       format("arn:aws:iam::%s:role/read-log-records", local.environment_management.account_ids["core-network-services-production"]),
@@ -1659,6 +1717,20 @@ data "aws_iam_policy_document" "oidc_assume_nuke_role_member" {
       values   = [data.aws_organizations_organization.root_account.id]
     }
     actions = ["sts:AssumeRole"]
+  }
+
+  statement {
+    sid    = "AllowOIDCToTagSession"
+    effect = "Allow"
+    resources = compact([
+      format("arn:aws:iam::%s:role/ModernisationPlatformSSOApplicationAssignment", local.environment_management.aws_organizations_root_account_id)
+    ])
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [data.aws_organizations_organization.root_account.id]
+    }
+    actions = ["sts:TagSession"]
   }
 
   # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"

@@ -6,6 +6,10 @@
       "name": "development",
       "access": [
         {
+          "sso_group_name": "analytical-platform-engineers",
+          "level": "read-only"
+        },
+        {
           "sso_group_name": "azure-aws-sso-analytical-platform-engineers",
           "level": "platform-engineer-admin"
         }

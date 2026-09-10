@@ -10,6 +10,10 @@ output "developer" {
   value = aws_ssoadmin_permission_set.modernisation_platform_developer.arn
 }
 
+output "secrets_manager_editor" {
+  value = aws_ssoadmin_permission_set.modernisation_platform_secrets_manager_editor.arn
+}
+
 output "fleet_manager" {
   value = aws_ssoadmin_permission_set.modernisation_platform_fleet_manager.arn
 }

@@ -167,6 +167,32 @@ resource "aws_iam_policy" "developer" {
   policy   = data.aws_iam_policy_document.developer_additional.json
 }
 
+# secrets manager editor policy - member SSO and collaborators
+resource "aws_iam_policy" "secrets_manager_editor" {
+  provider = aws.workspace
+  name     = "secrets_manager_editor_policy"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.secrets_manager_editor_additional.json
+}
+
+data "aws_iam_policy_document" "secrets_manager_editor_additional" {
+  #checkov:skip=CKV_AWS_108: Required to read member-environment secrets
+  #checkov:skip=CKV_AWS_111: Required to allow secrets updates across member-environment secrets
+  #checkov:skip=CKV_AWS_356: Needs to access multiple resources
+  statement {
+    sid    = "secretsManagerEditorAllow"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:PutSecretValue",
+      "secretsmanager:UpdateSecret",
+      "secretsmanager:RestoreSecret"
+    ]
+    resources = ["*"]
+  }
+}
+
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "developer_additional" {
   #checkov:skip=CKV_AWS_108
@@ -398,6 +424,40 @@ data "aws_iam_policy_document" "developer_additional" {
     }
   }
 
+  # The following two statements add support for the AWS Transform CLI (CTX). These are the minimum set of permissions needed to use the product.
+  statement {
+    #checkov:skip=CKV_AWS_356: Needs to access multiple resources
+    sid    = "AtxCliMinimum"
+    effect = "Allow"
+    actions = [
+      "transform-custom:CompleteTransformationPackageUpload",
+      "transform-custom:ConverseStream",
+      "transform-custom:CreateTransformationPackageUrl",
+      "transform-custom:ExecuteTransformation",
+      "transform-custom:GetCampaign",
+      "transform-custom:UpdateCampaignRepositoryStatus",
+      "transform-custom:UpdateCampaign",
+      "transform-custom:ListTransformationPackageMetadata",
+      "transform-custom:GetTransformationPackageUrl",
+    ]
+    resources = ["*"]
+  }
+  statement {
+    sid    = "AllowCreateServiceLinkedRole"
+    effect = "Allow"
+    actions = [
+      "iam:CreateServiceLinkedRole",
+    ]
+    resources = [
+      "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/aws-service-role/transform-custom.amazonaws.com/AWSServiceRoleForAWSTransformCustom",
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "iam:AWSServiceName"
+      values   = ["transform-custom.amazonaws.com"]
+    }
+  }
+
 }
 
 # data engineering policy (developer + glue + some athena)
@@ -597,35 +657,68 @@ data "aws_iam_policy_document" "analytics_engineering_athena_additional" {
   #checkov:skip=CKV_AWS_110
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
   statement {
-    sid    = "AthenaQueryResultsAllow"
+    sid    = "AthenaQueryResultsBucketAllow"
     effect = "Allow"
     actions = [
       "s3:GetBucketLocation",
-      "s3:GetObject",
       "s3:ListBucket",
       "s3:ListBucketMultipartUploads",
+    ]
+    resources = [
+      "arn:aws:s3:::probation-query-results-*",
+      "arn:aws:s3:::dpr-working-production",
+      "arn:aws:s3:::dpr-structured-historical-production",
+      "arn:aws:s3:::dpr-working-preproduction",
+      "arn:aws:s3:::dpr-structured-historical-preproduction"
+    ]
+  }
+  statement {
+    sid    = "AthenaQueryResultsObjectAllow"
+    effect = "Allow"
+    actions = [
+      "s3:GetObject",
       "s3:ListMultipartUploadParts",
       "s3:AbortMultipartUpload",
       "s3:PutObject",
     ]
     resources = [
-      "arn:aws:s3:::probation-query-results-*",
+      "arn:aws:s3:::probation-query-results-*/*",
       "arn:aws:s3:::dpr-working-production/analytics/*",
+      "arn:aws:s3:::dpr-structured-historical-production/*",
       "arn:aws:s3:::dpr-working-preproduction/analytics/*",
+      "arn:aws:s3:::dpr-structured-historical-preproduction/*"
     ]
   }
   statement {
-    sid    = "AthenaS3Allow"
+    sid    = "AthenaS3ObjectAllow"
     effect = "Allow"
     actions = [
       "s3:PutObject",
       "s3:DeleteObject",
     ]
     resources = [
-      "arn:aws:s3:::probation-datalake-*",
-      "arn:aws:s3:::dpr-structured-historical-production/data/*",
-      "arn:aws:s3:::dpr-structured-historical-preproduction/data/*",
+      "arn:aws:s3:::probation-datalake-*/*",
+      "arn:aws:s3:::dpr-working-production/analytics/*",
+      "arn:aws:s3:::dpr-structured-historical-production/*",
+      "arn:aws:s3:::dpr-working-preproduction/analytics/*",
+      "arn:aws:s3:::dpr-structured-historical-preproduction/*"
     ]
+  }
+  statement {
+    sid    = "AthenaDprKmsAllow"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:Encrypt",
+      "kms:GenerateDataKey",
+      "kms:DescribeKey",
+    ]
+    resources = local.analytics_engineering_kms_key_arns
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
   }
 }
 
@@ -1202,6 +1295,23 @@ data "aws_iam_policy_document" "instance-access-document" {
   }
 
   statement {
+    sid    = "SSMTerminateResumeSession"
+    effect = "Allow"
+    actions = [
+      "ssm:TerminateSession",
+      "ssm:ResumeSession"
+    ]
+    resources = [
+      "arn:aws:ssm:*:*:session/$${aws:userid}-*"
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "ssm:SessionOwner"
+      values   = ["$${aws:userid}"]
+    }
+  }
+
+  statement {
     sid    = "SSMSendCommand"
     effect = "Allow"
     actions = [
@@ -1330,6 +1440,7 @@ data "aws_iam_policy_document" "instance-management-document" {
       "kms:Encrypt",
       "kms:GenerateDataKey*",
       "kms:ReEncrypt*",
+      "rds:AddTagsToResource",
       "rds:CopyDBClusterSnapshot",
       "rds:CopyDBSnapshot",
       "rds:CreateDBClusterSnapshot",
@@ -2014,7 +2125,15 @@ data "aws_iam_policy_document" "workspace_user_admin" {
     ]
     resources = ["*"]
   }
-
+  statement {
+    sid    = "Createsecret"
+    effect = "Allow"
+    actions = [
+      "secretsmanager:CreateSecret",
+      "secretsmanager:TagResource"
+    ]
+    resources = ["*"]
+  }
   statement {
     sid    = "Ec2WorkspacesSupport"
     effect = "Allow"
@@ -2154,6 +2273,15 @@ data "aws_iam_policy_document" "workspace_admin" {
       "ds:UpdateTrust",
       "ds:VerifyTrust",
       "ds-data:*"
+    ]
+    resources = ["*"]
+  }
+  statement {
+    sid    = "Createsecret"
+    effect = "Allow"
+    actions = [
+      "secretsmanager:CreateSecret",
+      "secretsmanager:TagResource"
     ]
     resources = ["*"]
   }

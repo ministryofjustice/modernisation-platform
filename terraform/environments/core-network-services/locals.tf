@@ -86,6 +86,12 @@ locals {
 
   nec_vpn_attachment_ids = toset([for k in aws_vpn_connection.this : k.transit_gateway_attachment_id if(length(regexall("(?:NEC)", k.tags.Name)) > 0)])
 
+  # Overriding Azure BGP: Force traffic to the primary AWS TGW path.
+  # Without this static route, the TGW may prefer the Azure VPN BGP route,
+  # causing traffic destined for AWS resources to route back to Azure.
+  #
+  # NOTE: these routes must exactly match the routes advertised from Azure,
+  # do not be tempted to roll them up.
   azure_static_routes = [
     "10.0.0.0/11",
     "10.64.0.0/11",
@@ -112,18 +118,14 @@ locals {
     "10.154.176.0/23",
     "10.154.192.0/23",
     "10.154.208.0/23",
-    "10.154.240.0/21",
     "10.154.224.0/21",
+    "10.154.240.0/21",
+    "10.155.0.0/23",
     "10.155.32.0/23",
     "10.155.36.0/23",
-    "10.180.0.0/16",
-    "10.184.128.0/18",
-    "10.184.192.0/18",
-    "10.184.32.0/19",
-    "10.184.64.0/19",
-    "10.184.96.0/19",
-    "10.185.0.0/16",
-    "10.155.0.0/23",
+    "10.155.48.0/23",
+    "10.155.252.0/23",
+    "10.155.254.0/23",
     "10.159.240.0/20",
     "10.163.0.0/20",
     "10.171.0.0/16",
@@ -132,6 +134,13 @@ locals {
     "10.176.0.0/16",
     "10.178.0.0/16",
     "10.179.0.0/16",
+    "10.180.0.0/16",
+    "10.184.32.0/19",
+    "10.184.64.0/19",
+    "10.184.96.0/19",
+    "10.184.128.0/18",
+    "10.184.192.0/18",
+    "10.185.0.0/16",
     "10.188.0.160/27",
     "10.205.0.0/24",
     "10.208.0.0/12",
@@ -168,6 +177,10 @@ locals {
   yjb_vpn_static_route_srx01 = ["10.20.228.0/22"]
 
   yjb_vpn_static_route_srx02 = ["10.20.224.0/22"]
+
+  laa_nec_nonprod_vpn_static_routes = ["10.120.0.0/24"]
+
+  laa_nec_prod_vpn_static_routes = ["10.110.0.0/24"]
 
 
   core-vpcs = {

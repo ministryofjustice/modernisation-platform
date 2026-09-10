@@ -13,18 +13,18 @@
     "destination_port": "80",
     "protocol": "TCP"
   },
+  "moj_wifi_to_laa_preproduction_mp_https": {
+    "action": "PASS",
+    "source_ip": "${moj-wifi}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
   "psn_to_mp_hmpps_preproduction_https": {
     "action": "PASS",
     "source_ip": "${psn}",
     "destination_ip": "${hmpps-preproduction}",
     "destination_port": "443",
-    "protocol": "TCP"
-  },
-  "laa_shared_services_ws_to_mp_laa_preproduction": {
-    "action": "PASS",
-    "source_ip": "${laa-lz-shared-services-nonprod}",
-    "destination_ip": "${laa-preproduction}",
-    "destination_port": "$LAA_APPSTREAM_TCP",
     "protocol": "TCP"
   },
   "mp_laa_preproduction_to_laa_shared_services_ws": {
@@ -167,6 +167,13 @@
     "source_ip": "${noms-mgmt-live-vnet}",
     "destination_ip": "${hmpps-preproduction}",
     "destination_port": "$AZURE_FIXNGO_MP_TCP",
+    "protocol": "TCP"
+  },
+  "mp_hmpps_preproduction_to_cp_https": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${cloud-platform}",
+    "destination_port": "443",
     "protocol": "TCP"
   },
   "mp_hmpps_preproduction_to_noms_mgmt_live": {
@@ -363,6 +370,20 @@
     "source_ip": "${delius-pre-prod}",
     "destination_ip": "${hmpps-preproduction}",
     "destination_port": "389",
+    "protocol": "TCP"
+  },
+  "hmpps_preproduction_to_delius_stage_nfs": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${delius-stage}",
+    "destination_port": "2049",
+    "protocol": "TCP"
+  },
+  "hmpps_preproduction_to_delius_preproduction_nfs": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${delius-pre-prod}",
+    "destination_port": "2049",
     "protocol": "TCP"
   },
   "cp_to_mp_hmpps_preproduction_ldap": {

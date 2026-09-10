@@ -289,14 +289,13 @@ expected :=
               "ccms-oia-development",
               "ccms-pui-development",
               "ccms-pui-internal-development",
+              "ccms-upg-development",
               "contract-work-administration-development",
               "data-factory-laa-development",
               "edw-19c-development",
               "laa-ccms-soa-development",
               "laa-cis-development",
-              "laa-cst-security-dashboard-development",
               "laa-enterprise-service-bus-development",
-              "laa-mail-relay-development",
               "laa-oem-development",
               "laa-pui-secure-browser-development",
               "laa-stabilisation-cdc-poc-development",
@@ -324,7 +323,6 @@ expected :=
               "edw-19c-test",
               "laa-ccms-soa-test",
               "laa-enterprise-service-bus-test",
-              "laa-mail-relay-test",
               "laa-oem-test",
               "laa-pui-secure-browser-test",
               "maat-test",
@@ -349,7 +347,6 @@ expected :=
               "edw-19c-preproduction",
               "laa-ccms-soa-preproduction",
               "laa-cis-preproduction",
-              "laa-mail-relay-preproduction",
               "laa-oem-preproduction",
               "laa-pui-secure-browser-preproduction",
               "maat-preproduction",
@@ -373,9 +370,7 @@ expected :=
               "contract-work-administration-production",
               "edw-19c-production",
               "laa-ccms-soa-production",
-              "laa-cst-security-dashboard-production",
               "laa-enterprise-service-bus-production",
-              "laa-mail-relay-production",
               "laa-oem-production",
               "laa-pui-secure-browser-production",
               "maat-production",
@@ -426,6 +421,7 @@ expected :=
           "data-factory-moj-development",
           "data-platform-development",
           "data-platform-governance-development",
+          "developer-experience-development",
           "example-development",
           "integration-hub-api-development",
           "integration-hub-development",
@@ -445,6 +441,7 @@ expected :=
           "data-factory-moj-test",
           "data-platform-test",
           "data-platform-governance-test",
+          "developer-experience-test",
           "integration-hub-test",
           "testing-test"
         ]
@@ -456,6 +453,7 @@ expected :=
         "accounts": [
           "data-platform-preproduction",
           "data-platform-governance-preproduction",
+          "developer-experience-preproduction",
           "integration-hub-preproduction"
         ]
       }
@@ -469,6 +467,7 @@ expected :=
           "coat-production",
           "data-platform-production",
           "data-platform-governance-production",
+          "developer-experience-production",
           "integration-hub-production",
           "long-term-storage-production",
           "observability-platform-production",

@@ -196,7 +196,7 @@ resource "pagerduty_service" "jitbit_nonprod" {
   description             = "Delius Jitbit Non Prod Alarms"
   auto_resolve_timeout    = 345600
   acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  escalation_policy       = pagerduty_escalation_policy.octo_platform_operations.id
   alert_creation          = "create_alerts_and_incidents"
 }
 
@@ -247,7 +247,7 @@ resource "pagerduty_service" "jitbit_prod" {
   description             = "Delius Jitbit Prod Alarms"
   auto_resolve_timeout    = 345600
   acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  escalation_policy       = pagerduty_escalation_policy.octo_platform_operations.id
   alert_creation          = "create_alerts_and_incidents"
 }
 
@@ -298,7 +298,7 @@ resource "pagerduty_service" "iaps_nonprod" {
   description             = "Delius IAPS Non Prod Alarms"
   auto_resolve_timeout    = 345600
   acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  escalation_policy       = pagerduty_escalation_policy.octo_platform_operations.id
   alert_creation          = "create_alerts_and_incidents"
 }
 
@@ -349,7 +349,7 @@ resource "pagerduty_service" "iaps_prod" {
   description             = "Delius IAPS Prod Alarms"
   auto_resolve_timeout    = 345600
   acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  escalation_policy       = pagerduty_escalation_policy.octo_platform_operations.id
   alert_creation          = "create_alerts_and_incidents"
 }
 
@@ -402,7 +402,7 @@ resource "pagerduty_service" "delius_mis_prod" {
   description             = "Delius MIS Production Alarms"
   auto_resolve_timeout    = 345600
   acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  escalation_policy       = pagerduty_escalation_policy.octo_platform_operations.id
   alert_creation          = "create_alerts_and_incidents"
 }
 
@@ -448,7 +448,7 @@ resource "pagerduty_service" "delius_mis_non_prod" {
   description             = "Delius MIS Non-production Alarms"
   auto_resolve_timeout    = 345600
   acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  escalation_policy       = pagerduty_escalation_policy.octo_platform_operations.id
   alert_creation          = "create_alerts_and_incidents"
 }
 
@@ -1379,7 +1379,7 @@ resource "pagerduty_service" "delius_core_nonprod" {
   description             = "Delius Core Non Prod Alarms"
   auto_resolve_timeout    = 345600
   acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  escalation_policy       = pagerduty_escalation_policy.octo_platform_operations.id
   alert_creation          = "create_alerts_and_incidents"
 }
 
@@ -1430,7 +1430,7 @@ resource "pagerduty_service" "delius_core_prod" {
   description             = "Delius Core Prod Alarms"
   auto_resolve_timeout    = 345600
   acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  escalation_policy       = pagerduty_escalation_policy.octo_platform_operations.id
   alert_creation          = "create_alerts_and_incidents"
 }
 
@@ -1849,50 +1849,24 @@ resource "pagerduty_slack_connection" "chaps_slack" {
 locals {
   # add users to this list once they've signed into PagerDuty via SSO for first time
   # avoid putting full email as public repo
-  dso_team_members = {
-    "dave.kent"        = local.justice_email_suffix
-    "william.gibbon"   = local.digital_email_suffix
-    "antony.gowland"   = local.digital_email_suffix
-    "dominic.robinson" = local.digital_email_suffix
+  octo_platform_operations_team_members = {
     "george.hill2"     = local.justice_email_suffix
     "annesa.mariyam"   = local.justice_email_suffix
+    "antony.gowland"   = local.digital_email_suffix
+    "steve.williams4"  = local.justice_email_suffix
+    "prem.basumatary"  = local.digital_email_suffix
+    "sebastian.norris" = local.digital_email_suffix
+    "david.teeling1"   = local.justice_email_suffix
   }
-  octo_infrastructure_support_team_members = {
-    "george.hill2"   = local.justice_email_suffix
-    "annesa.mariyam" = local.justice_email_suffix
-  }
-  # repeat users, e.g. for a 3 day stint of concierge
-  dso_schedule_user_order = [
-    "antony.gowland",
-    "antony.gowland",
-    "antony.gowland",
-    "george.hill2",
-    "george.hill2",
-    "george.hill2",
+  octo_platform_operations_primary_schedule_user_order = [
     "annesa.mariyam",
-    "annesa.mariyam",
-    "annesa.mariyam",
-    "dominic.robinson",
-    "dominic.robinson",
-    "dominic.robinson",
-    "dave.kent",
-    "dave.kent",
-    "dave.kent",
-    "william.gibbon",
-    "william.gibbon",
-    "william.gibbon",
+    "george.hill2",
+    "steve.williams4",
   ]
-  octo_infrastructure_support_schedule_user_order = [
-    "george.hill2",
-    "george.hill2",
-    "george.hill2",
-    "george.hill2",
-    "george.hill2",
-    "annesa.mariyam",
-    "annesa.mariyam",
-    "annesa.mariyam",
-    "annesa.mariyam",
-    "annesa.mariyam",
+  octo_platform_operations_secondary_schedule_user_order = [
+    "sebastian.norris",
+    "david.teeling1",
+    "prem.basumatary",
   ]
 
   services = {
@@ -1953,97 +1927,6 @@ data "pagerduty_escalation_policy" "shef_dba" {
   name = "NOMIS DBA Support"
 }
 
-data "pagerduty_user" "dso" {
-  for_each = local.dso_team_members
-  email    = "${each.key}${each.value}"
-}
-
-resource "pagerduty_team" "dso" {
-  name        = "Digital Studio Operations"
-  description = "DSO squad (HMPPS) responsible for infrastructure support of Nomis, Oasys, CSR, PlanetFM, NonCore. Managed in terraform"
-}
-
-resource "pagerduty_team_membership" "dso" {
-  for_each = data.pagerduty_user.dso
-  team_id  = pagerduty_team.dso.id
-  user_id  = each.value.id
-}
-
-resource "pagerduty_schedule" "dso" {
-  name        = "Digital Studio Operations Concierge (In Hours Rota)"
-  description = "#ask-digital-studio-operations Concierge in-hours rota. Managed in terraform"
-  time_zone   = "Europe/London"
-
-  # Incidents will not be created if there is no one on call. Adding a fall back layer to ensure there is always a user on call.
-  layer {
-    name                         = "Fallback layer"
-    start                        = "2025-05-15T06:00:00Z"
-    rotation_virtual_start       = "2025-05-15T06:00:00Z"
-    rotation_turn_length_seconds = 604800
-
-    users = [
-      pagerduty_user.pager_duty_users["modernisation_platform"].id
-    ]
-  }
-
-  layer {
-    name                         = "Primary Schedule"
-    start                        = "2026-05-12T00:00:00Z"
-    rotation_virtual_start       = "2026-05-12T00:00:00Z"
-    rotation_turn_length_seconds = 86400
-
-    users = [
-      for user in local.dso_schedule_user_order : data.pagerduty_user.dso[user].id
-    ]
-
-    restriction {
-      type              = "weekly_restriction"
-      start_day_of_week = 1
-      start_time_of_day = "08:00:00"
-      duration_seconds  = 28800
-    }
-    restriction {
-      type              = "weekly_restriction"
-      start_day_of_week = 2
-      start_time_of_day = "08:00:00"
-      duration_seconds  = 28800
-    }
-    restriction {
-      type              = "weekly_restriction"
-      start_day_of_week = 3
-      start_time_of_day = "08:00:00"
-      duration_seconds  = 28800
-    }
-    restriction {
-      type              = "weekly_restriction"
-      start_day_of_week = 4
-      start_time_of_day = "08:00:00"
-      duration_seconds  = 28800
-    }
-    restriction {
-      type              = "weekly_restriction"
-      start_day_of_week = 5
-      start_time_of_day = "08:00:00"
-      duration_seconds  = 28800
-    }
-  }
-
-  teams = [pagerduty_team.dso.id]
-}
-
-resource "pagerduty_escalation_policy" "dso" {
-  name  = "Digital Studio Operations Escalation Policy"
-  teams = [pagerduty_team.dso.id]
-
-  rule {
-    escalation_delay_in_minutes = 120 # since no on-call and primary notification is via slack integration
-    target {
-      type = "schedule_reference"
-      id   = pagerduty_schedule.dso.id
-    }
-  }
-}
-
 resource "pagerduty_service" "services" {
   for_each = local.services
 
@@ -2051,7 +1934,7 @@ resource "pagerduty_service" "services" {
   description             = "${each.key}-alarms"
   auto_resolve_timeout    = "null"
   acknowledgement_timeout = "null"
-  escalation_policy       = lookup(each.value, "escalation_policy", pagerduty_escalation_policy.dso.id)
+  escalation_policy       = lookup(each.value, "escalation_policy", pagerduty_escalation_policy.octo_platform_operations.id)
   alert_creation          = "create_alerts_and_incidents"
 }
 
@@ -2115,7 +1998,7 @@ resource "pagerduty_service" "az_dso_alerts" {
   name                    = each.key
   auto_resolve_timeout    = "null"
   acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.dso.id
+  escalation_policy       = pagerduty_escalation_policy.octo_platform_operations.id
   alert_creation          = "create_alerts_and_incidents"
 }
 
@@ -2180,27 +2063,27 @@ resource "pagerduty_event_orchestration_service" "az_dso_alerts" {
 
 # END - DSO Azure alerts
 
-# OCTO Infrastructure Support
+# OCTO Platform Operations
 
-data "pagerduty_user" "octo_infrastructure_support" {
-  for_each = local.octo_infrastructure_support_team_members
+data "pagerduty_user" "octo_platform_operations" {
+  for_each = local.octo_platform_operations_team_members
   email    = "${each.key}${each.value}"
 }
 
-resource "pagerduty_team" "octo_infrastructure_support" {
-  name        = "OCTO Infrastructure Support"
-  description = "OCTO Infrastructure Support squad (HMPPS) responsible for infrastructure support of Nomis, Oasys, CSR, PlanetFM, NonCore. Managed in terraform"
+resource "pagerduty_team" "octo_platform_operations" {
+  name        = "OCTO Platform Operations"
+  description = "OCTO Platform Operations squad (HMPPS) responsible for infrastructure support of Nomis, Oasys, CSR, PlanetFM, NonCore. Managed in terraform"
 }
 
-resource "pagerduty_team_membership" "octo_infrastructure_support" {
-  for_each = data.pagerduty_user.octo_infrastructure_support
-  team_id  = pagerduty_team.octo_infrastructure_support.id
+resource "pagerduty_team_membership" "octo_platform_operations" {
+  for_each = data.pagerduty_user.octo_platform_operations
+  team_id  = pagerduty_team.octo_platform_operations.id
   user_id  = each.value.id
 }
 
-resource "pagerduty_schedule" "octo_infrastructure_support" {
-  name        = "OCTO Infrastructure Support Concierge (In Hours Rota)"
-  description = "#ask-octo-infrastructure-support Concierge in-hours rota. Managed in terraform"
+resource "pagerduty_schedule" "octo_platform_operations_primary" {
+  name        = "OCTO Platform Operations Concierge (In Hours Rota) Primary"
+  description = "#ask-octo-platform-operations Concierge in-hours rota for the Primary Engineer. Managed in terraform"
   time_zone   = "Europe/London"
 
   # Incidents will not be created if there is no one on call. Adding a fall back layer to ensure there is always a user on call.
@@ -2222,7 +2105,7 @@ resource "pagerduty_schedule" "octo_infrastructure_support" {
     rotation_turn_length_seconds = 86400
 
     users = [
-      for user in local.octo_infrastructure_support_schedule_user_order : data.pagerduty_user.octo_infrastructure_support[user].id
+      for user in local.octo_platform_operations_primary_schedule_user_order : data.pagerduty_user.octo_platform_operations[user].id
     ]
 
     restriction {
@@ -2257,23 +2140,85 @@ resource "pagerduty_schedule" "octo_infrastructure_support" {
     }
   }
 
-  teams = [pagerduty_team.octo_infrastructure_support.id]
+  teams = [pagerduty_team.octo_platform_operations.id]
 }
 
-resource "pagerduty_escalation_policy" "octo_infrastructure_support" {
-  name  = "OCTO Infrastructure Support Escalation Policy"
-  teams = [pagerduty_team.octo_infrastructure_support.id]
+resource "pagerduty_schedule" "octo_platform_operations_secondary" {
+  name        = "OCTO Platform Operations Concierge (In Hours Rota) Secondary"
+  description = "#ask-octo-platform-operations Concierge in-hours rota for the Secondary Engineer. Managed in terraform"
+  time_zone   = "Europe/London"
+
+  # Incidents will not be created if there is no one on call. Adding a fall back layer to ensure there is always a user on call.
+  layer {
+    name                         = "Fallback layer"
+    start                        = "2025-05-15T06:00:00Z"
+    rotation_virtual_start       = "2025-05-15T06:00:00Z"
+    rotation_turn_length_seconds = 604800
+
+    users = [
+      pagerduty_user.pager_duty_users["modernisation_platform"].id
+    ]
+  }
+
+  layer {
+    name                         = "Secondary Schedule"
+    start                        = "2026-05-12T00:00:00Z"
+    rotation_virtual_start       = "2026-05-12T00:00:00Z"
+    rotation_turn_length_seconds = 86400
+
+    users = [
+      for user in local.octo_platform_operations_secondary_schedule_user_order : data.pagerduty_user.octo_platform_operations[user].id
+    ]
+
+    restriction {
+      type              = "weekly_restriction"
+      start_day_of_week = 1
+      start_time_of_day = "08:00:00"
+      duration_seconds  = 28800
+    }
+    restriction {
+      type              = "weekly_restriction"
+      start_day_of_week = 2
+      start_time_of_day = "08:00:00"
+      duration_seconds  = 28800
+    }
+    restriction {
+      type              = "weekly_restriction"
+      start_day_of_week = 3
+      start_time_of_day = "08:00:00"
+      duration_seconds  = 28800
+    }
+    restriction {
+      type              = "weekly_restriction"
+      start_day_of_week = 4
+      start_time_of_day = "08:00:00"
+      duration_seconds  = 28800
+    }
+    restriction {
+      type              = "weekly_restriction"
+      start_day_of_week = 5
+      start_time_of_day = "08:00:00"
+      duration_seconds  = 28800
+    }
+  }
+
+  teams = [pagerduty_team.octo_platform_operations.id]
+}
+
+resource "pagerduty_escalation_policy" "octo_platform_operations" {
+  name  = "OCTO Platform Operations Escalation Policy"
+  teams = [pagerduty_team.octo_platform_operations.id]
 
   rule {
-    escalation_delay_in_minutes = 120 # since no on-call and primary notification is via slack integration
+    escalation_delay_in_minutes = 120
     target {
       type = "schedule_reference"
-      id   = pagerduty_schedule.octo_infrastructure_support.id
+      id   = pagerduty_schedule.octo_platform_operations_primary.id
     }
   }
 }
 
-# END - OCTO Infrastructure Support
+# END - OCTO Platform Operations
 
 resource "pagerduty_service" "sprinkler-development" {
   name                    = "sprinkler-development"
@@ -2707,3 +2652,94 @@ resource "pagerduty_slack_connection" "hub2_prod" {
 }
 
 # Slack channel: #laa-alerts-hub2-prod
+
+# Integration Hub File Transfer Production
+# Slack channel: #integration-hub-high-priority-alerts
+resource "pagerduty_service" "integration_hub_high_priority_alerts" {
+  name                    = "Integration Hub File Transfer High Priority Alerts"
+  description             = "Sends alerts to #integration-hub-high-priority-alerts"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "integration_hub_high_priority_alerts" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.integration_hub_high_priority_alerts.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "integration_hub_high_priority_alerts" {
+  source_id         = pagerduty_service.integration_hub_high_priority_alerts.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C0BDYBK6GPJ"
+  notification_type = "responder"
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
+
+# Slack channel: #integration-hub-low-priority-alerts
+resource "pagerduty_service" "integration_hub_low_priority_alerts" {
+  name                    = "Integration Hub File Transfer Low Priority Alerts"
+  description             = "Sends alerts to #integration-hub-low-priority-alerts"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "integration_hub_low_priority_alerts" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.integration_hub_low_priority_alerts.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "integration_hub_low_priority_alerts" {
+  source_id         = pagerduty_service.integration_hub_low_priority_alerts.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C0B7PM6VD0E"
+  notification_type = "responder"
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}

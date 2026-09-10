@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Security Testing and ITHC
-last_reviewed_on: 2026-02-18
+last_reviewed_on: 2026-08-20
 review_in: 6 months
 ---
 
@@ -13,11 +13,11 @@ MOJ systems typically have a range of security testing, covering the application
 
 ## IT Health Check (ITHC)
 
-An [ITHC](https://security-guidance.service.justice.gov.uk/ost/ithc/#what-is-an-it-health-check-and-why-is-it-important) is an independent security assessment, typically including a penetration test. Service teams likely need an ITHC for their applications. The Modernisation Platform also has its own ITHCs. Service teams should ensure that their ITHC has a scope that does not overlap into areas which are Modernisation Platform’s responsibilities, and equally doesn’t assume Modernisation Platform are responsible for things which are the service team’s responsibilities. During an application’s ITHC, the Modernisation Platform team will not normally provide testers with higher permissions to the AWS account or cluster than what the service team already have access to.
+An ITHC is an independent security assessment, typically including a penetration test. Service teams likely need an ITHC for their applications. The Modernisation Platform also has its own ITHCs. Service teams should ensure that their ITHC has a scope that does not overlap into areas which are Modernisation Platform’s responsibilities, and equally doesn’t assume Modernisation Platform are responsible for things which are the service team’s responsibilities. During an application’s ITHC, the Modernisation Platform team will not normally provide testers with higher permissions to the AWS account or cluster than what the service team already have access to.
 So an ITHC for an application hosted on the Modernisation Platform should be: an application test, plus any cloud infrastructure configuration you do as code, including your environment configuration.
 We’ve written a guide based on one ITHC Scoping form, providing the division of responsibilities between Modernisation Platform and Service Teams:
 
-- [ITHC scoping for service teams vs Modernisation Platform] (https://justiceuk.sharepoint.com/:x:/r/sites/msteams_480621/Shared%20Documents/Modernisation%20Platform/ITHC%20scoping%20for%20service%20teams%20vs%20Modernisation%20Platform.xlsx?d=w29f008cf8f664ef98295312372db89fa&csf=1&web=1&e=oIgxhw)
+- [ITHC scoping for service teams vs Modernisation Platform](https://justiceuk.sharepoint.com/:x:/r/sites/msteams_480621/Shared%20Documents/Modernisation%20Platform/ITHC%20scoping%20for%20service%20teams%20vs%20Modernisation%20Platform.xlsx?d=w29f008cf8f664ef98295312372db89fa&csf=1&web=1&e=oIgxhw)
   This spreadsheet is a work in progress and we invite questions and suggestions to improve it.
 
 ## ITHC Tester access
@@ -44,9 +44,7 @@ AWS requires you to contact them if you do security testing on AWS services outs
 ## Load / stress testing
 
 A test that sends a sustained high volume of traffic to your service may become an issue for the Platform’s DDOS monitoring, and degrade connectivity to other Modernisation Platform tenants. Please coordinate with the Modernisation Platform when planning these tests.
-In addition, please note the [Amazon EC2 testing policy](https://aws.amazon.com/ec2/testing/) that forbids network stress testing / load testing, where the traffic is:
-
-> in aggregate, for more than 1 minute, over 1 Gbps (1 billion bits per second) or 1 Gpps (1 billion packets per second); generates traffic that appears to be abusive or malicious; or generates traffic that has the potential for impact to entities other than the anticipated target of the testing (such as routing or shared service infrastructure)
+In addition, please note the [Amazon EC2 testing policy](https://aws.amazon.com/ec2/testing/).
 
 ## Disallowed testing
 

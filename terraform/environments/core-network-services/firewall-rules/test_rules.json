@@ -41,11 +41,25 @@
     "destination_port": "5432",
     "protocol": "TCP"
   },
+  "cp_to_laa_test_pgres": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${laa-test}",
+    "destination_port": "5432",
+    "protocol": "TCP"
+  },
   "laa_test_to_mp_laa_test_http": {
     "action": "PASS",
     "source_ip": "${laa-lz-test}",
     "destination_ip": "${laa-test}",
     "destination_port": "80",
+    "protocol": "TCP"
+  },
+  "moj_wifi_to_laa_test_mp_https": {
+    "action": "PASS",
+    "source_ip": "${moj-wifi}",
+    "destination_ip": "${laa-test}",
+    "destination_port": "443",
     "protocol": "TCP"
   },
   "noms_test_vnet_to_mp_hmpps_test": {
@@ -261,13 +275,6 @@
   "laa_shared_services_nonprod_to_mp_laa_test": {
     "action": "PASS",
     "source_ip": "${laa-lz-shared-services-nonprod}",
-    "destination_ip": "${laa-test}",
-    "destination_port": "ANY",
-    "protocol": "IP"
-  },
-  "laa_shared_services_prod_to_mp_laa_test": {
-    "action": "PASS",
-    "source_ip": "${laa-lz-shared-services-prod}",
     "destination_ip": "${laa-test}",
     "destination_port": "ANY",
     "protocol": "IP"
@@ -542,6 +549,13 @@
     "action": "PASS",
     "source_ip": "${delius-test}",
     "destination_ip": "${hmpps-test}",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
+  "hmpps_test_to_delius_test_https": {
+    "action": "PASS",
+    "source_ip": "${hmpps-test}",
+    "destination_ip": "${delius-test}",
     "destination_port": "443",
     "protocol": "TCP"
   },

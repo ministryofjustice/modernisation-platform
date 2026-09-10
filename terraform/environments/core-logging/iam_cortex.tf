@@ -34,6 +34,7 @@ data "aws_iam_policy_document" "cortex_user_policy" {
       aws_sqs_queue.mp_modernisation_platform_waf_logs_queue.arn,
       aws_sqs_queue.mp_config_logs_queue.arn,
       aws_sqs_queue.r53_public_dns_logs_queue.arn,
+      aws_sqs_queue.session_manager_logs_queue.arn,
       [for key in aws_sqs_queue.logging : key.arn]
     ])
   }
@@ -50,7 +51,9 @@ data "aws_iam_policy_document" "cortex_user_policy" {
         module.s3_bucket_config_logs.bucket.arn,
         "${module.s3_bucket_config_logs.bucket.arn}/*",
         module.s3_bucket_r53_public_dns_logs.bucket.arn,
-        "${module.s3_bucket_r53_public_dns_logs.bucket.arn}/*"
+        "${module.s3_bucket_r53_public_dns_logs.bucket.arn}/*",
+        module.s3_bucket_session_manager_logs.bucket.arn,
+        "${module.s3_bucket_session_manager_logs.bucket.arn}/*"
       ],
       [for key in aws_s3_bucket.logging : "${key.arn}/*"]
     )
@@ -64,7 +67,10 @@ data "aws_iam_policy_document" "cortex_user_policy" {
     ]
     resources = concat(
       [for key in aws_kms_key.logging : key.arn],
-      [aws_kms_key.config_logs.arn]
+      [
+        aws_kms_key.config_logs.arn,
+        aws_kms_key.session_manager_logs.arn
+      ]
     )
   }
 }

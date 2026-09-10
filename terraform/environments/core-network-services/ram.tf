@@ -17,13 +17,16 @@ resource "aws_ram_principal_association" "transit-gateway" {
   for_each = {
     cloud-platform-development       = local.environment_management.account_ids["cloud-platform-development"],
     cloud-platform-preproduction     = local.environment_management.account_ids["cloud-platform-preproduction"],
+    cloud-platform-nonlive           = local.environment_management.account_ids["cloud-platform-nonlive"],
     cloud-platform-live              = local.environment_management.account_ids["cloud-platform-live"],
     container-platform-octo-nonlive  = local.environment_management.account_ids["container-platform-octo-nonlive"],
     container-platform-octo-live     = local.environment_management.account_ids["container-platform-octo-live"],
     container-platform-laa-nonlive   = local.environment_management.account_ids["container-platform-laa-nonlive"],
     container-platform-laa-live      = local.environment_management.account_ids["container-platform-laa-live"],
     container-platform-hmpps-nonlive = local.environment_management.account_ids["container-platform-hmpps-nonlive"],
-    container-platform-hmpps-live    = local.environment_management.account_ids["container-platform-hmpps-live"]
+    container-platform-hmpps-live    = local.environment_management.account_ids["container-platform-hmpps-live"],
+    container-platform-cd-nonlive    = local.environment_management.account_ids["container-platform-cd-nonlive"],
+    container-platform-cd-live       = local.environment_management.account_ids["container-platform-cd-live"]
   }
 
   principal          = each.value

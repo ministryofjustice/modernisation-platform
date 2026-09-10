@@ -25,7 +25,7 @@ provider "aws" {
   default_tags { tags = local.tags }
 }
 
-# AWS provider for core-vpc-production, to share VPCs into this account
+# AWS provider for core-network-services-production, to share VPCs into this account
 provider "aws" {
   alias  = "core-network-services"
   region = "eu-west-2"

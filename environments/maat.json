@@ -5,11 +5,6 @@
       "name": "development",
       "access": [
         {
-          "sso_group_name": "laa-aws-infrastructure",
-          "level": "sandbox",
-          "github_action_reviewer": "true"
-        },
-        {
           "sso_group_name": "laa-crime-apps-team",
           "level": "sandbox",
           "github_action_reviewer": "true"
@@ -29,11 +24,6 @@
     {
       "name": "test",
       "access": [
-        {
-          "sso_group_name": "laa-aws-infrastructure",
-          "level": "developer",
-          "github_action_reviewer": "true"
-        },
         {
           "sso_group_name": "laa-crime-apps-team",
           "level": "developer",
@@ -58,11 +48,6 @@
       "name": "preproduction",
       "access": [
         {
-          "sso_group_name": "laa-aws-infrastructure",
-          "level": "developer",
-          "github_action_reviewer": "true"
-        },
-        {
           "sso_group_name": "laa-crime-apps-team",
           "level": "developer",
           "github_action_reviewer": "true"
@@ -85,11 +70,6 @@
     {
       "name": "production",
       "access": [
-        {
-          "sso_group_name": "laa-aws-infrastructure",
-          "level": "developer",
-          "github_action_reviewer": "true"
-        },
         {
           "sso_group_name": "laa-crime-apps-team",
           "level": "developer",

@@ -24,6 +24,14 @@ These are [defined in code](https://github.com/ministryofjustice/modernisation-p
 - Comprehensive read-only visibility of the AWS environment. As this role provides access to contents of S3 and others, it is designed for users for whom view-only is insufficient.
 - Role makes use of AWS ReadOnly managed policy and is not at present configurable beyond that.
 
+### secrets-manager-editor
+
+The secrets-manager-editor role is intended for users who need read-only visibility across an environment but also need to update application secrets.
+
+- Log into the console
+- Read-only access to resources including objects and logs that are readable via AWS ReadOnlyAccess
+- Edit Secrets Manager secrets (update secret values and metadata)
+
 ### developer
 
 The developer role is the standard role used by teams deploying infrastructure onto the Modernisation Platform.
