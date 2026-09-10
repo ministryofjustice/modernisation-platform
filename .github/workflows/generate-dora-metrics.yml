@@ -49,6 +49,28 @@ jobs:
                   mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
                   PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
+            - name: Set GitHub App repository scope
+              id: app-scope
+              env:
+                  JSON_FILE_PATH: ${{ github.event.inputs.json_file_path }}
+              run: |
+                  set -euo pipefail
+                  shopt -s nullglob
+
+                  if [ -n "$JSON_FILE_PATH" ]; then
+                    json_files=("$JSON_FILE_PATH")
+                  else
+                    json_files=(scripts/dora-the-explora/*.json)
+                  fi
+
+                  if [ ${#json_files[@]} -eq 0 ]; then
+                    echo "::error::No DORA repository definition files found."
+                    exit 1
+                  fi
+
+                  repositories=$(jq -r -s '[.[].repos[]] | unique | join(",")' "${json_files[@]}")
+                  echo "repositories=$repositories" >> "$GITHUB_OUTPUT"
+
             - name: Create GitHub App token
               id: app
               uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
@@ -58,21 +80,7 @@ jobs:
                   permission-actions: read
                   permission-contents: read
                   permission-pull-requests: read
-                  repositories: >-
-                      modernisation-platform,modernisation-platform-ami-builds,modernisation-platform-cp-network-test,
-                      modernisation-platform-github-oidc-provider,modernisation-platform-github-oidc-role,
-                      modernisation-platform-instance-scheduler,modernisation-platform-terraform-aws-vm-import,
-                      modernisation-platform-terraform-baselines,modernisation-platform-terraform-bastion-linux,
-                      modernisation-platform-terraform-cross-account-access,modernisation-platform-terraform-dns-certificates,
-                      modernisation-platform-terraform-ec2-autoscaling-group,modernisation-platform-terraform-ec2-instance,
-                      modernisation-platform-terraform-ecs-cluster,modernisation-platform-terraform-environments,
-                      modernisation-platform-terraform-iam-superadmins,modernisation-platform-terraform-lambda-function,
-                      modernisation-platform-terraform-loadbalancer,modernisation-platform-terraform-member-vpc,
-                      modernisation-platform-terraform-pagerduty-integration,modernisation-platform-terraform-s3-bucket,
-                      modernisation-platform-terraform-s3-bucket-replication-role,modernisation-platform-terraform-ssm-patching,
-                      modernisation-platform-terraform-aws-chatbot,modernisation-platform-terraform-aws-waf,
-                      modernisation-platform-terraform-certificate-dns-validations,
-                      modernisation-platform-terraform-aws-data-firehose,modernisation-platform-github-actions
+                  repositories: ${{ steps.app-scope.outputs.repositories }}
 
             - name: Set up Python
               uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 #v7.0.0
