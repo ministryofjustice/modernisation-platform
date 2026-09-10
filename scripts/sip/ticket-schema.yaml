@@ -1,0 +1,92 @@
+version: 1
+
+required_fields:
+  - issue.url
+  - issue.number
+  - issue.title
+  - issue.definition_of_done
+  - control.identifier
+  - control.requested_outcome
+  - assessment.status
+  - assessment.current_state
+  - assessment.evidence
+  - ownership.route
+  - ownership.repositories
+  - decisions.required
+  - implementation.change_set
+  - validation.automated
+  - validation.development_test
+  - rollout.initial_scope
+  - rollout.rollback
+  - risks
+
+allowed_statuses:
+  - code-ready
+  - decision-required
+  - aws-evidence-required
+  - partially-implemented
+  - investigation-only
+  - potentially-complete
+
+completion_levels:
+  - suggested
+  - implemented
+  - validated
+  - verified
+  - complete
+
+rules:
+  - A ticket with unresolved scope, exception, notification or destructive-action decisions cannot be code-ready.
+  - Source inspection cannot establish deployed state or runtime behaviour.
+  - A fleet-wide control must default to disabled and name its initial development or test target.
+  - An organization policy must be tested without attachment to a production OU.
+  - Every repository in the change set must have repository-native validation.
+  - Completion claims must identify the supporting evidence.
+
+example:
+  issue:
+    url: https://github.com/ministryofjustice/modernisation-platform-security/issues/119
+    number: 119
+    title: Implement Alerting for New User Creation
+    definition_of_done:
+      - Alert on user creation and deletion.
+      - Notify the designated monitoring channel.
+      - Cover all relevant accounts.
+  control:
+    identifier: IAM-17
+    requested_outcome: Detect IAM user creation and deletion outside approved automation.
+  assessment:
+    status: decision-required
+    current_state:
+      - Account baselines already deliver CloudTrail events to CloudWatch Logs.
+      - The baseline alarm module already detects IAM user deletion outside approved automation.
+    evidence:
+      - repository: ministryofjustice/modernisation-platform-terraform-baselines
+        path: modules/securityhub-alarms/iam_alerts.tf
+  ownership:
+    route: account-baseline
+    repositories:
+      - ministryofjustice/modernisation-platform-terraform-baselines
+      - ministryofjustice/modernisation-platform
+  decisions:
+    required:
+      - Confirm the monitoring destination and priority.
+      - Confirm the account scope.
+      - Confirm which automation roles are trusted.
+  implementation:
+    change_set:
+      - Add a default-off CreateUser filter and alarm to the baseline module.
+      - Add module tests.
+      - Release the module and update consumer pins.
+      - Enable only in an approved development or test workspace.
+  validation:
+    automated:
+      - Baseline module formatting, validation and tests.
+    development_test:
+      - Terraform plan in the approved workspace.
+      - Verify a manual CreateUser event alarms and approved automation does not.
+  rollout:
+    initial_scope: One approved development or test account.
+    rollback: Disable the feature flag and reapply the previous consumer configuration.
+  risks:
+    - An incorrect automation exclusion can create alert noise or hide unapproved activity.

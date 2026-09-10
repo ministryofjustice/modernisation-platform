@@ -1,0 +1,69 @@
+issue:
+  url: https://github.com/ministryofjustice/modernisation-platform-security/issues/119
+  number: 119
+  title: Implement Alerting for New User Creation
+  definition_of_done:
+    - Alerts are triggered whenever a new user is created or deleted.
+    - Notifications are sent to the designated monitoring channel.
+    - Monitoring is enabled across all relevant accounts.
+
+control:
+  identifier: IAM-17
+  requested_outcome: Detect IAM user creation and deletion outside approved automation.
+
+assessment:
+  status: decision-required
+  current_state:
+    - Account baselines deliver CloudTrail management events to a CloudWatch Logs log group.
+    - The baseline alarm module detects IAM user deletion outside approved automation.
+    - No corresponding CreateUser alarm exists on the inspected baseline module version.
+  evidence:
+    - repository: ministryofjustice/modernisation-platform-terraform-baselines
+      path: modules/cloudtrail/main.tf
+    - repository: ministryofjustice/modernisation-platform-terraform-baselines
+      path: modules/securityhub-alarms/iam_alerts.tf
+    - repository: ministryofjustice/modernisation-platform-terraform-baselines
+      path: modules/securityhub-alarms/locals.tf
+    - repository: ministryofjustice/modernisation-platform
+      path: terraform/environments/bootstrap/secure-baselines/main.tf
+
+ownership:
+  route: account-baseline
+  repositories:
+    - ministryofjustice/modernisation-platform-terraform-baselines
+    - ministryofjustice/modernisation-platform
+
+decisions:
+  required:
+    - Confirm whether CreateUser uses the existing low-priority or high-priority topic.
+    - Confirm whether relevant accounts means member, core and management accounts.
+    - Confirm the complete list of trusted automation roles for each account type.
+    - Confirm the approved development or test workspace for runtime verification.
+
+implementation:
+  change_set:
+    - Add a default-off CreateUser metric filter and alarm to the baseline module.
+    - Reuse the existing automation role filter and notification topics.
+    - Add baseline module tests for disabled and enabled configurations.
+    - Release the baseline module and update both consumer pins.
+    - Enable the control only in the approved development or test workspace.
+
+validation:
+  automated:
+    - Run Terraform formatting and validation in the baseline module.
+    - Run the baseline module securityhub-alarms tests.
+    - Run repository static analysis.
+  development_test:
+    - Confirm the consumer plan creates only the intended filter and alarm.
+    - Confirm approved automation does not match the event filter.
+    - Confirm manual CreateUser matches and sends a notification.
+    - Confirm the existing DeleteUser behaviour remains unchanged.
+
+rollout:
+  initial_scope: One MP-approved development or test workspace.
+  rollback: Disable the feature flag and apply the previous consumer configuration.
+
+risks:
+  - An incorrect automation exclusion can create noise or hide unapproved user creation.
+  - Enabling the flag globally would create resources across the account fleet.
+  - Notification routing must be agreed before runtime testing.

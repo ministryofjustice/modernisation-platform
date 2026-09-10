@@ -1,0 +1,110 @@
+version: 1
+
+defaults:
+  discovery_mode: read-only
+  deployment_mode: disabled
+  rollout: explicit-development-test-opt-in
+  require_human_approval: true
+
+routes:
+  account-baseline:
+    description: Controls created in each Modernisation Platform account.
+    implementation:
+      repository: ministryofjustice/modernisation-platform-terraform-baselines
+    consumer:
+      repository: ministryofjustice/modernisation-platform
+      paths:
+        - terraform/environments/bootstrap/secure-baselines
+        - terraform/modernisation-platform-account
+    validation:
+      - module formatting and validation
+      - module tests
+      - consumer module version bump
+      - development or test workspace Terraform plan
+    safety:
+      - new behaviour defaults to disabled
+      - enable only in explicitly approved development or test workspaces
+
+  organization-policy:
+    description: AWS Organizations policies and attachments controlled by the management account.
+    implementation:
+      repository: ministryofjustice/aws-root-account
+      path: management-account/terraform
+    validation:
+      - policy syntax and static analysis
+      - management account Terraform plan
+      - allowed and denied operation tests in an isolated target
+      - recovery-path test
+    safety:
+      - create policy unattached first
+      - do not target a production OU during the POC
+      - document automation and break-glass exceptions
+
+  delegated-security-service:
+    description: Organisation security services operated from the delegated security account.
+    administration:
+      repository: ministryofjustice/aws-root-account
+      path: management-account/terraform
+    implementation:
+      repository: ministryofjustice/aws-root-account
+      path: organisation-security/terraform
+    validation:
+      - management account Terraform plan when delegation changes
+      - organisation security Terraform plan
+      - non-destructive audit or reporting test
+    safety:
+      - separate delegation from service policy changes
+      - start with audit-only behaviour where the service supports it
+
+  central-logging:
+    description: Central collection, storage, query and forwarding of platform logs.
+    implementation:
+      repository: ministryofjustice/modernisation-platform
+      path: terraform/environments/core-logging
+    validation:
+      - Terraform formatting and validation
+      - core-logging tests
+      - core-logging development or test plan
+
+  network-security:
+    description: Network Firewall, inspection VPC and platform network controls.
+    implementation:
+      repository: ministryofjustice/modernisation-platform
+      path: terraform/environments/core-network-services
+    validation:
+      - Terraform formatting and validation
+      - core-network-services tests
+      - development or test plan
+
+  operational-automation:
+    description: Scheduled scripts, notifications and operator-invoked workflows.
+    implementation:
+      repository: ministryofjustice/modernisation-platform
+      path: scripts
+    validation:
+      - lint and unit tests
+      - dry-run execution with fixture data
+      - explicit review before enabling mutations
+    safety:
+      - dry-run by default
+      - separate reporting, notification and mutation phases
+
+  workload-or-module:
+    description: A control owned by a specific MP workload or reusable Terraform module.
+    implementation:
+      repository: determine-from-existing-resource
+    validation:
+      - follow target repository contributor instructions
+      - run repository-native checks
+      - validate in an explicitly approved development or test target
+
+  investigation:
+    description: A spike whose output is evidence and a decision rather than production code.
+    implementation:
+      repository: ministryofjustice/modernisation-platform-security
+    validation:
+      - document evidence and limitations
+      - record team decision
+      - create implementation follow-up when required
+    safety:
+      - no production enablement as part of discovery
