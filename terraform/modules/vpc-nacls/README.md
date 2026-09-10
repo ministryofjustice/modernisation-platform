@@ -27,7 +27,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ------ | ------ |
 | [aws_network_acl.general-data](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl) | resource |
 | [aws_network_acl.general-private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl) | resource |
 | [aws_network_acl.general-public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl) | resource |
@@ -62,7 +62,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ------ | ------------- | ------ | --------- | :--------: |
 | <a name="input_additional_cidrs"></a> [additional\_cidrs](#input\_additional\_cidrs) | A list of strings containing cidr blocks of external networks which require private connectivity such as PSN addresses. | `list(string)` | `[]` | no |
 | <a name="input_additional_vpcs"></a> [additional\_vpcs](#input\_additional\_vpcs) | A list of strings containing names of external MP VPCs needing access. EG. ["platforms-development"] | `list(string)` | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to network ACL resources | `map(string)` | `{}` | no |

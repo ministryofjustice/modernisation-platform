@@ -31,7 +31,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ------ | ------ |
 | [aws_cloudwatch_log_group.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
 | [aws_default_security_group.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_security_group) | resource |
 | [aws_eip.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip) | resource |
@@ -75,7 +75,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ------ | ------------- | ------ | --------- | :--------: |
 | <a name="input_flow_log_s3_destination_arn"></a> [flow\_log\_s3\_destination\_arn](#input\_flow\_log\_s3\_destination\_arn) | Optionally supply an ARN of an S3 bucket to send flow logs to | `string` | `""` | no |
 | <a name="input_gateway"></a> [gateway](#input\_gateway) | Type of gateway to use for environment | `string` | `"none"` | no |
 | <a name="input_tags_common"></a> [tags\_common](#input\_tags\_common) | Ministry of Justice required tags | `map(any)` | n/a | yes |
@@ -87,7 +87,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ------ | ------------- |
 | <a name="output_network_acls"></a> [network\_acls](#output\_network\_acls) | n/a |
 | <a name="output_non_tgw_subnet_ids"></a> [non\_tgw\_subnet\_ids](#output\_non\_tgw\_subnet\_ids) | Non-Transit Gateway subnet IDs (public, private, data) |
 | <a name="output_non_tgw_subnet_ids_map"></a> [non\_tgw\_subnet\_ids\_map](#output\_non\_tgw\_subnet\_ids\_map) | Map of subnet ids, with keys being the subnet types and values being the list of subnet ids |

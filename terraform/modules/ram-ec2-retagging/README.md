@@ -27,7 +27,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ------ | ------ |
 | [aws_ec2_tag.subnets](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_tag) | resource |
 | [aws_ec2_tag.vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_tag) | resource |
 | [aws_subnet.host](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |

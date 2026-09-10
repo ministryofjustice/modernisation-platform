@@ -4,7 +4,7 @@
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ------ | --------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.0 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3.4 |
@@ -26,7 +26,7 @@
 ## Resources
 
 | Name | Type |
-|------|------|
+| ------ | ------ |
 | [aws_cloudwatch_log_group.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
 | [aws_default_security_group.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_security_group) | resource |
 | [aws_ec2_transit_gateway_vpc_attachment.attachments-inspection](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_vpc_attachment) | resource |
@@ -79,7 +79,7 @@
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ------ | ------------- | ------ | --------- | :--------: |
 | <a name="input_application_name"></a> [application\_name](#input\_application\_name) | Application name, eg `core-shared-services` or `core-network-services` | `string` | n/a | yes |
 | <a name="input_cloudwatch_kms_key_id"></a> [cloudwatch\_kms\_key\_id](#input\_cloudwatch\_kms\_key\_id) | Optional KMS key ID to use in encrypting VPC flow logs CloudWatch group. | `string` | `""` | no |
 | <a name="input_flow_log_s3_destination_arn"></a> [flow\_log\_s3\_destination\_arn](#input\_flow\_log\_s3\_destination\_arn) | Optionally supply an ARN of an S3 bucket to send flow logs to | `string` | `""` | no |
@@ -87,7 +87,7 @@
 | <a name="input_fw_delete_protection"></a> [fw\_delete\_protection](#input\_fw\_delete\_protection) | Boolean to enable or disable firewall deletion protection | `bool` | `true` | no |
 | <a name="input_fw_home_net_ips"></a> [fw\_home\_net\_ips](#input\_fw\_home\_net\_ips) | List of strings covering firewall HOME\_NET values | `list(string)` | n/a | yes |
 | <a name="input_fw_kms_arn"></a> [fw\_kms\_arn](#input\_fw\_kms\_arn) | KMS key ARN used for firewall encryption | `string` | n/a | yes |
-| <a name="input_fw_managed_rule_groups"></a> [fw\_managed\_rule\_groups](#input\_fw\_managed\_rule\_groups) | Names of AWS managed rule groups from https://docs.aws.amazon.com/network-firewall/latest/developerguide/aws-managed-rule-groups-threat-signature.html | `list(string)` | `[]` | no |
+| <a name="input_fw_managed_rule_groups"></a> [fw\_managed\_rule\_groups](#input\_fw\_managed\_rule\_groups) | Names of AWS managed rule groups from <https://docs.aws.amazon.com/network-firewall/latest/developerguide/aws-managed-rule-groups-threat-signature.html> | `list(string)` | `[]` | no |
 | <a name="input_fw_rules"></a> [fw\_rules](#input\_fw\_rules) | JSON map of maps containing stateless firewall rules | `map(any)` | n/a | yes |
 | <a name="input_tags_common"></a> [tags\_common](#input\_tags\_common) | Ministry of Justice required tags | `map(any)` | n/a | yes |
 | <a name="input_tags_prefix"></a> [tags\_prefix](#input\_tags\_prefix) | Prefix for name tags, e.g. "live\_data" | `string` | n/a | yes |
@@ -98,7 +98,7 @@
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ------ | ------------- |
 | <a name="output_firewall"></a> [firewall](#output\_firewall) | n/a |
 | <a name="output_fw_cloudwatch_name"></a> [fw\_cloudwatch\_name](#output\_fw\_cloudwatch\_name) | n/a |
 | <a name="output_internet_gateway"></a> [internet\_gateway](#output\_internet\_gateway) | n/a |
