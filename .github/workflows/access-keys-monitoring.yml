@@ -98,7 +98,7 @@ jobs:
       - name: Remove Collaborator Access Keys
         run: bash ./scripts/iam-monitoring/access-key-monitoring/delete_access_keys.sh
         env:
-          threshold: 90
+          threshold: 45
           group_name: "collaborators"
 
       # Step 8: Remove Superadmin Access Keys
