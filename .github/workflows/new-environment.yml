@@ -104,7 +104,7 @@ jobs:
 
       - name: Run terraform plan in terraform/environments
         id: tf_plan
-        run: bash scripts/terraform-plan.sh terraform/environments "-refresh=false"
+        run: bash scripts/terraform-plan.sh terraform/environments
 
       - name: Update PR comment with plan summary
         env:
