@@ -1,4 +1,7 @@
 rules:
+  github-app:
+    ignore:
+      - reusable_terraform_plan_apply.yml
   self-repository:
     ignore:
       - modernisation-platform-account.yml
