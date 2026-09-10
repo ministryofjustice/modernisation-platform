@@ -1,21 +1,14 @@
 name: New Modernisation Platform Environment
 description: Request a new Modernisation Platform Environment
-labels: [ "onboarding", "member request", "kanban", "New Account" ]
+# 'New Account' is intentionally NOT auto-applied here: it is the authorisation
+# gate for the Environment Request workflow, which triggers only when a
+# maintainer (someone with triage+ permission) adds that label to the issue.
+labels: [ "onboarding", "member request", "kanban" ]
 body:
 - type: markdown
   attributes:
     value: |
       Please complete the following details and submit the new issue.
-- type: dropdown
-  id: existing-account
-  attributes:
-    label: Is this an existing AWS account?
-    description: Select 'Yes' if this request is for an account that already exists in AWS, otherwise select 'No' to request a new account.
-    options:
-      - 'No'
-      - 'Yes'
-  validations:
-    required: true
 - type: textarea
   id: environment-details
   attributes:
