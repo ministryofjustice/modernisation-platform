@@ -13,7 +13,7 @@ If you're looking to raise an issue with this module, please create a new issue 
 ## Requirements
 
 | Name | Version |
-| ------ | --------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.0 |
 | <a name="requirement_time"></a> [time](#requirement\_time) | ~> 0.8 |
@@ -34,7 +34,7 @@ If you're looking to raise an issue with this module, please create a new issue 
 ## Resources
 
 | Name | Type |
-| ------ | ------ |
+|------|------|
 | [aws_iam_user_policy.user_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user_policy) | resource |
 | [time_sleep.wait_30_seconds](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
 | [aws_iam_policy_document.assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -42,7 +42,7 @@ If you're looking to raise an issue with this module, please create a new issue 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ------ | ------------- | ------ | --------- | :--------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_accounts"></a> [accounts](#input\_accounts) | List of accounts to give access to with access levels | `list(any)` | n/a | yes |
 | <a name="input_environment_management"></a> [environment\_management](#input\_environment\_management) | Environment management json | <pre>object({<br/>    account_ids                                 = map(string)<br/>    aws_organizations_root_account_id           = string<br/>    modernisation_platform_account_id           = string<br/>    modernisation_platform_organisation_unit_id = string<br/>  })</pre> | n/a | yes |
 | <a name="input_username"></a> [username](#input\_username) | User name | `string` | n/a | yes |

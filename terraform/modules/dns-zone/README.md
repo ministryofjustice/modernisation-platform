@@ -17,7 +17,7 @@ If you're looking to raise an issue with this module, please create a new issue 
 ## Providers
 
 | Name | Version |
-| ------ | --------- |
+|------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 6.0 |
 | <a name="provider_aws.aws-us-east-1"></a> [aws.aws-us-east-1](#provider\_aws.aws-us-east-1) | ~> 6.0 |
 | <a name="provider_aws.core-network-services"></a> [aws.core-network-services](#provider\_aws.core-network-services) | ~> 6.0 |
@@ -29,7 +29,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ------ | ------ |
+|------|------|
 | [aws_cloudwatch_metric_alarm.ddos_attack_public_hosted_zone](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 | [aws_route53_record.mod-ns-private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.mod-ns-public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
@@ -40,7 +40,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ------ | ------------- | ------ | --------- | :--------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_accounts"></a> [accounts](#input\_accounts) | n/a | `map(any)` | n/a | yes |
 | <a name="input_dns_zone"></a> [dns\_zone](#input\_dns\_zone) | n/a | `string` | n/a | yes |
 | <a name="input_environments"></a> [environments](#input\_environments) | n/a | `any` | n/a | yes |

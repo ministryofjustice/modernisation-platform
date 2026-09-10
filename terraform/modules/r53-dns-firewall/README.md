@@ -59,7 +59,7 @@ If you're looking to raise an issue with this module, please create a new issue 
 ## Requirements
 
 | Name | Version |
-| ------ | --------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.0 |
 | <a name="requirement_external"></a> [external](#requirement\_external) | ~> 2.0 |
@@ -78,7 +78,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ------ | ------ |
+|------|------|
 | [aws_route53_resolver_firewall_domain_list.allow](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_resolver_firewall_domain_list) | resource |
 | [aws_route53_resolver_firewall_domain_list.block](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_resolver_firewall_domain_list) | resource |
 | [aws_route53_resolver_firewall_rule.allow](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_resolver_firewall_rule) | resource |
@@ -91,7 +91,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ------ | ------------- | ------ | --------- | :--------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_allowed_domains"></a> [allowed\_domains](#input\_allowed\_domains) | List of allowed domains | `list(string)` | `[]` | no |
 | <a name="input_association_priority"></a> [association\_priority](#input\_association\_priority) | Priority of the firewall rule group association | `number` | `101` | no |
 | <a name="input_block_response"></a> [block\_response](#input\_block\_response) | The way that you want DNS Firewall to block the request. Supported Valid values are NODATA, NXDOMAIN, or OVERRIDE | `string` | `"NXDOMAIN"` | no |

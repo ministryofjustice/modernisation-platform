@@ -27,7 +27,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ------ | ------ |
+|------|------|
 | [aws_kms_alias.ebs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
 | [aws_kms_alias.general](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
 | [aws_kms_alias.rds](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
@@ -42,7 +42,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ------ | ------------- | ------ | --------- | :--------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_business_unit"></a> [business\_unit](#input\_business\_unit) | String describing the business unit. EG, CJSE | `string` | n/a | yes |
 | <a name="input_business_unit_account_ids"></a> [business\_unit\_account\_ids](#input\_business\_unit\_account\_ids) | List of account IDs permitted to utilise key. | `list(any)` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Map of tags to apply to KMS keys. | `map(any)` | n/a | yes |

@@ -22,7 +22,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ------ | ------ |
+|------|------|
 | [aws_route53_vpc_association_authorization.private_zone_vpc_auth](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_vpc_association_authorization) | resource |
 | [aws_route53_zone_association.private_zone_assoc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_zone_association) | resource |
 | [aws_route53_zone.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |

@@ -27,7 +27,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ------ | ------ |
+|------|------|
 | [aws_ram_principal_association.acm](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ram_principal_association) | resource |
 | [aws_ram_principal_association.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ram_principal_association) | resource |
 | [aws_ram_resource_share.acm](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ram_resource_share) | data source |
@@ -36,7 +36,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ------ | ------------- | ------ | --------- | :--------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_acm_pca"></a> [acm\_pca](#input\_acm\_pca) | ACM certificate manager | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | environment | `string` | n/a | yes |
 | <a name="input_principal"></a> [principal](#input\_principal) | Principal to share with | `string` | n/a | yes |
