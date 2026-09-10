@@ -95,6 +95,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       
       - name: Decrypt Secrets
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
@@ -132,9 +134,11 @@ jobs:
           } >> "$GITHUB_ENV"
 
       - name: Setup Nuke Config
+        env:
+          ACCOUNT_BLOCKLIST_STR: ${{ needs.setup-prerequisites.outputs.account_blocklist_str }}
         run: |
           export accounts_str="$ACCOUNTS_STR"
-          account_blocklist_str=$(echo "${{ needs.setup-prerequisites.outputs.account_blocklist_str }}" | base64 --decode)
+          account_blocklist_str=$(echo "$ACCOUNT_BLOCKLIST_STR" | base64 --decode)
           export account_blocklist_str
           cat scripts/nuke-config-template.txt | envsubst > nuke-config.yml
 

@@ -36,6 +36,8 @@ jobs:
       # Step 1: Checkout the repository
       - name: Checkout Repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       # Step 1.1: Decrypt Secrets  
       - name: Decrypt Secrets
