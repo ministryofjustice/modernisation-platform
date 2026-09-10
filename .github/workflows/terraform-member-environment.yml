@@ -60,10 +60,11 @@ jobs:
             CHANGED_DIRECTORIES=$(git diff HEAD^ HEAD --name-only | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | cut -f1-3 -d"/" | uniq | base64 -w 0)
             CHANGED_DIRECTORY_NAMES=$(git diff HEAD^ HEAD --name-only | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | cut -f3 -d"/" | uniq | jq -R -s -c 'split("\n")[:-1]')
           fi
-          echo "CHANGED_DIRECTORIES=$CHANGED_DIRECTORIES" >> $GITHUB_OUTPUT
-          echo "CHANGED_DIRECTORY_NAMES=$CHANGED_DIRECTORY_NAMES" >> $GITHUB_OUTPUT
+          echo "CHANGED_DIRECTORIES=$CHANGED_DIRECTORIES" >> "$GITHUB_OUTPUT"
+          echo "CHANGED_DIRECTORY_NAMES=$CHANGED_DIRECTORY_NAMES" >> "$GITHUB_OUTPUT"
       - name: Display changed directories
-        run: echo "Directories in scope:" ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}
+        run: |
+          echo "Directories in scope: ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}"
       - name: Slack failure notification
         uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
         with:
@@ -100,14 +101,14 @@ jobs:
           APPLICATION_ENVIRONMENT="${{ matrix.application }}-${{ matrix.environment }}"
           echo "Application: $APPLICATION_ENVIRONMENT"
           ACCOUNT_NUMBER=$(echo "$ENVIRONMENT_MANAGEMENT" | jq -r --arg app_env "$APPLICATION_ENVIRONMENT" '.account_ids[$app_env] // empty')
-          echo $ACCOUNT_NUMBER
+          echo "$ACCOUNT_NUMBER"
           if [ -z "$ACCOUNT_NUMBER" ]; then
             echo "::warning::Account number not found for $APPLICATION_ENVIRONMENT, skipping..."
-            echo "SKIP=true" >> $GITHUB_ENV
+            echo "SKIP=true" >> "$GITHUB_ENV"
           else
             echo "::add-mask::$ACCOUNT_NUMBER"
-            echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
-            echo "SKIP=false" >> $GITHUB_ENV
+            echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
+            echo "SKIP=false" >> "$GITHUB_ENV"
           fi
       - name: Configure AWS credentials
         if: env.SKIP == 'false'
@@ -128,7 +129,7 @@ jobs:
         id: init
         run: |
           echo "Running 'terraform init' in terraform/environments/${{ matrix.application }}" 
-          scripts/terraform-init.sh terraform/environments/${{ matrix.application }}
+          scripts/terraform-init.sh "terraform/environments/${{ matrix.application }}"
       - name: Terraform workspace
         if: env.SKIP == 'false'
         id: workspace
@@ -139,7 +140,7 @@ jobs:
         if: env.SKIP == 'false'
         id: plan
         run: |
-          scripts/terraform-plan.sh terraform/environments/${{ matrix.application }}
+          scripts/terraform-plan.sh "terraform/environments/${{ matrix.application }}"
 
   terraform-plan-preprod-prod:
     runs-on: ubuntu-latest
@@ -160,9 +161,9 @@ jobs:
           PASSPHRASE: ${{ secrets.PASSPHRASE }}        
       - name: Set account number
         run: |
-          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "::add-mask::$ACCOUNT_NUMBER"
-          echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
         with:
@@ -178,39 +179,40 @@ jobs:
       - name: Terraform init
         id: init
         run: |
-          export CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
-          for directory in $CHANGED_DIRECTORIES; do
-            echo "Running 'terraform init' in" $directory
-            scripts/terraform-init.sh $directory
-          done
+          CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
+          export CHANGED_DIRECTORIES
+          while IFS= read -r directory; do
+            echo "Running 'terraform init' in $directory"
+            scripts/terraform-init.sh "$directory"
+          done <<< "$CHANGED_DIRECTORIES"
       - name: Terraform workspace
         id: workspace
         run: |
-          export CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
-          for directory in $CHANGED_DIRECTORIES; do
-                workspace="$(basename $directory)-${{ matrix.environment }}"
+          CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
+          export CHANGED_DIRECTORIES
+          while IFS= read -r directory; do
+                workspace="$(basename "$directory")-${{ matrix.environment }}"
 
                 if terraform -chdir="$directory" workspace list | grep "$workspace"; then
                   terraform -chdir="$directory" workspace select "$workspace"
 
                 else
                   echo "Workspace '$workspace' does not exist, skipping further processing"
-                  echo "skip_plan=true" >> $GITHUB_OUTPUT
+                  echo "skip_plan=true" >> "$GITHUB_OUTPUT"
                 fi
 
                 unset workspace
-          done
+          done <<< "$CHANGED_DIRECTORIES"
           echo "Selected $(terraform -chdir="$directory" workspace show)"
       - name: Terraform plan
         id: plan
         if: ${{ steps.workspace.outputs.skip_plan != 'true' }}
         run: |
-          export CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
-          for directory in $CHANGED_DIRECTORIES; do
-            workspace="$(basename $directory)-${{ matrix.environment }}"
-            scripts/terraform-plan.sh $directory
-            unset workspace
-          done
+          CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
+          export CHANGED_DIRECTORIES
+          while IFS= read -r directory; do
+            scripts/terraform-plan.sh "$directory"
+          done <<< "$CHANGED_DIRECTORIES"
       - name: Mark job skipped
         if: ${{ steps.workspace.outputs.skip_plan == 'true' }}
         run: |
@@ -241,14 +243,14 @@ jobs:
           APPLICATION_ENVIRONMENT="${{ matrix.application }}-${{ matrix.environment }}"
           echo "Application: $APPLICATION_ENVIRONMENT"
           ACCOUNT_NUMBER=$(echo "$ENVIRONMENT_MANAGEMENT" | jq -r --arg app_env "$APPLICATION_ENVIRONMENT" '.account_ids[$app_env] // empty')
-          echo $ACCOUNT_NUMBER
+          echo "$ACCOUNT_NUMBER"
           if [ -z "$ACCOUNT_NUMBER" ]; then
             echo "::warning::Account number not found for $APPLICATION_ENVIRONMENT, skipping..."
-            echo "SKIP=true" >> $GITHUB_ENV
+            echo "SKIP=true" >> "$GITHUB_ENV"
           else
             echo "::add-mask::$ACCOUNT_NUMBER"
-            echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
-            echo "SKIP=false" >> $GITHUB_ENV
+            echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
+            echo "SKIP=false" >> "$GITHUB_ENV"
           fi
       - name: Configure AWS credentials
         if: env.SKIP == 'false'
@@ -269,7 +271,7 @@ jobs:
         id: init
         run: |
           echo "Running 'terraform init' in terraform/environments/${{ matrix.application }}" 
-          scripts/terraform-init.sh terraform/environments/${{ matrix.application }}
+          scripts/terraform-init.sh "terraform/environments/${{ matrix.application }}"
       - name: Terraform workspace
         if: env.SKIP == 'false'
         id: workspace
@@ -280,7 +282,7 @@ jobs:
         if: env.SKIP == 'false'
         id: apply
         run: |
-          scripts/terraform-apply.sh terraform/environments/${{ matrix.application }}
+          scripts/terraform-apply.sh "terraform/environments/${{ matrix.application }}"
 
   terraform-apply-preprod-prod:
     if: github.ref == 'refs/heads/main'
@@ -304,9 +306,9 @@ jobs:
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set account number
         run: |
-          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "::add-mask::$ACCOUNT_NUMBER"
-          echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
         with:
@@ -322,49 +324,53 @@ jobs:
       - name: Terraform init
         id: init
         run: |
-          export CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
-          for directory in $CHANGED_DIRECTORIES; do
-            echo "Running 'terraform init' in" $directory
-            scripts/terraform-init.sh $directory
-          done
+          CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
+          export CHANGED_DIRECTORIES
+          while IFS= read -r directory; do
+            echo "Running 'terraform init' in $directory"
+            scripts/terraform-init.sh "$directory"
+          done <<< "$CHANGED_DIRECTORIES"
       - name: Terraform workspace
         id: workspace
         run: |
-          export CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
-          for directory in $CHANGED_DIRECTORIES; do
-                workspace="$(basename $directory)-${{ matrix.environment }}"
+          CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
+          export CHANGED_DIRECTORIES
+          while IFS= read -r directory; do
+                workspace="$(basename "$directory")-${{ matrix.environment }}"
 
                 if terraform -chdir="$directory" workspace list | grep "$workspace"; then
                   terraform -chdir="$directory" workspace select "$workspace"
 
                 else
                   echo "Workspace '$workspace' does not exist, skipping further processing"
-                  echo "skip_plan=true" >> $GITHUB_OUTPUT
+                  echo "skip_plan=true" >> "$GITHUB_OUTPUT"
                 fi
 
                 unset workspace
-          done
+          done <<< "$CHANGED_DIRECTORIES"
           echo "Selected $(terraform -chdir="$directory" workspace show)"
       - name: Terraform plan
         id: plan
         if: ${{ steps.workspace.outputs.skip_plan != 'true' }}
         run: |
-          export CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
-          for directory in $CHANGED_DIRECTORIES; do
-            workspace="$(basename $directory)-${{ matrix.environment }}"
-            scripts/terraform-plan.sh $directory -out="$workspace.tfplan"
+          CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
+          export CHANGED_DIRECTORIES
+          while IFS= read -r directory; do
+            workspace="$(basename "$directory")-${{ matrix.environment }}"
+            scripts/terraform-plan.sh "$directory" -out="$workspace.tfplan"
             unset workspace
-          done
+          done <<< "$CHANGED_DIRECTORIES"
       - name: Terraform apply
         id: apply
         if: ${{ steps.plan.conclusion == 'success' }}
         run: |
-          export CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
-          for directory in $CHANGED_DIRECTORIES; do
-            workspace="$(basename $directory)-${{ matrix.environment }}"
-            scripts/terraform-apply.sh $directory "$workspace.tfplan"
+          CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
+          export CHANGED_DIRECTORIES
+          while IFS= read -r directory; do
+            workspace="$(basename "$directory")-${{ matrix.environment }}"
+            scripts/terraform-apply.sh "$directory" "$workspace.tfplan"
             unset workspace
-          done
+          done <<< "$CHANGED_DIRECTORIES"
 
       - name: Slack failure notification
         uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0

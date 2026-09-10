@@ -80,10 +80,12 @@ jobs:
           echo ""
 
           # Prepare report header
-          echo "## 🔗 Broken Links Report" > broken-links-report.md
-          echo "" >> broken-links-report.md
-          echo "| Status | URL | File | Line |" >> broken-links-report.md
-          echo "|--------|-----|------|------|" >> broken-links-report.md
+          {
+            echo "## 🔗 Broken Links Report"
+            echo ""
+            echo "| Status | URL | File | Line |"
+            echo "|--------|-----|------|------|"
+          } > broken-links-report.md
 
           while IFS= read -r url; do
             CHECKED=$((CHECKED + 1))
@@ -104,7 +106,7 @@ jobs:
 
               # Find all occurrences with file and line number
               while IFS= read -r file; do
-                grep -EIn 'https?://[A-Za-z0-9._~:/?#@!$&*+,;=%-]+' "$file" 2>/dev/null | grep -F "$url" | while IFS=: read -r line_num content; do
+                grep -EIn 'https?://[A-Za-z0-9._~:/?#@!$&*+,;=%-]+' "$file" 2>/dev/null | grep -F "$url" | while IFS=: read -r line_num _content; do
                   echo "     📍 $file:$line_num"
                   echo "| ${STATUS} | ${url} | ${file} | ${line_num} |" >> broken-links-report.md
                 done

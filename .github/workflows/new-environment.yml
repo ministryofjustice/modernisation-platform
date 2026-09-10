@@ -72,12 +72,12 @@ jobs:
           bash ./scripts/check-github-api-usage.sh
       - name: Set env vars
         run: |
-          echo "TF_VAR_github_token=${{ steps.app.outputs.token }}" >> $GITHUB_ENV
+          echo "TF_VAR_github_token=${{ steps.app.outputs.token }}" >> "$GITHUB_ENV"
       - name: Set Account Number
         run: |
-          ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "::add-mask::$ACCOUNT_NUMBER"
-          echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
         with:
@@ -139,12 +139,12 @@ jobs:
           bash ./scripts/check-github-api-usage.sh
       - name: Set env vars
         run: |
-          echo "TF_VAR_github_token=${{ steps.app.outputs.token }}" >> $GITHUB_ENV
+          echo "TF_VAR_github_token=${{ steps.app.outputs.token }}" >> "$GITHUB_ENV"
       - name: Set Account Number
         run: |
-          ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "::add-mask::$ACCOUNT_NUMBER"
-          echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
         with:
@@ -183,9 +183,9 @@ jobs:
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: |
-          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "::add-mask::$ACCOUNT_NUMBER"
-          echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
         with:
@@ -227,9 +227,9 @@ jobs:
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: |
-          ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "::add-mask::$ACCOUNT_NUMBER"
-          echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
         with:
@@ -244,7 +244,7 @@ jobs:
         id: new_account
         run: |
           files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | tr '\n' ',' | awk '{$1=$1};1')
-          echo "files=$files" >> $GITHUB_OUTPUT
+          echo "files=$files" >> "$GITHUB_OUTPUT"
       - name: Run delegate access
         run: |
           IFS=',' read -r -a accounts <<< "${{ steps.new_account.outputs.files }}"
@@ -282,9 +282,9 @@ jobs:
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: |
-          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "::add-mask::$ACCOUNT_NUMBER"
-          echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
         with:
@@ -295,19 +295,19 @@ jobs:
         id: new_account
         run: |
           files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | tr '\n' ',' | awk '{$1=$1};1')
-          echo "files=$files" >> $GITHUB_OUTPUT
+          echo "files=$files" >> "$GITHUB_OUTPUT"
       - name: Remove Default VPC
         run: |
           IFS=',' read -r -a accounts <<< "${{ steps.new_account.outputs.files }}"          
           if [[ ${#accounts[@]} -gt 0 ]]; then
             for i in "${accounts[@]}"; do
               environments=$(jq -r '.environments[].name' "environments/${i}.json")
-              for env in $environments; do
+              while IFS= read -r env; do
                 key="${i}-${env}"
                 account_number=$(echo "$AWS_ENVIRONMENTS" | jq -r ".account_ids[\"$key\"]")
                 echo "[+] Running remove-default-vpc for account ${account_number}"
                 # bash ./scripts/internal/remove-default-vpc/remove_default_vpc_new_account.sh $account_number
-              done
+              done <<< "$environments"
             done
           else
             echo "[+] There were no AWS member accounts to process"
@@ -337,9 +337,9 @@ jobs:
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: |
-          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "::add-mask::$ACCOUNT_NUMBER"
-          echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
         with:
@@ -354,7 +354,7 @@ jobs:
         id: new_account
         run: |
           files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | tr '\n' ',' | awk '{$1=$1};1')
-          echo "files=$files" >> $GITHUB_OUTPUT
+          echo "files=$files" >> "$GITHUB_OUTPUT"
       - name: Run secure baselines
         run: |
           IFS=',' read -r -a accounts <<< "${{ steps.new_account.outputs.files }}"
@@ -391,9 +391,9 @@ jobs:
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: |
-          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "::add-mask::$ACCOUNT_NUMBER"
-          echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
         with:
@@ -408,7 +408,7 @@ jobs:
         id: new_account
         run: |
           files=$(git diff --name-only --diff-filter=M @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | tr '\n' ',' | awk '{$1=$1};1')
-          echo "files=$files" >> $GITHUB_OUTPUT
+          echo "files=$files" >> "$GITHUB_OUTPUT"
       - name: Run single sign on
         run: |
           IFS=',' read -r -a accounts <<< "${{ steps.new_account.outputs.files }}"
@@ -437,9 +437,9 @@ jobs:
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: |
-          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "::add-mask::$ACCOUNT_NUMBER"
-          echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
         with:
@@ -454,7 +454,7 @@ jobs:
         id: new_account
         run: |
           files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | tr '\n' ',' | awk '{$1=$1};1')
-          echo "files=$files" >> $GITHUB_OUTPUT
+          echo "files=$files" >> "$GITHUB_OUTPUT"
       - name: Run single sign on
         run: |
           IFS=',' read -r -a accounts <<< "${{ steps.new_account.outputs.files }}"
@@ -511,8 +511,8 @@ jobs:
         id: pr_number
         if: steps.environment_json_changes.outputs.files != ''
         run: |
-          PR_NUMBER=$(gh api repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/pulls --jq '.[0].number')
-          echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
+          PR_NUMBER=$(gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/pulls" --jq '.[0].number')
+          echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Send notification to Slack
@@ -527,7 +527,7 @@ jobs:
           continue
           fi
           echo "Slack channel found: $slack_channel"
-          webhook_url=$(echo $SLACK_WEBHOOKS | jq -r --arg channel "$slack_channel" '.[$channel]')
+          webhook_url=$(echo "$SLACK_WEBHOOKS" | jq -r --arg channel "$slack_channel" '.[$channel]')
           if [[ -z "$webhook_url" || "$webhook_url" == "null" ]]; then
           echo "No webhook URL found for channel $slack_channel. Skipping notification."
           continue
@@ -573,8 +573,8 @@ jobs:
       - name: Send notification to Email
         if: steps.environment_json_changes.outputs.files != ''
         run: |
-          DECODED_FILES=$(echo ${{ steps.environment_json_changes.outputs.files }} | base64 --decode)
-          python ./scripts/json-changes-notifier.py $DECODED_FILES   
+          DECODED_FILES=$(echo "${{ steps.environment_json_changes.outputs.files }}" | base64 --decode)
+          python ./scripts/json-changes-notifier.py "$DECODED_FILES"
         env:
           PR_NUMBER: ${{ steps.pr_number.outputs.pr_number }}   
   member-bootstrap:
@@ -593,9 +593,9 @@ jobs:
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: |
-          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "::add-mask::$ACCOUNT_NUMBER"
-          echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
         with:
@@ -610,7 +610,7 @@ jobs:
         id: new_account
         run: |
           files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | tr '\n' ',' | awk '{$1=$1};1')
-          echo "files=$files" >> $GITHUB_OUTPUT
+          echo "files=$files" >> "$GITHUB_OUTPUT"
       - name: Run Member Bootstrap
         run: |
           IFS=',' read -r -a accounts <<< "${{ steps.new_account.outputs.files }}"
@@ -639,8 +639,8 @@ jobs:
     with:
       working-directory: "terraform/modernisation-platform-account"
       workflow_id: "modernisation-platform-account"
-      set_github_app_token: "true"
-      download_collaborators: "true"
+      set_github_app_token: ${{ 'true' }}
+      download_collaborators: ${{ 'true' }}
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}

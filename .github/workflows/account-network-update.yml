@@ -33,7 +33,7 @@ jobs:
         run: |
           if [ ! -f network-setup-info.json ]; then
             echo "Artifact not found. Skipping the workflow."
-            echo "SKIP=true" >> $GITHUB_ENV
+            echo "SKIP=true" >> "$GITHUB_ENV"
           fi
 
       - name: Set up Python
@@ -60,9 +60,9 @@ jobs:
         if: env.SKIP != 'true' && env.ISOLATED_ACCOUNT == 'No'
         run: |
           python scripts/network-setup.py \
-            $(jq -r '.app_name' network-setup-info.json) \
-            $(jq -r '.business_unit' network-setup-info.json) \
-            $(jq -r '.environments[]' network-setup-info.json)
+            "$(jq -r '.app_name' network-setup-info.json)" \
+            "$(jq -r '.business_unit' network-setup-info.json)" \
+            "$(jq -r '.environments[]' network-setup-info.json)"
 
       - name: Commit and push network changes
         if: env.SKIP != 'true' && env.ISOLATED_ACCOUNT == 'No'

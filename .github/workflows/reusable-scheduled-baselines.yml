@@ -65,7 +65,7 @@ jobs:
       steps:
         - name: Log Job Name
           run: | 
-            echo "Job Name: " ${{ inputs.JOB_NAME }}
+            echo "Job Name: ${{ inputs.JOB_NAME }}"
         - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         - name: Decrypt Secrets
           uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
@@ -77,7 +77,7 @@ jobs:
           run: |
             ACCOUNT_NUMBER=$(jq -r -e '.${{ inputs.aws_account_id_name }}' <<< "$ENVIRONMENT_MANAGEMENT")
             echo "::add-mask::$ACCOUNT_NUMBER"
-            echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+            echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
         - name: Configure AWS Credentials
           uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
           with:
@@ -93,9 +93,8 @@ jobs:
         - name: Persist terraform state to backend
           if: ${{ failure() && hashFiles(env.STATE_FILE) != '' }}
           run: |
-            bash scripts/terraform-state-push.sh "${{ inputs.working_directory }}"
-            if [ $? -eq 0 ]; then
-              echo "STATE_PUSH_SUCCESSFUL=true" >> $GITHUB_ENV
+            if bash scripts/terraform-state-push.sh "${{ inputs.working_directory }}"; then
+              echo "STATE_PUSH_SUCCESSFUL=true" >> "$GITHUB_ENV"
             fi
         - name: Slack failure notification
           uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
