@@ -704,10 +704,6 @@ jobs:
   modernisation-platform-account-plan-and-apply:
     uses: ./.github/workflows/reusable_terraform_plan_apply.yml
     needs: create-environment
-    permissions:
-      id-token: write
-      contents: read
-      pull-requests: write
     with:
       working-directory: "terraform/modernisation-platform-account"
       workflow_id: "modernisation-platform-account"
