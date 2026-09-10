@@ -68,7 +68,6 @@ jobs:
         with:
           client-id: ${{ env.APP_ID }}               
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
-          owner: "ministryofjustice"
           permission-contents: read
           permission-pull-requests: write
           repositories: "modernisation-platform,modernisation-platform-github"
@@ -146,7 +145,6 @@ jobs:
         with:
           client-id: ${{ env.APP_ID }}               
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
-          owner: "ministryofjustice"
           permission-contents: read
           permission-pull-requests: write
           repositories: "modernisation-platform,modernisation-platform-github"
