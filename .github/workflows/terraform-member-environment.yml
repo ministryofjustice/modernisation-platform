@@ -26,14 +26,15 @@ defaults:
 env:
   TF_IN_AUTOMATION: true
   AWS_REGION: "eu-west-2"
-permissions:
-  id-token: write # This is required for requesting the JWT
-  contents: read # This is required for actions/checkout
+permissions: {}
 
 jobs:
 
   fetch-secrets:
     uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # This is required for actions/checkout
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -41,9 +42,13 @@ jobs:
   find-environments:
     runs-on: ubuntu-latest
     needs: fetch-secrets
+    permissions:
+      contents: read # This is required for actions/checkout
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Decrypt Secrets
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
         with:
@@ -63,8 +68,10 @@ jobs:
           echo "CHANGED_DIRECTORIES=$CHANGED_DIRECTORIES" >> "$GITHUB_OUTPUT"
           echo "CHANGED_DIRECTORY_NAMES=$CHANGED_DIRECTORY_NAMES" >> "$GITHUB_OUTPUT"
       - name: Display changed directories
+        env:
+          CHANGED_DIRECTORIES: ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}
         run: |
-          echo "Directories in scope: ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}"
+          echo "Directories in scope: $CHANGED_DIRECTORIES"
       - name: Slack failure notification
         uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
         with:
@@ -81,6 +88,9 @@ jobs:
   terraform-plan-dev-test:
     runs-on: ubuntu-latest
     needs: [fetch-secrets, find-environments]
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # This is required for actions/checkout
     strategy:
       fail-fast: false
       matrix:
@@ -91,14 +101,19 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Decrypt Secrets
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set account number
+        env:
+          APPLICATION: ${{ matrix.application }}
+          ENVIRONMENT_NAME: ${{ matrix.environment }}
         run: |
-          APPLICATION_ENVIRONMENT="${{ matrix.application }}-${{ matrix.environment }}"
+          APPLICATION_ENVIRONMENT="${APPLICATION}-${ENVIRONMENT_NAME}"
           echo "Application: $APPLICATION_ENVIRONMENT"
           ACCOUNT_NUMBER=$(echo "$ENVIRONMENT_MANAGEMENT" | jq -r --arg app_env "$APPLICATION_ENVIRONMENT" '.account_ids[$app_env] // empty')
           echo "$ACCOUNT_NUMBER"
@@ -127,24 +142,34 @@ jobs:
       - name: Terraform init
         if: env.SKIP == 'false'
         id: init
+        env:
+          APPLICATION: ${{ matrix.application }}
         run: |
-          echo "Running 'terraform init' in terraform/environments/${{ matrix.application }}" 
-          scripts/terraform-init.sh "terraform/environments/${{ matrix.application }}"
+          echo "Running 'terraform init' in terraform/environments/$APPLICATION"
+          scripts/terraform-init.sh "terraform/environments/$APPLICATION"
       - name: Terraform workspace
         if: env.SKIP == 'false'
         id: workspace
+        env:
+          APPLICATION: ${{ matrix.application }}
+          ENVIRONMENT_NAME: ${{ matrix.environment }}
         run: |
-          workspace="${{ matrix.application }}-${{ matrix.environment }}"
-          terraform -chdir="terraform/environments/${{ matrix.application }}" workspace select "$workspace"
+          workspace="${APPLICATION}-${ENVIRONMENT_NAME}"
+          terraform -chdir="terraform/environments/$APPLICATION" workspace select "$workspace"
       - name: Terraform plan
         if: env.SKIP == 'false'
         id: plan
+        env:
+          APPLICATION: ${{ matrix.application }}
         run: |
-          scripts/terraform-plan.sh "terraform/environments/${{ matrix.application }}"
+          scripts/terraform-plan.sh "terraform/environments/$APPLICATION"
 
   terraform-plan-preprod-prod:
     runs-on: ubuntu-latest
     needs: [fetch-secrets, find-environments]
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # This is required for actions/checkout
     strategy:
       fail-fast: false
       matrix:
@@ -154,6 +179,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Decrypt Secrets
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
         with:
@@ -178,8 +205,10 @@ jobs:
           terraform_wrapper: false
       - name: Terraform init
         id: init
+        env:
+          CHANGED_DIRECTORIES_ENCODED: ${{ needs.find-environments.outputs.directories }}
         run: |
-          CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
+          CHANGED_DIRECTORIES=$(echo "$CHANGED_DIRECTORIES_ENCODED" | base64 --decode)
           export CHANGED_DIRECTORIES
           while IFS= read -r directory; do
             echo "Running 'terraform init' in $directory"
@@ -187,11 +216,14 @@ jobs:
           done <<< "$CHANGED_DIRECTORIES"
       - name: Terraform workspace
         id: workspace
+        env:
+          CHANGED_DIRECTORIES_ENCODED: ${{ needs.find-environments.outputs.directories }}
+          ENVIRONMENT_NAME: ${{ matrix.environment }}
         run: |
-          CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
+          CHANGED_DIRECTORIES=$(echo "$CHANGED_DIRECTORIES_ENCODED" | base64 --decode)
           export CHANGED_DIRECTORIES
           while IFS= read -r directory; do
-                workspace="$(basename "$directory")-${{ matrix.environment }}"
+                workspace="$(basename "$directory")-${ENVIRONMENT_NAME}"
 
                 if terraform -chdir="$directory" workspace list | grep "$workspace"; then
                   terraform -chdir="$directory" workspace select "$workspace"
@@ -207,8 +239,10 @@ jobs:
       - name: Terraform plan
         id: plan
         if: ${{ steps.workspace.outputs.skip_plan != 'true' }}
+        env:
+          CHANGED_DIRECTORIES_ENCODED: ${{ needs.find-environments.outputs.directories }}
         run: |
-          CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
+          CHANGED_DIRECTORIES=$(echo "$CHANGED_DIRECTORIES_ENCODED" | base64 --decode)
           export CHANGED_DIRECTORIES
           while IFS= read -r directory; do
             scripts/terraform-plan.sh "$directory"
@@ -222,6 +256,9 @@ jobs:
     if: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     needs: [fetch-secrets, find-environments, terraform-plan-dev-test]
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # This is required for actions/checkout
     strategy:
       fail-fast: false
       matrix:
@@ -233,14 +270,19 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Decrypt Secrets
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set account number
+        env:
+          APPLICATION: ${{ matrix.application }}
+          ENVIRONMENT_NAME: ${{ matrix.environment }}
         run: |
-          APPLICATION_ENVIRONMENT="${{ matrix.application }}-${{ matrix.environment }}"
+          APPLICATION_ENVIRONMENT="${APPLICATION}-${ENVIRONMENT_NAME}"
           echo "Application: $APPLICATION_ENVIRONMENT"
           ACCOUNT_NUMBER=$(echo "$ENVIRONMENT_MANAGEMENT" | jq -r --arg app_env "$APPLICATION_ENVIRONMENT" '.account_ids[$app_env] // empty')
           echo "$ACCOUNT_NUMBER"
@@ -269,25 +311,35 @@ jobs:
       - name: Terraform init
         if: env.SKIP == 'false'
         id: init
+        env:
+          APPLICATION: ${{ matrix.application }}
         run: |
-          echo "Running 'terraform init' in terraform/environments/${{ matrix.application }}" 
-          scripts/terraform-init.sh "terraform/environments/${{ matrix.application }}"
+          echo "Running 'terraform init' in terraform/environments/$APPLICATION"
+          scripts/terraform-init.sh "terraform/environments/$APPLICATION"
       - name: Terraform workspace
         if: env.SKIP == 'false'
         id: workspace
+        env:
+          APPLICATION: ${{ matrix.application }}
+          ENVIRONMENT_NAME: ${{ matrix.environment }}
         run: |
-          workspace="${{ matrix.application }}-${{ matrix.environment }}"
-          terraform -chdir="terraform/environments/${{ matrix.application }}" workspace select "$workspace"
+          workspace="${APPLICATION}-${ENVIRONMENT_NAME}"
+          terraform -chdir="terraform/environments/$APPLICATION" workspace select "$workspace"
       - name: Terraform apply
         if: env.SKIP == 'false'
         id: apply
+        env:
+          APPLICATION: ${{ matrix.application }}
         run: |
-          scripts/terraform-apply.sh "terraform/environments/${{ matrix.application }}"
+          scripts/terraform-apply.sh "terraform/environments/$APPLICATION"
 
   terraform-apply-preprod-prod:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: [fetch-secrets, find-environments, terraform-plan-preprod-prod]
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # This is required for actions/checkout
     strategy:
       fail-fast: false
       matrix:
@@ -298,6 +350,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Decrypt Secrets
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
         with:
@@ -323,8 +377,10 @@ jobs:
           terraform_wrapper: false
       - name: Terraform init
         id: init
+        env:
+          CHANGED_DIRECTORIES_ENCODED: ${{ needs.find-environments.outputs.directories }}
         run: |
-          CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
+          CHANGED_DIRECTORIES=$(echo "$CHANGED_DIRECTORIES_ENCODED" | base64 --decode)
           export CHANGED_DIRECTORIES
           while IFS= read -r directory; do
             echo "Running 'terraform init' in $directory"
@@ -332,11 +388,14 @@ jobs:
           done <<< "$CHANGED_DIRECTORIES"
       - name: Terraform workspace
         id: workspace
+        env:
+          CHANGED_DIRECTORIES_ENCODED: ${{ needs.find-environments.outputs.directories }}
+          ENVIRONMENT_NAME: ${{ matrix.environment }}
         run: |
-          CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
+          CHANGED_DIRECTORIES=$(echo "$CHANGED_DIRECTORIES_ENCODED" | base64 --decode)
           export CHANGED_DIRECTORIES
           while IFS= read -r directory; do
-                workspace="$(basename "$directory")-${{ matrix.environment }}"
+                workspace="$(basename "$directory")-${ENVIRONMENT_NAME}"
 
                 if terraform -chdir="$directory" workspace list | grep "$workspace"; then
                   terraform -chdir="$directory" workspace select "$workspace"
@@ -352,22 +411,28 @@ jobs:
       - name: Terraform plan
         id: plan
         if: ${{ steps.workspace.outputs.skip_plan != 'true' }}
+        env:
+          CHANGED_DIRECTORIES_ENCODED: ${{ needs.find-environments.outputs.directories }}
+          ENVIRONMENT_NAME: ${{ matrix.environment }}
         run: |
-          CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
+          CHANGED_DIRECTORIES=$(echo "$CHANGED_DIRECTORIES_ENCODED" | base64 --decode)
           export CHANGED_DIRECTORIES
           while IFS= read -r directory; do
-            workspace="$(basename "$directory")-${{ matrix.environment }}"
+            workspace="$(basename "$directory")-${ENVIRONMENT_NAME}"
             scripts/terraform-plan.sh "$directory" -out="$workspace.tfplan"
             unset workspace
           done <<< "$CHANGED_DIRECTORIES"
       - name: Terraform apply
         id: apply
         if: ${{ steps.plan.conclusion == 'success' }}
+        env:
+          CHANGED_DIRECTORIES_ENCODED: ${{ needs.find-environments.outputs.directories }}
+          ENVIRONMENT_NAME: ${{ matrix.environment }}
         run: |
-          CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
+          CHANGED_DIRECTORIES=$(echo "$CHANGED_DIRECTORIES_ENCODED" | base64 --decode)
           export CHANGED_DIRECTORIES
           while IFS= read -r directory; do
-            workspace="$(basename "$directory")-${{ matrix.environment }}"
+            workspace="$(basename "$directory")-${ENVIRONMENT_NAME}"
             scripts/terraform-apply.sh "$directory" "$workspace.tfplan"
             unset workspace
           done <<< "$CHANGED_DIRECTORIES"

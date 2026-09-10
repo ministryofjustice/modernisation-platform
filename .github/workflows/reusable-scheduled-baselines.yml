@@ -64,9 +64,13 @@ jobs:
       name: "Job - ${{ inputs.JOB_NAME }}"
       steps:
         - name: Log Job Name
+          env:
+            JOB_NAME: ${{ inputs.JOB_NAME }}
           run: | 
-            echo "Job Name: ${{ inputs.JOB_NAME }}"
+            echo "Job Name: $JOB_NAME"
         - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+          with:
+            persist-credentials: false
         - name: Decrypt Secrets
           uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
           with:
@@ -74,8 +78,10 @@ jobs:
             slack_webhook_url: ${{ inputs.slack_webhook_url }}
             PASSPHRASE: ${{ secrets.PASSPHRASE }}
         - name: Set Account Number
+          env:
+            AWS_ACCOUNT_ID_NAME: ${{ inputs.aws_account_id_name }}
           run: |
-            ACCOUNT_NUMBER=$(jq -r -e '.${{ inputs.aws_account_id_name }}' <<< "$ENVIRONMENT_MANAGEMENT")
+            ACCOUNT_NUMBER=$(jq -r -e --arg key "$AWS_ACCOUNT_ID_NAME" '.[$key]' <<< "$ENVIRONMENT_MANAGEMENT")
             echo "::add-mask::$ACCOUNT_NUMBER"
             echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
         - name: Configure AWS Credentials
@@ -88,12 +94,18 @@ jobs:
           with:
             terraform_version: "~1"
             terraform_wrapper: false
-        - run: bash scripts/terraform-init.sh "${{ inputs.working_directory }}"
-        - run: bash scripts/terraform-apply.sh "${{ inputs.working_directory }}"
+        - env:
+            WORKING_DIRECTORY: ${{ inputs.working_directory }}
+          run: bash scripts/terraform-init.sh "$WORKING_DIRECTORY"
+        - env:
+            WORKING_DIRECTORY: ${{ inputs.working_directory }}
+          run: bash scripts/terraform-apply.sh "$WORKING_DIRECTORY"
         - name: Persist terraform state to backend
           if: ${{ failure() && hashFiles(env.STATE_FILE) != '' }}
+          env:
+            WORKING_DIRECTORY: ${{ inputs.working_directory }}
           run: |
-            if bash scripts/terraform-state-push.sh "${{ inputs.working_directory }}"; then
+            if bash scripts/terraform-state-push.sh "$WORKING_DIRECTORY"; then
               echo "STATE_PUSH_SUCCESSFUL=true" >> "$GITHUB_ENV"
             fi
         - name: Slack failure notification

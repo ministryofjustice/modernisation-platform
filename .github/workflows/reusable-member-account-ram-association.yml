@@ -39,6 +39,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
+          persist-credentials: false
       
       - name: Decrypt Secrets
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
@@ -77,12 +78,15 @@ jobs:
       - name: Plan RAM principal associations (targeted)
         if: github.ref != 'refs/heads/main'
         env:
+          ENVIRONMENT: ${{ inputs.environment }}
           TERRAFORM_ACTION: plan
-        run: bash scripts/get-applications-and-run-ram.sh ${{ inputs.environment }}
+        run: bash scripts/get-applications-and-run-ram.sh "$ENVIRONMENT"
 
       - name: Apply RAM associations and subnet tagging
         if: github.ref == 'refs/heads/main'
-        run: bash scripts/get-applications-and-run-ram.sh ${{ inputs.environment }}
+        env:
+          ENVIRONMENT: ${{ inputs.environment }}
+        run: bash scripts/get-applications-and-run-ram.sh "$ENVIRONMENT"
 
       - name: Slack failure notification
         uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0

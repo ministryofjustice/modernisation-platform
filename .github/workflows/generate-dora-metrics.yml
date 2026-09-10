@@ -40,6 +40,8 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+              with:
+                  persist-credentials: false
 
             - name: Decrypt Secrets
               uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
@@ -47,13 +49,38 @@ jobs:
                   mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
                   PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
+            - name: Set GitHub App repository scope
+              id: app-scope
+              env:
+                  JSON_FILE_PATH: ${{ github.event.inputs.json_file_path }}
+              run: |
+                  set -euo pipefail
+                  shopt -s nullglob
+
+                  if [ -n "$JSON_FILE_PATH" ]; then
+                    json_files=("$JSON_FILE_PATH")
+                  else
+                    json_files=(scripts/dora-the-explora/*.json)
+                  fi
+
+                  if [ ${#json_files[@]} -eq 0 ]; then
+                    echo "::error::No DORA repository definition files found."
+                    exit 1
+                  fi
+
+                  repositories=$(jq -r -s '[.[].repos[]] | unique | join(",")' "${json_files[@]}")
+                  echo "repositories=$repositories" >> "$GITHUB_OUTPUT"
+
             - name: Create GitHub App token
               id: app
               uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
               with:
                   client-id: ${{ env.APP_ID }}
                   private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
-                  owner: "ministryofjustice"
+                  permission-actions: read
+                  permission-contents: read
+                  permission-pull-requests: read
+                  repositories: ${{ steps.app-scope.outputs.repositories }}
 
             - name: Set up Python
               uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 #v7.0.0
@@ -75,9 +102,11 @@ jobs:
 
             - name: Parse date_range input
               if: github.event.inputs.date_range != ''
+              env:
+                  DATE_RANGE: ${{ github.event.inputs.date_range }}
               run: |
-                  start_date=$(echo "${{ github.event.inputs.date_range }}" | cut -d. -f1)
-                  end_date=$(echo "${{ github.event.inputs.date_range }}" | rev | cut -d. -f1 | rev)
+                  start_date=$(echo "$DATE_RANGE" | cut -d. -f1)
+                  end_date=$(echo "$DATE_RANGE" | rev | cut -d. -f1 | rev)
                   echo "start_date=$start_date" >> "$GITHUB_ENV"
                   echo "end_date=$end_date" >> "$GITHUB_ENV"
 
