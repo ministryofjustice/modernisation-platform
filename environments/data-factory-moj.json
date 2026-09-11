@@ -29,6 +29,10 @@
     {
       "name": "dms-core",
       "sso_group_name": "probation-de"
+    },
+    {
+      "name": "genesys-data-ingestion",
+      "sso_group_name": "data-engineering"
     }
   ],
   "environments": [
@@ -74,6 +78,24 @@
           "level": "data-engineer"
         }
       ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "data-engineering",
+          "level": "data-engineer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "data-engineering",
+          "level": "data-engineer"
+        }
+      ]
     }
   ],
   "tags": {
@@ -84,6 +106,8 @@
     "slack-channel": "data-engineering-notifications",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [],
+  "github-oidc-team-repositories": [
+    "ministryofjustice/data-factory-lambda-functions"
+  ],
   "go-live-date": ""
 }
