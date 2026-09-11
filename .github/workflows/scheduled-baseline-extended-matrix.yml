@@ -158,6 +158,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_1) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "delegate-access-1"
@@ -182,6 +185,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_2) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "delegate-access-2"
@@ -206,6 +212,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_3) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "delegate-access-3"
@@ -230,6 +239,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_4) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "delegate-access-4"
@@ -255,6 +267,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_1) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "secure-baselines-1"
@@ -278,6 +293,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_2) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "secure-baselines-2"
@@ -301,6 +319,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_3) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "secure-baselines-3"
@@ -324,6 +345,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_4) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "secure-baselines-4"
@@ -350,6 +374,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_1) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "single-sign-on-1"
@@ -373,6 +400,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_2) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "single-sign-on-2"
@@ -396,6 +426,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_3) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "single-sign-on-3"
@@ -419,6 +452,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_4) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "single-sign-on-4"
@@ -445,6 +481,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_1) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "member-bootstrap-1"
@@ -468,6 +507,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_2) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "member-bootstrap-2"
@@ -491,6 +533,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_3) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "member-bootstrap-3"
@@ -514,6 +559,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_4) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "member-bootstrap-4"
