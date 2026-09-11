@@ -1,16 +1,17 @@
+---
 name: "Terraform: scheduled baseline - Extended Matrix"
 
-on:
+"on":
   schedule:
-     - cron: "30 22 * * 0"
+    - cron: "30 22 * * 0"
   push:
     branches:
       - main
     paths:
-       - '.github/workflows/scheduled-baseline.yml'
-       - 'terraform/environments/bootstrap/**'
-       - '!**.md'
-       - 'scripts/update-sso-permission-sets.sh'
+      - '.github/workflows/scheduled-baseline.yml'
+      - 'terraform/environments/bootstrap/**'
+      - '!**.md'
+      - 'scripts/update-sso-permission-sets.sh'
   workflow_dispatch:
 
 env:
@@ -23,13 +24,13 @@ defaults:
   run:
     shell: bash
 
-concurrency: 
+concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: false
 
 jobs:
 
-# fetch-secrets
+  # fetch-secrets
 
   fetch-secrets:
     uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
@@ -40,7 +41,7 @@ jobs:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
-# setup-prerequisites
+  # setup-prerequisites
 
   setup-prerequisites:
     runs-on: ubuntu-latest
@@ -58,7 +59,7 @@ jobs:
       aws-region: ${{ steps.setup-aws-region.outputs.aws-region }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with: 
+        with:
           fetch-depth: 0
           persist-credentials: false
       - name: Decrypt Secrets
@@ -145,7 +146,7 @@ jobs:
           done
 
 
-# delegate-access
+  # delegate-access
 
   delegate-access-1:
     needs: [fetch-secrets, setup-prerequisites, define-jobs]
@@ -158,6 +159,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_1) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "delegate-access-1"
@@ -170,7 +174,7 @@ jobs:
       aws_account_id_name: "aws_organizations_root_account_id"
     secrets:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
-  
+
   delegate-access-2:
     needs: [fetch-secrets, setup-prerequisites, define-jobs]
     if: |
@@ -182,6 +186,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_2) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "delegate-access-2"
@@ -206,6 +213,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_3) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "delegate-access-3"
@@ -230,6 +240,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_4) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "delegate-access-4"
@@ -243,10 +256,10 @@ jobs:
     secrets:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
-# secure-baselines
+  # secure-baselines
 
   secure-baselines-1:
-    needs: [fetch-secrets,setup-prerequisites, define-jobs, delegate-access-1]
+    needs: [fetch-secrets, setup-prerequisites, define-jobs, delegate-access-1]
     if: |
       github.event_name == 'schedule' ||
       github.event_name == 'workflow_dispatch' ||
@@ -255,6 +268,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_1) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "secure-baselines-1"
@@ -269,7 +285,7 @@ jobs:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   secure-baselines-2:
-    needs: [fetch-secrets,setup-prerequisites, define-jobs, delegate-access-2]
+    needs: [fetch-secrets, setup-prerequisites, define-jobs, delegate-access-2]
     if: |
       github.event_name == 'schedule' ||
       github.event_name == 'workflow_dispatch' ||
@@ -278,6 +294,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_2) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "secure-baselines-2"
@@ -292,7 +311,7 @@ jobs:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   secure-baselines-3:
-    needs: [fetch-secrets,setup-prerequisites, define-jobs, delegate-access-3]
+    needs: [fetch-secrets, setup-prerequisites, define-jobs, delegate-access-3]
     if: |
       github.event_name == 'schedule' ||
       github.event_name == 'workflow_dispatch' ||
@@ -301,6 +320,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_3) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "secure-baselines-3"
@@ -315,7 +337,7 @@ jobs:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   secure-baselines-4:
-    needs: [fetch-secrets,setup-prerequisites, define-jobs, delegate-access-4]
+    needs: [fetch-secrets, setup-prerequisites, define-jobs, delegate-access-4]
     if: |
       github.event_name == 'schedule' ||
       github.event_name == 'workflow_dispatch' ||
@@ -324,6 +346,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_4) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "secure-baselines-4"
@@ -338,10 +363,10 @@ jobs:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
 
-# single-sign-on
+  # single-sign-on
 
   single-sign-on-1:
-    needs: [fetch-secrets,setup-prerequisites, define-jobs, delegate-access-1]
+    needs: [fetch-secrets, setup-prerequisites, define-jobs, delegate-access-1]
     if: |
       github.event_name == 'schedule' ||
       github.event_name == 'workflow_dispatch' ||
@@ -350,6 +375,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_1) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "single-sign-on-1"
@@ -364,7 +392,7 @@ jobs:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   single-sign-on-2:
-    needs: [fetch-secrets,setup-prerequisites, define-jobs, delegate-access-2]
+    needs: [fetch-secrets, setup-prerequisites, define-jobs, delegate-access-2]
     if: |
       github.event_name == 'schedule' ||
       github.event_name == 'workflow_dispatch' ||
@@ -373,6 +401,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_2) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "single-sign-on-2"
@@ -387,7 +418,7 @@ jobs:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   single-sign-on-3:
-    needs: [fetch-secrets,setup-prerequisites, define-jobs, delegate-access-3]
+    needs: [fetch-secrets, setup-prerequisites, define-jobs, delegate-access-3]
     if: |
       github.event_name == 'schedule' ||
       github.event_name == 'workflow_dispatch' ||
@@ -396,6 +427,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_3) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "single-sign-on-3"
@@ -410,7 +444,7 @@ jobs:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   single-sign-on-4:
-    needs: [fetch-secrets,setup-prerequisites, define-jobs, delegate-access-4]
+    needs: [fetch-secrets, setup-prerequisites, define-jobs, delegate-access-4]
     if: |
       github.event_name == 'schedule' ||
       github.event_name == 'workflow_dispatch' ||
@@ -419,6 +453,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_4) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "single-sign-on-4"
@@ -433,10 +470,10 @@ jobs:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
 
-# member-bootstrap
+  # member-bootstrap
 
   member-bootstrap-1:
-    needs: [fetch-secrets,setup-prerequisites, define-jobs, single-sign-on-1]
+    needs: [fetch-secrets, setup-prerequisites, define-jobs, single-sign-on-1]
     if: |
       github.event_name == 'schedule' ||
       github.event_name == 'workflow_dispatch' ||
@@ -445,6 +482,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_1) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "member-bootstrap-1"
@@ -459,7 +499,7 @@ jobs:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   member-bootstrap-2:
-    needs: [fetch-secrets,setup-prerequisites, define-jobs, single-sign-on-2]
+    needs: [fetch-secrets, setup-prerequisites, define-jobs, single-sign-on-2]
     if: |
       github.event_name == 'schedule' ||
       github.event_name == 'workflow_dispatch' ||
@@ -468,6 +508,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_2) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "member-bootstrap-2"
@@ -482,7 +525,7 @@ jobs:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   member-bootstrap-3:
-    needs: [fetch-secrets,setup-prerequisites, define-jobs, single-sign-on-3]
+    needs: [fetch-secrets, setup-prerequisites, define-jobs, single-sign-on-3]
     if: |
       github.event_name == 'schedule' ||
       github.event_name == 'workflow_dispatch' ||
@@ -491,6 +534,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_3) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "member-bootstrap-3"
@@ -505,7 +551,7 @@ jobs:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   member-bootstrap-4:
-    needs: [fetch-secrets,setup-prerequisites, define-jobs, single-sign-on-4]
+    needs: [fetch-secrets, setup-prerequisites, define-jobs, single-sign-on-4]
     if: |
       github.event_name == 'schedule' ||
       github.event_name == 'workflow_dispatch' ||
@@ -514,6 +560,9 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_4) }}
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-scheduled-baselines.yml
     with:
       JOB_NAME: "member-bootstrap-4"
@@ -526,9 +575,8 @@ jobs:
       aws_account_id_name: "modernisation_platform_account_id"
     secrets:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
-  
 
-# update-permission-sets
+  # update-permission-sets
 
   update-permission-sets:
     runs-on: ubuntu-latest
