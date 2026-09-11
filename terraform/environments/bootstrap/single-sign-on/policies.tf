@@ -771,6 +771,8 @@ data "aws_iam_policy_document" "quicksight_administrator_additional" {
       "organizations:DescribeOrganization",
       "quicksight:*",
       "s3:ListAllMyBuckets",
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:DescribeSecret",
       "sso:DescribeApplication",
       "sso:DescribeInstance",
       "sso:CreateApplication",
