@@ -76,6 +76,11 @@ jobs:
       - name: Set Account Number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
+
+      - name: Run terraform plan in terraform/environments
+        id: tf_plan
         run: bash scripts/terraform-plan.sh terraform/environments
 
       - name: Update PR comment with plan summary
