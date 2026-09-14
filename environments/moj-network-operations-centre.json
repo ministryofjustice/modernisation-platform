@@ -35,8 +35,8 @@
   "tags": {
     "application": "NOC",
     "business-unit": "Technology Services",
-    "infrastructure-support": "Network Automation: NetworkAutomation@justice.gov.uk",
-    "owner": "Network Automation: NetworkAutomation@justice.gov.uk",
+    "infrastructure-support": "NetworkAutomation@justice.gov.uk",
+    "owner": "NetworkAutomation@justice.gov.uk",
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""]
