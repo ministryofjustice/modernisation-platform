@@ -252,6 +252,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "iam:CreatePolicy",
       "iam:DeleteRole",
       "iam:DeletePolicy",
+      "iam:PutRolePolicy",
       "iam:GetRole",
       "iam:ListRolePolicies",
       "iam:ListRoles",
