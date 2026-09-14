@@ -9,7 +9,7 @@
           "level": "administrator"
         },
         {
-            "sso_group_name": "moj-official-noc-preprod",
+          "sso_group_name": "moj-official-noc-preprod",
           "level": "administrator"
         },
         {
