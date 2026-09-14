@@ -1,5 +1,6 @@
+---
 name: terraform plan apply
-on:
+"on":
   workflow_call:
     inputs:
       working-directory:
@@ -84,12 +85,12 @@ jobs:
         id: app
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
-          client-id: ${{ env.APP_ID }}               
-          private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
+          client-id: ${{ env.APP_ID }}
+          private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
           permission-contents: read
           permission-pull-requests: write
           repositories: "modernisation-platform,modernisation-platform-github"
-      
+
       - name: Download collaborators.json from modernisation-platform-github
         if: ${{ inputs.download_collaborators && inputs.set_github_app_token }}
         env:
@@ -134,7 +135,7 @@ jobs:
           if [ "${GITHUB_REF}" != 'refs/heads/main' ] && [ -d "$WORKING_DIRECTORY/test" ]; then
               echo "run_terratest=true" >> "$GITHUB_OUTPUT"
           fi
-    
+
       - name: Setup Go
         if: ${{ steps.vars.outputs.run_terratest == 'true' }}
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
@@ -182,7 +183,7 @@ jobs:
           WORKING_DIRECTORY: ${{ inputs.working-directory }}
         run: |
           terraform -chdir="$WORKING_DIRECTORY" workspace select "${WORKSPACE_NAME}"
-      
+
       - name: Validate Tags
         id: validate
         if: github.event.ref != 'refs/heads/main'
