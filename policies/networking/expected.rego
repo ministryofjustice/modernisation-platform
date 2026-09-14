@@ -451,6 +451,7 @@ expected :=
       "general": {
         "cidr": "10.27.104.0/21",
         "accounts": [
+          "data-factory-moj-preproduction",
           "data-platform-preproduction",
           "data-platform-governance-preproduction",
           "developer-experience-preproduction",
