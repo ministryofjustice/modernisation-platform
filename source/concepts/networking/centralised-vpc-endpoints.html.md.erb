@@ -1,29 +1,40 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Centralised VPC Endpoints
-last_reviewed_on: 2026-09-14
+last_reviewed_on: 2026-09-15
 review_in: 6 months
 ---
 
 # <%= current_page.data.title %>
 
-As well as the [VPC endpoints provided in each VPC](networking-approach.html#protected), the Modernisation Platform runs a **centralised VPC endpoints hub** in the core network services account.
+The Modernisation Platform runs a **centralised VPC endpoints hub** in the core network services account. This is a dedicated VPC containing [interface endpoints](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html) for a wide range of AWS services, shared to consumer accounts rather than duplicated in each VPC.
 
-This is a dedicated VPC containing [interface endpoints](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html) for a wide range of AWS services, shared across the whole platform.
+> The hub currently serves [isolated network accounts](networking-approach.html#isolated-networks) only. If your account uses the standard shared VPC model, see [using endpoints in a standard account](#using-endpoints-in-a-standard-account) below.
 
 ## Why we do this
 
-Interface endpoints are charged per endpoint, per availability zone, per hour. Creating an endpoint for every service in every business unit VPC would be expensive and would consume a lot of address space in the protected subnets.
+Interface endpoints are charged per endpoint, per availability zone, per hour. Creating an endpoint for every service in every VPC duplicates that cost, and repeats the same DNS and routing configuration in each place.
 
-By running one set of endpoints centrally and routing to them over the [Transit Gateway](networking-approach.html#transit-gateway), we can offer many more services than would otherwise be practical.
+Isolated network accounts build their own VPC and do not have the shared protected subnets that standard accounts get, so without a central hub each one would need its own full set of endpoints. Running one curated set centrally and reaching it over the [Transit Gateway](networking-approach.html#transit-gateway) means many more services can be offered than would otherwise be practical.
 
-## How traffic reaches it
+This approach is described in [ADR 0045](https://github.com/ministryofjustice/modernisation-platform/blob/main/architecture-decision-record/0045-centralise-vpc-endpoints-with-route53-profiles.md). That ADR is currently marked **Proposed**, and migration of existing endpoint-per-VPC deployments is a separate, phased activity.
 
-The hub VPC is attached to the Transit Gateway with its own route table. Both live data and non-live data VPC attachments are propagated into that route table, and a static route for the hub VPC CIDR is added to the `live_data` and `non_live_data` route tables.
+## Who it serves
 
-This means resources in your VPC can reach the centralised endpoints, and return traffic can find its way back, without any configuration on your part.
+Consumer accounts are listed explicitly in [vpc-endpoints.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/vpc-endpoints.tf). At the time of writing these are Cloud Platform and Container Platform accounts - the MoJ hosting platforms that run on top of the Modernisation Platform using the isolated network option.
 
-The hub VPC uses the range `10.20.240.0/20`, as recorded in the [CIDR allocation register](https://github.com/ministryofjustice/modernisation-platform/blob/main/cidr-allocation.md).
+Please check the Terraform for the current list rather than relying on this page.
+
+## How to use it
+
+Access is not automatic. A consumer account needs to:
+
+1. Accept the AWS [Resource Access Manager (RAM)](https://docs.aws.amazon.com/ram/latest/userguide/what-is.html) share for the `centralised-endpoints` Route53 Profile.
+2. Associate that shared [Route53 Profile](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/profiles.html) with the VPCs that need to resolve the endpoint service names.
+
+Once associated, DNS for the supported services resolves to the central endpoints, and traffic routes over the Transit Gateway.
+
+The hub VPC uses the range `10.20.240.0/20`, as recorded in the [CIDR allocation register](https://github.com/ministryofjustice/modernisation-platform/blob/main/cidr-allocation.md). Return routes are propagated into the hub's Transit Gateway route table so responses can find their way back.
 
 ## Available services
 
@@ -31,12 +42,14 @@ The current list is maintained in [centralised-vpc-endpoints.json](https://githu
 
 `apigateway`, `athena`, `backup`, `cloudtrail`, `config`, `detective`, `dms`, `ec2`, `ec2messages`, `ecr.api`, `ecr.dkr`, `eks`, `eks-auth`, `elasticache`, `email`, `email-smtp`, `events`, `guardduty-data`, `inspector2`, `kinesis-firehose`, `kms`, `lambda`, `logs`, `rds`, `rds-data`, `secretsmanager`, `securityhub`, `sns`, `sqs`, `ssm`, `ssmmessages`, `sts`, `transcribe`, `wafv2`
 
-Please check the JSON file for the current list rather than relying on this page.
+Again, please check the JSON file for the current list rather than relying on this page.
 
-## Relationship to per-VPC endpoints
+## Using endpoints in a standard account
 
-A small number of endpoints are still created in each VPC's protected subnets, because they are needed for core functionality such as [Systems Manager Session Manager](instance-access-and-bastions.html) access. These are EC2, EC2 Messages, SSM and SSM Messages, plus a gateway endpoint for S3.
+If your account uses the standard shared VPC model, you are **not** onboarded to the hub.
 
-Everything else should be reached through the centralised hub.
+Your VPC already has interface endpoints for EC2, EC2 Messages, SSM and SSM Messages in its [protected subnets](networking-approach.html#protected), plus a gateway endpoint for S3.
 
-If you need a service that is not currently available, please ask in [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1).
+If you need an endpoint for another AWS service, we can add it to your VPC using the `additional_endpoints` option in the environments-networks JSON. See [environments-networks json explained](../../user-guide/environments-networks-json-explained.html).
+
+If you think the centralised hub would be a better fit for your use case, please raise it in [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1).
