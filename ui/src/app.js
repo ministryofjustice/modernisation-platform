@@ -2,12 +2,21 @@ const path = require('path');
 const express = require('express');
 const session = require('express-session');
 const nunjucks = require('nunjucks');
+const { csrfSync } = require('csrf-sync');
 
 const routes = require('./routes');
 const mockRoutes = require('./routes/mocks');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const sessionSecret = process.env.SESSION_SECRET || 'poc-secret-change-me';
+
+if (
+  process.env.ENVIRONMENT_REQUEST_MODE === 'dispatch' &&
+  ['poc-secret-change-me', 'change-me-in-real-deployments'].includes(sessionSecret)
+) {
+  throw new Error('A non-default SESSION_SECRET is required when workflow dispatch is enabled');
+}
 
 // Nunjucks - includes govuk-frontend templates so we can use the design system
 const appViews = [
@@ -35,17 +44,28 @@ app.use(
   '/govuk-frontend',
   express.static(path.join(__dirname, '..', 'node_modules', 'govuk-frontend', 'dist', 'govuk'))
 );
+app.use('/javascripts', express.static(path.join(__dirname, 'public', 'javascripts')));
 
 // Body + session
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false, limit: '50kb' }));
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || 'poc-secret-change-me',
+    secret: sessionSecret,
     resave: false,
     saveUninitialized: true,
     cookie: { httpOnly: true, sameSite: 'lax', maxAge: 1000 * 60 * 60 }
   })
 );
+
+const { generateToken, csrfSynchronisedProtection } = csrfSync({
+  getTokenFromRequest: (req) => req.body.csrfToken
+});
+
+app.use((req, res, next) => {
+  res.locals.csrfToken = generateToken(req);
+  next();
+});
+app.use('/new-environment', csrfSynchronisedProtection);
 
 // Expose common template globals
 env.addGlobal('serviceName', 'Modernisation Platform');
@@ -62,10 +82,19 @@ app.use((req, res) => {
 // Basic error handler
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
+  if (err.code === 'EBADCSRFTOKEN') {
+    return res.status(403).render('error.njk', {
+      message: 'Your form session is no longer valid. Return to the form and try again.'
+    });
+  }
   console.error(err);
   res.status(500).render('error.njk', { message: 'Sorry, there is a problem with the service' });
 });
 
-app.listen(PORT, () => {
-  console.log(`Modernisation Platform UI listening on http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Modernisation Platform UI listening on http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;

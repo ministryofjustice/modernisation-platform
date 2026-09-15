@@ -6,12 +6,14 @@
   "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
-    "dev": "NODE_ENV=development node src/app.js"
+    "dev": "NODE_ENV=development node src/app.js",
+    "test": "node --test"
   },
   "engines": {
     "node": ">=20"
   },
   "dependencies": {
+    "csrf-sync": "^4.2.1",
     "express": "^4.19.2",
     "express-session": "^1.18.0",
     "govuk-frontend": "^5.7.1",

@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 2,
+  "requestId": "3dad8b5d-06a7-4edb-a757-708d95e05f90",
+  "application": {
+    "name": "example-service",
+    "tag": "Example service",
+    "description": "A service used to test account creation",
+    "codeowners": [
+      "example-codeowners"
+    ],
+    "githubActionReviewers": [
+      "example-reviewers"
+    ]
+  },
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "level": "developer",
+          "ssoGroupName": "example-service-developers"
+        },
+        {
+          "level": "sandbox",
+          "ssoGroupName": "example-service-sandbox"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "level": "view-only",
+          "ssoGroupName": "example-service-viewers"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "businessUnit": "LAA",
+    "serviceArea": "Example service area",
+    "infrastructureSupport": "example@justice.gov.uk",
+    "owner": "Example owner",
+    "slackChannel": "example-support"
+  },
+  "networking": {
+    "isolated": false,
+    "userConnectivity": "With a MoJ Official device"
+  },
+  "requestDetails": {
+    "environmentDetails": "Two accounts for an example service",
+    "additionalFeatures": [
+      "Additional VPC Endpoints"
+    ],
+    "otherInformation": "No other information"
+  },
+  "criticalNationalInfrastructure": false,
+  "goLiveDate": ""
+}

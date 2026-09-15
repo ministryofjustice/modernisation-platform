@@ -17,16 +17,29 @@
   }
 {% endmacro %}
 
+{% macro accessSummary(environment, accessField) %}
+  {% set selectedAccess = data[accessField] or [] %}
+  {% if selectedAccess.length %}
+    <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-0">
+      {% for level in selectedAccess %}
+        <li><strong>{{ level }}</strong>: {{ data[fields.ssoGroupFields[environment][level]] }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    None
+  {% endif %}
+{% endmacro %}
+
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">Check your answers</h1>
 
       {% set arr = data.environments | join(", ") %}
-      {% set accDev = data.accessDev | join(", ") %}
-      {% set accTest = data.accessTest | join(", ") %}
-      {% set accPre = data.accessPreprod | join(", ") %}
-      {% set accProd = data.accessProd | join(", ") %}
+      {% set accDev %}{{ accessSummary("Development", "accessDev") }}{% endset %}
+      {% set accTest %}{{ accessSummary("Test", "accessTest") }}{% endset %}
+      {% set accPre %}{{ accessSummary("Preproduction", "accessPreprod") }}{% endset %}
+      {% set accProd %}{{ accessSummary("Production", "accessProd") }}{% endset %}
       {% set feats = data.additionalFeatures | join(", ") %}
 
       {{ govukSummaryList({
@@ -34,14 +47,13 @@
           { key: { text: "Environment details" }, value: { text: data.environmentDetails } },
           { key: { text: "Application name" }, value: { text: data.appName } },
           { key: { text: "Description" }, value: { text: data.appDescription } },
-          { key: { text: "SSO group name" }, value: { text: data.ssoGroupName } },
           { key: { text: "Code owner team" }, value: { text: data.codeowners or "Not provided" } },
           { key: { text: "Actions reviewer team" }, value: { text: data.githubActionReviewers or "Not provided" } },
           { key: { text: "Environments" }, value: { text: arr or "None" } },
-          { key: { text: "Access - Development" }, value: { text: accDev or "None" } },
-          { key: { text: "Access - Test" }, value: { text: accTest or "None" } },
-          { key: { text: "Access - Preproduction" }, value: { text: accPre or "None" } },
-          { key: { text: "Access - Production" }, value: { text: accProd or "None" } },
+          { key: { text: "Access - Development" }, value: { html: accDev } },
+          { key: { text: "Access - Test" }, value: { html: accTest } },
+          { key: { text: "Access - Preproduction" }, value: { html: accPre } },
+          { key: { text: "Access - Production" }, value: { html: accProd } },
           { key: { text: "Tag: application" }, value: { text: data.tagApplication } },
           { key: { text: "Tag: business-unit" }, value: { text: data.tagBusinessUnit } },
           { key: { text: "Tag: service-area" }, value: { text: data.tagServiceArea } },
@@ -56,6 +68,7 @@
       }) }}
 
       <form method="post" action="/new-environment/submit">
+        <input type="hidden" name="csrfToken" value="{{ csrfToken }}">
         {{ govukButton({ text: "Submit request" }) }}
       </form>
     </div>

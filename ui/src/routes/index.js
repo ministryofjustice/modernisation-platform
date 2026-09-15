@@ -1,5 +1,10 @@
 const express = require('express');
 const { formFields, validate } = require('./form-config');
+const {
+  buildEnvironmentRequest,
+  dispatchEnvironmentRequest,
+  requestReference
+} = require('../services/environment-request');
 
 const router = express.Router();
 
@@ -33,16 +38,24 @@ router.get('/new-environment/check', (req, res) => {
   res.render('check-answers.njk', { data, fields: formFields });
 });
 
-router.post('/new-environment/submit', (req, res) => {
+router.post('/new-environment/submit', async (req, res, next) => {
   const data = req.session.formData;
   if (!data) return res.redirect('/new-environment');
 
-  // POC: just render a confirmation page. In future this could:
-  //   - Create a GitHub issue via the REST API
-  //   - Open a PR against modernisation-platform-environments
-  const reference = `MP-${Date.now().toString(36).toUpperCase()}`;
-  req.session.formData = null;
-  res.render('confirmation.njk', { reference, data });
+  try {
+    const request = buildEnvironmentRequest(data);
+    const dispatchEnabled = process.env.ENVIRONMENT_REQUEST_MODE === 'dispatch';
+
+    if (dispatchEnabled) await dispatchEnvironmentRequest(request);
+
+    req.session.formData = null;
+    return res.render('confirmation.njk', {
+      reference: requestReference(request.requestId),
+      dispatched: dispatchEnabled
+    });
+  } catch (error) {
+    return next(error);
+  }
 });
 
 // Ensure array fields (checkbox / multi-select) are always arrays, not undefined/string

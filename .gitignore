@@ -1,5 +1,7 @@
 .DS_Store
 .env
+__pycache__/
+*.py[cod]
 .idea/
 megalinter-reports/
 .terraform

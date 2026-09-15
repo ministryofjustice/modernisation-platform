@@ -8,70 +8,66 @@ on:
 
 permissions:
   contents: write
-  issues: read
   pull-requests: write
 
 
 jobs:
   network-setup:
-    if: github.event.pull_request.merged == true
+    if: >-
+      github.event.pull_request.merged == true &&
+      contains(github.event.pull_request.body, '<!-- isolated-networking: No -->')
+    env:
+      SKIP: "false"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
 
-      - name: Download network setup artifact
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: network-setup-info
-        continue-on-error: true  # Continue even if the artifact is not found
-
-      - name: Check if artifact exists
-        id: check_artifact
+      - name: Find newly added environment files
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
-          if [ ! -f network-setup-info.json ]; then
-            echo "Artifact not found. Skipping the workflow."
-            echo "SKIP=true" >> $GITHUB_ENV
+          files=$(gh api \
+            "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/files" \
+            --paginate \
+            --jq '.[] | select(.status == "added") | .filename | select(startswith("environments/") and endswith(".json"))')
+
+          if [ -z "$files" ]; then
+            echo "No new environment files found. Skipping network setup."
+            echo "SKIP=true" >> "$GITHUB_ENV"
+          else
+            printf '%s\n' "$files" > new-environment-files.txt
           fi
 
       - name: Set up Python
         if: env.SKIP != 'true'
-        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.x'
 
-      - name: Install jq
-        if: env.SKIP != 'true'
-        run: sudo apt-get install jq
-
-      - name: Check PR number matches artifact
-        if: env.SKIP != 'true'
-        id: prcheck
-        run: |
-          ARTIFACT_PR=$(jq -r '.pr_number' network-setup-info.json)
-          if [ "$ARTIFACT_PR" != "${{ github.event.pull_request.number }}" ]; then
-            echo "This workflow is not for this PR. Exiting."
-            exit 1
-          fi
-
       - name: Run network-setup.py
-        if: env.SKIP != 'true' && env.ISOLATED_ACCOUNT == 'No'
+        if: env.SKIP != 'true'
         run: |
-          python scripts/network-setup.py \
-            $(jq -r '.app_name' network-setup-info.json) \
-            $(jq -r '.business_unit' network-setup-info.json) \
-            $(jq -r '.environments[]' network-setup-info.json)
+          while IFS= read -r environment_file; do
+            app_name=$(basename "$environment_file" .json)
+            business_unit=$(jq -er '.tags["business-unit"]' "$environment_file")
+            mapfile -t environments < <(jq -er '.environments[].name' "$environment_file")
 
-      - name: Commit and push network changes
-        if: env.SKIP != 'true' && env.ISOLATED_ACCOUNT == 'No'
-        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@40972648982915f26e5b5e22bd92f3af9297a707 # v6.1.7
+            python scripts/network-setup.py \
+              "$app_name" \
+              "$business_unit" \
+              "${environments[@]}"
+          done < new-environment-files.txt
+
+          rm new-environment-files.txt
+
+      - name: Create pull request for network changes
+        if: env.SKIP != 'true'
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          pr_title: "Automated Signed Commit"
-          pr_body: "This PR was created automatically to update generated files."
-          commit_message: "Automated environment request for $APP_NAME"
-          files_to_commit: |
-            environments-networks/*
-            policies/networks/*
+          pr_title: "Automated networking for new environments"
+          pr_body: "This PR was created automatically after a new environment request was merged."

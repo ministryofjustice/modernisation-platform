@@ -2,25 +2,34 @@
 
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 
-{% block pageTitle %}Request submitted - {{ serviceName }}{% endblock %}
+{% block pageTitle %}{% if dispatched %}Request submitted{% else %}Request previewed{% endif %} - {{ serviceName }}{% endblock %}
 
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       {{ govukPanel({
-        titleText: "Request submitted",
+        titleText: "Request submitted" if dispatched else "Request previewed",
         html: "Your reference<br><strong>" + reference + "</strong>"
       }) }}
 
-      <p class="govuk-body">
-        This is a proof of concept. In a live version this page would show a
-        link to the created GitHub issue or pull request.
-      </p>
+      {% if dispatched %}
+        <p class="govuk-body">
+          Your request has been sent to the Modernisation Platform repository.
+          A pull request will be created after the request has been validated.
+        </p>
+      {% else %}
+        <p class="govuk-body">
+          Preview mode is enabled. Nothing has been sent to GitHub and no
+          account will be created.
+        </p>
+      {% endif %}
 
-      <h2 class="govuk-heading-m">What happens next</h2>
-      <p class="govuk-body">
-        The Modernisation Platform team will review your request and be in touch.
-      </p>
+      {% if dispatched %}
+        <h2 class="govuk-heading-m">What happens next</h2>
+        <p class="govuk-body">
+          The Modernisation Platform team will review the pull request and be in touch.
+        </p>
+      {% endif %}
 
       <p class="govuk-body">
         <a class="govuk-link" href="/">Return to the start</a>

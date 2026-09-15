@@ -3,13 +3,24 @@ import os
 import json
 import re
 
+
+BUSINESS_UNIT_NETWORK_NAMES = {
+    "central digital": "hq",
+    "technology services": "cjse",
+}
+
+
+def network_business_unit_name(business_unit):
+    normalized = business_unit.strip().lower()
+    return BUSINESS_UNIT_NETWORK_NAMES.get(normalized, normalized)
+
 def add_account_to_network(app_name, business_unit, env):
     """
     Adds the app_name-environment entry to the accounts list
     in the correct environments-networks/<business_unit>-<env>.json file.
     """
     # Construct the network file path
-    network_file = f"environments-networks/{business_unit.lower()}-{env}.json"
+    network_file = f"environments-networks/{network_business_unit_name(business_unit)}-{env}.json"
     if not os.path.exists(network_file):
         print(f"Network file {network_file} does not exist.")
         return
@@ -39,7 +50,7 @@ def add_account_to_rego(app_name, business_unit, env, rego_path):
     Adds the app_name-environment entry to the correct accounts array
     in the expected.rego policy file for the given subnet set.
     """
-    subnet_set = f'{business_unit.lower()}-{env}'
+    subnet_set = f'{network_business_unit_name(business_unit)}-{env}'
     account_entry = f'{app_name}-{env}'
 
     # Read the rego policy file as text

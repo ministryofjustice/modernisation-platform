@@ -41,6 +41,7 @@
       <h1 class="govuk-heading-xl">Request a new environment</h1>
 
       <form method="post" action="/new-environment" novalidate>
+        <input type="hidden" name="csrfToken" value="{{ csrfToken }}">
 
         {{ govukTextarea({
           id: "environmentDetails",
@@ -70,20 +71,12 @@
         }) }}
 
         {{ govukInput({
-          id: "ssoGroupName",
-          name: "ssoGroupName",
-          label: { text: "SSO group name", classes: "govuk-label--m" },
-          hint: { text: "The Identity Center group name (can be a GitHub team). Must be in the ministryofjustice org." },
-          value: data.ssoGroupName,
-          errorMessage: errors.ssoGroupName and { text: errors.ssoGroupName }
-        }) }}
-
-        {{ govukInput({
           id: "codeowners",
           name: "codeowners",
           label: { text: "GitHub code owner team slug (optional)", classes: "govuk-label--m" },
           hint: { text: "Only needed if a different team should approve pull requests." },
-          value: data.codeowners
+          value: data.codeowners,
+          errorMessage: errors.codeowners and { text: errors.codeowners }
         }) }}
 
         {{ govukInput({
@@ -91,29 +84,60 @@
           name: "githubActionReviewers",
           label: { text: "GitHub Actions reviewer team slug (optional)", classes: "govuk-label--m" },
           hint: { text: "Only needed if a different team should approve Action runs." },
-          value: data.githubActionReviewers
+          value: data.githubActionReviewers,
+          errorMessage: errors.githubActionReviewers and { text: errors.githubActionReviewers }
         }) }}
 
         <h2 class="govuk-heading-l">Environments</h2>
 
-        {# Native multi-select. size controls the number of visible rows;
-           min-height guarantees a comfortable size on all browsers. #}
-        {% macro accessSelect(id, values, selected) %}
-          <div class="govuk-form-group">
-            <label class="govuk-label govuk-label--s" for="{{ id }}">Access levels</label>
-            <div class="govuk-hint">Hold Ctrl (Windows) or Cmd (Mac) to select multiple.</div>
-            <select class="govuk-select" id="{{ id }}" name="{{ id }}" multiple size="12" style="min-height: 18rem; width: 100%;">
-              {% for v in values %}
-                <option value="{{ v }}" {% if v in (selected or []) %}selected{% endif %}>{{ v }}</option>
-              {% endfor %}
-            </select>
-          </div>
+        {% macro accessCheckboxes(environment, id, values, selected, error) %}
+          {% set accessItems = [] %}
+          {% for value in values %}
+            {% set ssoField = fields.ssoGroupFields[environment][value] %}
+            {% set ssoGroupHtml %}
+              {{ govukInput({
+                id: ssoField,
+                name: ssoField,
+                label: { text: "SSO group name for " + value, classes: "govuk-label--s" },
+                hint: { text: "Enter the Identity Center group for this role. You can use a GitHub team slug." },
+                value: data[ssoField],
+                errorMessage: errors[ssoField] and { text: errors[ssoField] },
+                attributes: { "data-sso-group-input": "true" }
+              }) }}
+              <button
+                type="button"
+                class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2"
+                data-copy-sso-group="{{ ssoField }}"
+                hidden
+              >Use first SSO group name</button>
+            {% endset %}
+            {% set accessItems = (accessItems.push({
+              value: value,
+              text: value,
+              checked: (value in (selected or [])),
+              conditional: { html: ssoGroupHtml },
+              attributes: {
+                "data-sso-role-checkbox": "true",
+                "data-sso-group-field": ssoField
+              }
+            }), accessItems) %}
+          {% endfor %}
+
+          {{ govukCheckboxes({
+            idPrefix: id,
+            name: id,
+            classes: "govuk-checkboxes--small",
+            fieldset: { legend: { text: "Access levels", classes: "govuk-fieldset__legend--s" } },
+            hint: { text: "Select each role you need, then enter its SSO group name." },
+            errorMessage: error and { text: error },
+            items: accessItems
+          }) }}
         {% endmacro %}
 
-        {% set devAccessHtml %}{{ accessSelect("accessDev",     fields.accessLevels,       data.accessDev) }}{% endset %}
-        {% set testAccessHtml %}{{ accessSelect("accessTest",    fields.accessLevelsNonDev, data.accessTest) }}{% endset %}
-        {% set preAccessHtml %}{{ accessSelect("accessPreprod", fields.accessLevelsNonDev, data.accessPreprod) }}{% endset %}
-        {% set prodAccessHtml %}{{ accessSelect("accessProd",    fields.accessLevelsNonDev, data.accessProd) }}{% endset %}
+        {% set devAccessHtml %}{{ accessCheckboxes("Development",   "accessDev",     fields.accessLevels,       data.accessDev,     errors.accessDev) }}{% endset %}
+        {% set testAccessHtml %}{{ accessCheckboxes("Test",          "accessTest",    fields.accessLevelsNonDev, data.accessTest,    errors.accessTest) }}{% endset %}
+        {% set preAccessHtml %}{{ accessCheckboxes("Preproduction", "accessPreprod", fields.accessLevelsNonDev, data.accessPreprod, errors.accessPreprod) }}{% endset %}
+        {% set prodAccessHtml %}{{ accessCheckboxes("Production",    "accessProd",    fields.accessLevelsNonDev, data.accessProd,    errors.accessProd) }}{% endset %}
 
         {{ govukCheckboxes({
           idPrefix: "environments",
@@ -183,7 +207,8 @@
           name: "slackChannel",
           label: { text: "Slack channel (optional)", classes: "govuk-label--m" },
           hint: { text: "Without the leading #, e.g. my-app-support." },
-          value: data.slackChannel
+          value: data.slackChannel,
+          errorMessage: errors.slackChannel and { text: errors.slackChannel }
         }) }}
 
         <h2 class="govuk-heading-l">Networking</h2>
@@ -225,6 +250,7 @@
           name: "additionalFeatures",
           fieldset: { legend: { text: "Optional platform features", classes: "govuk-fieldset__legend--m" } },
           hint: { text: "Leave blank if you are not sure - these can be added later." },
+          errorMessage: errors.additionalFeatures and { text: errors.additionalFeatures },
           items: featItems
         }) }}
 
@@ -240,4 +266,9 @@
       </form>
     </div>
   </div>
+{% endblock %}
+
+{% block bodyEnd %}
+  {{ super() }}
+  <script src="/javascripts/environment-access.js" defer></script>
 {% endblock %}
