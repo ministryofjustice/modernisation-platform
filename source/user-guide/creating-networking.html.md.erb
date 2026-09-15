@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Creating networking resources in the Modernisation Platform
-last_reviewed_on: 2026-04-09
+last_reviewed_on: 2026-09-14
 review_in: 6 months
 ---
 
@@ -27,9 +27,11 @@ VPC ([AWS Virtual Private Cloud](https://aws.amazon.com/vpc/)), providing out of
 
 Three different subnet types spread across all three availability zones (eu-west-2a, eu-west-2b, eu-west2c), making a total of nine subnets:
 
-- Public (for public resources such as load balancers)
 - Private (for private resources such as application servers)
+- Public (for public resources such as load balancers)
 - Data (for data resources such as databases)
+
+If your business unit needs more address space than this provides, we can add [secondary CIDR blocks](../concepts/networking/subnet-allocation.html#secondary-cidr-blocks) to the VPC, which creates further subnets.
 
 #### DNS Zones
 
@@ -38,6 +40,12 @@ Hosted public and private DNS zones for your application domain names.
 #### Certificate Services
 
 Amazon issued public certificates and shared live and non live subordinate private CA(Certificate Authority) for private certificates.
+
+#### VPC Endpoints
+
+Endpoints for EC2, EC2 Messages, SSM and SSM Messages, plus a gateway endpoint for S3, are created in your VPC's protected subnets.
+
+A much wider range of AWS services is available through the [centralised VPC endpoints](../concepts/networking/centralised-vpc-endpoints.html) hub, at no additional cost to you.
 
 ### Additional networking resources
 
@@ -59,6 +67,13 @@ Allow your VPC to have access to additional DNS zones in other VPCs.
 If you require an isolated environment that is separated from the standard resources detailed above with no internet or shared network connectivity please select the 'Isolated' option under subnet sets (Networking Options) when submitting your new environment request.
 
 This option will trigger the copy of a different set of platform environment templates which can be found [here](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/templates/modernisation-platform-environments-isolated).
+
+### Things to be aware of
+
+- **PSN connectivity is available in production and preproduction only.** There is no route to the PSN range from development, test or sandbox environments, so PSN connectivity cannot be tested there.
+- **Sandbox is not routable.** Sandbox VPCs have no connectivity to the wider MoJ network or to other Modernisation Platform environments, and should be used for local experimentation only.
+- **Outbound internet traffic is inspected.** Traffic from private subnets leaves through a centralised NAT gateway and is subject to [AWS Network Firewall](../concepts/networking/network-firewall.html) rules, including FQDN-based inspection. You may need a firewall rule to reach an external endpoint.
+- **Networking is shared across your business unit.** VPCs, NACLs and protected subnet capacity are shared between all the accounts in a business unit, so changes affect more than one application.
 
 ### Additional information
 

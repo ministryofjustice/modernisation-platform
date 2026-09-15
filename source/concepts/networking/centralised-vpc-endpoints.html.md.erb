@@ -1,0 +1,42 @@
+---
+owner_slack: "#modernisation-platform"
+title: Centralised VPC Endpoints
+last_reviewed_on: 2026-09-14
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+As well as the [VPC endpoints provided in each VPC](networking-approach.html#protected), the Modernisation Platform runs a **centralised VPC endpoints hub** in the core network services account.
+
+This is a dedicated VPC containing [interface endpoints](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html) for a wide range of AWS services, shared across the whole platform.
+
+## Why we do this
+
+Interface endpoints are charged per endpoint, per availability zone, per hour. Creating an endpoint for every service in every business unit VPC would be expensive and would consume a lot of address space in the protected subnets.
+
+By running one set of endpoints centrally and routing to them over the [Transit Gateway](networking-approach.html#transit-gateway), we can offer many more services than would otherwise be practical.
+
+## How traffic reaches it
+
+The hub VPC is attached to the Transit Gateway with its own route table. Both live data and non-live data VPC attachments are propagated into that route table, and a static route for the hub VPC CIDR is added to the `live_data` and `non_live_data` route tables.
+
+This means resources in your VPC can reach the centralised endpoints, and return traffic can find its way back, without any configuration on your part.
+
+The hub VPC uses the range `10.20.240.0/20`, as recorded in the [CIDR allocation register](https://github.com/ministryofjustice/modernisation-platform/blob/main/cidr-allocation.md).
+
+## Available services
+
+The current list is maintained in [centralised-vpc-endpoints.json](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/centralised-vpc-endpoints.json). At the time of writing it covers:
+
+`apigateway`, `athena`, `backup`, `cloudtrail`, `config`, `detective`, `dms`, `ec2`, `ec2messages`, `ecr.api`, `ecr.dkr`, `eks`, `eks-auth`, `elasticache`, `email`, `email-smtp`, `events`, `guardduty-data`, `inspector2`, `kinesis-firehose`, `kms`, `lambda`, `logs`, `rds`, `rds-data`, `secretsmanager`, `securityhub`, `sns`, `sqs`, `ssm`, `ssmmessages`, `sts`, `transcribe`, `wafv2`
+
+Please check the JSON file for the current list rather than relying on this page.
+
+## Relationship to per-VPC endpoints
+
+A small number of endpoints are still created in each VPC's protected subnets, because they are needed for core functionality such as [Systems Manager Session Manager](instance-access-and-bastions.html) access. These are EC2, EC2 Messages, SSM and SSM Messages, plus a gateway endpoint for S3.
+
+Everything else should be reached through the centralised hub.
+
+If you need a service that is not currently available, please ask in [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1).
