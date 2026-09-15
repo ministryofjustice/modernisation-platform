@@ -15,3 +15,6 @@ tmp/
 config.txt
 execution_log.txt
 megalinter-reports
+ui/node_modules/
+__pycache__/
+*.py[cod]
