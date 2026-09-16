@@ -1,7 +1,7 @@
 ---
 name: core-shared-services-deployment
 
-on: 
+"on": 
   push:
     branches:
       - main

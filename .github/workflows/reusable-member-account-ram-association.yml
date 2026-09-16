@@ -1,5 +1,6 @@
+---
 name: member-account-ram-association
-on:
+"on":
   workflow_call:
     inputs:
       environment:

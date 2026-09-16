@@ -1,6 +1,7 @@
+---
 name: Modernisation Member Information
 
-on:
+"on":
   schedule:
     - cron: "30 17 * * *"
   workflow_dispatch:
@@ -19,7 +20,7 @@ jobs:
       contents: read # This is required for actions/checkout
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
-      PASSPHRASE: ${{ secrets.PASSPHRASE }}  
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   member-information:
     runs-on: ubuntu-latest

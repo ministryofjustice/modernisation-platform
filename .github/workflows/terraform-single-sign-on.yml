@@ -1,6 +1,7 @@
+---
 name: "Terraform: single-sign-on"
 
-on:
+"on":
   push:
     paths:
       - 'terraform/single-sign-on/**'

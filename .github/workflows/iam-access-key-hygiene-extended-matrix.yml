@@ -1,6 +1,7 @@
+---
 name: "IAM Access Key & User Hygiene - Extended Matrix"
 
-on:
+"on":
   schedule:
     - cron: "30 9 1-7 * 1"
   workflow_dispatch:

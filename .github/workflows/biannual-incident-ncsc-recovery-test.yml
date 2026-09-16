@@ -1,15 +1,15 @@
+---
 name: Biannual Issue and Project Board Automation
 
-on:
+"on":
   schedule:
     # Runs at 00:00 UTC on Jan 1 and July 1
     - cron: '0 0 1 1,7 *'
   workflow_dispatch:  # Allows manual trigger
 
-
-permissions: 
-    issues: write 
-    repository-projects: write 
+permissions:
+    issues: write
+    repository-projects: write
 
 jobs:
   create-and-track-issue:
@@ -43,4 +43,3 @@ jobs:
             });
 
             core.setOutput("issue_node_id", issue.data.node_id);
-

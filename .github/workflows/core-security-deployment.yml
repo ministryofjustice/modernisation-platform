@@ -1,7 +1,7 @@
 ---
 name: core-security-deployment
 
-on:
+"on":
   push:
     branches:
       - main

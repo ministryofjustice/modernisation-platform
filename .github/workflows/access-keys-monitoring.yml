@@ -1,6 +1,7 @@
+---
 name: Access Key Monitoring and Cleanup
 
-on:
+"on":
   schedule:
     - cron: '30 7 * * MON'  # trigger every Monday at 07:30am
   workflow_dispatch:
@@ -21,7 +22,7 @@ jobs:
       contents: read # This is required for actions/checkout
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
-      PASSPHRASE: ${{ secrets.PASSPHRASE }}  
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   delete-superadmin-access-keys:
     runs-on: ubuntu-latest

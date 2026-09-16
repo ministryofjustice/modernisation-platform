@@ -1,6 +1,7 @@
+---
 name: "GitHub Environment Reviewers Automation"
 
-on:
+"on":
   push:
     paths:
       - 'environments/**.json'
@@ -37,7 +38,7 @@ jobs:
     uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
-      PASSPHRASE: ${{ secrets.PASSPHRASE }}  
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
   create-github-environments:
     runs-on: ubuntu-latest
     needs: [ fetch-secrets ]
@@ -55,8 +56,8 @@ jobs:
         id: app-envts
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
-          client-id: ${{ env.APP_ID }}               
-          private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
+          client-id: ${{ env.APP_ID }}
+          private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
           owner: "ministryofjustice"
           repositories: "modernisation-platform-environments"
       - name: Authenticate GitHub CLI as the App

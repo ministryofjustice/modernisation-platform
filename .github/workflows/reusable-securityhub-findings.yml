@@ -1,6 +1,7 @@
+---
 name: Reusable Scheduled Baselines Workflow
 
-on:
+"on":
   workflow_call:
 
     inputs:

@@ -1,6 +1,7 @@
+---
 name: Terraform Unlock State
 
-on:
+"on":
   workflow_dispatch:
     inputs:
       component:

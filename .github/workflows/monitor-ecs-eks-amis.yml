@@ -1,6 +1,7 @@
+---
 name: "ECS/EKS AMIs Check"
 
-on:
+"on":
   push:
     branches:
       - main

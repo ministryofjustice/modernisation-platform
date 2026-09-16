@@ -1,6 +1,7 @@
+---
 name: Account Network Update
 
-on:
+"on":
   pull_request:
     types: [closed]
     branches:

@@ -1,6 +1,7 @@
+---
 name: Check for broken links
 
-on:
+"on":
   push:
     branches: [feature-check-links]
   pull_request:
@@ -148,8 +149,3 @@ jobs:
                 body: report
               });
             }
-
-
-
-
-

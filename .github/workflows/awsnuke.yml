@@ -1,6 +1,6 @@
 ---
 name: awsnuke
-on:
+"on":
   push:
     branches:
       - main
@@ -60,7 +60,7 @@ jobs:
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
-          nuke_account_ids: ${{ needs.fetch-secrets.outputs.nuke_account_ids }} 
+          nuke_account_ids: ${{ needs.fetch-secrets.outputs.nuke_account_ids }}
           nuke_account_blocklist: ${{ needs.fetch-secrets.outputs.nuke_account_blocklist }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - id: set-matrix

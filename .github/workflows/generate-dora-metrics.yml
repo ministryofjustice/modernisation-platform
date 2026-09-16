@@ -1,6 +1,7 @@
+---
 name: DORA Metrics Workflow
 
-on:
+"on":
     workflow_dispatch:
         inputs:
             date_range:

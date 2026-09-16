@@ -1,6 +1,7 @@
+---
 name: Redeploy after nuke
 
-on:
+"on":
   push:
     branches:
       - main
