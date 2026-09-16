@@ -98,15 +98,15 @@ locals {
   # Parse workspace name to extract environment app name and lifecycle
   # Handles special cases via environment_file_overrides for non-standard naming
   workspace = terraform.workspace
-  
+
   environment_file_overrides = {
     "analytical-platform-data-engineering-sandboxa" = { app = "analytical-platform-data-engineering", lifecycle = "sandbox" }
-    "bichard7-sandbox-a"      = { app = "bichard7", lifecycle = "sandbox" }
-    "bichard7-sandbox-b"      = { app = "bichard7", lifecycle = "sandbox" }
-    "bichard7-sandbox-shared" = { app = "bichard7", lifecycle = "sandbox" }
-    "bichard7-shared"         = { app = "bichard7", lifecycle = "sandbox" }
-    "bichard7-test-current"   = { app = "bichard7", lifecycle = "test" }
-    "bichard7-test-next"      = { app = "bichard7", lifecycle = "test" }
+    "bichard7-sandbox-a"                            = { app = "bichard7", lifecycle = "sandbox" }
+    "bichard7-sandbox-b"                            = { app = "bichard7", lifecycle = "sandbox" }
+    "bichard7-sandbox-shared"                       = { app = "bichard7", lifecycle = "sandbox" }
+    "bichard7-shared"                               = { app = "bichard7", lifecycle = "sandbox" }
+    "bichard7-test-current"                         = { app = "bichard7", lifecycle = "test" }
+    "bichard7-test-next"                            = { app = "bichard7", lifecycle = "test" }
   }
 
   parsed_workspace = try(
@@ -117,7 +117,7 @@ locals {
     }
   )
 
-  environment_file_name   = local.parsed_workspace.app
+  environment_file_name    = local.parsed_workspace.app
   lifecycle_from_workspace = local.parsed_workspace.lifecycle
 
   # Load environment definition from remote environments.json file
