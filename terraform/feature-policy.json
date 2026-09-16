@@ -1,0 +1,61 @@
+{
+    "lifecycle": {
+        "development": {
+          "features": {
+            "instance_scheduler": true,
+            "instance_scheduler_testing": false
+          }
+        },
+        "test": {
+          "features": {
+            "instance_scheduler": true,
+            "instance_scheduler_testing": false
+          }
+        },
+        "preproduction": {
+          "features": {
+            "instance_scheduler": true,
+            "instance_scheduler_testing": false
+          }
+        },
+        "production": {
+          "features": {
+            "instance_scheduler": false,
+            "instance_scheduler_testing": false
+          }
+        },
+        "sandbox": {
+          "features": {
+            "instance_scheduler": false,
+            "instance_scheduler_testing": false
+          }
+        }
+    },
+    "account_type": {
+        "member": {
+          "features": {
+            "instance_scheduler": true,
+            "instance_scheduler_testing": false
+          }
+        },
+        "member-unrestricted": {
+          "features": {
+            "instance_scheduler": false,
+            "instance_scheduler_testing": false
+          }
+        },
+        "core": {
+          "features": {
+            "instance_scheduler": false,
+            "instance_scheduler_testing": false
+          }
+        }
+    },
+    "workspace": {
+        "testing-test": {
+            "features": {
+                "instance_scheduler_testing": true
+            }
+        }
+    }
+}
