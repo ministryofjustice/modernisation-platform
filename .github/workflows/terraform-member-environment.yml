@@ -1,7 +1,7 @@
 ---
 name: "Terraform: Member environments"
 
-on:
+"on":
   push:
     branches:
       - main
@@ -185,7 +185,7 @@ jobs:
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@e49ac27b104b38bac12fc1e3257a13be6289a59c # v6.2.2
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
-          PASSPHRASE: ${{ secrets.PASSPHRASE }}        
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set account number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")

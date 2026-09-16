@@ -1,6 +1,7 @@
+---
 name: New environment files
 
-on:
+"on":
   push:
     paths:
       - 'environments/**.json'

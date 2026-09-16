@@ -1,14 +1,15 @@
+---
 name: Access Key Monitoring and Cleanup
 
-on:
+"on":
   schedule:
     - cron: '30 7 * * MON'  # trigger every Monday at 07:30am
   workflow_dispatch:
 
 env:
-    AWS_REGION: "eu-west-2"
-    TEMPLATE_ID: "1f0f5ccc-0f67-4ee2-942f-6e48804828ea"
-    EXPECTED_TEMPLATE_VERSION: "1"  # Update with your expected template version
+  AWS_REGION: "eu-west-2"
+  TEMPLATE_ID: "1f0f5ccc-0f67-4ee2-942f-6e48804828ea"
+  EXPECTED_TEMPLATE_VERSION: "1"  # Update with your expected template version
 
 permissions: {}
 
@@ -21,7 +22,7 @@ jobs:
       contents: read # This is required for actions/checkout
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
-      PASSPHRASE: ${{ secrets.PASSPHRASE }}  
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   delete-superadmin-access-keys:
     runs-on: ubuntu-latest

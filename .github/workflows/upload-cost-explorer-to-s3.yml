@@ -1,5 +1,6 @@
+---
 name: Upload Cost Explorer CSV to S3
-on:
+"on":
   schedule:
     # Runs on the second day of every month at 6:30 AM
     - cron: '30 6 2 * *'

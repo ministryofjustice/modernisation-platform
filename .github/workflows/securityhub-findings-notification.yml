@@ -1,6 +1,7 @@
+---
 name: Notify Slack with SecurityHub Findings Summary
 
-on:
+"on":
   schedule:
     # trigger every weekday at 08:30am
     - cron: '30 8 * * 1-5'
@@ -19,8 +20,8 @@ jobs:
   fetch-secrets:
     uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@e49ac27b104b38bac12fc1e3257a13be6289a59c # v6.2.2
     secrets:
-        MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
-        PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   generate-account-matrix-blocks:
     runs-on: ubuntu-latest
@@ -133,5 +134,3 @@ jobs:
       slack_webhook_url: ${{ needs.fetch-secrets.outputs.securityhub_slack_webhooks }}
     secrets:
       passphrase: ${{ secrets.PASSPHRASE }}
-
-

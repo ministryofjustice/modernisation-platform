@@ -1,6 +1,7 @@
+---
 name: Redeploy after nuke
 
-on:
+"on":
   push:
     branches:
       - main
@@ -45,9 +46,9 @@ jobs:
       id-token: write
       contents: read
     secrets:
-        MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
-        PASSPHRASE: ${{ secrets.PASSPHRASE }}
-        
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
   setup-matrix:
     runs-on: ubuntu-latest
     needs: fetch-secrets
@@ -72,7 +73,7 @@ jobs:
         nuke_accts: ${{ fromJSON(needs.setup-matrix.outputs.matrix) }}
     name: Redeploy after nuke
     if: github.ref == 'refs/heads/main'
-    needs: [setup-matrix,fetch-secrets]
+    needs: [setup-matrix, fetch-secrets]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout modernisation-platform-environments repository

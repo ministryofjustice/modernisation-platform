@@ -1,7 +1,7 @@
 ---
 name: core-vpc-preproduction-deployment
 
-on:
+"on":
   push:
     branches:
       - main
@@ -45,7 +45,7 @@ on:
       - '.github/workflows/reusable_terraform_plan_apply.yml'
       - '!**.md'
   workflow_dispatch:
-  
+
 permissions:
   id-token: write # This is required for requesting the JWT
   contents: read # This is required for actions/checkout
@@ -68,9 +68,8 @@ jobs:
   member-account-ram-association:
     needs: core-vpc-preproduction-deployment-plan-apply
     uses: ./.github/workflows/reusable-member-account-ram-association.yml
-    with: 
+    with:
       environment: "preproduction"
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
-    

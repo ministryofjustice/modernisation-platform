@@ -1,6 +1,7 @@
+---
 name: "IAM Access Key & User Hygiene - Extended Matrix"
 
-on:
+"on":
   schedule:
     - cron: "30 9 1-7 * 1"
   workflow_dispatch:
@@ -128,7 +129,7 @@ jobs:
       EXPECTED_TEMPLATE_VERSION: "2"
 
       SCRIPT_COMMAND: |
-        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh 
+        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh
     secrets:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
@@ -152,7 +153,7 @@ jobs:
       EXPECTED_TEMPLATE_VERSION: "2"
 
       SCRIPT_COMMAND: |
-        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh 
+        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh
     secrets:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
@@ -176,7 +177,7 @@ jobs:
       EXPECTED_TEMPLATE_VERSION: "2"
 
       SCRIPT_COMMAND: |
-        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh 
+        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh
     secrets:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
@@ -200,6 +201,6 @@ jobs:
       EXPECTED_TEMPLATE_VERSION: "2"
 
       SCRIPT_COMMAND: |
-        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh 
+        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh
     secrets:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}

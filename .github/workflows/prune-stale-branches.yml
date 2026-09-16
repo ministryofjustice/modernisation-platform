@@ -1,9 +1,10 @@
+---
 name: Cleanup of Stale Branches
 
-on:
+"on":
   workflow_dispatch:
   schedule:
-  - cron: '0 0 * * 0'
+    - cron: '0 0 * * 0'
 
 permissions:
   contents: write
@@ -60,8 +61,8 @@ jobs:
         id: app
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
-          client-id: ${{ env.APP_ID }}               
-          private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
+          client-id: ${{ env.APP_ID }}
+          private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
           owner: "ministryofjustice"
 
       - name: Authenticate GitHub CLI as the App and Check the Rate Usage

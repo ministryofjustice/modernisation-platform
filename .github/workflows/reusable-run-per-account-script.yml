@@ -1,6 +1,7 @@
+---
 name: Reusable - Run Script Per Account
 
-on:
+"on":
   workflow_call:
     inputs:
       JOB_NAME:

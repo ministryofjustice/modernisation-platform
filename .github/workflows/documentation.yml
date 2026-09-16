@@ -1,5 +1,6 @@
+---
 name: Generate Terraform README docs
-on:
+"on":
   workflow_dispatch:
   pull_request:
     branches:

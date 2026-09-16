@@ -1,6 +1,7 @@
+---
 name: "Terraform: modernisation-platform-account"
 
-on:
+"on":
   push:
     paths:
       - 'terraform/modernisation-platform-account/**'

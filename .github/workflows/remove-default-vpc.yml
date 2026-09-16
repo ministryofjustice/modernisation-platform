@@ -1,6 +1,7 @@
+---
 name: "Remove Default VPC"
 
-on:
+"on":
   schedule:
     # trigger every Monday at 08:30am
     - cron: '30 8 * * 1'
@@ -48,7 +49,7 @@ jobs:
           ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
-        
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
         with:
@@ -58,4 +59,3 @@ jobs:
 
       - name: Remove Default VPC
         run: bash ./scripts/internal/remove-default-vpc/remove_default_vpc_all_accounts.sh
-        

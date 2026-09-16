@@ -1,6 +1,7 @@
+---
 name: "Open Policy Agent: validate JSON structures"
 
-on:
+"on":
   workflow_dispatch:
   pull_request:
     branches:
@@ -33,7 +34,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Get changed files/directories and add PR comment for high risk changes
-        run: bash scripts/pr-warning-comments.sh          
+        run: bash scripts/pr-warning-comments.sh
       - name: Setup Regal
         uses: open-policy-agent/setup-regal@761188c3b435761fa254beca508a44875619648f # v2.0.0
       - name: Run Regal Lint
