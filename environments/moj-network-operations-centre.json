@@ -34,7 +34,7 @@
   ],
   "tags": {
     "application": "NOC",
-    "business-unit": "Technology Services",
+    "business-unit": "HQ",
     "infrastructure-support": "NetworkAutomation@justice.gov.uk",
     "owner": "NetworkAutomation@justice.gov.uk",
     "critical-national-infrastructure": false
