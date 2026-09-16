@@ -19,6 +19,9 @@
       ]
     }
   ],
+  "feature_overrides": {
+    "instance_scheduler": false
+  },
   "tags": {
     "application": "testing",
     "business-unit": "Platforms",
