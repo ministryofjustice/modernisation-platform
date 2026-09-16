@@ -8,7 +8,7 @@ if [[ $COMPLETE_DELETION = "yes" ]]; then
 
     # Delete environments/*.json file 
     echo "Deleting $APPLICATION_NAME.json in $USER_MP_DIR/environments/"
-    rm $USER_MP_DIR/environments/$APPLICATION_NAME.json
+    rm "$USER_MP_DIR"/environments/"$APPLICATION_NAME".json
 
     # Delete environment from opa environment test policies
     echo "Removing all references to $APPLICATION_NAME in $USER_MP_DIR/policies/environments/expected.rego"

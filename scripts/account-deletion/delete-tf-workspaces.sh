@@ -50,7 +50,7 @@ for workspace in "${WORKSPACES[@]}"; do
             terraform workspace select default
             pwd
             echo "Here I will run terraform workspace delete -force $APPLICATION_NAME-$workspace"
-            terraform workspace delete -force $APPLICATION_NAME-$workspace
+            terraform workspace delete -force "$APPLICATION_NAME"-"$workspace"
         done
     else
         exit 1
