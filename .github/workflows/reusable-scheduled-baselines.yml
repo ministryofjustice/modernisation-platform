@@ -11,39 +11,39 @@ name: Reusable Scheduled Baselines Workflow
         description: "The job name for logging / debugging purposes"
 
       AWS_REGION:
-          required: true
-          type: string
-          description: "The aws region"           
+        required: true
+        type: string
+        description: "The aws region"
 
       environment_management:
-          required: true
-          type: string
-          description: "The Account List"
+        required: true
+        type: string
+        description: "The Account List"
 
       slack_webhook_url:
-          required: true
-          type: string
-          description: "Slack Webhook URL"
+        required: true
+        type: string
+        description: "Slack Webhook URL"
 
       TF_WORKSPACE:
-          required: true
-          type: string
-          description: "The workspace"
+        required: true
+        type: string
+        description: "The workspace"
 
       working_directory:
-          required: true
-          type: string
-          description: "The terraform working directory"
+        required: true
+        type: string
+        description: "The terraform working directory"
 
       aws_account_id_name:
-          required: true
-          type: string
-          description: "the name of the account id to use"
+        required: true
+        type: string
+        description: "the name of the account id to use"
 
       aws_role:
-          required: true
-          type: string
-          description: "The AWS role to assume for the terraform actions"
+        required: true
+        type: string
+        description: "The AWS role to assume for the terraform actions"
 
     secrets:
 
@@ -67,7 +67,7 @@ jobs:
       - name: Log Job Name
         env:
           JOB_NAME: ${{ inputs.JOB_NAME }}
-        run: | 
+        run: |
           echo "Job Name: $JOB_NAME"
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:

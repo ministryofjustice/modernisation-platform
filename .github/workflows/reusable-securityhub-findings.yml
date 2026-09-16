@@ -12,19 +12,19 @@ name: Reusable Scheduled Baselines Workflow
         description: "The account name that is used as the job name"
 
       aws_region:
-          required: true
-          type: string
-          description: "The aws region"
+        required: true
+        type: string
+        description: "The aws region"
 
       slack_webhook_url:
-          type: string
-          required: true
-          description: "Slack Webhook URL"
+        type: string
+        required: true
+        description: "Slack Webhook URL"
 
       environment_management:
-          type: string
-          required: true
-          description: "List of Account Names and IDs"
+        type: string
+        required: true
+        description: "List of Account Names and IDs"
 
     secrets:
 
@@ -32,7 +32,7 @@ name: Reusable Scheduled Baselines Workflow
         required: true
 
 permissions: {}
-            
+
 jobs:
 
     main:
@@ -43,11 +43,10 @@ jobs:
       runs-on: ubuntu-latest
       name: "Job - ${{ inputs.account_name }}"
       steps:
-
         - name: Log Job Name
           env:
             ACCOUNT_NAME: ${{ inputs.account_name }}
-          run: | 
+          run: |
             echo "Job Name: $ACCOUNT_NAME"
 
         - name: Set aws_region to env
