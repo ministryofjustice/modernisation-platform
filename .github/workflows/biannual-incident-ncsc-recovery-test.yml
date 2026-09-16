@@ -8,8 +8,8 @@ name: Biannual Issue and Project Board Automation
   workflow_dispatch:  # Allows manual trigger
 
 permissions:
-    issues: write
-    repository-projects: write
+  issues: write
+  repository-projects: write
 
 jobs:
   create-and-track-issue:

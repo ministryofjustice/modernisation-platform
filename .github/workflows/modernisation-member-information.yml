@@ -7,7 +7,7 @@ name: Modernisation Member Information
   workflow_dispatch:
 
 env:
-    AWS_REGION: "eu-west-2"
+  AWS_REGION: "eu-west-2"
 
 permissions: {}
 

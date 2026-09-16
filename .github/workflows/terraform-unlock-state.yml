@@ -9,15 +9,15 @@ name: Terraform Unlock State
         required: true
         type: choice
         options:
-            - github
-            - pagerduty
-            - single-sign-on
-            - modernisation-platform-account
-            - environments
-            - bootstrap/delegate-access
-            - bootstrap/member-bootstrap
-            - bootstrap/single-sign-on
-            - bootstrap/secure-baselines
+          - github
+          - pagerduty
+          - single-sign-on
+          - modernisation-platform-account
+          - environments
+          - bootstrap/delegate-access
+          - bootstrap/member-bootstrap
+          - bootstrap/single-sign-on
+          - bootstrap/secure-baselines
       application_name:
         description: 'Application name (e.g., sprinkler). Required for bootstrap components or environments with app/env.'
         required: false
@@ -91,7 +91,7 @@ jobs:
         uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
         with:
           terraform_version: "~1"
-        
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
         with:
@@ -107,7 +107,7 @@ jobs:
         id: check_lock
         run: |
           echo "Checking for lock file at: s3://modernisation-platform-terraform-state/$S3_LOCK_KEY"
-          
+
           if aws s3api head-object --bucket modernisation-platform-terraform-state --key "$S3_LOCK_KEY" 2>/dev/null; then
             echo "LOCK_EXISTS=true" >> "$GITHUB_OUTPUT"
             echo "Lock file exists, will proceed with unlock"

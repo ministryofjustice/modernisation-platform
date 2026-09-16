@@ -1,7 +1,7 @@
 ---
 name: 'Close stale PRs'
 
-on:
+"on":
   schedule:
     - cron: '17 1 * * *'
 

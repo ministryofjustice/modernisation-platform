@@ -6,30 +6,30 @@ name: Reusable Scheduled Baselines Workflow
 
     inputs:
 
-        account_name:
+      account_name:
+        required: true
+        type: string
+        description: "The account name that is used as the job name"
+
+      aws_region:
           required: true
           type: string
-          description: "The account name that is used as the job name"
+          description: "The aws region"
 
-        aws_region:
-            required: true
-            type: string
-            description: "The aws region" 
-            
-        slack_webhook_url:
-            type: string
-            required: true
-            description: "Slack Webhook URL"
+      slack_webhook_url:
+          type: string
+          required: true
+          description: "Slack Webhook URL"
 
-        environment_management:
-            type: string
-            required: true
-            description: "List of Account Names and IDs"
+      environment_management:
+          type: string
+          required: true
+          description: "List of Account Names and IDs"
 
     secrets:
 
-        passphrase:
-            required: true
+      passphrase:
+        required: true
 
 permissions: {}
             
@@ -132,7 +132,7 @@ jobs:
             role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-securityhub-insights"
             role-session-name: githubactionsrolesession
             aws-region: ${{ env.AWS_REGION }}
-            
+
         - name: Analyze Security Hub Findings
           id: analyze-findings
           if: steps.fetch-webhook-url.outputs.webhook_url != ''

@@ -7,9 +7,9 @@ name: Access Key Monitoring and Cleanup
   workflow_dispatch:
 
 env:
-    AWS_REGION: "eu-west-2"
-    TEMPLATE_ID: "1f0f5ccc-0f67-4ee2-942f-6e48804828ea"
-    EXPECTED_TEMPLATE_VERSION: "1"  # Update with your expected template version
+  AWS_REGION: "eu-west-2"
+  TEMPLATE_ID: "1f0f5ccc-0f67-4ee2-942f-6e48804828ea"
+  EXPECTED_TEMPLATE_VERSION: "1"  # Update with your expected template version
 
 permissions: {}
 

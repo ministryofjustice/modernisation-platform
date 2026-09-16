@@ -2,8 +2,7 @@
 name: Export Route 53 DNS Records to S3
 "on":
   schedule:
-     # trigger every weekday at 06:30am
-    - cron: '30 6 * * *'
+    - cron: '30 6 * * *' # trigger every weekday at 06:30am
   workflow_dispatch:
 env:
   AWS_REGION: "eu-west-2"
