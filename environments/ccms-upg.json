@@ -17,11 +17,16 @@
       "access": [
         {
           "sso_group_name": "laa-sre-admins",
-          "level": "sandbox"
+          "level": "sandbox",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-dba",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-ccms-feasibility",
+          "level": "developer"
         }
       ],
       "nuke": "exclude"
