@@ -1,12 +1,16 @@
 #!/bin/bash
 set -e
 
-# Define the path to the configuration script
-CONFIG_SCRIPT="config.txt"
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+CONFIG_SCRIPT="$SCRIPT_DIR/config.txt"
 
-# Function to call the appropriate credentials function based on the workspace
+# shellcheck source=./config.txt
+source "$CONFIG_SCRIPT"
+
 set_credentials_based_on_workspace() {
-    case "$1" in
+    local workspace="$1"
+
+    case "$workspace" in
         development)
             DEVELOPMENT_CREDENTIALS
             ;;
@@ -20,93 +24,83 @@ set_credentials_based_on_workspace() {
             PRODUCTION_CREDENTIALS
             ;;
         *)
-            echo "Invalid workspace specified: $1. Skipping."
+            echo "Invalid workspace specified: $workspace. Skipping." >&2
             return 1
             ;;
     esac
 }
 
-# Function to ask for confirmation
 ask_for_confirmation() {
-    read -p "Do you want to delete the Terraform resources in directory $(pwd)? (y/n): " response
-    if [[ $response =~ ^[Yy]$ ]]; then
-        return 0
-    else
-        return 1
-    fi
+    local response
+
+    read -r -p "Do you want to delete the Terraform resources in directory $(pwd)? (y/n): " response
+    [[ "$response" =~ ^[Yy]$ ]]
 }
 
-# Part 1: Managing Resources for MP repo
 part_1() {
-    echo "Part 1: Managing Resources for MP repo"
+    local workspace
+    local full_workspace_name
+    local terraform_directory
 
-    # Function to load configurations and AWS credentials from config.sh
-    load_configurations_and_credentials() {
-        echo "Loading configurations and AWS credentials..."
-        source "$CONFIG_SCRIPT"
-        
-        # Call the MP_CREDENTIAL function to load credentials
-        MP_CREDENTIALS
-        
-        # Debugging: Echo the loaded configurations and AWS credentials to verify
-        echo "Loaded application name: $APPLICATION_NAME"
-        echo "Loaded workspaces: ${WORKSPACES[*]}"
-        echo "Debugging - AWS_ACCESS_KEY_ID is set to: $AWS_ACCESS_KEY_ID"
-        echo "Debugging - AWS_SECRET_ACCESS_KEY is set to: $AWS_SECRET_ACCESS_KEY"
-        echo "Debugging - AWS_SESSION_TOKEN is set to: $AWS_SESSION_TOKEN"
-    }
+    echo "Part 1: Managing resources for the MP repository"
+    echo "Loading configurations and AWS credentials..."
 
-    # Load configurations and AWS credentials
-    load_configurations_and_credentials
-
-    # Verify if the required AWS environment variables are set
-    if [ -z "$AWS_ACCESS_KEY_ID" ] || [ -z "$AWS_SECRET_ACCESS_KEY" ] || [ -z "$AWS_SESSION_TOKEN" ]; then
-        echo "One or more AWS credentials were not provided in the $CONFIG_FILE. Please check your input and try again."
+    if ! declare -F MP_CREDENTIALS >/dev/null; then
+        echo "MP_CREDENTIALS is not defined in $CONFIG_SCRIPT" >&2
         exit 1
     fi
 
-    # Change directory to the Terraform environments (adjust this path as necessary)
-    echo "Current working directory:"
-    pwd
-    cd "$USER_MP_DIR/terraform/environments/$APPLICATION_NAME" || { echo "Failed to navigate to $USER_MP_DIR/terraform/environments/$APPLICATION_NAME"; exit 1; }
-    echo "Changed directory to Terraform environments:"
-    pwd
+    MP_CREDENTIALS
 
-    # Initialize Terraform
+    echo "Loaded application name: $APPLICATION_NAME"
+    echo "Loaded workspaces: ${WORKSPACES[*]}"
+
+    # Verify that the required AWS environment variables are set.
+    if [[ -z "${AWS_ACCESS_KEY_ID:-}" ||
+          -z "${AWS_SECRET_ACCESS_KEY:-}" ||
+          -z "${AWS_SESSION_TOKEN:-}" ]]; then
+        echo "One or more AWS credentials were not provided by $CONFIG_SCRIPT." >&2
+        exit 1
+    fi
+
+    terraform_directory="$USER_MP_DIR/terraform/environments/$APPLICATION_NAME"
+
+    if [[ ! -d "$terraform_directory" ]]; then
+        echo "Terraform directory does not exist: $terraform_directory" >&2
+        exit 1
+    fi
+
+    echo "Changing to Terraform directory: $terraform_directory"
+    cd -- "$terraform_directory"
+
     echo "Initializing Terraform..."
     terraform init
 
-    # Loop through each workspace and perform Terraform operations
-    for WORKSPACE in "${WORKSPACES[@]}"; do
-        # Construct the full workspace name
-        FULL_WORKSPACE_NAME="${APPLICATION_NAME}-${WORKSPACE}"
+    for workspace in "${WORKSPACES[@]}"; do
+        full_workspace_name="$APPLICATION_NAME-$workspace"
+
         echo "----------------------------------------------------------------"
-        echo "Handling Terraform operations for workspace: $FULL_WORKSPACE_NAME"
-        
-        # Selecting Terraform workspace
-        echo "Selecting Terraform workspace: $FULL_WORKSPACE_NAME"
-        if terraform workspace select "$FULL_WORKSPACE_NAME"; then
-            echo "Workspace $FULL_WORKSPACE_NAME selected."
-            
-            # Ask user if they want to proceed to destroy the Terraform resources for this workspace
-            echo "WARNING: You are about to destroy all resources in the workspace $FULL_WORKSPACE_NAME."
+        echo "Handling Terraform operations for workspace: $full_workspace_name"
+        echo "Selecting Terraform workspace: $full_workspace_name"
+
+        if terraform workspace select "$full_workspace_name"; then
+            echo "Workspace $full_workspace_name selected."
+            echo "WARNING: You are about to destroy all resources in workspace $full_workspace_name."
+
             if ask_for_confirmation; then
-                echo "Destroying resources in workspace $FULL_WORKSPACE_NAME..."
+                echo "Destroying resources in workspace $full_workspace_name..."
                 terraform destroy -auto-approve
             else
-                echo "Destruction cancelled for workspace $FULL_WORKSPACE_NAME."
+                echo "Destruction cancelled for workspace $full_workspace_name."
             fi
         else
-            echo "Workspace $FULL_WORKSPACE_NAME does not exist. Skipping..."
+            echo "Workspace $full_workspace_name does not exist. Skipping..."
         fi
+
         echo "----------------------------------------------------------------"
     done
-    cd "$USER_MP_DIR/scripts/account-deletion"
-    echo "Part 1: Terraform operations completed for MP repo"
+
+    echo "Part 1: Terraform operations completed for the MP repository"
 }
-
-
-# Determine which part to execute based on MEMBER_ACCOUNT variable
-source "$CONFIG_SCRIPT"
 
 part_1
