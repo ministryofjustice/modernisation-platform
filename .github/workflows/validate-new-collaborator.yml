@@ -10,6 +10,10 @@ permissions: {}
 env:
   APP_ID: 2013696
 
+concurrency:
+  group: new-collaborator-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
 jobs:
   fetch-secrets:
     if: contains(github.event.issue.labels.*.name, 'collaborator')
@@ -262,6 +266,30 @@ jobs:
           path: 'workflow-source'
           persist-credentials: false
 
+      - name: Prepare target branch
+        id: target_branch
+        if: steps.validate_email.outputs.is_valid == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          COLLABORATOR_GITHUB: ${{ steps.extract_fields.outputs.collaborator_github }}
+        run: |
+          branch="add-collaborator-${COLLABORATOR_GITHUB}-${ISSUE_NUMBER}"
+
+          cd modernisation-platform-github
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          gh auth setup-git
+
+          if git ls-remote --exit-code --heads origin "refs/heads/$branch" >/dev/null 2>&1; then
+            git fetch origin "$branch"
+            git checkout -B "$branch" "origin/$branch"
+          else
+            git checkout -b "$branch"
+          fi
+
+          echo "branch=$branch" >> "$GITHUB_OUTPUT"
+
       - name: Update collaborators.json
         if: steps.validate_email.outputs.is_valid == 'true'
         env:
@@ -284,34 +312,85 @@ jobs:
           GH_TOKEN: ${{ steps.app.outputs.token }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           ISSUE_URL: ${{ github.event.issue.html_url }}
+          BRANCH: ${{ steps.target_branch.outputs.branch }}
           COLLABORATOR_NAME: ${{ steps.extract_fields.outputs.collaborator_name }}
           COLLABORATOR_GITHUB: ${{ steps.extract_fields.outputs.collaborator_github }}
         run: |
           collaborator_name="$COLLABORATOR_NAME"
           collaborator_github="$COLLABORATOR_GITHUB"
 
-          BRANCH="add-collaborator-${collaborator_github}-${ISSUE_NUMBER}"
-
           cd modernisation-platform-github
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          gh auth setup-git
-          git checkout -b "$BRANCH"
-          git add collaborators.json
-          git commit -m "Add collaborator: ${collaborator_name} (${collaborator_github})"
-          git push origin "$BRANCH"
 
-          pr_url=$(gh pr create \
+          existing_pr=$(gh pr list \
             --repo ministryofjustice/modernisation-platform-github \
-            --title "Add collaborator: ${collaborator_name} (${collaborator_github})" \
-            --body "Automated PR to add collaborator raised via issue ${ISSUE_URL}" \
-            --base main \
-            --head "$BRANCH")
+            --head "$BRANCH" \
+            --state all \
+            --json number,state,autoMergeRequest \
+            --jq 'sort_by(.number) | last | select(. != null) | [.number, .state, (.autoMergeRequest != null)] | @tsv')
 
-          pr_number=$(echo "$pr_url" | awk -F'/' '{print $NF}')
+          pr_number=""
+          pr_state=""
+          auto_merge_enabled="false"
+          if [[ -n "$existing_pr" ]]; then
+            IFS=$'\t' read -r pr_number pr_state auto_merge_enabled <<< "$existing_pr"
+          fi
+
+          case "$pr_state" in
+            OPEN)
+              echo "Reusing existing PR #$pr_number."
+              ;;
+            MERGED)
+              echo "PR #$pr_number is already merged; this collaborator request is complete."
+              exit 0
+              ;;
+            CLOSED)
+              echo "::error::PR #$pr_number was closed without merging; manual intervention is required."
+              exit 1
+              ;;
+            "")
+              ;;
+            *)
+              echo "::error::Unexpected PR state '$pr_state' for PR #$pr_number."
+              exit 1
+              ;;
+          esac
+
+          remote_branch_exists="false"
+          if git ls-remote --exit-code --heads origin "refs/heads/$BRANCH" >/dev/null 2>&1; then
+            remote_branch_exists="true"
+          fi
+
+          has_changes="false"
+          git add collaborators.json
+          if git diff --cached --quiet; then
+            echo "No new collaborator changes to commit."
+          else
+            has_changes="true"
+            git commit -m "Add collaborator: ${collaborator_name} (${collaborator_github})"
+            git push origin "$BRANCH"
+          fi
+
+          if [[ -z "$pr_number" ]]; then
+            if [[ "$has_changes" == "false" && "$remote_branch_exists" == "false" ]]; then
+              echo "The collaborator data is already present on main; no PR is required."
+              exit 0
+            fi
+
+            pr_url=$(gh pr create \
+              --repo ministryofjustice/modernisation-platform-github \
+              --title "Add collaborator: ${collaborator_name} (${collaborator_github})" \
+              --body "Automated PR to add collaborator raised via issue ${ISSUE_URL}" \
+              --base main \
+              --head "$BRANCH")
+            pr_number="${pr_url##*/}"
+          fi
 
           # Enable auto-merge so the PR merges once all required checks/reviews pass.
-          gh pr merge "$pr_number" \
-            --repo ministryofjustice/modernisation-platform-github \
-            --auto \
-            --squash
+          if [[ "$auto_merge_enabled" == "true" ]]; then
+            echo "Auto-merge is already enabled for PR #$pr_number."
+          else
+            gh pr merge "$pr_number" \
+              --repo ministryofjustice/modernisation-platform-github \
+              --auto \
+              --squash
+          fi
