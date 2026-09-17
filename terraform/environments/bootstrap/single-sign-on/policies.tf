@@ -768,6 +768,7 @@ data "aws_iam_policy_document" "quicksight_administrator_additional" {
       "iam:CreatePolicy",
       "iam:ListEntitiesForPolicy",
       "iam:ListPolicies",
+      "kms:Decrypt",
       "organizations:DescribeOrganization",
       "quicksight:*",
       "s3:ListAllMyBuckets",
