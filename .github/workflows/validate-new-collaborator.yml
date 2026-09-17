@@ -1,6 +1,7 @@
+---
 name: New Collaborator Issue
 
-on:
+"on":
   issues:
     types: [opened, labeled]
 
