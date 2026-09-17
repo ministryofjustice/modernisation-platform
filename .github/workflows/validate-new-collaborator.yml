@@ -5,25 +5,42 @@ name: New Collaborator Issue
   issues:
     types: [opened, labeled]
 
-permissions:
-  issues: write
-  contents: read
-  pull-requests: write
+permissions: {}
 
 env:
   APP_ID: 2013696
 
 jobs:
-  validate:
+  fetch-secrets:
     if: contains(github.event.issue.labels.*.name, 'collaborator')
+    permissions:
+      id-token: write
+      contents: read
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@e49ac27b104b38bac12fc1e3257a13be6289a59c # v6.2.2
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  validate:
+    needs: fetch-secrets
+    if: contains(github.event.issue.labels.*.name, 'collaborator')
+    permissions:
+      contents: read
+      issues: write
     runs-on: ubuntu-latest
     steps:
+      - name: Decrypt GitHub App private key
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@e49ac27b104b38bac12fc1e3257a13be6289a59c # v6.2.2
+        with:
+          mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
       - name: Create GitHub App token
         id: app
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
           client-id: ${{ env.APP_ID }}
-          private-key: ${{ secrets.MP_GITHUB_APP_PRIVATE_KEY }}
+          private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
           repositories: "modernisation-platform-github"
           permission-contents: write
           permission-pull-requests: write
