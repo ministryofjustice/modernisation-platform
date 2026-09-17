@@ -1,7 +1,7 @@
 ---
 name: core-vpc-production-deployment
 
-on:
+"on":
   push:
     branches:
       - main
@@ -50,7 +50,7 @@ permissions:
   id-token: write # This is required for requesting the JWT
   contents: read # This is required for actions/checkout
   pull-requests: write
-  
+
 defaults:
   run:
     shell: bash
@@ -68,9 +68,8 @@ jobs:
   member-account-ram-association:
     needs: core-vpc-production-deployment-plan-apply
     uses: ./.github/workflows/reusable-member-account-ram-association.yml
-    with: 
+    with:
       environment: "production"
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
-    

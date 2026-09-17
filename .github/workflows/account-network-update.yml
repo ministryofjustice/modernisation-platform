@@ -1,6 +1,7 @@
+---
 name: Account Network Update
 
-on:
+"on":
   pull_request:
     types: [closed]
     branches:
@@ -24,6 +25,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Find newly added environment files
         env:
@@ -66,8 +68,12 @@ jobs:
 
       - name: Create pull request for network changes
         if: env.SKIP != 'true'
-        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@e49ac27b104b38bac12fc1e3257a13be6289a59c # v6.2.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "Automated networking for new environments"
           pr_body: "This PR was created automatically after a new environment request was merged."
+          commit_message: "Automated networking for new environments"
+          files_to_commit: |
+            environments-networks/*
+            policies/networks/*

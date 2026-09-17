@@ -1,6 +1,7 @@
+---
 name: Check for broken links
 
-on:
+"on":
   push:
     branches: [feature-check-links]
   pull_request:
@@ -18,18 +19,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Get files to check
         id: files
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          EVENT_NAME: ${{ github.event_name }}
         run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
+          if [ "$EVENT_NAME" = "pull_request" ]; then
             # For PRs, only check changed markdown files
-            git fetch origin ${{ github.base_ref }} --depth=1
-            FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD -- '*.md' '*.md.erb')
-          elif [ "${{ github.event_name }}" = "push" ]; then
+            git fetch origin "$BASE_REF" --depth=1
+            FILES=$(git diff --name-only "origin/${BASE_REF}...HEAD" -- '*.md' '*.md.erb')
+          elif [ "$EVENT_NAME" = "push" ]; then
             # Temporarily scan all markdown files on push for testing
             FILES=$(git ls-files '*.md' '*.md.erb')
           else
@@ -80,10 +85,12 @@ jobs:
           echo ""
 
           # Prepare report header
-          echo "## 🔗 Broken Links Report" > broken-links-report.md
-          echo "" >> broken-links-report.md
-          echo "| Status | URL | File | Line |" >> broken-links-report.md
-          echo "|--------|-----|------|------|" >> broken-links-report.md
+          {
+            echo "## 🔗 Broken Links Report"
+            echo ""
+            echo "| Status | URL | File | Line |"
+            echo "|--------|-----|------|------|"
+          } > broken-links-report.md
 
           while IFS= read -r url; do
             CHECKED=$((CHECKED + 1))
@@ -104,7 +111,7 @@ jobs:
 
               # Find all occurrences with file and line number
               while IFS= read -r file; do
-                grep -EIn 'https?://[A-Za-z0-9._~:/?#@!$&*+,;=%-]+' "$file" 2>/dev/null | grep -F "$url" | while IFS=: read -r line_num content; do
+                grep -EIn 'https?://[A-Za-z0-9._~:/?#@!$&*+,;=%-]+' "$file" 2>/dev/null | grep -F "$url" | while IFS=: read -r line_num _content; do
                   echo "     📍 $file:$line_num"
                   echo "| ${STATUS} | ${url} | ${file} | ${line_num} |" >> broken-links-report.md
                 done
@@ -142,8 +149,3 @@ jobs:
                 body: report
               });
             }
-
-
-
-
-

@@ -4,7 +4,13 @@
   "components": [
     {
       "name": "ccms-soa-sandbox",
-      "sso_group_name": "laa-sre-admins"
+      "sso_group_name": "laa-soa-developers",
+      "github_action_reviewer": "true"
+    },
+    {
+      "name": "ccms-soa-sandbox",
+      "sso_group_name": "laa-sre-admins",
+      "github_action_reviewer": "true"
     }
   ],
   "environments": [
@@ -13,7 +19,8 @@
       "access": [
         {
           "sso_group_name": "laa-sre-admins",
-          "level": "sandbox"
+          "level": "sandbox",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-ccms-ebs-developers",
@@ -43,7 +50,8 @@
       "access": [
         {
           "sso_group_name": "laa-sre-admins",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-ccms-ebs-developers",
@@ -55,7 +63,7 @@
         },
         {
           "sso_group_name": "laa-ccms-developers",
-          "level": "developer"
+          "level": "secrets-manager-editor"
         },
         {
           "sso_group_name": "laa-dba",
@@ -72,7 +80,8 @@
       "access": [
         {
           "sso_group_name": "laa-sre-admins",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-ccms-ebs-developers",
@@ -84,7 +93,7 @@
         },
         {
           "sso_group_name": "laa-ccms-developers",
-          "level": "developer"
+          "level": "secrets-manager-editor"
         },
         {
           "sso_group_name": "laa-dba",
@@ -110,7 +119,7 @@
         },
         {
           "sso_group_name": "laa-ccms-developers",
-          "level": "developer"
+          "level": "secrets-manager-editor"
         },
         {
           "sso_group_name": "laa-dba",
@@ -118,6 +127,10 @@
         },
         {
           "sso_group_name": "laa-ccms-ebs-developers",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-soa-developers",
           "level": "developer"
         },
         {

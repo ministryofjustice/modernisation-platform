@@ -1,0 +1,6 @@
+rules:
+  self-repository:
+    ignore:
+      - modernisation-platform-account.yml
+      - new-environment.yml
+      - scheduled-baseline-extended-matrix.yml

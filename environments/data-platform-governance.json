@@ -12,7 +12,7 @@
       "access": [
         {
           "sso_group_name": "data-platform-engineering",
-          "level": "platform-engineer-admin",
+          "level": "read-only",
           "github_action_reviewer": "true"
         },
         {
@@ -28,7 +28,7 @@
       "access": [
         {
           "sso_group_name": "data-platform-engineering",
-          "level": "platform-engineer-admin",
+          "level": "read-only",
           "github_action_reviewer": "true"
         },
         {
@@ -43,7 +43,7 @@
       "access": [
         {
           "sso_group_name": "data-platform-engineering",
-          "level": "platform-engineer-admin",
+          "level": "read-only",
           "github_action_reviewer": "true"
         },
         {
@@ -58,7 +58,7 @@
       "access": [
         {
           "sso_group_name": "data-platform-engineering",
-          "level": "platform-engineer-admin",
+          "level": "read-only",
           "github_action_reviewer": "true"
         },
         {

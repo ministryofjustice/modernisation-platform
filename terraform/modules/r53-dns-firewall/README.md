@@ -1,6 +1,6 @@
 # R53 DNS Firewall
 
-Terraform module used to create R53 DNS Firewall resources for Modernisation Platform VPCs. For more info see https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-dns-firewall-overview.html
+Terraform module used to create R53 DNS Firewall resources for Modernisation Platform VPCs. For more info see <https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-dns-firewall-overview.html>
 
 This module creates the following resources per VPC:
 

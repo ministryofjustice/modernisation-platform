@@ -6,7 +6,7 @@
       "access": [
         {
           "sso_group_name": "analytical-platform-engineers",
-          "level": "administrator"
+          "level": "read-only"
         },
         {
           "sso_group_name": "azure-aws-sso-analytical-platform-engineers",

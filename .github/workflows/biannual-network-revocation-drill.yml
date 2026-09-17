@@ -1,6 +1,7 @@
+---
 name: Biannual Network Access Revocation Drill
 
-on:
+"on":
   schedule:
     # Runs at 00:00 UTC on Jan 1 and July 1
     - cron: '0 0 1 1,7 *'

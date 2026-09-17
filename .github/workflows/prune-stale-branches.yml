@@ -1,9 +1,10 @@
+---
 name: Cleanup of Stale Branches
 
-on:
+"on":
   workflow_dispatch:
   schedule:
-  - cron: '0 0 * * 0'
+    - cron: '0 0 * * 0'
 
 permissions:
   contents: write
@@ -16,7 +17,7 @@ env:
 
 jobs:
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@40972648982915f26e5b5e22bd92f3af9297a707 # v6.1.7
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@e49ac27b104b38bac12fc1e3257a13be6289a59c # v6.2.2
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -37,12 +38,12 @@ jobs:
 
     steps:
 
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 1
 
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@40972648982915f26e5b5e22bd92f3af9297a707 # v6.1.7
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@e49ac27b104b38bac12fc1e3257a13be6289a59c # v6.2.2
         with:
           mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -60,8 +61,8 @@ jobs:
         id: app
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
-          client-id: ${{ env.APP_ID }}               
-          private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
+          client-id: ${{ env.APP_ID }}
+          private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
           owner: "ministryofjustice"
 
       - name: Authenticate GitHub CLI as the App and Check the Rate Usage

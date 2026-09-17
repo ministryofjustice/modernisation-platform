@@ -25,6 +25,7 @@
           "level": "developer"
         }
       ],
+      "instance_scheduler_skip": ["true"],
       "nuke": "exclude"
     },
     {
@@ -46,7 +47,8 @@
           "sso_group_name": "xhibit-portal-dev",
           "level": "developer"
         }
-      ]
+      ],
+      "instance_scheduler_skip": ["true"]
     },
     {
       "name": "production",

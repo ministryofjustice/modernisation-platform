@@ -1,13 +1,13 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Subnet Allocation
-last_reviewed_on: 2026-02-09
+last_reviewed_on: 2026-09-14
 review_in: 6 months
 ---
 
 # <%= current_page.data.title %>
 
-When we set up a VPC for an environment (AWS account) we provide subnets for transit gateway connection, protected reources such as VPC endpoints, along with a general subnet set.
+When we set up a VPC for an environment (AWS account) we provide subnets for transit gateway connection, protected resources such as VPC endpoints, along with a general subnet set.
 See the [subnets](./networking-approach.html#subnets) section for more information.
 
 Here we go into a bit more detail on how the [CIDR ranges](https://aws.amazon.com/what-is/cidr/) have been created and [how they are allocated](https://github.com/ministryofjustice/modernisation-platform/blob/main/cidr-allocation.md).
@@ -16,9 +16,19 @@ Here we go into a bit more detail on how the [CIDR ranges](https://aws.amazon.co
 
 ![Subnets allocation](../../images/subnets-allocation.png)
 
+Both the transit gateway subnets and the protected subnets are created per VPC, not per account. As VPCs are shared across the accounts in a business unit, this capacity is shared across that business unit.
+
 ## Subnet Sets
 
 ![Subnet sets allocation](../../images/subnet-sets-allocation.png)
+
+Each subnet set is a `/21`, divided into nine subnets across the three London availability zones:
+
+| Subnet type | Size | Usable addresses | Used for |
+| ----------- | ---- | ---------------- | -------- |
+| Private | 3 x `/24` | 753 | Applications. Reaches the internet via centralised NAT over the transit gateway |
+| Public | 3 x `/25` | 369 | Public-facing resources such as load balancers |
+| Data | 3 x `/25` | 369 | Databases. Usually has no internet connection |
 
 ## How have we decided the ranges?
 
@@ -29,3 +39,13 @@ We analysed the existing MoJ network infrastructure to ensure that we didn't cla
 Below is an example of how CIDR ranges would be assigned. In this example there are 2 additional subnet sets for this VPC, but normally we would expect the general set to be enough for a business area.
 
 ![Subnets example](../../images/subnets-example.png)
+
+## Secondary CIDR blocks
+
+Where a business unit needs more address space than its subnet set provides, we can attach one or more **secondary CIDR blocks** to the VPC.
+
+Each secondary CIDR block is divided into further private, public and data subnets, in the same pattern as the general subnet set. This means a VPC with a secondary CIDR block will have more than nine subnets.
+
+Secondary CIDR blocks are configured with the `secondary_cidr_blocks` option in the environments-networks JSON. See [environments-networks json explained](../../user-guide/environments-networks-json-explained.html) for details.
+
+If you think you are running short of address space, please get in touch in [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1).

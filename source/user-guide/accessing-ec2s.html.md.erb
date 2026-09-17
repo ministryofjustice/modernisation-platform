@@ -12,6 +12,8 @@ review_in: 6 months
 To connect to EC2s on the Modernisation Platform, we use [AWS Systems Manager Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
 This enables us to connect to EC2s securely, via AWS SSO, without the need to open ports to the public.
 
+Session Manager shell session transcripts are logged to the `session-manager-logs` CloudWatch log group in member accounts and forwarded to `core-logging-production` for central audit retention. This applies to Session Manager shell sessions; port-forwarded SSH or RDP traffic does not produce command transcripts.
+
 ## Required configuration to connect via Session Manager
 
 1. Ensure AWS CLI v2 and Session Manager plugin are installed locally. For example, if you're using macOS, you can install the following brew packages:

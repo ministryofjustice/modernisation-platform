@@ -1,5 +1,10 @@
 {
   "account-type": "member",
+  "components": [
+    {
+      "name": "benefit-checker-api"
+    }
+  ],
   "environments": [
     {
       "name": "development",
@@ -21,6 +26,7 @@
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [
+    "ministryofjustice/integration-hub-api-platform",
     "ministryofjustice/integration-hub-file-transfer-api"
   ],
   "go-live-date": ""

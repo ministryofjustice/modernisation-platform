@@ -6,11 +6,12 @@
       "access": [
         {
           "sso_group_name": "laa-sre-admins",
-          "level": "sandbox"
+          "level": "sandbox",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-ccms-developers",
-          "level": "developer"
+          "level": "secrets-manager-editor"
         },
         {
           "sso_group_name": "modernisation-platform-audit",
@@ -24,7 +25,8 @@
       "access": [
         {
           "sso_group_name": "laa-sre-admins",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-sre-admins",
@@ -32,7 +34,7 @@
         },
         {
           "sso_group_name": "laa-ccms-developers",
-          "level": "developer"
+          "level": "secrets-manager-editor"
         },
         {
           "sso_group_name": "modernisation-platform-audit",
@@ -45,7 +47,8 @@
       "access": [
         {
           "sso_group_name": "laa-sre-admins",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-sre-admins",
@@ -53,7 +56,7 @@
         },
         {
           "sso_group_name": "laa-ccms-developers",
-          "level": "developer"
+          "level": "secrets-manager-editor"
         },
         {
           "sso_group_name": "modernisation-platform-audit",
@@ -75,7 +78,7 @@
         },
         {
           "sso_group_name": "laa-ccms-developers",
-          "level": "developer"
+          "level": "secrets-manager-editor"
         },
         {
           "sso_group_name": "octo-cyber-team",

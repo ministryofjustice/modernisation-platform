@@ -1,48 +1,49 @@
+---
 name: Reusable Scheduled Baselines Workflow
 
-on:
+"on":
   workflow_call:
     inputs:
 
-        JOB_NAME:
-          required: true
-          type: string
-          description: "The job name for logging / debugging purposes"
+      JOB_NAME:
+        required: true
+        type: string
+        description: "The job name for logging / debugging purposes"
 
-        AWS_REGION:
-            required: true
-            type: string
-            description: "The aws region"           
+      AWS_REGION:
+        required: true
+        type: string
+        description: "The aws region"
 
-        environment_management:
-            required: true
-            type: string
-            description: "The Account List"
+      environment_management:
+        required: true
+        type: string
+        description: "The Account List"
 
-        slack_webhook_url:
-            required: true
-            type: string
-            description: "Slack Webhook URL"
+      slack_webhook_url:
+        required: true
+        type: string
+        description: "Slack Webhook URL"
 
-        TF_WORKSPACE:
-            required: true
-            type: string
-            description: "The workspace"
+      TF_WORKSPACE:
+        required: true
+        type: string
+        description: "The workspace"
 
-        working_directory:
-            required: true
-            type: string
-            description: "The terraform working directory"
+      working_directory:
+        required: true
+        type: string
+        description: "The terraform working directory"
 
-        aws_account_id_name:
-            required: true
-            type: string
-            description: "the name of the account id to use"
+      aws_account_id_name:
+        required: true
+        type: string
+        description: "the name of the account id to use"
 
-        aws_role:
-            required: true
-            type: string
-            description: "The AWS role to assume for the terraform actions"
+      aws_role:
+        required: true
+        type: string
+        description: "The AWS role to assume for the terraform actions"
 
     secrets:
 
@@ -53,59 +54,70 @@ permissions: {}
 
 env:
   STATE_FILE: ${{ inputs.working_directory }}/errored.tfstate
-            
+
 jobs:
 
-    main:
-      permissions:
-        id-token: write
-        contents: read
-      runs-on: ubuntu-latest
-      name: "Job - ${{ inputs.JOB_NAME }}"
-      steps:
-        - name: Log Job Name
-          run: | 
-            echo "Job Name: " ${{ inputs.JOB_NAME }}
-        - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-        - name: Decrypt Secrets
-          uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@40972648982915f26e5b5e22bd92f3af9297a707 # v6.1.7
-          with:
-            environment_management: ${{ inputs.environment_management }}
-            slack_webhook_url: ${{ inputs.slack_webhook_url }}
-            PASSPHRASE: ${{ secrets.PASSPHRASE }}
-        - name: Set Account Number
-          run: |
-            ACCOUNT_NUMBER=$(jq -r -e '.${{ inputs.aws_account_id_name }}' <<< "$ENVIRONMENT_MANAGEMENT")
-            echo "::add-mask::$ACCOUNT_NUMBER"
-            echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
-        - name: Configure AWS Credentials
-          uses: aws-actions/configure-aws-credentials@517a711dbcd0e402f90c77e7e2f81e849156e31d # v6.2.2
-          with:
-            role-to-assume: arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/${{ inputs.aws_role }}
-            role-session-name: githubactionsrolesession
-            aws-region: ${{ inputs.AWS_REGION }}
-        - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
-          with:
-            terraform_version: "~1"
-            terraform_wrapper: false
-        - run: bash scripts/terraform-init.sh "${{ inputs.working_directory }}"
-        - run: bash scripts/terraform-apply.sh "${{ inputs.working_directory }}"
-        - name: Persist terraform state to backend
-          if: ${{ failure() && hashFiles(env.STATE_FILE) != '' }}
-          run: |
-            bash scripts/terraform-state-push.sh "${{ inputs.working_directory }}"
-            if [ $? -eq 0 ]; then
-              echo "STATE_PUSH_SUCCESSFUL=true" >> $GITHUB_ENV
-            fi
-        - name: Slack failure notification
-          uses: slackapi/slack-github-action@0d95c9a7becc1e6e297d76df9bc735c44f4cbcbc # v3.0.5
-          with:
-            webhook-type: incoming-webhook
-            payload: |
-              {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
-          env:
-            SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
-          if: ${{ failure() }}
-      env:
-        TF_WORKSPACE: ${{ inputs.TF_WORKSPACE }}
-        STATE_PUSH_SUCCESSFUL: false
+  main:
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ubuntu-latest
+    name: "Job - ${{ inputs.JOB_NAME }}"
+    steps:
+      - name: Log Job Name
+        env:
+          JOB_NAME: ${{ inputs.JOB_NAME }}
+        run: |
+          echo "Job Name: $JOB_NAME"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@e49ac27b104b38bac12fc1e3257a13be6289a59c # v6.2.2
+        with:
+          environment_management: ${{ inputs.environment_management }}
+          slack_webhook_url: ${{ inputs.slack_webhook_url }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      - name: Set Account Number
+        env:
+          AWS_ACCOUNT_ID_NAME: ${{ inputs.aws_account_id_name }}
+        run: |
+          ACCOUNT_NUMBER=$(jq -r -e --arg key "$AWS_ACCOUNT_ID_NAME" '.[$key]' <<< "$ENVIRONMENT_MANAGEMENT")
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
+        with:
+          role-to-assume: arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/${{ inputs.aws_role }}
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ inputs.AWS_REGION }}
+      - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
+        with:
+          terraform_version: "~1"
+          terraform_wrapper: false
+      - env:
+          WORKING_DIRECTORY: ${{ inputs.working_directory }}
+        run: bash scripts/terraform-init.sh "$WORKING_DIRECTORY"
+      - env:
+          WORKING_DIRECTORY: ${{ inputs.working_directory }}
+        run: bash scripts/terraform-apply.sh "$WORKING_DIRECTORY"
+      - name: Persist terraform state to backend
+        if: ${{ failure() && hashFiles(env.STATE_FILE) != '' }}
+        env:
+          WORKING_DIRECTORY: ${{ inputs.working_directory }}
+        run: |
+          if bash scripts/terraform-state-push.sh "$WORKING_DIRECTORY"; then
+            echo "STATE_PUSH_SUCCESSFUL=true" >> "$GITHUB_ENV"
+          fi
+      - name: Slack failure notification
+        uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
+        with:
+          webhook-type: incoming-webhook
+          payload: |
+            {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
+        env:
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
+        if: ${{ failure() }}
+    env:
+      TF_WORKSPACE: ${{ inputs.TF_WORKSPACE }}
+      STATE_PUSH_SUCCESSFUL: false

@@ -1,20 +1,27 @@
 {
   "account-type": "member",
+  "components": [
+    {
+      "name": "ccms-oia-sandbox",
+      "sso_group_name": "laa-sre-admins"
+    }
+  ],
   "environments": [
     {
       "name": "development",
       "access": [
         {
           "sso_group_name": "laa-sre-admins",
-          "level": "sandbox"
+          "level": "sandbox",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-ccms-developers",
-          "level": "developer"
+          "level": "secrets-manager-editor"
         },
         {
           "sso_group_name": "laa-oia-developers",
-          "level": "developer"
+          "level": "sandbox"
         },
         {
           "sso_group_name": "laa-dba",
@@ -32,7 +39,8 @@
       "access": [
         {
           "sso_group_name": "laa-sre-admins",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-sre-admins",
@@ -40,7 +48,7 @@
         },
         {
           "sso_group_name": "laa-ccms-developers",
-          "level": "developer"
+          "level": "secrets-manager-editor"
         },
         {
           "sso_group_name": "laa-dba",
@@ -49,6 +57,10 @@
         {
           "sso_group_name": "modernisation-platform-audit",
           "level": "security-audit"
+        },
+        {
+          "sso_group_name": "laa-oia-developers",
+          "level": "secrets-manager-editor"
         }
       ]
     },
@@ -57,7 +69,8 @@
       "access": [
         {
           "sso_group_name": "laa-sre-admins",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-sre-admins",
@@ -65,7 +78,7 @@
         },
         {
           "sso_group_name": "laa-ccms-developers",
-          "level": "developer"
+          "level": "secrets-manager-editor"
         },
         {
           "sso_group_name": "laa-dba",
@@ -74,6 +87,10 @@
         {
           "sso_group_name": "modernisation-platform-audit",
           "level": "security-audit"
+        },
+        {
+          "sso_group_name": "laa-oia-developers",
+          "level": "secrets-manager-editor"
         }
       ]
     },
@@ -91,7 +108,7 @@
         },
         {
           "sso_group_name": "laa-ccms-developers",
-          "level": "developer"
+          "level": "secrets-manager-editor"
         },
         {
           "sso_group_name": "laa-dba",
@@ -100,6 +117,10 @@
         {
           "sso_group_name": "octo-cyber-team",
           "level": "security-audit"
+        },
+        {
+          "sso_group_name": "laa-oia-developers",
+          "level": "secrets-manager-editor"
         }
       ]
     }

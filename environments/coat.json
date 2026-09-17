@@ -6,7 +6,7 @@
       "access": [
         {
           "sso_group_name": "cloud-optimisation-and-accountability",
-          "level": "sandbox"
+          "level": "developer"
         }
       ],
       "nuke": "rebuild"

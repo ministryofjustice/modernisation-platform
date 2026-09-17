@@ -30,11 +30,11 @@ You need to run Terraform commands in this directory using a Ministry of Justice
 
 `terraform plan`
 
-### Example for `shared-services-dev`
+### Example
 
 ```terraform
 terraform workspace list
-terraform workspace select shared-services-dev
+terraform workspace select <workspace_name>
 terraform plan
 terraform apply
 ```

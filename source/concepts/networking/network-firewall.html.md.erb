@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: AWS Network Firewall
-last_reviewed_on: 2026-02-16
+last_reviewed_on: 2026-08-18
 review_in: 6 months
 ---
 
@@ -11,9 +11,9 @@ We make use of AWS Network Firewalls in two ways. First, we use a centralised in
 and exiting the Modernisation Platform to and from internal Ministry of Justice services. Second, we use
 inline-inspection in our egress VPCs to control traffic exiting the Modernisation Platform to the internet.
 
-### What is an AWS network firewall
+### What is AWS Network Firewall?
 
-To learn more about AWS firewall please follow the links bellow
+To learn more about AWS Network Firewall, please follow the links below.
 
 - [AWS Firewall](https://aws.amazon.com/network-firewall/features/)
 - [AWS Firewall Training](https://www.youtube.com/watch?v=WNFknf9zyZg)
@@ -45,7 +45,7 @@ These rules are formatted in json format and a text example is shown below.
   }
 ```
 
-To add a rule to the AWS network firewall start by cloning the repository then create a new branch, then copy and paste the above code snippet in to the appropriate json file for the environment you are dealing with.
+To add a rule to AWS Network Firewall, start by cloning the repository, then create a new branch, then copy and paste the above code snippet into the appropriate JSON file for the environment you are working with.
 
 Change the details for the description and other fields in the code snippet to their appropriate values.
 

@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: EntraID on the Modernisation Platform
-last_reviewed_on: 2026-02-20
+last_reviewed_on: 2026-08-20
 review_in: 6 months
 ---
 
@@ -74,7 +74,7 @@ EntraId groups can create a new group, and it will be added to AWS as long as th
 with `azure-aws-sso`. The platform's role is to consume those groups and manage access in AWS.
 
 For more information about group permission and how groups are given permissions to AWS accounts, see the following documentation:
-[Platform User Roles](source/runbooks/platform-user-roles.html)
+[Platform User Roles](../user-guide/platform-user-roles.html)
 
 ## Auth0 access and integration
 
@@ -90,5 +90,5 @@ its own secrets and rotation cycle, but it is a critical part of the end-to-end 
 
 ## Related documentation
 
-- [ADR: Adopting EntraId](../architectural-decisions-records/004-adopting-entra-id.md)
+- [ADR: Adopting EntraId](https://github.com/ministryofjustice/modernisation-platform/blob/main/architecture-decision-record/0041-adopting-entra-id.md)
 - [SCIM Lambda runbook](scim-lambda-runbook.html)

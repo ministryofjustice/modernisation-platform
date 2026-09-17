@@ -286,3 +286,49 @@ resource "aws_secretsmanager_secret_version" "modernisation_platform_github_app_
   secret_id     = aws_secretsmanager_secret.modernisation_platform_github_app_private_key.id
   secret_string = "Replace after build"
 }
+
+# The following secrets are used by the AI Prototype Builder and are required for github secrets
+
+resource "aws_secretsmanager_secret" "modernisation_platform_ai_prototype_account_id" {
+  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
+  name        = "modernisation_platform_ai_prototype_account_id"
+  description = "ID of the justice engineering ai services aws account"
+  kms_key_id  = aws_kms_key.secrets_key_multi_region.id
+  tags        = local.tags
+  replica {
+    region = local.replica_region
+  }
+}
+
+resource "aws_secretsmanager_secret" "modernisation_platform_ai_prototype_r53_hosted_zone_id" {
+  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
+  name        = "modernisation_platform_ai_prototype_r53_hosted_zone_id"
+  description = "Hosted Zone ID used by the ai prototype"
+  kms_key_id  = aws_kms_key.secrets_key_multi_region.id
+  tags        = local.tags
+  replica {
+    region = local.replica_region
+  }
+}
+
+resource "aws_secretsmanager_secret" "modernisation_platform_ai_prototype_acm_cert_eu_west_2" {
+  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
+  name        = "modernisation_platform_ai_prototype_acm_cert_eu_west_2"
+  description = "eu-west-2 acm cert arn used by the ai prototype"
+  kms_key_id  = aws_kms_key.secrets_key_multi_region.id
+  tags        = local.tags
+  replica {
+    region = local.replica_region
+  }
+}
+
+resource "aws_secretsmanager_secret" "modernisation_platform_ai_prototype_acm_cert_us_east_1" {
+  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
+  name        = "modernisation_platform_ai_prototype_acm_cert_us_east_1"
+  description = "us-east-1 acm cert arn used by the ai prototype"
+  kms_key_id  = aws_kms_key.secrets_key_multi_region.id
+  tags        = local.tags
+  replica {
+    region = local.replica_region
+  }
+}

@@ -97,6 +97,8 @@ resource "aws_iam_role" "athena_lambda" {
 }
 
 resource "aws_iam_policy" "athena_lambda_policy" {
+  #checkov:skip=CKV_AWS_290:This write permission is strictly required for this automated process
+  #checkov:skip=CKV_AWS_355:This write permission is strictly required for this automated process
   name = "athena_lambda_policy"
   policy = jsonencode({
     Version = "2012-10-17"
@@ -174,18 +176,6 @@ resource "aws_iam_policy" "athena_lambda_policy" {
         Resource = [
           "${module.s3-bucket-athena.bucket.arn}/*",
           module.s3-bucket-athena.bucket.arn
-        ]
-      },
-      {
-        Action = [
-          "s3:GetBucketLocation",
-          "s3:List*",
-          "s3:Get*"
-        ]
-        Effect = "Allow"
-        Resource = [
-          module.s3-bucket-cloudtrail-logging.bucket.arn,
-          "${module.s3-bucket-cloudtrail-logging.bucket.arn}/*"
         ]
       }
     ]

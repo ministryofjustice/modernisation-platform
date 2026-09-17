@@ -1,7 +1,7 @@
 ---
 name: core-vpc-test-deployment
 
-on:
+"on":
   push:
     branches:
       - main
@@ -68,9 +68,8 @@ jobs:
   member-account-ram-association:
     needs: core-vpc-test-deployment-plan-apply
     uses: ./.github/workflows/reusable-member-account-ram-association.yml
-    with: 
+    with:
       environment: "test"
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
-    

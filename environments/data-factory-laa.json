@@ -16,7 +16,7 @@
       "access": [
         {
           "sso_group_name": "laa-data-factory-engineering",
-          "level": "developer"
+          "level": "data-engineer"
         },
         {
           "sso_group_name": "laa-data-factory-engineering",
