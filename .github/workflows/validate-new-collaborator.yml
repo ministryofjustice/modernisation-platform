@@ -23,13 +23,16 @@ jobs:
         with:
           client-id: ${{ env.APP_ID }}
           private-key: ${{ secrets.MP_GITHUB_APP_PRIVATE_KEY }}
-          owner: "ministryofjustice"
+          repositories: "modernisation-platform-github"
+          permission-contents: write
+          permission-pull-requests: write
 
       - name: Checkout modernisation-platform-github repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           repository: 'ministryofjustice/modernisation-platform-github'
           token: ${{ steps.app.outputs.token }}
+          persist-credentials: false
           # collaborators.json is owned and updated in this target repository.
           path: 'modernisation-platform-github'
 
@@ -239,6 +242,7 @@ jobs:
         with:
           # The updater script is versioned with this workflow, not the target repo.
           path: 'workflow-source'
+          persist-credentials: false
 
       - name: Update collaborators.json
         if: steps.validate_email.outputs.is_valid == 'true'
@@ -273,6 +277,7 @@ jobs:
           cd modernisation-platform-github
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          gh auth setup-git
           git checkout -b "$BRANCH"
           git add collaborators.json
           git commit -m "Add collaborator: ${collaborator_name} (${collaborator_github})"
