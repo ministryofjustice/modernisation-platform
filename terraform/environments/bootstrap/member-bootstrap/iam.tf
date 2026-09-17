@@ -1663,6 +1663,29 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
     }
   }
 
+  statement {
+    sid    = "AllowCloudPlatformGrafanaPermissions"
+    effect = "Allow"
+    actions = [
+      "grafana:ListWorkspaces",
+      "grafana:DescribeWorkspace",
+      "grafana:ListWorkspaceServiceAccounts",
+      "grafana:ListWorkspaceServiceAccountTokens",
+      "grafana:CreateWorkspaceServiceAccountToken"
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalAccount"
+      values = [
+        local.environment_management.account_ids["cloud-platform-development"],
+        local.environment_management.account_ids["cloud-platform-preproduction"],
+        local.environment_management.account_ids["cloud-platform-nonlive"],
+        local.environment_management.account_ids["cloud-platform-live"],
+      ]
+    }
+  }
+
 }
 
 # Role github-actions-apply to support OIDC access from Modernisation-Platform-Environments for:
