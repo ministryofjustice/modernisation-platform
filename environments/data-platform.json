@@ -44,7 +44,7 @@
           "level": "platform-engineer-admin"
         },
         {
-          "sso_group_name": "data-platform-proserve-engineers",
+          "sso_group_name": "data-platform-proserve-engineeers",
           "level": "read-only"
         }
       ],
@@ -64,7 +64,7 @@
           "level": "platform-engineer-admin"
         },
         {
-          "sso_group_name": "data-platform-proserve-engineers",
+          "sso_group_name": "data-platform-proserve-engineeers",
           "level": "read-only"
         }
       ],
@@ -83,7 +83,7 @@
           "level": "platform-engineer-admin"
         },
         {
-          "sso_group_name": "data-platform-proserve-engineers",
+          "sso_group_name": "data-platform-proserve-engineeers",
           "level": "read-only"
         }
       ],
@@ -106,7 +106,7 @@
           "level": "security-audit"
         },
         {
-          "sso_group_name": "data-platform-proserve-engineers",
+          "sso_group_name": "data-platform-proserve-engineeers",
           "level": "read-only"
         }
       ]
