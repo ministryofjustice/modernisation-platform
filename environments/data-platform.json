@@ -44,8 +44,8 @@
           "level": "platform-engineer-admin"
         },
         {
-          "sso_group_name": "data-platform-proserve-engineeers",
-          "level": "read-only"
+          "sso_group_name": "data-platform-proserve-engineers",
+          "level": "platform-engineer-admin"
         }
       ],
       "instance_scheduler_skip": ["true"],
@@ -64,8 +64,8 @@
           "level": "platform-engineer-admin"
         },
         {
-          "sso_group_name": "data-platform-proserve-engineeers",
-          "level": "read-only"
+          "sso_group_name": "data-platform-proserve-engineers",
+          "level": "platform-engineer-admin"
         }
       ],
       "instance_scheduler_skip": ["true"]
@@ -83,8 +83,8 @@
           "level": "platform-engineer-admin"
         },
         {
-          "sso_group_name": "data-platform-proserve-engineeers",
-          "level": "read-only"
+          "sso_group_name": "data-platform-proserve-engineers",
+          "level": "platform-engineer-admin"
         }
       ],
       "instance_scheduler_skip": ["true"]
@@ -106,8 +106,8 @@
           "level": "security-audit"
         },
         {
-          "sso_group_name": "data-platform-proserve-engineeers",
-          "level": "read-only"
+          "sso_group_name": "data-platform-proserve-engineers",
+          "level": "platform-engineer-admin"
         }
       ]
     }
