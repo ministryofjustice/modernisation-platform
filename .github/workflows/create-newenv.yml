@@ -164,7 +164,7 @@ jobs:
   
       - name: Create a signed commit for new accounts
         if: env.EXISTING_ACCOUNT == 'No'
-        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@e49ac27b104b38bac12fc1e3257a13be6289a59c # v6.2.2
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@2cc1ba90676147f4ebf93b67a56463473af39f1e # v6.2.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "Automated environment request for $APP_NAME"
@@ -173,7 +173,7 @@ jobs:
 
       - name: Commit changes for existing accounts
         if: env.EXISTING_ACCOUNT == 'Yes'
-        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@e49ac27b104b38bac12fc1e3257a13be6289a59c # v6.2.2
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@2cc1ba90676147f4ebf93b67a56463473af39f1e # v6.2.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "Automated environment amendment request for $APP_NAME"
