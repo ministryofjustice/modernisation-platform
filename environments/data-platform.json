@@ -42,6 +42,10 @@
         {
           "sso_group_name": "azure-aws-sso-data-platform-engineering",
           "level": "platform-engineer-admin"
+        },
+        {
+          "sso_group_name": "data-platform-proserve-engineers",
+          "level": "read-only"
         }
       ],
       "instance_scheduler_skip": ["true"],
@@ -58,6 +62,10 @@
         {
           "sso_group_name": "azure-aws-sso-data-platform-engineering",
           "level": "platform-engineer-admin"
+        },
+        {
+          "sso_group_name": "data-platform-proserve-engineers",
+          "level": "read-only"
         }
       ],
       "instance_scheduler_skip": ["true"]
@@ -73,6 +81,10 @@
         {
           "sso_group_name": "azure-aws-sso-data-platform-engineering",
           "level": "platform-engineer-admin"
+        },
+        {
+          "sso_group_name": "data-platform-proserve-engineers",
+          "level": "read-only"
         }
       ],
       "instance_scheduler_skip": ["true"]
@@ -92,6 +104,10 @@
         {
           "sso_group_name": "modernisation-platform-audit",
           "level": "security-audit"
+        },
+        {
+          "sso_group_name": "data-platform-proserve-engineers",
+          "level": "read-only"
         }
       ]
     }
