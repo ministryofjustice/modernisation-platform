@@ -1,66 +1,59 @@
 #!/bin/bash
 set -e
 
-# Define the path to the configuration script
-CONFIG_SCRIPT="config.txt"
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+CONFIG_SCRIPT="$SCRIPT_DIR/config.txt"
 
-echo "Listing State for MP repo"
+echo "Managing Terraform state for the MP repository"
 
-# Define the path to the credentials and configuration file
-CONFIG_FILE="config.txt"
+# shellcheck source=./config.txt
+source "$CONFIG_SCRIPT"
 
-# Function to load configurations and AWS credentials from config.sh
-load_configurations_and_credentials() {
-    echo "Loading configurations and AWS credentials..."
-    source "$CONFIG_FILE"
-    
-    # Call the MP_CREDENTIAL function to load credentials
-    MP_CREDENTIALS
-    
-    # Debugging: Echo the loaded configurations and AWS credentials to verify
-    echo "Loaded application name: $APPLICATION_NAME"
-    echo "Loaded workspaces: ${WORKSPACES[*]}"
-    echo "Debugging - AWS_ACCESS_KEY_ID is set to: $AWS_ACCESS_KEY_ID"
-    echo "Debugging - AWS_SECRET_ACCESS_KEY is set to: $AWS_SECRET_ACCESS_KEY"
-    echo "Debugging - AWS_SESSION_TOKEN is set to: $AWS_SESSION_TOKEN"
-}
-
-# Load configurations and AWS credentials
-load_configurations_and_credentials
-
-# Verify if the required AWS environment variables are set
-if [ -z "$AWS_ACCESS_KEY_ID" ] || [ -z "$AWS_SECRET_ACCESS_KEY" ] || [ -z "$AWS_SESSION_TOKEN" ]; then
-    echo "One or more AWS credentials were not provided in the $CONFIG_FILE. Please check your input and try again."
+if ! declare -F MP_CREDENTIALS >/dev/null; then
+    echo "MP_CREDENTIALS is not defined in $CONFIG_SCRIPT" >&2
     exit 1
 fi
 
-# Change directory to the Terraform environments (adjust this path as necessary)
-echo "Current working directory:"
-pwd
-cd "$USER_MP_DIR/terraform/environments" || { echo "Failed to navigate to $USER_MP_DIR/terraform/environments"; exit 1; }
-echo "Changed directory to Terraform environments:"
-pwd
+echo "Loading configurations and AWS credentials..."
+MP_CREDENTIALS
 
-# Initialize Terraform
+echo "Loaded application name: $APPLICATION_NAME"
+echo "Loaded workspaces: ${WORKSPACES[*]}"
+
+# Verify that the required AWS environment variables are set.
+if [[ -z "${AWS_ACCESS_KEY_ID:-}" ||
+      -z "${AWS_SECRET_ACCESS_KEY:-}" ||
+      -z "${AWS_SESSION_TOKEN:-}" ]]; then
+    echo "One or more AWS credentials were not provided by $CONFIG_SCRIPT." >&2
+    exit 1
+fi
+
+terraform_directory="$USER_MP_DIR/terraform/environments"
+
+if [[ ! -d "$terraform_directory" ]]; then
+    echo "Terraform directory does not exist: $terraform_directory" >&2
+    exit 1
+fi
+
+echo "Changing to Terraform directory: $terraform_directory"
+cd -- "$terraform_directory"
+
 echo "Initializing Terraform..."
 terraform init
 
-# Loop through each workspace and manage resources
-for WORKSPACE in "${WORKSPACES[@]}"; do
-  echo "Managing resources for application '$APPLICATION_NAME' in the '$WORKSPACE' environment."
+for workspace in "${WORKSPACES[@]}"; do
+    echo "Managing resources for application '$APPLICATION_NAME' in the '$workspace' environment."
 
-  # Construct the resource to be removed
-  RESOURCE_TO_REMOVE="module.environments.aws_organizations_account.accounts[\"$APPLICATION_NAME-$WORKSPACE\"]"
+    resource_to_remove="module.environments.aws_organizations_account.accounts[\"$APPLICATION_NAME-$workspace\"]"
 
-  # Ask for confirmation before removing the resource
-  echo "Are you sure you want to remove $RESOURCE_TO_REMOVE from the Terraform state? [y/N]:"
-  read -r confirm
-  if [[ "$confirm" = [yY] ]]; then
-    echo "Removing $RESOURCE_TO_REMOVE from the Terraform state..."
-    terraform state rm "$RESOURCE_TO_REMOVE"
-  else
-    echo "Skipping removal of $RESOURCE_TO_REMOVE."
-  fi
+    read -r -p "Are you sure you want to remove $resource_to_remove from the Terraform state? [y/N]: " confirm
+
+    if [[ "$confirm" =~ ^[Yy]$ ]]; then
+        echo "Removing $resource_to_remove from the Terraform state..."
+        terraform state rm "$resource_to_remove"
+    else
+        echo "Skipping removal of $resource_to_remove."
+    fi
 done
 
-echo "Resource management operations completed."
+echo "Terraform state management operations completed."
