@@ -1,0 +1,390 @@
+{% extends "layout.njk" %}
+
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% block pageTitle %}Add a collaborator - {{ serviceName }}{% endblock %}
+
+{% block head %}
+  {{ super() }}
+  <style>
+    .mp-form-width {
+      max-width: 40.625rem;
+    }
+    .mp-access-heading {
+      align-items: flex-start;
+      display: flex;
+      gap: 20px;
+      justify-content: space-between;
+    }
+    .mp-access-heading__copy {
+      max-width: 40.625rem;
+    }
+    .mp-access-table {
+      border: 1px solid #b1b4b6;
+      border-collapse: separate;
+      border-spacing: 0;
+      table-layout: fixed;
+      width: 100%;
+    }
+    .mp-access-table th {
+      background: #f3f2f1;
+      border-bottom: 1px solid #b1b4b6;
+      padding: 12px 15px;
+    }
+    .mp-access-table td {
+      border-bottom: 1px solid #b1b4b6;
+      padding: 15px;
+      vertical-align: top;
+    }
+    .mp-access-table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+    .mp-access-table th + th,
+    .mp-access-table td + td {
+      border-left: 1px solid #d8dde0;
+    }
+    .mp-access-table .govuk-form-group {
+      margin-bottom: 0;
+      min-width: 0;
+    }
+    .mp-access-field-label {
+      border: 0;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      height: 1px;
+      margin: 0;
+      overflow: hidden;
+      padding: 0;
+      position: absolute;
+      white-space: nowrap;
+      width: 1px;
+    }
+    .mp-access-table .govuk-input,
+    .mp-access-table .govuk-select {
+      max-width: none;
+      min-width: 0;
+      width: 100%;
+    }
+    .mp-access-table__application {
+      width: 36%;
+    }
+    .mp-access-table__environment {
+      width: 26%;
+    }
+    .mp-access-table__role {
+      width: 26%;
+    }
+    .mp-access-table__action {
+      text-align: center;
+      width: 12%;
+    }
+    .mp-icon-button {
+      align-items: center;
+      background: transparent;
+      border: 0;
+      color: #1d70b8;
+      cursor: pointer;
+      display: inline-flex;
+      font-size: 2rem;
+      height: 40px;
+      justify-content: center;
+      line-height: 1;
+      padding: 0;
+      width: 40px;
+    }
+    .mp-icon-button:hover {
+      background: #f3f2f1;
+      color: #003078;
+    }
+    .mp-icon-button:focus {
+      background: #ffdd00;
+      box-shadow: 0 -2px #ffdd00, 0 4px #0b0c0c;
+      color: #0b0c0c;
+      outline: 3px solid transparent;
+    }
+    .mp-icon-button[hidden] {
+      display: none;
+    }
+    .mp-add-access {
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    .mp-add-access__icon {
+      font-size: 1.4rem;
+      font-weight: 700;
+      line-height: 0;
+      margin-right: 5px;
+      vertical-align: -1px;
+    }
+    @media (max-width: 40.0525em) {
+      .mp-access-heading {
+        display: block;
+      }
+      .mp-access-table,
+      .mp-access-table tbody,
+      .mp-access-table tr,
+      .mp-access-table td {
+        display: block;
+        width: 100%;
+      }
+      .mp-access-table thead {
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        height: 1px;
+        overflow: hidden;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+      }
+      .mp-access-table tr {
+        border-bottom: 1px solid #b1b4b6;
+        box-sizing: border-box;
+        padding: 15px;
+      }
+      .mp-access-table tbody tr:last-child {
+        border-bottom: 0;
+      }
+      .mp-access-table td,
+      .mp-access-table td + td {
+        border: 0;
+        box-sizing: border-box;
+        padding: 0 0 15px;
+      }
+      .mp-access-field-label {
+        clip: auto;
+        clip-path: none;
+        display: block;
+        height: auto;
+        margin-bottom: 5px;
+        overflow: visible;
+        position: static;
+        white-space: normal;
+        width: auto;
+      }
+      .mp-access-table .mp-access-table__action {
+        padding-bottom: 0;
+        text-align: left;
+      }
+      .mp-icon-button {
+        height: 36px;
+        width: 36px;
+      }
+      .mp-add-access {
+        margin-bottom: 20px;
+      }
+    }
+  </style>
+{% endblock %}
+
+{% block backLink %}
+  <a href="/" class="govuk-back-link">Back</a>
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      {% if errors %}
+        {% set errorList = [] %}
+        {% for key, message in errors %}
+          {% set errorList = (errorList.push({ text: message, href: "#" + key }), errorList) %}
+        {% endfor %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errorList
+        }) }}
+      {% endif %}
+
+      <h1 class="govuk-heading-xl">Add a collaborator</h1>
+
+      <form method="post" action="/new-collaborator" novalidate>
+        <input type="hidden" name="csrfToken" value="{{ csrfToken }}">
+
+        <div class="mp-form-width">
+        <h2 class="govuk-heading-l">Requestor details</h2>
+
+        {{ govukInput({
+          id: "requestorName",
+          name: "requestorName",
+          label: { text: "Requestor name", classes: "govuk-label--m" },
+          value: data.requestorName,
+          errorMessage: errors.requestorName and { text: errors.requestorName }
+        }) }}
+
+        {{ govukInput({
+          id: "requestorEmail",
+          name: "requestorEmail",
+          type: "email",
+          autocomplete: "email",
+          spellcheck: false,
+          label: { text: "Requestor email address", classes: "govuk-label--m" },
+          hint: { text: "Enter a justice.gov.uk email address." },
+          value: data.requestorEmail,
+          errorMessage: errors.requestorEmail and { text: errors.requestorEmail }
+        }) }}
+
+        <h2 class="govuk-heading-l">Collaborator details</h2>
+
+        {{ govukInput({
+          id: "collaboratorEmail",
+          name: "collaboratorEmail",
+          type: "email",
+          autocomplete: "email",
+          spellcheck: false,
+          label: { text: "Collaborator email address", classes: "govuk-label--m" },
+          value: data.collaboratorEmail,
+          errorMessage: errors.collaboratorEmail and { text: errors.collaboratorEmail }
+        }) }}
+
+        {{ govukInput({
+          id: "collaboratorGithub",
+          name: "collaboratorGithub",
+          spellcheck: false,
+          label: { text: "Collaborator GitHub username", classes: "govuk-label--m" },
+          value: data.collaboratorGithub,
+          errorMessage: errors.collaboratorGithub and { text: errors.collaboratorGithub }
+        }) }}
+        </div>
+
+        <div class="mp-access-heading">
+          <div class="mp-access-heading__copy">
+            <h2 class="govuk-heading-l govuk-!-margin-bottom-2">Application access</h2>
+            <p class="govuk-body govuk-!-margin-bottom-4">
+              Use lowercase Modernisation Platform application names. Add one row for each environment and role the collaborator needs.
+            </p>
+          </div>
+          <button
+            type="button"
+            class="govuk-button govuk-button--secondary mp-add-access"
+            data-add-access-row
+          ><span class="mp-add-access__icon" aria-hidden="true">+</span>Add row</button>
+        </div>
+
+        {% macro accessRow(index, row, canRemove, isTemplate=false) %}
+          {% set applicationErrorKey = "accessApplication-" + index %}
+          {% set environmentErrorKey = "accessEnvironment-" + index %}
+          {% set roleErrorKey = "accessRole-" + index %}
+          {% set environmentItems = [{ value: "", text: "Select environment", selected: not row.environment }] %}
+          {% for environment in fields.environments %}
+            {% set environmentItems = (environmentItems.push({
+              value: environment,
+              text: fields.environmentLabels[environment],
+              selected: row.environment == environment
+            }), environmentItems) %}
+          {% endfor %}
+          {% set roleItems = [{ value: "", text: "Select role", selected: not row.access }] %}
+          {% for role in fields.accessLevels %}
+            {% set roleItems = (roleItems.push({
+              value: role,
+              text: fields.accessLevelLabels[role],
+              selected: row.access == role,
+              attributes: { "data-development-only": "true" } if role == "sandbox" else {}
+            }), roleItems) %}
+          {% endfor %}
+
+          <tr data-access-row data-row-index="{{ index }}">
+            <td class="mp-access-table__application" data-label="Application name">
+              <span class="govuk-visually-hidden" data-access-row-title>{% if isTemplate %}Access{% else %}Access {{ index + 1 }}{% endif %}</span>
+              {{ govukInput({
+                id: "accessApplication-" + index,
+                name: "accessApplication",
+                spellcheck: false,
+                label: { text: "Application name", classes: "govuk-label--s mp-access-field-label" },
+                value: row.application,
+                errorMessage: errors and errors[applicationErrorKey] and { text: errors[applicationErrorKey] },
+                attributes: { "data-access-field": "application" }
+              }) }}
+            </td>
+
+            <td class="mp-access-table__environment" data-label="Environment">
+              {{ govukSelect({
+                id: "accessEnvironment-" + index,
+                name: "accessEnvironment",
+                label: { text: "Environment", classes: "govuk-label--s mp-access-field-label" },
+                items: environmentItems,
+                errorMessage: errors and errors[environmentErrorKey] and { text: errors[environmentErrorKey] },
+                attributes: { "data-access-field": "environment" }
+              }) }}
+            </td>
+
+            <td class="mp-access-table__role" data-label="Role">
+              {{ govukSelect({
+                id: "accessRole-" + index,
+                name: "accessRole",
+                label: { text: "Role", classes: "govuk-label--s mp-access-field-label" },
+                items: roleItems,
+                errorMessage: errors and errors[roleErrorKey] and { text: errors[roleErrorKey] },
+                attributes: { "data-access-field": "role" }
+              }) }}
+            </td>
+
+            <td class="mp-access-table__action" data-label="Action">
+              <button
+                type="button"
+                class="mp-icon-button"
+                data-remove-access-row
+                aria-label="Remove access {{ index + 1 if not isTemplate else '' }}"
+                title="Remove access"
+                {% if not canRemove %}hidden{% endif %}
+              ><span aria-hidden="true">&times;</span></button>
+            </td>
+          </tr>
+        {% endmacro %}
+
+        {% if errors and errors.accessRows %}
+          <p class="govuk-error-message">
+            <span class="govuk-visually-hidden">Error:</span> {{ errors.accessRows }}
+          </p>
+        {% endif %}
+
+        <table class="govuk-table mp-access-table govuk-!-margin-bottom-6">
+          <colgroup>
+            <col class="mp-access-table__application">
+            <col class="mp-access-table__environment">
+            <col class="mp-access-table__role">
+            <col class="mp-access-table__action">
+          </colgroup>
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">Application name</th>
+              <th scope="col" class="govuk-table__header">Environment</th>
+              <th scope="col" class="govuk-table__header">Role</th>
+              <th scope="col" class="govuk-table__header mp-access-table__action">Action</th>
+            </tr>
+          </thead>
+          <tbody id="accessRows" data-access-list data-max-rows="{{ fields.maxAccessRows }}">
+            {% for row in accessRows %}
+              {{ accessRow(loop.index0, row, accessRows.length > 1) }}
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <template id="collaborator-access-row-template">
+          <table><tbody>{{ accessRow("template", {}, true, true) }}</tbody></table>
+        </template>
+
+        <p class="govuk-visually-hidden" aria-live="polite" data-access-status></p>
+
+        <div class="mp-form-width">
+        {{ govukTextarea({
+          id: "additionalInformation",
+          name: "additionalInformation",
+          label: { text: "Additional information (optional)", classes: "govuk-label--m" },
+          hint: { text: "Do not include passwords, credentials or other sensitive information." },
+          value: data.additionalInformation
+        }) }}
+
+        {{ govukButton({ text: "Continue" }) }}
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block bodyEnd %}
+  {{ super() }}
+  <script src="/javascripts/collaborator-access.js" defer></script>
+{% endblock %}

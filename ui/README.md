@@ -11,6 +11,10 @@ Built with Node.js, Express, Nunjucks and the
 > dispatch a structured request to GitHub Actions, but preview mode is enabled
 > by default and authentication is not yet implemented.
 
+The collaborator journey is preview-only. It captures one collaborator and a
+repeatable list of application, environment and role access requests, but does
+not yet submit the request to GitHub.
+
 ## Run with Docker (recommended)
 
 ```bash

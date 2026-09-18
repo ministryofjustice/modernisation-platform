@@ -66,6 +66,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use('/new-environment', csrfSynchronisedProtection);
+app.use('/new-collaborator', csrfSynchronisedProtection);
 
 // Expose common template globals
 env.addGlobal('serviceName', 'Modernisation Platform');

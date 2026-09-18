@@ -1,0 +1,25 @@
+{% extends "layout.njk" %}
+
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+{% block pageTitle %}Collaborator request previewed - {{ serviceName }}{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {{ govukPanel({
+        titleText: "Collaborator request previewed",
+        html: "Your reference<br><strong>" + reference + "</strong>"
+      }) }}
+
+      <p class="govuk-body">
+        Preview mode is enabled. Nothing has been sent to GitHub and no
+        collaborator access will be created.
+      </p>
+
+      <p class="govuk-body">
+        <a class="govuk-link" href="/">Return to the start</a>
+      </p>
+    </div>
+  </div>
+{% endblock %}

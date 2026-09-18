@@ -1,0 +1,46 @@
+{% extends "layout.njk" %}
+
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block pageTitle %}Check collaborator request - {{ serviceName }}{% endblock %}
+
+{% block backLink %}
+  <a href="/new-collaborator" class="govuk-back-link">Back</a>
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">Check collaborator request</h1>
+
+      {% set accountAccess %}
+        <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-0">
+          {% for row in accessRows %}
+            <li>
+              <strong>{{ row.application }}</strong>:
+              {{ fields.environmentLabels[row.environment] }},
+              {{ fields.accessLevelLabels[row.access] }}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endset %}
+
+      {{ govukSummaryList({
+        rows: [
+          { key: { text: "Requestor name" }, value: { text: data.requestorName } },
+          { key: { text: "Requestor email" }, value: { text: data.requestorEmail } },
+          { key: { text: "Collaborator email" }, value: { text: data.collaboratorEmail } },
+          { key: { text: "GitHub username" }, value: { text: data.collaboratorGithub } },
+          { key: { text: "Account access" }, value: { html: accountAccess } },
+          { key: { text: "Additional information" }, value: { text: data.additionalInformation or "Not provided" } }
+        ]
+      }) }}
+
+      <form method="post" action="/new-collaborator/submit">
+        <input type="hidden" name="csrfToken" value="{{ csrfToken }}">
+        {{ govukButton({ text: "Preview request" }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

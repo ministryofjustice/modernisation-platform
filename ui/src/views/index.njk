@@ -124,6 +124,16 @@
         </div>
 
         <div class="mp-card">
+          {{ govukTag({ text: "Preview", classes: "govuk-tag--blue" }) }}
+          <h3 class="govuk-heading-m govuk-!-margin-top-3">Add a collaborator</h3>
+          <p class="govuk-body mp-card__body">
+            Request AWS account access for an external collaborator and choose
+            the role they need in each environment.
+          </p>
+          <p><a class="govuk-link" href="/new-collaborator">Start a collaborator request &rarr;</a></p>
+        </div>
+
+        <div class="mp-card">
           {{ govukTag({ text: "New - Preview", classes: "govuk-tag--pink" }) }}
           <h3 class="govuk-heading-m govuk-!-margin-top-3">Deploy starter infrastructure</h3>
           <p class="govuk-body mp-card__body">
