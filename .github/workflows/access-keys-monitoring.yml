@@ -16,7 +16,7 @@ permissions: {}
 jobs:
 
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@2cc1ba90676147f4ebf93b67a56463473af39f1e # v6.2.3
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@d467c7fb1bbeb73162ea736ca13adc8ba2ae74f8 # v6.2.5
     permissions:
       id-token: write # This is required for requesting the JWT
       contents: read # This is required for actions/checkout
@@ -40,7 +40,7 @@ jobs:
 
       # Step 1.1: Decrypt Secrets
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2cc1ba90676147f4ebf93b67a56463473af39f1e # v6.2.3
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d467c7fb1bbeb73162ea736ca13adc8ba2ae74f8 # v6.2.5
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           gov_uk_notify_api_key: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
