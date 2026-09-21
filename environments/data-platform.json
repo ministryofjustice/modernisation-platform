@@ -92,6 +92,10 @@
         {
           "sso_group_name": "modernisation-platform-audit",
           "level": "security-audit"
+        },
+        { 
+          "sso_group_name": "data-platform-read-only",
+          "level": "read-only"
         }
       ]
     }
