@@ -170,12 +170,12 @@ jobs:
           fi
 
           # Field: collaborator_github
-          # GitHub usernames: 1-39 chars, alphanumeric or hyphen, no leading/trailing hyphen, no consecutive hyphens.
+          # Accept the no-access sentinel or a valid GitHub username.
           if [[ -z "$COLLABORATOR_GITHUB" ]]; then
             errors+=("Collaborator GitHub username is missing.")
           elif [[ "$COLLABORATOR_GITHUB" != "$COLLABORATOR_GITHUB_RAW" ]]; then
             errors+=("Collaborator GitHub username contained disallowed characters.")
-          elif ! [[ "$COLLABORATOR_GITHUB" =~ ^[A-Za-z0-9](-?[A-Za-z0-9]){0,38}$ ]]; then
+          elif [[ "$COLLABORATOR_GITHUB" != "no-value-supplied" ]] && ! [[ "$COLLABORATOR_GITHUB" =~ ^[A-Za-z0-9](-?[A-Za-z0-9]){0,38}$ ]]; then
             errors+=("Collaborator GitHub username is not a valid GitHub username.")
           fi
 
