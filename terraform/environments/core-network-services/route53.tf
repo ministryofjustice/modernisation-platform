@@ -348,5 +348,5 @@ resource "aws_route53_record" "legalservices_dmarc_test" {
   name    = "_dmarc.legalservices.gov.uk"
   type    = "TXT"
   ttl     = 300
-  records = ["v=DMARC1; p=none; rua=mailto:dmarc-reports@legalservices.gov.uk; ruf=mailto:dmarc-reports@legalservices.gov.uk; fo=1"]
+  records = ["v=DMARC1; p=none; rua=mailto:laa-sres@justice.gov.uk; ruf=mailto:laa-sres@justice.gov.uk; fo=1"]
 }
