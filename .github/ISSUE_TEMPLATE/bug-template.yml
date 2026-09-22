@@ -1,3 +1,4 @@
+---
 name: Modernisation Platform Bug
 description: Create new Modernisation Platform bug
 labels: ["bug"]
@@ -11,7 +12,7 @@ body:
     attributes:
       label: Expected Behavior
       description: What should happen?
-      value: 
+      value:
     validations:
       required: true
   - type: textarea
@@ -19,7 +20,7 @@ body:
     attributes:
       label: Actual Behavior
       description: What is happening?
-      value: 
+      value:
     validations:
       required: true
   - type: textarea
@@ -27,15 +28,14 @@ body:
     attributes:
       label: Steps to Reproduce the Problem
       description: Steps taken to reproduce the bug
-      placeholder: 
+      placeholder:
         ## Steps to Reproduce the Problem
-
           1.
           1.
           1.
-      value: 
+      value:
     validations:
-      required: 
+      required: true
   - type: markdown
     attributes:
       value: |
@@ -43,21 +43,21 @@ body:
   - type: input
     id: ver
     attributes:
-      label: Version 
+      label: Version
       value:
     validations:
-      required: 
+      required: false
   - type: input
     id: mod
     attributes:
-      label: Modules 
-      value: 
+      label: Modules
+      value:
     validations:
-      required: 
+      required: false
   - type: input
     id: acc
     attributes:
-      label: Account 
+      label: Account
       value:
     validations:
       required: false
