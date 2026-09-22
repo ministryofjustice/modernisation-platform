@@ -12,9 +12,7 @@ name: Generate dependabot file
       - 'scripts/generate-dependabot-file.sh'
   workflow_dispatch:
 
-permissions:
-  contents: write
-  pull-requests: write
+permissions: {}
 
 defaults:
   run:
@@ -39,18 +37,15 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
+        with:
+          persist-credentials: true
       - name: Decrypt Secrets
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d467c7fb1bbeb73162ea736ca13adc8ba2ae74f8 # v6.2.5
         with:
-          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url}}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
-
       - name: Generate file
         run: bash ./scripts/generate-dependabot-file.sh
-
-      - name: Set up Git user
-        run: bash ./scripts/git-setup.sh
 
       - name: Commit and Create PR with Signed Commit
         uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@d467c7fb1bbeb73162ea736ca13adc8ba2ae74f8 # v6.2.5
@@ -58,13 +53,14 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "Automated Update: Dependabot File"
           pr_body: "This PR updates the Dependabot configuration file."
-
+        env:
+          SECRET: ${{ secrets.GITHUB_TOKEN }}
       - name: Slack failure notification
         uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
         with:
-          webhook-type: incoming-webhook
           payload: |
             {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
         env:
           SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
         if: ${{ failure() }}

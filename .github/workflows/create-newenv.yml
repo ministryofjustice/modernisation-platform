@@ -74,8 +74,8 @@ jobs:
             echo "GITHUB_OWNERS=$GITHUB_OWNERS"
             echo "GITHUB_REVIEWERS=$GITHUB_REVIEWERS"
           } >> "$GITHUB_ENV"
-  
-      - name: Validate Slack field (no #)
+
+      - name: Validate Slack field (no '#')
         run: |
           if [[ "${SLACK}" == *"#"* ]]; then
             echo "::error title=Invalid Slack Channel::SLACK must not include '#'. Please enter the channel name without the leading hash (e.g. 'my-channel' not '#my-channel'). Value: '${SLACK}'"

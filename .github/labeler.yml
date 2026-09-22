@@ -1,6 +1,7 @@
+---
 onboarding:
   - changed-files:
-    - any-glob-to-any-file: 
+    - any-glob-to-any-file:
       - "environments/**"
       - "environments-networks/**"
 
@@ -17,19 +18,19 @@ dependencies:
 
 github-workflow:
   - changed-files:
-    - any-glob-to-any-file: 
+    - any-glob-to-any-file:
       - ".github/workflows/**"
 
 networking:
   - changed-files:
-    - any-glob-to-any-file: 
+    - any-glob-to-any-file:
       - "terraform/environments/core-vpc/**"
       - "terraform/environments/core-network-services/**"
       - "cidr-allocation.md"
 
 core:
   - changed-files:
-    - any-glob-to-any-file: 
+    - any-glob-to-any-file:
       - "terraform/environments/core-*/**"
 
 security:
