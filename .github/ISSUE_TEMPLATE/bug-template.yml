@@ -30,9 +30,9 @@ body:
       description: Steps taken to reproduce the bug
       placeholder:
         ## Steps to Reproduce the Problem
-          1.
-          1.
-          1.
+        1.
+        1.
+        1.
       value:
     validations:
       required: true
