@@ -28,8 +28,8 @@ getAssumeRoleCreds() {
 }
 
 # Iterate over accounts from ENVIRONMENT_MANAGEMENT
-for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< $ENVIRONMENT_MANAGEMENT); do
-    account_name=$(jq -r ".account_ids | to_entries[] | select(.value==\"$account_id\").key" <<< $ENVIRONMENT_MANAGEMENT)
+for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< "$ENVIRONMENT_MANAGEMENT"); do
+    account_name=$(jq -r ".account_ids | to_entries[] | select(.value==\"$account_id\").key" <<< "$ENVIRONMENT_MANAGEMENT")
 
     echo "Assuming role into $account_name"
     getAssumeRoleCreds "$account_id"

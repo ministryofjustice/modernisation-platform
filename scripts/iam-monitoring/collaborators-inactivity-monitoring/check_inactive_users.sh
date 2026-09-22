@@ -13,9 +13,9 @@ final_users=""
 while read -r username lastactivity; do
 
   # Check if the environment variable SKIP_DISABLED_CONSOLE_USERS is set
-  if [ $SKIP_DISABLED_CONSOLE_USERS ]; then
+  if [ "$SKIP_DISABLED_CONSOLE_USERS" ]; then
     # If the variable is set, check the login profile for the user
-    login_profile=$(aws iam get-login-profile --user-name $username 2>/dev/null)
+    login_profile=$(aws iam get-login-profile --user-name "$username" 2>/dev/null)
     # Check if the login profile is empty (i.e., console login is disabled)
     if [ -z "$login_profile" ]; then
       # If the login profile is empty, skip processing this user and continue to the next iteration
@@ -28,13 +28,13 @@ while read -r username lastactivity; do
     creation_date=$(aws iam get-user --user-name "$username" --query 'User.CreateDate' --output text)
 
     # Compare the creation date with the threshold
-    if [ "$(date -d "$creation_date" +%s)" -le "$(date -d "now - $threshold days" +%s)" ]; then
+    if [ "$(date -d "$creation_date" +%s)" -le "$(date -d "now - "$threshold" days" +%s)" ]; then
       # User's creation date is older than the threshold, add them to the final list
       final_users+=" $username"
     fi
   else
     # Check if last console login activity is more than or equal to threshold days or is "None"
-    if [ "$(date -d "$lastactivity" +%s)" -le "$(date -d "now - $threshold days" +%s)" ]; then
+    if [ "$(date -d "$lastactivity" +%s)" -le "$(date -d "now - "$threshold" days" +%s)" ]; then
       # Get information about the access keys for the current user
       access_keys=$(aws iam list-access-keys --user-name "$username" --query 'AccessKeyMetadata[].AccessKeyId' --output text)
 
@@ -42,10 +42,10 @@ while read -r username lastactivity; do
       meets_criteria=1
 
       # Loop through each access key for the current user
-      for access_key_id in $access_keys; do
+      for access_key_id in "$access_keys"; do
         # Get the last used information for the access key
         last_used=$(aws iam get-access-key-last-used --access-key-id "$access_key_id" --query 'AccessKeyLastUsed.LastUsedDate' --output text)
-        if [ "$last_used" != "None" ] && [ "$(date -d "$last_used" +%s)" -ge "$(date -d "now - $threshold days" +%s)" ]; then
+        if [ "$last_used" != "None" ] && [ "$(date -d "$last_used" +%s)" -ge "$(date -d "now - "$threshold" days" +%s)" ]; then
           # If any access key was used within the last threshold days, user does not meet the criteria
           meets_criteria=0
           break

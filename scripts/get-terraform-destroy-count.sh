@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 set -o pipefail
@@ -42,4 +41,4 @@ else
     echo "No resources to be destroyed"
 fi
 
-echo "destroy_count=$destroy_count" >> $GITHUB_OUTPUT
+echo "destroy_count=$destroy_count" >> "$GITHUB_OUTPUT"

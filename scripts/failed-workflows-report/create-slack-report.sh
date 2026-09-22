@@ -1,8 +1,8 @@
+#!/bin/bash
 # This takes the output of the previous step and generates a json file containing a markdown-formatted list ready to be sent to slack
 # If no file is found from the previous output, it will construct a "no failures found" message.
 
-
-echo $formatted_date
+echo "$formatted_date"
 
 # Check if recent_failures.json exists, is not empty (so more than just []) and contains valid JSON).
 if [ -f recent_failures.json ] && [ "$(jq '. | length' recent_failures.json)" -gt 0 ]; then
@@ -61,6 +61,6 @@ else
   echo "ERROR - slack_message is not valid JSON."
   # This ensures that in the event of this error the final stage does not run.
   sendreport="false"
-  echo "sendreport=$sendreport" >> $GITHUB_OUTPUT
+  echo "sendreport=$sendreport" >> "$GITHUB_OUTPUT"
   exit 1
 fi

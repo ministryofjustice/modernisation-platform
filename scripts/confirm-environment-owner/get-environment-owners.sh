@@ -32,10 +32,10 @@ for file in "$DIR"/*.json; do
     FILE_NAME=$(basename "$file" .json)
 
     # Ensures we ignore the Modernisaiton Platform environments.
-    if [[ ! " ${MP_ENVS[@]} " =~ " $FILE_NAME " ]]; then
+    if [[ ! " ${MP_ENVS[@]} " =~ "$FILE_NAME" ]]; then
 
       file_path="$REMOTE_DIR/$FILE_NAME.json"
-  
+
       echo "$file_path"
 
       # Using api.github.com to get the first commit of the file.
@@ -72,25 +72,25 @@ for file in "$DIR"/*.json; do
       # This PERIOD value can be adjusted to avoid over-notification of owners via the email addresses.
       
       if (( months_ago % $PERIOD == 0 )); then
-            
+
         VALUE=$(jq -r ".$NESTED_FIELD" "$file" 2>/dev/null)
-          
+
         if [ -n "$VALUE" ] && [ "$VALUE" != "null" ]; then
           # Count the number of parts when split by colon. We do this as some have multiple values.
           PART_COUNT=$(echo "$VALUE" | awk -F: '{print NF}')
-          
+
           # If there is more than one part, use the second as that is the email address
           if [ "$PART_COUNT" -gt 1 ]; then
             OWNER_PART=$(echo "$VALUE" | awk -F: '{print $2}' | xargs)
           else
             OWNER_PART=$(echo "$VALUE" | awk -F: '{print $1}' | xargs)
           fi
-                  
+
           # If this is not the first item, add a comma separator.
           if [ "$first" = false ]; then
             json_output+=","
           fi
-          
+
           json_output+="
   {
     \"file\": \"$FILE_NAME\",
