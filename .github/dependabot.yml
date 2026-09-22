@@ -1,44 +1,226 @@
+---
 # This file is auto-generated, do not manually amend.
-# https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/generate-dependabot-file.sh
+# scripts/generate-dependabot-file.sh
 
 version: 2
 
 updates:
-  - package-ecosystem: "devcontainers"
-    directory: "/"
-    schedule:
-      interval: "daily"
-    commit-message:
-      prefix: ":dependabot: devcontainers"
-      include: "scope"
-    cooldown:
-      default-days: 7
+  # Dependency management strategy:
+  # ministryofjustice/modernisation-platform#8211
+  #
+  # Major and minor/patch version updates are grouped separately, with both
+  # checked monthly to reduce routine Dependabot PR noise.
+  #
+  # Monthly is a compromise, not the ticket's proposed fortnightly major
+  # and six-monthly minor/patch cadence.
+  #
+  # Dependabot alerts and security updates must be enabled separately in
+  # repository/org settings; security updates do not wait for this schedule.
+
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "monthly"
     cooldown:
       default-days: 7
     groups:
-      action-dependencies:
-        patterns:
-          - "*"
+      action-major:
+        update-types:
+          - "major"
+      action-minor-patch:
+        update-types:
+          - "minor"
+          - "patch"
+
   - package-ecosystem: "terraform"
     directories:
-      - "terraform/**/*"
+      - "/terraform/environments"
+      - "/terraform/environments/analytical-platform"
+      - "/terraform/environments/analytical-platform-common"
+      - "/terraform/environments/analytical-platform-compute"
+      - "/terraform/environments/analytical-platform-data"
+      - "/terraform/environments/analytical-platform-data-engineering"
+      - "/terraform/environments/analytical-platform-ingestion"
+      - "/terraform/environments/analytical-platform-landing"
+      - "/terraform/environments/analytical-platform-management"
+      - "/terraform/environments/analytical-platform-next-poc-hub"
+      - "/terraform/environments/analytical-platform-next-poc-producer"
+      - "/terraform/environments/apex"
+      - "/terraform/environments/bichard7"
+      - "/terraform/environments/bootstrap/delegate-access"
+      - "/terraform/environments/bootstrap/member-bootstrap"
+      - "/terraform/environments/bootstrap/secure-baselines"
+      - "/terraform/environments/bootstrap/single-sign-on"
+      - "/terraform/environments/ccms-ebs"
+      - "/terraform/environments/ccms-ebs-ai"
+      - "/terraform/environments/ccms-ebs-upgrade"
+      - "/terraform/environments/ccms-edrms"
+      - "/terraform/environments/ccms-feasibility"
+      - "/terraform/environments/ccms-oia"
+      - "/terraform/environments/ccms-pui"
+      - "/terraform/environments/ccms-pui-internal"
+      - "/terraform/environments/ccms-upg"
+      - "/terraform/environments/cdpt-chaps"
+      - "/terraform/environments/cdpt-ifs"
+      - "/terraform/environments/cfo-data-management-system"
+      - "/terraform/environments/cica-sandbox"
+      - "/terraform/environments/cica-tariff"
+      - "/terraform/environments/cloud-platform"
+      - "/terraform/environments/cloud-platform-live"
+      - "/terraform/environments/cloud-platform-non-live"
+      - "/terraform/environments/coat"
+      - "/terraform/environments/container-platform-cd"
+      - "/terraform/environments/container-platform-hmpps"
+      - "/terraform/environments/container-platform-laa"
+      - "/terraform/environments/container-platform-octo"
+      - "/terraform/environments/contract-work-administration"
+      - "/terraform/environments/cooker"
+      - "/terraform/environments/core-logging"
+      - "/terraform/environments/core-network-services"
+      - "/terraform/environments/core-security"
+      - "/terraform/environments/core-shared-services"
+      - "/terraform/environments/core-shared-services/test/test_terraform"
+      - "/terraform/environments/core-vpc"
+      - "/terraform/environments/corporate-staff-rostering"
+      - "/terraform/environments/dacp"
+      - "/terraform/environments/data-factory-corporate"
+      - "/terraform/environments/data-factory-laa"
+      - "/terraform/environments/data-factory-moj"
+      - "/terraform/environments/data-platform"
+      - "/terraform/environments/data-platform-governance"
+      - "/terraform/environments/delete-account"
+      - "/terraform/environments/delius-alfresco"
+      - "/terraform/environments/delius-core"
+      - "/terraform/environments/delius-core-training"
+      - "/terraform/environments/delius-iaps"
+      - "/terraform/environments/delius-jitbit"
+      - "/terraform/environments/delius-mis"
+      - "/terraform/environments/developer-experience"
+      - "/terraform/environments/digital-prison-reporting"
+      - "/terraform/environments/edw-19c"
+      - "/terraform/environments/electronic-monitoring-data"
+      - "/terraform/environments/equip"
+      - "/terraform/environments/eucs-appstream"
+      - "/terraform/environments/example"
+      - "/terraform/environments/genesys-call-centre-data"
+      - "/terraform/environments/hmcts-claude-provider"
+      - "/terraform/environments/hmpps-court-data-ingestion-api"
+      - "/terraform/environments/hmpps-domain-services"
+      - "/terraform/environments/hmpps-esupervision"
+      - "/terraform/environments/hmpps-oem"
+      - "/terraform/environments/integration-hub"
+      - "/terraform/environments/integration-hub-api"
+      - "/terraform/environments/integration-hub-file-transfer"
+      - "/terraform/environments/laa-ccms-soa"
+      - "/terraform/environments/laa-cis"
+      - "/terraform/environments/laa-enterprise-service-bus"
+      - "/terraform/environments/laa-new-workspaces"
+      - "/terraform/environments/laa-oem"
+      - "/terraform/environments/laa-pui-secure-browser"
+      - "/terraform/environments/laa-stabilisation-cdc-poc"
+      - "/terraform/environments/laa-workspaces"
+      - "/terraform/environments/london-unpaid-work"
+      - "/terraform/environments/long-term-storage"
+      - "/terraform/environments/maat"
+      - "/terraform/environments/maatdb"
+      - "/terraform/environments/mlra"
+      - "/terraform/environments/moj-network-operations-centre"
+      - "/terraform/environments/mojfin"
+      - "/terraform/environments/ncas"
+      - "/terraform/environments/nomis"
+      - "/terraform/environments/nomis-combined-reporting"
+      - "/terraform/environments/nomis-data-hub"
+      - "/terraform/environments/oas"
+      - "/terraform/environments/oasys"
+      - "/terraform/environments/oasys-national-reporting"
+      - "/terraform/environments/observability-platform"
+      - "/terraform/environments/octo"
+      - "/terraform/environments/octo-engineering-ai-enablement"
+      - "/terraform/environments/opg-lpa-data-store"
+      - "/terraform/environments/panda-cyber-appsec-lab"
+      - "/terraform/environments/performance-hub"
+      - "/terraform/environments/planetfm"
+      - "/terraform/environments/ppud"
+      - "/terraform/environments/pra-register"
+      - "/terraform/environments/prison-retail"
+      - "/terraform/environments/property-cafm-data-migration"
+      - "/terraform/environments/refer-monitor"
+      - "/terraform/environments/sprinkler"
+      - "/terraform/environments/testing"
+      - "/terraform/environments/tipstaff"
+      - "/terraform/environments/tribunals"
+      - "/terraform/environments/vcms"
+      - "/terraform/environments/wardship"
+      - "/terraform/environments/xhibit-portal"
+      - "/terraform/environments/youth-justice-app-framework"
+      - "/terraform/environments/youth-justice-networking"
+      - "/terraform/modernisation-platform-account"
+      - "/terraform/modules/app-ecr-repo"
+      - "/terraform/modules/collaborators"
+      - "/terraform/modules/core-monitoring"
+      - "/terraform/modules/dns-zone"
+      - "/terraform/modules/dns-zone-extend"
+      - "/terraform/modules/dns-zone-extend-private"
+      - "/terraform/modules/ec2-tgw-attachment"
+      - "/terraform/modules/firewall-logging"
+      - "/terraform/modules/firewall-policy"
+      - "/terraform/modules/kms"
+      - "/terraform/modules/r53-dns-firewall"
+      - "/terraform/modules/ram-ec2-retagging"
+      - "/terraform/modules/ram-principal-association"
+      - "/terraform/modules/ram-resource-share"
+      - "/terraform/modules/vpc-hub"
+      - "/terraform/modules/vpc-inspection"
+      - "/terraform/modules/vpc-nacls"
+      - "/terraform/pagerduty"
+      - "/terraform/single-sign-on"
+      - "/terraform/templates/modernisation-platform"
+      - "/terraform/templates/modernisation-platform-environments"
+      - "/terraform/templates/modernisation-platform-environments-components"
+      - "/terraform/templates/modernisation-platform-environments-isolated"
     schedule:
-      interval: "daily"
-    cooldown:
-      default-days: 7
-  - package-ecosystem: "gomod"
-    directories:
-      - "scripts/**/*"
-      - "terraform/**/*"
-    schedule:
-      interval: "daily"
+      interval: "monthly"
     cooldown:
       default-days: 7
     groups:
-      gomod-dependencies:
-        patterns:
-          - "*"
+      terraform-major:
+        update-types:
+          - "major"
+      terraform-minor-patch:
+        update-types:
+          - "minor"
+          - "patch"
+  - package-ecosystem: "gomod"
+    directories:
+      - "/scripts/internal/get-security-hub-findings"
+      - "/terraform/environments/core-logging/test"
+      - "/terraform/environments/core-network-services/test"
+      - "/terraform/environments/core-security/test"
+      - "/terraform/environments/core-shared-services/test"
+    schedule:
+      interval: "monthly"
+    cooldown:
+      default-days: 7
+    groups:
+      gomod-major:
+        update-types:
+          - "major"
+      gomod-minor-patch:
+        update-types:
+          - "minor"
+          - "patch"
+  - package-ecosystem: "pip"
+    directories:
+      - "/scripts/dora-the-explora"
+    schedule:
+      interval: "monthly"
+    cooldown:
+      default-days: 7
+    groups:
+      pip-major:
+        update-types:
+          - "major"
+      pip-minor-patch:
+        update-types:
+          - "minor"
+          - "patch"
