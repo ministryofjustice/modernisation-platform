@@ -110,7 +110,7 @@
           "level": "platform-engineer-admin"
         },
         {
-          "sso_group_name": "data-platform-read-only",
+          "sso_group_name": "data-platform-readonly",
           "level": "read-only"
         }
       ]
