@@ -1,3 +1,4 @@
+#!/bin/bash
 # This bash script get the URL for each failed workflow action in Modernisation Platform repo as follows:
 # - Gets all completed workflows that completed as defined by the $REPORTING_PERIOD variable.
 # - Of those, finds the latest failed action only. Ignores any previously failed actions,
@@ -58,9 +59,9 @@ else
   exit 1
 fi
 
-echo "sendreport=$sendreport" >> $GITHUB_OUTPUT
+echo "sendreport=$sendreport" >> "$GITHUB_OUTPUT"
 
 # Sends the formatted_date variable to the output to be used in the slack message.
 if [ "$sendreport" == "true" ]; then
-  echo "formatted_date=$formatted_date" >> $GITHUB_OUTPUT
+  echo "formatted_date=$formatted_date" >> "$GITHUB_OUTPUT"
 fi
