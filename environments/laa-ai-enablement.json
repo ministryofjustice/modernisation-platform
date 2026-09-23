@@ -1,16 +1,18 @@
 {
   "account-type": "member",
-  "codeowners": "laa-ai-enablement-devops, laa-ai-enablement-devops",
   "environments": [
     {
       "name": "development",
       "access": [
         {
-          "sso_group_name": "laa-ai-enablement-devops, laa-sre-admins",
+          "sso_group_name": "laa-ai-enablement-devops",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
           "level": "sandbox"
         }
-      ],
-      "nuke": ""
+      ]
     }
   ],
   "tags": {
