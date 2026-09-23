@@ -1246,6 +1246,10 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
       values = [
         local.environment_management.account_ids["observability-platform-development"],
         local.environment_management.account_ids["observability-platform-production"],
+        local.environment_management.account_ids["cloud-platform-development"],
+        local.environment_management.account_ids["cloud-platform-preproduction"],
+        local.environment_management.account_ids["cloud-platform-nonlive"],
+        local.environment_management.account_ids["cloud-platform-live"],
       ]
     }
   }
@@ -1671,7 +1675,8 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
       "grafana:DescribeWorkspace",
       "grafana:ListWorkspaceServiceAccounts",
       "grafana:ListWorkspaceServiceAccountTokens",
-      "grafana:CreateWorkspaceServiceAccountToken"
+      "grafana:CreateWorkspaceServiceAccountToken",
+      "grafana:DeleteWorkspaceServiceAccountToken"
     ]
     resources = ["*"]
     condition {
