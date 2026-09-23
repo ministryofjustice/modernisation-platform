@@ -46,6 +46,10 @@
         {
           "sso_group_name": "modernisation-platform-audit",
           "level": "security-audit"
+        },
+        {
+          "sso_group_name": "organisation-security-auditor",
+          "level": "security-audit"
         }
       ],
       "nuke": "exclude"
