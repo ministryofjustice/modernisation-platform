@@ -293,6 +293,7 @@ expected :=
               "contract-work-administration-development",
               "data-factory-laa-development",
               "edw-19c-development",
+              "laa-ai-enablement-development",
               "laa-ccms-soa-development",
               "laa-cis-development",
               "laa-enterprise-service-bus-development",
