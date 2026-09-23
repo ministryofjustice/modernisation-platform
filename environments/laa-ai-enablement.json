@@ -1,0 +1,27 @@
+{
+  "account-type": "member",
+  "codeowners": "laa-ai-enablement-devops, laa-ai-enablement-devops",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "laa-ai-enablement-devops, laa-sre-admins",
+          "level": "sandbox"
+        }
+      ],
+      "nuke": ""
+    }
+  ],
+  "tags": {
+    "application": "laa-ai-enablement",
+    "business-unit": "LAA",
+    "service-area": "LAA",
+    "infrastructure-support": "ApplicationOperations@justice.gov.uk",
+    "owner": "ApplicationOperations@justice.gov.uk",
+    "slack-channel": "laa-ai-enablement-team-only",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
