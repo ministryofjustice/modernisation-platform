@@ -17,19 +17,21 @@ echo "[]" > "$OUTPUT_FILE"
 # Function to assume role
 getAssumeRoleCreds() {
     local account_id=$1
+
     aws sts assume-role \
         --role-arn "arn:aws:iam::${account_id}:role/ModernisationPlatformAccess" \
         --role-session-name "route53-fetch-session" \
         --output json > credentials.json
 
-    export AWS_ACCESS_KEY_ID=$(jq -r '.Credentials.AccessKeyId' credentials.json)
-    export AWS_SECRET_ACCESS_KEY=$(jq -r '.Credentials.SecretAccessKey' credentials.json)
-    export AWS_SESSION_TOKEN=$(jq -r '.Credentials.SessionToken' credentials.json)
+    AWS_ACCESS_KEY_ID=$(jq -r '.Credentials.AccessKeyId' credentials.json)
+    AWS_SECRET_ACCESS_KEY=$(jq -r '.Credentials.SecretAccessKey' credentials.json)
+    AWS_SESSION_TOKEN=$(jq -r '.Credentials.SessionToken' credentials.json)
+    export AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
 }
 
 # Iterate over accounts from ENVIRONMENT_MANAGEMENT
-for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< $ENVIRONMENT_MANAGEMENT); do
-    account_name=$(jq -r ".account_ids | to_entries[] | select(.value==\"$account_id\").key" <<< $ENVIRONMENT_MANAGEMENT)
+for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< "$ENVIRONMENT_MANAGEMENT"); do
+    account_name=$(jq -r ".account_ids | to_entries[] | select(.value==\"$account_id\").key" <<< "$ENVIRONMENT_MANAGEMENT")
 
     echo "Assuming role into $account_name"
     getAssumeRoleCreds "$account_id"
@@ -72,7 +74,8 @@ for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< $ENVIR
                 records: $records.ResourceRecordSets
             }')
 
-        jq --argjson zone "$zone_data" '. += [$zone]' "$OUTPUT_FILE" > tmp.$$.json && mv tmp.$$.json "$OUTPUT_FILE"
+        jq --argjson zone "$zone_data" '. += [$zone]' "$OUTPUT_FILE" > tmp.$$.json &&
+            mv tmp.$$.json "$OUTPUT_FILE"
     done
 
     # Reset to root credentials
@@ -86,13 +89,11 @@ done
 
 # --- Upload to S3 from core-security account ---
 
-# Get core-security-production account ID
 CORE_SECURITY_ACCOUNT_ID=$(jq -r '.account_ids["core-security-production"]' <<< "$ENVIRONMENT_MANAGEMENT")
 
 echo "Assuming role into core-security-production account for S3 upload"
 getAssumeRoleCreds "$CORE_SECURITY_ACCOUNT_ID"
 
-# Upload the result to S3
 echo "Uploading to S3 in core-security-production account"
 aws s3 cp "$OUTPUT_FILE" "s3://${S3_BUCKET}/${S3_KEY}"
 echo "Upload successful."
