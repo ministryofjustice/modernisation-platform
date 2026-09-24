@@ -51,6 +51,10 @@
           "sso_group_name": "hmpps-calculate-release-dates-team-live",
           "level": "developer",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }

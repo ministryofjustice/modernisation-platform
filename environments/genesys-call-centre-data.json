@@ -17,6 +17,10 @@
         {
           "sso_group_name": "genesys-call-centre-data",
           "level": "view-only"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }

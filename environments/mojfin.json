@@ -127,6 +127,10 @@
           "sso_group_name": "laa-sre-admins",
           "level": "developer",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }

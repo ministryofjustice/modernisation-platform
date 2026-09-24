@@ -24,6 +24,10 @@
         {
           "sso_group_name": "moj-official-techops-readonly",
           "level": "view-only"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }

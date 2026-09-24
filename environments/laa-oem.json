@@ -87,6 +87,10 @@
         {
           "sso_group_name": "laa-ccms-ebs-developers",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
