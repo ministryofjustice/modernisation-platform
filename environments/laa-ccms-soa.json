@@ -152,5 +152,5 @@
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": ["ministryofjustice/laa-ccms-soa-docker"],
-  "go-live-date": ""
+  "go-live-date": [""]
 }

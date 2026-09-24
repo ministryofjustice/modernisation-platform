@@ -71,5 +71,5 @@
     "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": ["ministryofjustice/laa-mlra-application"],
-  "go-live-date": "2023-08-28"
+  "go-live-date": ["2023-08-28"]
 }
