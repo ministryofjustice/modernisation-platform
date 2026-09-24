@@ -33,7 +33,7 @@
           "github_action_reviewer": "false"
         },
         {
-          "sso_group_name": "octo-cyber-team",
+          "sso_group_name": "octo-cyber",
           "level": "security-audit"
         }
       ]

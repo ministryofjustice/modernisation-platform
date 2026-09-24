@@ -308,6 +308,7 @@ module "github_actions_read_secrets_role" {
   github_repositories = [
     "ministryofjustice/modernisation-platform",
     "ministryofjustice/modernisation-platform-ami-builds",
+    "ministryofjustice/modernisation-platform-configuration-management",
     "ministryofjustice/modernisation-platform-cp-network-test",
     "ministryofjustice/modernisation-platform-environments",
     "ministryofjustice/modernisation-platform-github",

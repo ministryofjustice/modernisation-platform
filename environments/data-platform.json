@@ -28,6 +28,9 @@
     },
     {
       "name": "sagemaker"
+    },
+    {
+      "name": "airflow"
     }
   ],
   "environments": [
