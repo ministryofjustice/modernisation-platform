@@ -106,5 +106,5 @@
   "github-oidc-team-repositories": [
     "ministryofjustice/hmpps-cr-ancillary-jitbit-app"
   ],
-  "go-live-date": "2023-09-18"
+  "go-live-date": ["2023-09-18"]
 }
