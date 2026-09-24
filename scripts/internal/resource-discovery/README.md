@@ -40,12 +40,12 @@ Run the `Resource Discovery` workflow manually from the Actions tab. It accepts 
 
 | Input | Description |
 | --- | --- |
-| `accounts` | A comma-separated list of account names, or `all`. This input has no default to prevent accidental organisation-wide runs. |
-| `business_unit` | An optional business-unit filter. When account names are also supplied, both filters must match. |
+| `accounts` | A comma-separated list of application names or full account names, or `all`. An application name expands to all of its eligible environments. This input has no default to prevent accidental organisation-wide runs. |
+| `business_unit` | An optional business-unit filter. When application or account names are also supplied, both filters must match. |
 | `resource_type` | An exact AWS Config resource type, or `all`. |
 | `regions` | A comma-separated list of AWS Config regions. Defaults to the five platform baseline regions. |
 
-Examples for `accounts` include `example-development`, `example-development,example-test`, and `all`. Selecting `all` with `business_unit` set to `LAA` runs discovery only in LAA accounts.
+Examples for `accounts` include `laa-oem`, `laa-oem-test`, `laa-oem-test,example-production`, and `all`. Selecting `laa-oem` expands to all eligible environments defined in `environments/laa-oem.json`. Selecting `all` with `business_unit` set to `LAA` runs discovery only in LAA accounts.
 
 The workflow summary displays counts by resource type and account. Each account produces a short-lived JSON artifact, and the final `resource-discovery-results` artifact contains the combined results in both JSON and CSV format for 14 days.
 
