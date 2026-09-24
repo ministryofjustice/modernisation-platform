@@ -60,7 +60,7 @@
         },
         {
           "sso_group_name": "laa-oia-developers",
-          "level": "secrets-manager-editor"
+          "level": "developer"
         }
       ]
     },
@@ -90,7 +90,7 @@
         },
         {
           "sso_group_name": "laa-oia-developers",
-          "level": "secrets-manager-editor"
+          "level": "developer"
         },
         {
           "sso_group_name": "laa-ccms-security-testing-kpmg",
@@ -124,7 +124,7 @@
         },
         {
           "sso_group_name": "laa-oia-developers",
-          "level": "secrets-manager-editor"
+          "level": "developer"
         },
         {
           "sso_group_name": "modernisation-platform-audit",
