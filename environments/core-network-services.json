@@ -24,5 +24,6 @@
     "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk",
     "critical-national-infrastructure": true
   },
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
 }
