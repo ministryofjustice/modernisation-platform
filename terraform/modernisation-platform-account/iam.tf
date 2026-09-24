@@ -307,6 +307,7 @@ module "github_actions_read_secrets_role" {
   source = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
   github_repositories = [
     "ministryofjustice/modernisation-platform",
+    "ministryofjustice/modernisation-platform-ai-prototype-builder",
     "ministryofjustice/modernisation-platform-ami-builds",
     "ministryofjustice/modernisation-platform-configuration-management",
     "ministryofjustice/modernisation-platform-cp-network-test",
