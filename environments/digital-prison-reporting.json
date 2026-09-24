@@ -113,6 +113,10 @@
         {
           "sso_group_name": "hmpps-datahub-restricted",
           "level": "view-only"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }

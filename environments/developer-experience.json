@@ -45,6 +45,10 @@
         {
           "sso_group_name": "octo-developer-experience",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }

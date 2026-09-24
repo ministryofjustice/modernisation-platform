@@ -278,6 +278,10 @@
           "sso_group_name": "delius-core-production",
           "level": "developer",
           "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
