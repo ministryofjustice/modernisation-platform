@@ -215,7 +215,7 @@ setup_environment_reviewers() {
     fi
   done
 
-  filtered_teams=$(echo $filtered_teams | xargs)
+  filtered_teams=$(echo "$filtered_teams" | xargs)
   echo "Teams after Azure filtering: ${filtered_teams}"
 
   if [ -z "$filtered_teams" ]; then

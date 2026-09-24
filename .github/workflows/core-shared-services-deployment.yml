@@ -30,10 +30,7 @@ name: core-shared-services-deployment
     branches: [main]
   workflow_dispatch:
 
-permissions:
-  id-token: write # This is required for requesting the JWT
-  contents: read # This is required for actions/checkout
-  pull-requests: write
+permissions: {}
 
 defaults:
   run:
@@ -41,6 +38,10 @@ defaults:
 
 jobs:
   core-shared-services-deployment-plan-apply:
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # This is required for actions/checkout
+      pull-requests: write
     uses: ./.github/workflows/reusable_terraform_plan_apply.yml
     with:
       working-directory: "terraform/environments/core-shared-services"
