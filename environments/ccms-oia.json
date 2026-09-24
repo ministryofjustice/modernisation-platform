@@ -142,5 +142,5 @@
     "ministryofjustice/laa-ccms-connector",
     "ministryofjustice/laa-ccms-service-adapter"
   ],
-  "go-live-date": ""
+  "go-live-date": [""]
 }

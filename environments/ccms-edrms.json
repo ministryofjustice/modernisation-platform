@@ -122,5 +122,5 @@
   "github-oidc-team-repositories": [
     "ministryofjustice/laa-ccms-edrms-web-service"
   ],
-  "go-live-date": ""
+  "go-live-date": [""]
 }
