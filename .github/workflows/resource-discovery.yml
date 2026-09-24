@@ -5,7 +5,7 @@ name: Resource Discovery
   workflow_dispatch:
     inputs:
       accounts:
-        description: "Comma-separated account names, or all"
+        description: "Comma-separated application or account names, or all"
         required: true
         type: string
       business_unit:
@@ -106,6 +106,7 @@ jobs:
                 | (input_filename | split("/") | last | rtrimstr(".json")) as $application
                 | $definition.environments[]
                 | {
+                    application: $application,
                     name: ($application + "-" + .name),
                     business_unit: $definition.tags["business-unit"]
                   }
@@ -141,18 +142,26 @@ jobs:
             )"
 
             if [[ "$(jq 'length' <<< "$requested")" -eq 0 ]]; then
-              echo "At least one account name, or all, is required" >&2
+              echo "At least one application or account name, or all, is required" >&2
               exit 1
             fi
 
             unknown="$(
               jq -nc \
                 --argjson requested "$requested" \
-                --argjson catalog "$catalog" \
-                '$requested - ($catalog | map(.name))'
+                --argjson catalog "$catalog" '
+                  [
+                    $requested[]
+                    | select(
+                        . as $value
+                        | any($catalog[]; .name == $value or .application == $value)
+                        | not
+                      )
+                  ]
+                '
             )"
             if [[ "$(jq 'length' <<< "$unknown")" -gt 0 ]]; then
-              echo "Unknown or ineligible accounts: $(jq -r 'join(", ")' <<< "$unknown")" >&2
+              echo "Unknown or ineligible applications/accounts: $(jq -r 'join(", ")' <<< "$unknown")" >&2
               exit 1
             fi
 
@@ -162,7 +171,11 @@ jobs:
                 --argjson catalog "$catalog" '
                   [
                     $catalog[]
-                    | select(.name as $name | $requested | index($name))
+                    | select(
+                        . as $account
+                        | $requested
+                        | any(. == $account.name or . == $account.application)
+                      )
                   ]
                 '
             )"
@@ -178,7 +191,7 @@ jobs:
           account_names="$(jq -c '[.[].name] | sort' <<< "$selected")"
           total="$(jq 'length' <<< "$account_names")"
           if (( total == 0 )); then
-            echo "The supplied account and business-unit filters selected no accounts" >&2
+            echo "The supplied application/account and business-unit filters selected no accounts" >&2
             exit 1
           fi
 
