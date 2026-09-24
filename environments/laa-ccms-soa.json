@@ -140,6 +140,10 @@
         {
           "sso_group_name": "octo-cyber",
           "level": "security-audit"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }

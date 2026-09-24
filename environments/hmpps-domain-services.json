@@ -155,6 +155,10 @@
         {
           "sso_group_name": "azure-aws-sso-hmpps-jumpserver-access",
           "level": "instance-access"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
