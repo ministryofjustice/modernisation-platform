@@ -57,7 +57,7 @@
           "level": "instance-management"
         },
         {
-          "sso_group_name": "octo-cyber-team",
+          "sso_group_name": "octo-cyber",
           "level": "security-audit"
         }
       ]
@@ -71,5 +71,5 @@
     "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": ["ministryofjustice/laa-mlra-application"],
-  "go-live-date": "2023-08-28"
+  "go-live-date": ["2023-08-28"]
 }

@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title description">
+  <title id="title">Collaborator onboarding flow</title>
+  <desc id="description">A Ministry of Justice application team member submits an issue. Automation raises a pull request for review. Merging it applies GitHub repository access and triggers creation of the collaborator IAM user and account access.</desc>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#505a5f"/>
+    </marker>
+    <style>
+      text {
+        fill: #0b0c0c;
+        font-family: "GDS Transport", "Helvetica Neue", sans-serif;
+        letter-spacing: 0;
+      }
+      .page-title { font-size: 30px; font-weight: 700; }
+      .box-title { font-size: 18px; font-weight: 700; }
+      .body { font-size: 16px; }
+      .small { font-size: 14px; }
+      .step-number { fill: #ffffff; font-size: 16px; font-weight: 700; text-anchor: middle; }
+      .flow { fill: none; stroke: #505a5f; stroke-width: 2.5; marker-end: url(#arrow); }
+      .request-box { fill: #ffffff; stroke: #505a5f; stroke-width: 2; }
+      .automation-box { fill: #e8f1f8; stroke: #1d70b8; stroke-width: 2.5; }
+      .output-box { fill: #eaf5ee; stroke: #00703c; stroke-width: 2.5; }
+      .note-box { fill: #f3f2f1; stroke: #b1b4b6; stroke-width: 1.5; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="720" fill="#ffffff"/>
+  <text class="page-title" x="30" y="42">Collaborator onboarding flow</text>
+
+  <rect class="request-box" x="20" y="78" width="275" height="120" rx="4"/>
+  <circle cx="48" cy="108" r="17" fill="#1d70b8"/>
+  <text class="step-number" x="48" y="114">1</text>
+  <text class="box-title" x="74" y="115">New Collaborator issue</text>
+  <text class="body" x="42" y="151">Submitted by an MoJ</text>
+  <text class="body" x="42" y="175">application team member</text>
+
+  <path class="flow" d="M 295 138 H 314"/>
+
+  <rect class="request-box" x="315" y="78" width="275" height="120" rx="4"/>
+  <circle cx="343" cy="108" r="17" fill="#1d70b8"/>
+  <text class="step-number" x="343" y="114">2</text>
+  <text class="box-title" x="369" y="115">Automated pull request</text>
+  <text class="body" x="337" y="151">Adds or updates the user in</text>
+  <text class="body" x="337" y="175">collaborators.json</text>
+
+  <path class="flow" d="M 590 138 H 609"/>
+
+  <rect class="request-box" x="610" y="78" width="275" height="120" rx="4"/>
+  <circle cx="638" cy="108" r="17" fill="#1d70b8"/>
+  <text class="step-number" x="638" y="114">3</text>
+  <text class="box-title" x="664" y="115">Platform team review</text>
+  <text class="body" x="632" y="151">Confirm access with the</text>
+  <text class="body" x="632" y="175">requester before approval</text>
+
+  <path class="flow" d="M 885 138 H 904"/>
+
+  <rect class="request-box" x="905" y="78" width="275" height="120" rx="4"/>
+  <circle cx="933" cy="108" r="17" fill="#00703c"/>
+  <text class="step-number" x="933" y="114">4</text>
+  <text class="box-title" x="959" y="115">Merge</text>
+  <text class="body" x="927" y="151">collaborators.json becomes</text>
+  <text class="body" x="927" y="175">the source of truth</text>
+
+  <path class="flow" d="M 1042 198 V 235 H 335 V 269"/>
+
+  <rect class="automation-box" x="120" y="270" width="430" height="150" rx="4"/>
+  <text class="box-title" x="145" y="305">Terraform: GitHub resources</text>
+  <text class="body" x="145" y="337">Applies repository access from collaborators.json</text>
+  <line x1="145" y1="354" x2="525" y2="354" stroke="#b1b4b6"/>
+  <text class="small" x="145" y="379">Valid GitHub username: push access</text>
+  <text class="small" x="145" y="402">no-value-supplied: no repository access</text>
+
+  <path class="flow" d="M 550 345 H 649"/>
+
+  <rect class="automation-box" x="650" y="270" width="430" height="150" rx="4"/>
+  <text class="box-title" x="675" y="305">Terraform: modernisation-platform-account</text>
+  <text class="body" x="675" y="337">Triggered after the GitHub apply succeeds</text>
+  <line x1="675" y1="354" x2="1055" y2="354" stroke="#b1b4b6"/>
+  <text class="small" x="675" y="379">Downloads the updated collaborators.json</text>
+  <text class="small" x="675" y="402">Creates the IAM user and assume-role policy</text>
+
+  <path class="flow" d="M 335 420 V 484"/>
+  <path class="flow" d="M 865 420 V 484"/>
+
+  <rect class="output-box" x="120" y="485" width="430" height="125" rx="4"/>
+  <text class="box-title" x="145" y="520">GitHub repository access</text>
+  <text class="body" x="145" y="554">modernisation-platform-environments</text>
+  <text class="body" x="145" y="582">Permission: push</text>
+
+  <rect class="output-box" x="650" y="485" width="430" height="125" rx="4"/>
+  <text class="box-title" x="675" y="520">AWS account access</text>
+  <text class="body" x="675" y="554">IAM user: test.collaborator@example.com</text>
+  <text class="body" x="675" y="582">Role: developer in each selected account</text>
+
+  <rect class="note-box" x="120" y="650" width="960" height="46" rx="4"/>
+  <text class="body" x="600" y="679" text-anchor="middle">Deployment approval access is configured separately in environments/&lt;application&gt;.json.</text>
+</svg>

@@ -1,0 +1,68 @@
+---
+owner_slack: "#modernisation-platform"
+title: Modernisation Platform feature policy
+last_reviewed_on: 2026-09-18
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+# Feature policy
+
+The feature policy provides a single place to identify which Modernisation Platform services an account is opted into or out of.
+
+It allows us to quickly enable or disable services for specific accounts and makes it easier to debug issues or assess which accounts could be affected by a service.
+
+## Where the policy lives
+
+The rules are defined in the [feature policy JSON](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/feature-policy.json).
+
+To override a feature for a specific environment, add `feature_overrides` to its environment definition. See the [testing-test override example](https://github.com/ministryofjustice/modernisation-platform/blob/main/environments/testing.json#L22-L24).
+
+## How it works
+
+Terraform [loads and evaluates the policy](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/member-bootstrap/locals.tf#L127-L153) using the following priority:
+
+1. Environment feature override
+2. Workspace-specific rule
+3. Lifecycle and account type rules
+
+The result is available through `local.feature_flags`.
+
+## Supported features
+
+### `instance_scheduler`
+
+Controls whether the Instance Scheduler IAM role and policy are deployed to an account.
+
+The lifecycle and account type rules determine which accounts have this feature enabled.
+
+### `instance_scheduler_testing`
+
+Controls whether the Instance Scheduler IAM role and policy are deployed specifically to the `testing-test` account.
+
+This feature is enabled by the [testing-test workspace rule](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/feature-policy.json#L54-L60).
+
+## Using a feature flag
+
+Terraform resources use the evaluated feature flag instead of repeating account, lifecycle, or workspace conditions:
+
+```hcl
+count = local.feature_flags.instance_scheduler ? 1 : 0
+```
+
+See the [Instance Scheduler implementation](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/member-bootstrap/instance-scheduler.tf#L4).
+
+The [testing-test implementation](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/member-bootstrap/instance-scheduler.tf#L57-L70) uses `instance_scheduler_testing` to deploy the required role and policy specifically to that account.
+
+## Overriding a feature
+
+To enable or disable a feature for a specific environment, add `feature_overrides` to its environment definition:
+
+```json
+"feature_overrides": {
+  "instance_scheduler": false
+}
+```
+
+Environment overrides take priority over the workspace, lifecycle, and account type rules.

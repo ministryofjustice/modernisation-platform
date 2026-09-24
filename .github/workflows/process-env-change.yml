@@ -1,5 +1,6 @@
+---
 name: Process structured environment JSON change
-on:
+"on":
   issues:
     types: [opened, edited]
 permissions:

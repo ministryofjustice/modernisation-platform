@@ -47,5 +47,12 @@
     "destination_ip": "$AD_AZURE_RD_LICENSING",
     "destination_port": "$RD_LICENSING_TCP",
     "protocol": "TCP"
+  },
+  "container_platform_nonlive_to_cloud_platform_postgres": {
+    "action": "PASS",
+    "source_ip": "${container-platform-nonlive}",
+    "destination_ip": "${cloud-platform}",
+    "destination_port": "5432",
+    "protocol": "TCP"
   }
 }

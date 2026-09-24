@@ -1,5 +1,6 @@
+---
 name: Generate Terraform README docs
-on:
+"on":
   workflow_dispatch:
   pull_request:
     branches:
@@ -30,9 +31,9 @@ jobs:
         git-push: "false"
 
     - name: Fix Git permissions
-      run: sudo chown -R $(whoami) .git/
+      run: sudo chown -R "$(whoami)" .git/
 
     - name: Run Signed Commit Action
-      uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
+      uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@d467c7fb1bbeb73162ea736ca13adc8ba2ae74f8 # v6.2.5
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}

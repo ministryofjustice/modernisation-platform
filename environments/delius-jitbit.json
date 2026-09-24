@@ -90,7 +90,7 @@
           "level": "instance-management"
         },
         {
-          "sso_group_name": "octo-cyber-team",
+          "sso_group_name": "octo-cyber",
           "level": "security-audit"
         },
         {
@@ -110,5 +110,5 @@
   "github-oidc-team-repositories": [
     "ministryofjustice/hmpps-cr-ancillary-jitbit-app"
   ],
-  "go-live-date": "2023-09-18"
+  "go-live-date": ["2023-09-18"]
 }

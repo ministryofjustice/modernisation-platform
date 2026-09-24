@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Networking Approach
-last_reviewed_on: 2026-08-10
+last_reviewed_on: 2026-09-15
 review_in: 6 months
 ---
 
@@ -28,6 +28,9 @@ So we have the following environment accounts:
 - preproduction
 - test
 - development
+- sandbox
+
+Sandbox uses a separate address range that is **not routable** to the wider Ministry of Justice network. It is intended for local experimentation only. Applications in sandbox cannot reach, or be reached from, other Modernisation Platform environments or MoJ networks.
 
 Within these environment accounts there is one VPC per business unit. For example within the production account there is one VPC for LAA, and one for HMPPS.
 
@@ -35,7 +38,9 @@ These VPCs are then shared via [Resource Access Manager (RAM)](https://docs.aws.
 
 For example the production LAA VPC may be shared to multiple LAA application accounts. This enables LAA applications to communicate with each other without the need for [VPC peering](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-peering.html) as they are using the same VPC.
 
-Connection to other VPCs - i.e. if an LAA application needs to communicate with a HMPPS application - is done through the [Transit Gateway](#what-we-decided-transit-gateway). [NACLs](#nacls) can be opened to allow access, and [security groups](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html) from other accounts can be referenced.
+Connection to other VPCs - i.e. if an LAA application needs to communicate with a HMPPS application - is done through the [Transit Gateway](#transit-gateway). [NACLs](#nacls) can be opened to allow access, and [security groups](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html) from other accounts can be referenced.
+
+This is the standard networking model. Accounts requested with the isolated network option do not use it - see [isolated networks](#isolated-networks) below.
 
 #### Subnets
 
@@ -43,30 +48,50 @@ Connection to other VPCs - i.e. if an LAA application needs to communicate with 
 
 Each VPC will have a general subnet set - subnets that can be used for most of the application accounts. These are shared to the application accounts using RAM.
 
-For most business areas, the general subset set will be enough, but we can always create more subnet sets if needed.
+For most business areas, the general subnet set will be enough, but we can always create more subnet sets if needed.
 
 The subnet sets contain three types of subnet:
 
-- Public (for public resources such as load balancers)
 - Private (for private resources such as application servers)
+- Public (for public resources such as load balancers)
 - Data (for data resources such as databases)
 
 Each of the different subnet types are spread across all three London region [availability zones](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-availability-zones) (`eu-west-2a`, `eu-west-2b`, and `eu-west-2c`), making a total of nine subnets.
 
+Where a business unit needs more address space than a single subnet set provides, we can add [secondary CIDR blocks](subnet-allocation.html#secondary-cidr-blocks) to the VPC. This creates further private, public and data subnets, so a VPC may have more than nine subnets.
+
 For more information on the subnet ranges, see the [subnet allocation](subnet-allocation.html) page.
+
+###### Internet access from private subnets
+
+Resources in private subnets do not have a direct route to the internet. Outbound traffic is routed over the [Transit Gateway](#transit-gateway) to a centralised NAT gateway in the core network services account.
+
+This means outbound traffic from your application is subject to the [AWS Network Firewall](network-firewall.html) egress rules, including FQDN-based inspection. If your application needs to reach an endpoint on the internet, you may need a firewall rule to permit it.
 
 ##### Protected
 
-Protected subnets are created per account and used for [VPC endpoints](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html). We provide the following VPC endpoints as standard, and can add additional ones as required:
+Protected subnets are created per VPC and used for [VPC endpoints](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html).
 
-- SSM Messages
-- S3
+Because VPCs are shared across all the accounts in a business unit, the protected subnet capacity (three `/25` subnets, 369 usable addresses) is shared across that whole business unit rather than allocated per account. This is worth bearing in mind when planning a large number of endpoints.
+
+We provide the following as standard, and can add additional ones as required using the `additional_endpoints` option described in [environments-networks json explained](../../user-guide/environments-networks-json-explained.html):
+
+Interface endpoints:
+
 - EC2
 - EC2 Messages
+- SSM
+- SSM Messages
 
-##### Transit Gateway
+Gateway endpoint:
 
-The [transit gateway](#what-we-decided-transit-gateway) subnets are created per-account to allow access to other accounts and services via the transit gateway.
+- S3
+
+There is also a [centralised VPC endpoints hub](centralised-vpc-endpoints.html) in the core network services account, which offers a much wider set of services. It currently serves isolated network accounts only.
+
+##### Transit Gateway subnets
+
+The [transit gateway](#transit-gateway) subnets are created per VPC to allow access to other accounts and services via the transit gateway.
 
 #### NACLs
 
@@ -76,13 +101,29 @@ NACLs allow traffic in and out of the Modernisation Platform (North/South), but 
 
 Traffic within a VPC is not restricted.
 
+Some business units have bespoke NACL rules in addition to the baseline. See [subnet access](subnet-nacls.html) for details.
+
 #### Network Firewall
 
 AWS [Network Firewalls](network-firewall.html) provide additional controls to traffic entering and exiting the Modernisation Platform.
 
+Inspection is split into two separate VPCs, one for live data and one for non-live data. See [inspection VPCs](#inspection-vpcs) below.
+
+#### Isolated networks
+
+Accounts can be requested with the isolated network option instead of the standard shared VPC model. See [creating networking resources](../../user-guide/creating-networking.html#isolated-network) for how to request one.
+
+An isolated account builds its own VPC inside the member account, rather than being given shared subnets from a business unit VPC. In practice this means:
+
+- private subnets only, one per availability zone - there are no public or data subnets
+- no Transit Gateway attachment, so no connectivity to the wider MoJ network, to other Modernisation Platform accounts, or to the centralised NAT gateway
+- a smaller set of VPC endpoints created in the account itself, supplemented by the [centralised VPC endpoints hub](centralised-vpc-endpoints.html)
+
+This option is used by the MoJ hosting platforms that run on top of the Modernisation Platform, such as Cloud Platform and Container Platform, as well as by applications that need to be separated from shared networking.
+
 #### Other VPCs
 
-There are other VPCs in the Modernisation Platform core infrastructure accounts, these are connected to the [transit gateway](#what-we-decided-transit-gateway) as well.
+There are other VPCs in the Modernisation Platform core infrastructure accounts, these are connected to the [transit gateway](#transit-gateway) as well.
 
 Some examples that you will connect to:
 
@@ -90,13 +131,56 @@ Some examples that you will connect to:
 - shared-services
 - logging
 - security
+- centralised endpoints (see [centralised VPC endpoints](centralised-vpc-endpoints.html))
 
 #### Transit Gateway
 
 The [transit gateway](https://docs.aws.amazon.com/vpc/latest/tgw/what-is-transit-gateway.html) allows us to interconnect the different VPCs to enable communication between business units. The Transit Gateway also enables connection to third parties external to the MoJ via a [VPN](https://docs.aws.amazon.com/vpc/latest/userguide/vpn-connections.html).
 Routing is split into production and non production data for data protection.
 
+The Modernisation Platform runs a single Transit Gateway in the London region (`eu-west-2`). We do not operate a Transit Gateway in any other region.
+
 ![Transit Gatway](../../images/transit-gateway.png)
+
+##### Route tables
+
+The Transit Gateway uses several route tables, defined in [transit_gateway_connections.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/transit_gateway_connections.tf):
+
+| Route table | Purpose |
+| ----------- | ------- |
+| `live_data` | Production and preproduction VPC attachments |
+| `non_live_data` | Development, test and sandbox VPC attachments |
+| `external` | Traffic arriving from outside the Modernisation Platform |
+| `inspection` | Traffic directed to the inspection VPCs |
+| `centralised_endpoints` | The centralised VPC endpoints hub |
+
+Production and preproduction attachments propagate into the `live_data` route table, and development, test and sandbox attachments into `non_live_data`. This keeps live data traffic separate from non-live data traffic.
+
+##### Inspection VPCs
+
+There are two inspection VPCs in the core network services account, each with its own AWS Network Firewall:
+
+| Inspection VPC | CIDR | Used by |
+| -------------- | ---- | ------- |
+| `live_data` | `10.20.0.0/19` | production, preproduction |
+| `non_live_data` | `10.20.32.0/19` | development, test, sandbox |
+
+This separation exists for data protection, so that traffic carrying live data is not inspected alongside non-live traffic.
+
+##### Connections to the wider MoJ
+
+The Transit Gateway accepts peering attachments from two Transit Gateways owned elsewhere in the Ministry of Justice:
+
+- **MOJ-TGW** - the wider MoJ enterprise Transit Gateway. This is how traffic from the extended MoJ network reaches applications on the Modernisation Platform.
+- **ECP-TGW** - provides routes to the LAA ECP ranges `10.205.10.0/24`, `10.205.11.0/24`, `10.205.14.0/24` and `10.205.15.0/24`.
+
+For more information on connecting to other parts of the MoJ, see [wider MoJ connectivity](../../user-guide/wider-moj-connectivity.html).
+
+##### PSN connectivity
+
+A route to the Public Services Network (PSN) range `51.247.0.0/16` exists in the `live_data` route table only.
+
+This means **PSN connectivity is available from production and preproduction environments only**. You cannot test PSN connectivity from development, test or sandbox. Please take this into account when planning work that depends on PSN.
 
 ### Diagram
 

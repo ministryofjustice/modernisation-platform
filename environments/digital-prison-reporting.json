@@ -4,6 +4,14 @@
     {
       "name": "ppud-pipeline",
       "sso_group_name": "probation-de"
+    },
+    {
+      "name": "cross-account-roles",
+      "sso_group_name": "probation-de"
+    },
+    {
+      "name": "cross-account-roles",
+      "sso_group_name": "prisons-de"
     }
   ],
   "environments": [

@@ -1,6 +1,7 @@
+---
 name: Redeploy after nuke
 
-on:
+"on":
   push:
     branches:
       - main
@@ -40,14 +41,14 @@ defaults:
 
 jobs:
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@d467c7fb1bbeb73162ea736ca13adc8ba2ae74f8 # v6.2.5
     permissions:
       id-token: write
       contents: read
     secrets:
-        MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
-        PASSPHRASE: ${{ secrets.PASSPHRASE }}
-        
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
   setup-matrix:
     runs-on: ubuntu-latest
     needs: fetch-secrets
@@ -55,12 +56,12 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d467c7fb1bbeb73162ea736ca13adc8ba2ae74f8 # v6.2.5
         with:
           nuke_rebuild_account_ids: ${{ needs.fetch-secrets.outputs.nuke_rebuild_account_ids }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - id: set-matrix
-        run: echo "matrix=$(jq -c '.rebuild_accounts | sort' <<< $NUKE_REBUILD_ACCOUNT_IDS)" >> $GITHUB_OUTPUT
+        run: echo "matrix=$(jq -c '.rebuild_accounts | sort' <<< "$NUKE_REBUILD_ACCOUNT_IDS")" >> "$GITHUB_OUTPUT"
 
   redeploy-after-nuke:
     permissions:
@@ -72,7 +73,7 @@ jobs:
         nuke_accts: ${{ fromJSON(needs.setup-matrix.outputs.matrix) }}
     name: Redeploy after nuke
     if: github.ref == 'refs/heads/main'
-    needs: [setup-matrix,fetch-secrets]
+    needs: [setup-matrix, fetch-secrets]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout modernisation-platform-environments repository
@@ -80,8 +81,9 @@ jobs:
         with:
           repository: 'ministryofjustice/modernisation-platform-environments'
           token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: false
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d467c7fb1bbeb73162ea736ca13adc8ba2ae74f8 # v6.2.5
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -89,13 +91,13 @@ jobs:
 
       - name: Set Account Number
         run: |
-          ACCOUNT_NUMBER=$(jq -r -e --arg account_name "${ACCOUNT_NAME}" '.account_ids[$account_name]' <<< $ENVIRONMENT_MANAGEMENT)
+          ACCOUNT_NUMBER=$(jq -r -e --arg account_name "${ACCOUNT_NAME}" '.account_ids[$account_name]' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "::add-mask::$ACCOUNT_NUMBER"
-          echo "ACCOUNT_NUMBER=${ACCOUNT_NUMBER}" >> $GITHUB_ENV
+          echo "ACCOUNT_NUMBER=${ACCOUNT_NUMBER}" >> "$GITHUB_ENV"
 
       - name: configure aws credentials
         if: github.ref == 'refs/heads/main'
-        uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-nuke"
           role-session-name: githubactionsnukerolesession
@@ -111,18 +113,18 @@ jobs:
         run: |
           terraform --version
           echo "Terraform Plan - ${ACCOUNT_NAME%-development}" # removes the -development suffix in order to get the directory name
-          bash scripts/terraform-init.sh terraform/environments/${ACCOUNT_NAME%-development}
+          bash scripts/terraform-init.sh "terraform/environments/${ACCOUNT_NAME%-development}"
           terraform -chdir="terraform/environments/${ACCOUNT_NAME%-development}" workspace select "${ACCOUNT_NAME}"
-          bash scripts/terraform-plan.sh terraform/environments/${ACCOUNT_NAME%-development}
+          bash scripts/terraform-plan.sh "terraform/environments/${ACCOUNT_NAME%-development}"
 
       - name: Apply after nuke - ${{ matrix.nuke_accts }}
         if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.mode == 'nuke-no-dry-run') }}
         run: |
           terraform --version
           echo "Terraform apply - ${ACCOUNT_NAME%-development}" # removes the -development suffix in order to get the directory name
-          bash scripts/terraform-init.sh terraform/environments/${ACCOUNT_NAME%-development}
+          bash scripts/terraform-init.sh "terraform/environments/${ACCOUNT_NAME%-development}"
           terraform -chdir="terraform/environments/${ACCOUNT_NAME%-development}" workspace select "${ACCOUNT_NAME}"
-          bash scripts/terraform-apply.sh terraform/environments/${ACCOUNT_NAME%-development}
+          bash scripts/terraform-apply.sh "terraform/environments/${ACCOUNT_NAME%-development}"
 
       - name: Slack failure notification
         uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0

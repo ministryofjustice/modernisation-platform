@@ -1,6 +1,7 @@
+---
 name: Notify Slack with SecurityHub Findings Summary
 
-on:
+"on":
   schedule:
     # trigger every weekday at 08:30am
     - cron: '30 8 * * 1-5'
@@ -17,10 +18,10 @@ defaults:
 jobs:
 
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@d467c7fb1bbeb73162ea736ca13adc8ba2ae74f8 # v6.2.5
     secrets:
-        MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
-        PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   generate-account-matrix-blocks:
     runs-on: ubuntu-latest
@@ -32,7 +33,7 @@ jobs:
       matrix-group-4: ${{ steps.generate-account-matrix-blocks.outputs.block_4 }}
     steps:
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d467c7fb1bbeb73162ea736ca13adc8ba2ae74f8 # v6.2.5
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -133,5 +134,3 @@ jobs:
       slack_webhook_url: ${{ needs.fetch-secrets.outputs.securityhub_slack_webhooks }}
     secrets:
       passphrase: ${{ secrets.PASSPHRASE }}
-
-

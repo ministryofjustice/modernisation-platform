@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Subnet Access
-last_reviewed_on: 2026-08-26
+last_reviewed_on: 2026-09-14
 review_in: 6 months
 ---
 
@@ -9,9 +9,11 @@ review_in: 6 months
 
 This page summarises which ports and routes are open to what on the subnet sets.
 
+The tables below describe the **baseline** rules applied to every business unit VPC. Some business units have additional bespoke rules - see [business unit exceptions](#business-unit-exceptions).
+
 ## Allowed Traffic
 
-### All Subnets (Data, Private, Public)
+### All Subnets (Private, Public, Data)
 
 | Traffic type     | Port ranges  | Source/Destination                                                                                                                                          |
 | ---------------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -38,3 +40,22 @@ This page summarises which ports and routes are open to what on the subnet sets.
 | Ingress      | 587          | Business unit VPC  |
 | Ingress      | 5439         | Business unit VPC  |
 | Egress       | 1024 - 65535 | Business unit VPC  |
+
+## Extending access
+
+Two options in the environments-networks JSON change the NACL rules for a VPC:
+
+- `additional_cidrs` allows access from external CIDR ranges, such as PSN address ranges.
+- `additional_vpcs` allows access from other Modernisation Platform ranges.
+
+We try to avoid using `additional_vpcs`, as we want to limit east/west traffic movement inside the Modernisation Platform. See [environments-networks json explained](../../user-guide/environments-networks-json-explained.html) for more detail.
+
+As NACLs are applied at VPC level, and VPCs are shared across a business unit, any change applies to every account in that business unit.
+
+## Business unit exceptions
+
+The [vpc-nacls](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modules/vpc-nacls) module contains bespoke rules for some business units, added over time to support particular applications. These include rules for HMPPS, LAA and CICA.
+
+If the baseline tables above suggest that the access you need is not permitted, it is worth checking whether a rule already exists for your business unit before assuming otherwise.
+
+To check, or to request a new rule, please get in touch in [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1).

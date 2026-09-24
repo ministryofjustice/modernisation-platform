@@ -1,6 +1,7 @@
+---
 name: Send Message on Onboarding Issue Close
 
-on:
+"on":
   workflow_dispatch:
   issues:
     types:
@@ -24,7 +25,7 @@ jobs:
           node-version: 20
       - name: Send message to user on onboarding issue close
         env:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"       
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
         if: contains(github.event.issue.labels.*.name, 'onboarding') && github.event.issue.state == 'closed'
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:

@@ -13,11 +13,11 @@
           "level": "data-engineer"
         },
         {
-          "sso_group_name": "octo-cyber-team",
+          "sso_group_name": "octo-cyber",
           "level": "read-only"
         },
         {
-          "sso_group_name": "octo-cyber-team",
+          "sso_group_name": "octo-cyber",
           "level": "security-audit"
         }
       ]
@@ -36,5 +36,5 @@
     "ministryofjustice/modernisation-platform",
     "ministryofjustice/modernisation-platform-configuration-management"
   ],
-  "go-live-date": ""
+  "go-live-date": [""]
 }

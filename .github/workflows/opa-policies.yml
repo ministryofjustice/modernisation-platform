@@ -1,6 +1,7 @@
+---
 name: "Open Policy Agent: validate JSON structures"
 
-on:
+"on":
   workflow_dispatch:
   pull_request:
     branches:
@@ -11,10 +12,6 @@ on:
       - 'scripts/tests/validate/run-opa-tests.sh'
   merge_group:
     types: [checks_requested]
-    paths:
-      - '**.json'
-      - '**.rego'
-      - 'scripts/tests/validate/run-opa-tests.sh'
 
 permissions:
   contents: read
@@ -34,8 +31,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Get changed files/directories and add PR comment for high risk changes
-        run: bash scripts/pr-warning-comments.sh          
+        run: bash scripts/pr-warning-comments.sh
       - name: Setup Regal
         uses: open-policy-agent/setup-regal@761188c3b435761fa254beca508a44875619648f # v2.0.0
       - name: Run Regal Lint
