@@ -110,7 +110,7 @@ For major version bumps (e.g. `v2` → `v3`), flag these clearly as they may con
 Output a clear summary grouped by status:
 
 #### Outdated Actions
-```
+```bash
 🔴 OUTDATED  actions/checkout
    Current : v6.0.2
    Latest  : v6.0.3
@@ -120,17 +120,17 @@ Output a clear summary grouped by status:
 ```
 
 #### Up to Date
-```
+```bash
 ✅ current   owner/repo @ v1.4.0
 ```
 
 #### Unknown / SHA-only (no version comment)
-```
+```bash
 ❓ unknown   owner/repo (SHA-pinned, no version comment — latest: v2.1.0)
 ```
 
 End with a summary line:
-```
+```bash
 SUMMARY: 🔴 X outdated  ✅ Y up to date  ❓ Z unknown
 ```
 
@@ -171,7 +171,7 @@ For each outdated action, in every workflow file that references it:
 **Important**: Only change the SHA and version comment. Do not alter any `with:`, `env:`, or other step parameters.
 
 For major version bumps, warn the user before applying:
-```
+```bash
 ⚠️  Major version bump detected: aws-actions/setup-sam v2 → v3
     Please review the release notes before proceeding:
     https://github.com/aws-actions/setup-sam/releases/tag/v3

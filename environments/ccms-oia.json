@@ -91,6 +91,10 @@
         {
           "sso_group_name": "laa-oia-developers",
           "level": "secrets-manager-editor"
+        },
+        {
+          "sso_group_name": "laa-ccms-security-testing-kpmg",
+          "level": "developer"
         }
       ]
     },
@@ -115,12 +119,16 @@
           "level": "developer"
         },
         {
-          "sso_group_name": "octo-cyber-team",
+          "sso_group_name": "octo-cyber",
           "level": "security-audit"
         },
         {
           "sso_group_name": "laa-oia-developers",
           "level": "secrets-manager-editor"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
@@ -138,5 +146,5 @@
     "ministryofjustice/laa-ccms-connector",
     "ministryofjustice/laa-ccms-service-adapter"
   ],
-  "go-live-date": ""
+  "go-live-date": [""]
 }

@@ -21,11 +21,11 @@
           "level": "read-only"
         },
         {
-          "sso_group_name": "octo-cyber-team",
+          "sso_group_name": "octo-cyber",
           "level": "read-only"
         },
         {
-          "sso_group_name": "octo-cyber-team",
+          "sso_group_name": "octo-cyber",
           "level": "security-audit"
         },
         {
@@ -44,5 +44,5 @@
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""],
-  "go-live-date": ""
+  "go-live-date": [""]
 }

@@ -293,6 +293,7 @@ expected :=
               "contract-work-administration-development",
               "data-factory-laa-development",
               "edw-19c-development",
+              "laa-ai-enablement-development",
               "laa-ccms-soa-development",
               "laa-cis-development",
               "laa-enterprise-service-bus-development",
@@ -451,6 +452,7 @@ expected :=
       "general": {
         "cidr": "10.27.104.0/21",
         "accounts": [
+          "data-factory-moj-preproduction",
           "data-platform-preproduction",
           "data-platform-governance-preproduction",
           "developer-experience-preproduction",

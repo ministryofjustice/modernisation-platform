@@ -180,6 +180,9 @@ locals {
 
   laa_nec_nonprod_vpn_static_routes = ["10.120.0.0/24"]
 
+  laa_nec_prod_vpn_static_routes = ["10.110.0.0/24"]
+
+
   core-vpcs = {
     for file in fileset("../../../environments-networks", "*.json") :
     replace(file, ".json", "") => jsondecode(file("../../../environments-networks/${file}"))

@@ -102,6 +102,10 @@
         {
           "sso_group_name": "laa-soa-developers",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-ccms-security-testing-kpmg",
+          "level": "developer"
         }
       ]
     },
@@ -134,7 +138,7 @@
           "level": "developer"
         },
         {
-          "sso_group_name": "octo-cyber-team",
+          "sso_group_name": "octo-cyber",
           "level": "security-audit"
         },
         {
@@ -152,5 +156,5 @@
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": ["ministryofjustice/laa-ccms-soa-docker"],
-  "go-live-date": ""
+  "go-live-date": [""]
 }

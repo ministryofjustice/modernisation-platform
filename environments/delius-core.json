@@ -156,7 +156,8 @@
           "level": "developer",
           "github_action_reviewer": "false"
         }
-      ]
+      ],
+      "instance_scheduler_skip": ["true"]
     },
     {
       "name": "preproduction",
@@ -271,13 +272,17 @@
           "github_action_reviewer": "false"
         },
         {
-          "sso_group_name": "octo-cyber-team",
+          "sso_group_name": "octo-cyber",
           "level": "security-audit"
         },
         {
           "sso_group_name": "delius-core-production",
           "level": "developer",
           "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
@@ -301,5 +306,6 @@
     "ministryofjustice/hmpps-probation-integration-services",
     "ministryofjustice/hmpps-supervision",
     "ministryofjustice/delius-releases"
-  ]
+  ],
+  "go-live-date": ""
 }

@@ -47,7 +47,11 @@
           "level": "instance-management"
         },
         {
-          "sso_group_name": "octo-cyber-team",
+          "sso_group_name": "octo-cyber",
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
           "level": "security-audit"
         }
       ]
@@ -72,7 +76,7 @@
           "level": "instance-management"
         },
         {
-          "sso_group_name": "octo-cyber-team",
+          "sso_group_name": "octo-cyber",
           "level": "security-audit"
         }
       ]
@@ -88,5 +92,5 @@
   "github-oidc-team-repositories": [
     "ministryofjustice/hmpps-delius-operational-automation"
   ],
-  "go-live-date": "2023-05-15"
+  "go-live-date": ["2023-05-15"]
 }

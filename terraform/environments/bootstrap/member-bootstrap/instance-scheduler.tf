@@ -1,7 +1,7 @@
 # role for allowing the instance scheduler to shut down and start up instances in accounts
 
 module "instance-scheduler-access" {
-  count                  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && !can(regex(".*-production$", terraform.workspace))) ? 1 : 0
+  count                  = local.feature_flags.instance_scheduler ? 1 : 0
   source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" # v4.0.0
   account_id             = local.environment_management.account_ids["core-shared-services-production"]
   additional_trust_roles = [format("arn:aws:iam::%s:role/InstanceSchedulerLambdaFunctionPolicy", local.environment_management.account_ids["core-shared-services-production"])]
@@ -55,14 +55,14 @@ data "aws_iam_policy_document" "instance-scheduler-access" {
 }
 
 resource "aws_iam_policy" "instance-scheduler-access" {
-  count       = local.account_data.account-type == "member" ? 1 : 0
+  count       = (local.feature_flags.instance_scheduler || local.feature_flags.instance_scheduler_testing) ? 1 : 0
   name        = "InstanceSchedulerAccessActions"
   description = "Restricted policy for use by the Instance Scheduler Lambda in member accounts"
   policy      = data.aws_iam_policy_document.instance-scheduler-access.json
 }
 
 module "testing_instance-scheduler-access" {
-  count                  = terraform.workspace == "testing-test" ? 1 : 0
+  count                  = local.feature_flags.instance_scheduler_testing ? 1 : 0
   source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" # v4.0.0
   account_id             = local.environment_management.account_ids["core-shared-services-production"]
   additional_trust_roles = [format("arn:aws:iam::%s:role/InstanceSchedulerLambdaFunctionPolicy", local.environment_management.account_ids["core-shared-services-production"]), format("arn:aws:iam::%s:root", local.environment_management.account_ids["testing-test"])]

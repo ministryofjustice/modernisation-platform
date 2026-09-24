@@ -1,3 +1,4 @@
+---
 # Host to use for canonical URL generation (without trailing slash)
 host: https://user-guide.modernisation-platform.service.justice.gov.uk
 

@@ -1,5 +1,13 @@
 {
   "account-type": "member",
+  "components": [
+    {
+      "name": "push-to-s3"
+    },
+    {
+      "name": "push-to-s3-with-hosted-pickup"
+    }
+  ],
   "environments": [
     {
       "name": "development",

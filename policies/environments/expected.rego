@@ -75,6 +75,7 @@ expected :=
     "integration-hub",
     "integration-hub-api",
     "integration-hub-file-transfer",
+    "laa-ai-enablement",
     "laa-ccms-soa",
     "laa-cis",
     "laa-enterprise-service-bus",

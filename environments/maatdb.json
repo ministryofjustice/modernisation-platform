@@ -133,7 +133,7 @@
           "level": "developer"
         },
         {
-          "sso_group_name": "octo-cyber-team",
+          "sso_group_name": "octo-cyber",
           "level": "security-audit"
         },
         {
@@ -150,5 +150,6 @@
     "owner": "LAACrimeApps-Core@justice.gov.uk",
     "critical-national-infrastructure": true
   },
-  "github-oidc-team-repositories": []
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
 }

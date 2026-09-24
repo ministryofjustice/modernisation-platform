@@ -1,6 +1,6 @@
 ---
 name: awsnuke
-on:
+"on":
   push:
     branches:
       - main
@@ -42,13 +42,13 @@ defaults:
 jobs:
 
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@d467c7fb1bbeb73162ea736ca13adc8ba2ae74f8 # v6.2.5
     permissions:
       id-token: write
       contents: read
     secrets:
-        MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
-        PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
   setup-prerequisites:
     runs-on: ubuntu-latest
     needs: fetch-secrets
@@ -57,28 +57,28 @@ jobs:
       account_blocklist_str: ${{ steps.set-blocklist-string.outputs.account_blocklist_str }}
     steps:
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d467c7fb1bbeb73162ea736ca13adc8ba2ae74f8 # v6.2.5
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
-          nuke_account_ids: ${{ needs.fetch-secrets.outputs.nuke_account_ids }} 
+          nuke_account_ids: ${{ needs.fetch-secrets.outputs.nuke_account_ids }}
           nuke_account_blocklist: ${{ needs.fetch-secrets.outputs.nuke_account_blocklist }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - id: set-matrix
         name: Set Up Matrix
         run: |
-          echo "matrix=$(jq -c '.nuke_accounts | sort' <<< $NUKE_ACCOUNT_IDS)" >> $GITHUB_OUTPUT
+          echo "matrix=$(jq -c '.nuke_accounts | sort' <<< "$NUKE_ACCOUNT_IDS")" >> "$GITHUB_OUTPUT"
 
       - id: set-blocklist-string
         name: Set Up Blocklist
         run: |
           account_blocklist_str=""
           while read -r account_alias _; do
-          account_number=$(jq -r -e --arg account_name "$account_alias" '.account_ids[$account_name]' <<< $ENVIRONMENT_MANAGEMENT)
+          account_number=$(jq -r -e --arg account_name "$account_alias" '.account_ids[$account_name]' <<< "$ENVIRONMENT_MANAGEMENT")
           account_blocklist_str+="  - \"${account_number}\" # ${account_alias}"
           account_blocklist_str+=$'\n'
-          done <<< "$(jq -c -r '.blocklist[]' <<< $NUKE_ACCOUNT_BLOCKLIST)" # Taking this approach as piping (|) to a read opens a subshell and passes the variables to it by value
+          done <<< "$(jq -c -r '.blocklist[]' <<< "$NUKE_ACCOUNT_BLOCKLIST")" # Taking this approach as piping (|) to a read opens a subshell and passes the variables to it by value
           # Encoding and passing blocklist string as an output
-          echo "account_blocklist_str=$(echo -n "${account_blocklist_str}" | base64 -w 0)" >> $GITHUB_OUTPUT
+          echo "account_blocklist_str=$(echo -n "${account_blocklist_str}" | base64 -w 0)" >> "$GITHUB_OUTPUT"
 
   nuke:
     strategy:
@@ -95,9 +95,11 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      
+        with:
+          persist-credentials: false
+
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2988728879704953e739f82ac926d37931c6d01b # v6.1.9
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d467c7fb1bbeb73162ea736ca13adc8ba2ae74f8 # v6.2.5
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -105,11 +107,11 @@ jobs:
 
       - name: Set Account Number
         run: |
-          ACCOUNT_NUMBER=$(jq -r -e --arg account_name "${ACCOUNT_NAME}" '.account_ids[$account_name]' <<< $ENVIRONMENT_MANAGEMENT)
+          ACCOUNT_NUMBER=$(jq -r -e --arg account_name "${ACCOUNT_NAME}" '.account_ids[$account_name]' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "::add-mask::$ACCOUNT_NUMBER"
-          echo "ACCOUNT_NUMBER=${ACCOUNT_NUMBER}" >> $GITHUB_ENV
+          echo "ACCOUNT_NUMBER=${ACCOUNT_NUMBER}" >> "$GITHUB_ENV"
       - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-nuke"
           role-session-name: githubactionsnukerolesession
@@ -125,22 +127,27 @@ jobs:
           accounts_str+="      - \"common\""
           accounts_str+=$'\n'
           echo "$accounts_str"
-          echo "ACCOUNTS_STR<<EOF" >> $GITHUB_ENV
-          echo "$accounts_str" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          {
+            echo "ACCOUNTS_STR<<EOF"
+            echo "$accounts_str"
+            echo "EOF"
+          } >> "$GITHUB_ENV"
 
       - name: Setup Nuke Config
+        env:
+          ACCOUNT_BLOCKLIST_STR: ${{ needs.setup-prerequisites.outputs.account_blocklist_str }}
         run: |
           export accounts_str="$ACCOUNTS_STR"
-          export account_blocklist_str=$(echo "${{ needs.setup-prerequisites.outputs.account_blocklist_str }}" | base64 --decode)
+          account_blocklist_str=$(echo "$ACCOUNT_BLOCKLIST_STR" | base64 --decode)
+          export account_blocklist_str
           cat scripts/nuke-config-template.txt | envsubst > nuke-config.yml
 
       - name: Install AWS Nuke
         run: |
           echo "BEGIN: Install AWS Nuke"
-          mkdir -p $HOME/bin
-          wget -c "https://github.com/ekristen/aws-nuke/releases/download/${AWS_NUKE_VERSION}/aws-nuke-${AWS_NUKE_VERSION}-linux-amd64.tar.gz" -O - | tar -xz -C $HOME/bin
-          chmod +x $HOME/bin/aws-nuke
+          mkdir -p "$HOME/bin"
+          wget -c "https://github.com/ekristen/aws-nuke/releases/download/${AWS_NUKE_VERSION}/aws-nuke-${AWS_NUKE_VERSION}-linux-amd64.tar.gz" -O - | tar -xz -C "$HOME/bin"
+          chmod +x "$HOME/bin/aws-nuke"
           echo "END: Install AWS Nuke"
         env:
           AWS_NUKE_VERSION: v3.51.1
@@ -154,7 +161,7 @@ jobs:
             exit 1
           }
           echo "Running AWS Nuke (dry run)..."
-          $HOME/bin/aws-nuke run \
+          "$HOME/bin/aws-nuke" run \
             --config nuke-config.yml \
             --no-prompt
 
@@ -167,7 +174,7 @@ jobs:
             exit 1
           }
           echo "Running AWS Nuke (full apply)..."
-           $HOME/bin/aws-nuke run \
+           "$HOME/bin/aws-nuke" run \
             --config nuke-config.yml \
             --no-prompt \
             --no-dry-run

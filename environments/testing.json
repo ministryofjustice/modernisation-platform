@@ -9,16 +9,19 @@
           "level": "developer"
         },
         {
-          "sso_group_name": "octo-cyber-team",
+          "sso_group_name": "octo-cyber",
           "level": "read-only"
         },
         {
-          "sso_group_name": "octo-cyber-team",
+          "sso_group_name": "octo-cyber",
           "level": "security-audit"
         }
       ]
     }
   ],
+  "feature_overrides": {
+    "instance_scheduler": false
+  },
   "tags": {
     "application": "testing",
     "business-unit": "Platforms",

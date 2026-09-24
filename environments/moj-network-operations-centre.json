@@ -9,6 +9,10 @@
           "level": "administrator"
         },
         {
+          "sso_group_name": "moj-official-noc-preprod",
+          "level": "administrator"
+        },
+        {
           "sso_group_name": "moj-official-techops-readonly",
           "level": "view-only"
         }
@@ -33,10 +37,10 @@
     }
   ],
   "tags": {
-    "application": "moj-official",
+    "application": "NOC",
     "business-unit": "HQ",
-    "infrastructure-support": "MOJNOC@justice.gov.uk",
-    "owner": "chinyere.onuoha@justice.gov.uk",
+    "infrastructure-support": "NetworkAutomation@justice.gov.uk",
+    "owner": "NetworkAutomation@justice.gov.uk",
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""]

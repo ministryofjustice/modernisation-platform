@@ -89,7 +89,7 @@
           "level": "instance-management"
         },
         {
-          "sso_group_name": "octo-cyber-team",
+          "sso_group_name": "octo-cyber",
           "level": "security-audit"
         },
         {
@@ -109,5 +109,6 @@
   "github-oidc-team-repositories": [
     "ministryofjustice/laa-maat-application",
     "ministryofjustice/laa-maat-court-data-api"
-  ]
+  ],
+  "go-live-date": ""
 }

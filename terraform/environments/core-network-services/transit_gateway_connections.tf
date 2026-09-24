@@ -67,6 +67,7 @@ locals {
     "modernisation-platform-core"     = "10.20.0.0/16"
     "modernisation-platform-non-live" = "10.26.0.0/16",
     "modernisation-platform-live"     = "10.27.0.0/16"
+    "container-platform-octo-nonlive" = "10.195.48.0/20"
   }
 
   inspection_static_routes = {
