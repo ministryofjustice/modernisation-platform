@@ -1,0 +1,158 @@
+---
+name: Reusable - Resource Discovery
+
+"on":
+  workflow_call:
+    inputs:
+      environment_management:
+        required: true
+        type: string
+      account_name:
+        required: true
+        type: string
+      resource_type:
+        required: true
+        type: string
+      regions:
+        required: true
+        type: string
+    secrets:
+      PASSPHRASE:
+        required: true
+
+permissions:
+  id-token: write
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  discover:
+    name: Discover (${{ inputs.account_name }})
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Decrypt account data
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d467c7fb1bbeb73162ea736ca13adc8ba2ae74f8 # v6.2.5
+        with:
+          environment_management: ${{ inputs.environment_management }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+      - name: Resolve member account ID
+        id: account
+        env:
+          ACCOUNT_NAME: ${{ inputs.account_name }}
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${ENVIRONMENT_MANAGEMENT:-}" ]]; then
+            echo "ENVIRONMENT_MANAGEMENT not set after decrypt-secrets" >&2
+            exit 1
+          fi
+
+          account_id="$(jq -er --arg name "$ACCOUNT_NAME" '.account_ids[$name]' <<< "$ENVIRONMENT_MANAGEMENT")"
+          echo "::add-mask::$account_id"
+          echo "account-id=$account_id" >> "$GITHUB_OUTPUT"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        with:
+          role-to-assume: arn:aws:iam::${{ steps.account.outputs.account-id }}:role/github-actions-resource-discovery
+          role-session-name: resource-discovery
+          aws-region: eu-west-2
+          role-skip-session-tagging: true
+
+      - name: Set up Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: scripts/internal/resource-discovery/go.mod
+          cache-dependency-path: scripts/internal/resource-discovery/go.sum
+
+      - name: Run resource discovery
+        id: discovery
+        working-directory: scripts/internal/resource-discovery
+        env:
+          ACCOUNT_NAME: ${{ inputs.account_name }}
+          REGIONS: ${{ inputs.regions }}
+          RESOURCE_TYPE: ${{ inputs.resource_type }}
+        run: |
+          set -euo pipefail
+
+          output_directory="$GITHUB_WORKSPACE/resource-discovery-results"
+          output_file="$output_directory/${ACCOUNT_NAME}.json"
+          mkdir -p "$output_directory"
+
+          go run . \
+            --account-name "$ACCOUNT_NAME" \
+            --regions "$REGIONS" \
+            --resource-type "$RESOURCE_TYPE" \
+            > "$output_file"
+
+          jq -e 'type == "array"' "$output_file" > /dev/null
+          echo "output-file=$output_file" >> "$GITHUB_OUTPUT"
+
+      - name: Display account results
+        env:
+          ACCOUNT_NAME: ${{ inputs.account_name }}
+          OUTPUT_FILE: ${{ steps.discovery.outputs.output-file }}
+          REGIONS: ${{ inputs.regions }}
+          RESOURCE_TYPE: ${{ inputs.resource_type }}
+        run: |
+          set -euo pipefail
+
+          resource_count="$(jq 'length' "$OUTPUT_FILE")"
+          {
+            echo "## Resource discovery: $ACCOUNT_NAME"
+            echo
+            echo "- Resources found: **$resource_count**"
+            echo "- Resource type filter: \`$RESOURCE_TYPE\`"
+            echo "- Regions: \`$REGIONS\`"
+            echo
+
+            if (( resource_count > 0 )); then
+              echo "### Counts by resource type"
+              echo
+              echo "| Resource type | Count |"
+              echo "| --- | ---: |"
+              jq -r 'group_by(.resource_type)[] | "| `\(.[0].resource_type)` | \(length) |"' "$OUTPUT_FILE"
+              echo
+              echo "<details>"
+              echo "<summary>Resource details (first 100)</summary>"
+              echo
+              echo "| Resource type | Region | Name | Identifier |"
+              echo "| --- | --- | --- | --- |"
+              jq -r '
+                def clean: tostring | gsub("[\\r\\n|]"; " ");
+                .[:100][]
+                | [.resource_type, .region, (.name // .identifier), .identifier]
+                | map(clean)
+                | "| " + join(" | ") + " |"
+              ' "$OUTPUT_FILE"
+              echo
+              echo "</details>"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload account results
+        id: upload
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: resource-discovery-${{ inputs.account_name }}
+          path: ${{ steps.discovery.outputs.output-file }}
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Add artifact link to summary
+        env:
+          ACCOUNT_NAME: ${{ inputs.account_name }}
+          ARTIFACT_URL: ${{ steps.upload.outputs.artifact-url }}
+        run: |
+          echo >> "$GITHUB_STEP_SUMMARY"
+          echo "[Download JSON results for $ACCOUNT_NAME]($ARTIFACT_URL)" >> "$GITHUB_STEP_SUMMARY"
