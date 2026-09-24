@@ -177,5 +177,5 @@
     "ministryofjustice/ccms-financial-transfers",
     "ministryofjustice/laa-ccms-ebs-scripts"
   ],
-  "go-live-date": "2023-05-26"
+  "go-live-date": ["2023-05-26"]
 }
