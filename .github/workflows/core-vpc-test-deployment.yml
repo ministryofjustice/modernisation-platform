@@ -46,10 +46,7 @@ name: core-vpc-test-deployment
       - '!**.md'
   workflow_dispatch:
 
-permissions:
-  id-token: write # This is required for requesting the JWT
-  contents: read # This is required for actions/checkout
-  pull-requests: write
+permissions: {}
 
 defaults:
   run:
@@ -57,6 +54,10 @@ defaults:
 
 jobs:
   core-vpc-test-deployment-plan-apply:
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # This is required for actions/checkout
+      pull-requests: write
     uses: ./.github/workflows/reusable_terraform_plan_apply.yml
     with:
       working-directory: "terraform/environments/core-vpc"
@@ -67,6 +68,9 @@ jobs:
 
   member-account-ram-association:
     needs: core-vpc-test-deployment-plan-apply
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-member-account-ram-association.yml
     with:
       environment: "test"
