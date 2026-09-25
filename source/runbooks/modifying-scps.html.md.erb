@@ -1,31 +1,172 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Modifying Service Control Policies (SCPs)
-last_reviewed_on: 2026-03-19
+last_reviewed_on: 2026-09-25
 review_in: 6 months
 ---
 
 # <%= current_page.data.title %>
 
-We use the following SCPs for the Modernisation Platform to restrict certain actions at an account level.
+Modernisation Platform accounts are subject to Service Control Policies (SCPs) attached to their accounts and organisational units (OUs), including policies inherited from parent OUs.
 
-| Policy | Type | Location | Description |
+SCPs restrict the permissions available to accounts. They do not grant permissions: access must still be allowed by the applicable IAM and resource policies.
+
+The policies and attachments documented below are defined in the `management-account/terraform` directory of the [aws-root-account](https://github.com/ministryofjustice/aws-root-account) repository. This runbook is maintained in the [modernisation-platform](https://github.com/ministryofjustice/modernisation-platform) repository.
+
+> This inventory describes the Terraform configuration reviewed on 25 September 2026. It does not confirm that every change has been applied or that no additional policies have been attached outside Terraform. Verify live AWS Organizations attachments before making changes.
+
+## Policy scope and inheritance
+
+The relevant OU hierarchy is:
+
+- AWS organisation root
+  - Platforms & Architecture
+    - Modernisation Platform
+      - Modernisation Platform Core
+      - Modernisation Platform Member
+        - Application OUs, including `modernisation-platform-sprinkler`
+      - Modernisation Platform Member Unrestricted — legacy OU
+
+An SCP attached to a parent OU also affects accounts in its descendant OUs. For example:
+
+- The root-user restriction attached to Platforms & Architecture is inherited by Modernisation Platform accounts.
+- Policies attached to the Modernisation Platform OU affect accounts beneath both the Core and Member OUs.
+- Policies attached only to the Member OU do not apply to the Core or Member Unrestricted OUs through that attachment.
+- The S3 KMS encryption pilot applies only beneath `modernisation-platform-sprinkler`.
+
+See the [OU definitions in aws-root-account](https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/organizations-organizational-units.tf) and the [environment architecture documentation](../concepts/environments/architecture.html).
+
+## Service Control Policies
+
+### Shared and inherited SCPs
+
+These policies are not exclusive to Modernisation Platform, but their configured attachments affect Modernisation Platform accounts.
+
+| Policy | Attachment scope | Location | Description |
 | --- | --- | --- | --- |
-| Modernisation Platform Member OU SCP | SCP | [`aws-root-account/management-account/terraform/organizations-policy-service-control.tf`](https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/organizations-policy-service-control.tf) | Baseline SCP attached to the Modernisation Platform Member OU. |
-| Modernisation Platform RDS Guardrails SCP | SCP | [`aws-root-account/management-account/terraform/organizations-policy-service-control-modernisation-platform.tf`](https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/organizations-policy-service-control-modernisation-platform.tf) | Prevents publicly accessible RDS, unencrypted RDS, and public snapshot sharing (Modernisation Platform Member OU scope). |
-| Modernisation Platform S3 Block Public Access | S3 org policy | [`aws-root-account/management-account/terraform/organizations-policy-service-control-modernisation-platform.tf`](https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/organizations-policy-service-control-modernisation-platform.tf) | Enforces S3 Block Public Access for accounts in the Modernisation Platform Member OU. |
-| Modernisation Platform Deny CloudTrail Delete Stop Update | SCP | [`aws-root-account/management-account/terraform/organizations-policy-service-control-modernisation-platform.tf`](https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/organizations-policy-service-control-modernisation-platform.tf) | Denies `DeleteTrail` and `StopLogging` on the `cloudtrail` trail, and denies `UpdateTrail` except for `ModernisationPlatformAccess` (Modernisation Platform OU scope). |
-| Modernisation Platform Protect Core S3 Buckets | SCP | [`aws-root-account/management-account/terraform/organizations-policy-service-control-modernisation-platform.tf`](https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/organizations-policy-service-control-modernisation-platform.tf) | Denies deletion and policy/lifecycle tampering for core S3 buckets (state + core logging) (Modernisation Platform OU scope). |
-| Modernisation Platform Protect Secure Baselines | SCP | [`aws-root-account/management-account/terraform/organizations-policy-service-control-modernisation-platform.tf`](https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/organizations-policy-service-control-modernisation-platform.tf) | Denies deletion/disabling of secure-baselines tagged resources, except AWS SSO admin roles (Modernisation Platform OU scope). |
+| Deny AWS account root user | Platforms & Architecture OU; inherited by Modernisation Platform | [Shared SCP definitions][shared-scps] | Denies actions by AWS account root-user principals. |
+| Deny non-EU and non-"us-east-1" operations | Modernisation Platform OU, as well as other OUs | [Shared SCP definitions][shared-scps] | Restricts regional operations and prevents enabling or disabling opt-in regions. Includes service-specific regional exceptions; consult the policy document rather than relying on its name as a complete description. |
 
-The SCPs and organization policies above are modified in the `management-account` Terraform of the [aws-root-account](https://github.com/ministryofjustice/aws-root-account) repository.
+AWS Organizations also provides the AWS-managed `FullAWSAccess` SCP. The repository notes that it is not managed in this Terraform. Check its live attachments alongside the custom policies when investigating effective permissions.
+
+### Modernisation Platform SCPs
+
+| Policy | Attachment scope | Location | Description |
+| --- | --- | --- | --- |
+| Modernisation Platform Member OU SCP | Modernisation Platform Member OU | [Shared SCP definitions][shared-scps] | Denies VPC and subnet creation outside `eu-west-2` and restricts changes to the `github-actions` IAM role and policy, subject to the principal exceptions in the policy document. |
+| Modernisation Platform RDS Guardrails SCP | Modernisation Platform Member OU | [Modernisation Platform policy definitions][mp-policies] | Denies specified RDS operations involving public accessibility, unencrypted storage and public snapshot sharing. |
+| Modernisation Platform Deny CloudTrail Delete Stop Update | Modernisation Platform OU | [Modernisation Platform policy definitions][mp-policies] | Denies `DeleteTrail` and `StopLogging` on trails named `cloudtrail`. Also denies `UpdateTrail` on those trails, except for the `ModernisationPlatformAccess` role. |
+| Modernisation Platform Protect Core S3 Buckets | Modernisation Platform OU | [Modernisation Platform policy definitions][mp-policies] | Protects an explicit list of Terraform state and core logging buckets from bucket deletion, bucket-policy deletion and lifecycle changes. Restricts bucket-policy updates, with automation-role exceptions. |
+| Modernisation Platform Protect Secure Baselines | Modernisation Platform OU | [Modernisation Platform policy definitions][mp-policies] | Protects AWS Config recorders and GuardDuty detectors, and separately restricts specified actions on resources tagged `component=secure-baselines`. The statements have different exceptions; see below. |
+| Enforce S3 KMS encryption | `modernisation-platform-sprinkler` application OU only | [Modernisation Platform policy definitions][mp-policies] | Pilot policy containing a deny for `s3:PutEncryptionConfiguration` when `s3:x-amz-server-side-encryption` is `AES256`. It is not attached platform-wide. |
+
+### Important policy details and exceptions
+
+#### Core S3 buckets
+
+The protected bucket list is defined by `local.mp_protected_core_s3_buckets`.
+
+The exception for the `ModernisationPlatformAccess` and `github-actions` roles applies to the `s3:PutBucketPolicy` deny statement. It does not exempt those roles from the other deny statements in this policy.
+
+#### Secure baselines
+
+This SCP contains separate statements:
+
+- **AWS Config and GuardDuty protection:** restricts `config:DeleteConfigurationRecorder`, `config:PutConfigurationRecorder`, `config:StopConfigurationRecorder`, `guardduty:DeleteDetector` and `guardduty:UpdateDetector`. This statement does not depend on resource tags. It exempts `ModernisationPlatformAccess`, `github-actions` and the matching AWS SSO `AdministratorAccess` roles.
+- **Tagged-resource protection:** restricts the listed deletion, disabling and modification actions on resources tagged `component=secure-baselines`. This statement exempts the matching AWS SSO `AdministratorAccess` roles and excludes principals from the account identified by `local.modernisation_platform_accounts.testing_test`.
+
+The Config and GuardDuty controls are included in this existing SCP rather than a separate policy. The Terraform comments record that this was necessary because the Modernisation Platform OU was already at its SCP attachment limit.
+
+An exception in one statement or policy does not override an explicit deny in another applicable policy.
+
+#### S3 KMS encryption pilot
+
+The current policy document contains only the bucket-encryption configuration statement described in the table above.
+
+Although some Terraform comments and the policy description mention object writes, the current document does not contain a `s3:PutObject` deny. Do not describe this pilot as guaranteeing KMS-only object uploads or preventing every encryption downgrade path.
+
+Do not broaden the attachment to the parent Modernisation Platform OU without a separate impact assessment and tested rollout plan. The repository explicitly warns about the potential impact on Terraform state access.
+
+See [ADR 0043: Enforce S3 KMS Encryption with SCP Guardrails](https://github.com/ministryofjustice/modernisation-platform/blob/main/architecture-decision-record/0043-enforce-s3-kms-encryption-with-scp-guardrails.md) for rollout considerations.
+
+## Related S3 organisation policy
+
+The following policy is relevant to this runbook but is not an SCP.
+
+| Policy | Type | Attachment scope | Location | Description |
+| --- | --- | --- | --- | --- |
+| Modernisation Platform S3 Block Public Access | `S3_POLICY` | Modernisation Platform Member OU | [Modernisation Platform policy definitions][mp-policies] | Enforces S3 Block Public Access through an AWS Organizations S3 policy. |
+
+This runbook is not a complete inventory of other organisation policy types, such as tag policies or AI services opt-out policies.
+
+## Modifying policies
+
+To make changes to these policies, raise a pull request against the [aws-root-account](https://github.com/ministryofjustice/aws-root-account) repository.
+
+Before proposing a change:
+
+1. Identify the policy document and all of its attachments.
+1. Check the target account's OU ancestry and inherited policies.
+1. Assess the impact on other accounts and OUs, particularly when editing shared policies.
+1. Review statement-level exceptions. Do not assume that an exception applies to the entire policy.
+1. Review the Terraform plan for both policy-content and attachment changes.
+1. For new restrictions or broader attachments, use a scoped pilot and agree validation and rollback steps before rollout.
+1. Validate relevant operational paths, including Terraform state access, CI/CD, logging and security-service administration.
+1. Check whether the policy should be included in the SCP change-alerting rule.
+1. Update this runbook if policy behaviour, attachment scope or alerting coverage changes.
+
+Update the policy inventory in `source/runbooks/modifying-scps.html.md.erb` in the `modernisation-platform` repository.
+
+### Verifying the live policy inventory
+
+To establish which SCPs affect a particular account:
+
+1. In AWS Organizations, inspect the SCPs attached directly to the account.
+1. Follow its parent OU chain and inspect the SCPs attached at each level, including the organisation root.
+1. Include AWS-managed policies such as `FullAWSAccess`.
+1. Compare live policy documents and attachments with Terraform.
+1. Investigate differences, including unapplied changes, manual attachments and accounts moved between OUs.
+1. Inspect the S3 organisation policy separately; it will not appear in an SCP-only inventory.
+
+Do not treat the absence of a direct account attachment as evidence that the account has no SCP restrictions.
 
 ## Alerting
 
-Changes to Modernisation Platform SCPs are monitored via EventBridge rules that publish to an SNS topic:
+The Modernisation Platform SCP change-alerting rule is defined in:
 
 - [`aws-root-account/management-account/terraform/alerting-modernisation-platform-scp.tf`](https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/alerting-modernisation-platform-scp.tf)
 
+The EventBridge rule runs in `us-east-1` and publishes matching AWS Organizations API events to the `modernisation-platform-scp-change-alerts` SNS topic.
+
+It matches these operations:
+
+- `UpdatePolicy`
+- `AttachPolicy`
+- `DetachPolicy`
+- `DeletePolicy`
+
+The rule explicitly filters for these policy IDs:
+
+- Modernisation Platform Member OU SCP
+- Modernisation Platform RDS Guardrails SCP
+- Modernisation Platform Deny CloudTrail Delete Stop Update
+- Modernisation Platform Protect Core S3 Buckets
+- Modernisation Platform Protect Secure Baselines
+
 Alerts are sent to the [#modernisation-platform-low-priority-alarms](https://mojdt.slack.com/archives/C02PFCG8M1R) Slack channel.
 
-To make changes to these SCPs please raise a pull request against the [aws-root-account](https://github.com/ministryofjustice/aws-root-account) repository.
+### Alerting limitations
+
+The linked rule does not currently include:
+
+- Deny AWS account root user
+- Deny non-EU and non-"us-east-1" operations
+- Enforce S3 KMS encryption
+- Modernisation Platform S3 Block Public Access
+
+It also does not match policy creation or account-move events. Moving an account can change its inherited restrictions without changing a policy document or attachment.
+
+Do not rely on this rule as comprehensive monitoring of every change affecting Modernisation Platform's effective organisation policies.
+
+[shared-scps]: https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/organizations-policy-service-control.tf
+[mp-policies]: https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/organizations-policy-service-control-modernisation-platform.tf
