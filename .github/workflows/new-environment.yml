@@ -68,6 +68,8 @@ jobs:
         with:
           client-id: ${{ env.APP_ID }}
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
+          permission-contents: read
+          permission-pull-requests: write
           repositories: "modernisation-platform, modernisation-platform-environments"
       - name: Authenticate GitHub CLI as the App and Check the Rate Usage
         env:
@@ -142,6 +144,8 @@ jobs:
         with:
           client-id: ${{ env.APP_ID }}
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
+          permission-contents: read
+          permission-pull-requests: write
           repositories: "modernisation-platform, modernisation-platform-environments"
       - name: Authenticate GitHub CLI as the App and Check the Rate Usage
         env:
@@ -745,4 +749,3 @@ jobs:
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
-
