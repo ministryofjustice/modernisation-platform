@@ -159,7 +159,11 @@
           "level": "developer"
         },
         {
-          "sso_group_name": "octo-cyber-team",
+          "sso_group_name": "octo-cyber",
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
           "level": "security-audit"
         }
       ]
@@ -177,5 +181,5 @@
     "ministryofjustice/ccms-financial-transfers",
     "ministryofjustice/laa-ccms-ebs-scripts"
   ],
-  "go-live-date": "2023-05-26"
+  "go-live-date": ["2023-05-26"]
 }

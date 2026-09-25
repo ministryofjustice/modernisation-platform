@@ -9,11 +9,15 @@
           "level": "instance-management"
         },
         {
-          "sso_group_name": "octo-cyber-team",
+          "sso_group_name": "octo-cyber",
           "level": "read-only"
         },
         {
-          "sso_group_name": "octo-cyber-team",
+          "sso_group_name": "octo-cyber",
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
           "level": "security-audit"
         }
       ]
@@ -22,11 +26,11 @@
       "name": "development",
       "access": [
         {
-          "sso_group_name": "octo-cyber-team",
+          "sso_group_name": "octo-cyber",
           "level": "read-only"
         },
         {
-          "sso_group_name": "octo-cyber-team",
+          "sso_group_name": "octo-cyber",
           "level": "security-audit"
         }
       ]
@@ -41,5 +45,6 @@
     "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk",
     "critical-national-infrastructure": true
   },
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
 }

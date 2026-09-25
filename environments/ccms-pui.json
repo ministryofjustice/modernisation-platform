@@ -61,6 +61,10 @@
         {
           "sso_group_name": "modernisation-platform-audit",
           "level": "security-audit"
+        },
+        {
+          "sso_group_name": "laa-ccms-security-testing-kpmg",
+          "level": "developer"
         }
       ]
     },
@@ -81,7 +85,11 @@
           "level": "secrets-manager-editor"
         },
         {
-          "sso_group_name": "octo-cyber-team",
+          "sso_group_name": "octo-cyber",
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
           "level": "security-audit"
         }
       ]
@@ -96,5 +104,5 @@
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": ["ministryofjustice/laa-ccms-provider-ui"],
-  "go-live-date": ""
+  "go-live-date": [""]
 }

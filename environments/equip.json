@@ -17,6 +17,10 @@
         {
           "sso_group_name": "modernisation-platform-engineers",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ],
       "additional_reviewers": ["jamesashton-roc"]

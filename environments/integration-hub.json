@@ -49,6 +49,10 @@
         {
           "sso_group_name": "integration-hub",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
