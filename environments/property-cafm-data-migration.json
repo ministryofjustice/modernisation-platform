@@ -26,6 +26,10 @@
         {
           "sso_group_name": "property-datahub",
           "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
