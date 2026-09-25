@@ -1,6 +1,6 @@
 #!/bin/bash
 COLLAB_FILE="./collaborators.json"
-PR_BODY="The following collaborators were inactive for more than "$threshold" days and have been removed automatically:\n\n"
+PR_BODY="The following collaborators were inactive for more than $threshold days and have been removed automatically:\n\n"
 
 # Exit if no inactive users
 if [ ! -f final_users.list ] || [ ! -s final_users.list ]; then
