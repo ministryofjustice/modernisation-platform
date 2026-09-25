@@ -24,10 +24,6 @@ name: core-shared-services-deployment
       - '!**.md'
       - '.github/workflows/core-shared-services-deployment.yml'
       - '.github/workflows/reusable_terraform_plan_apply.yml'
-  workflow_run:
-    workflows: ["Terraform: New environment"]
-    types: [completed]
-    branches: [main]
   workflow_dispatch:
 
 permissions: {}

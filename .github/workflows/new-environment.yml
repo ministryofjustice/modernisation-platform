@@ -548,11 +548,13 @@ jobs:
       - name: Get modified JSON files
         id: environment_json_changes
         run: |
-          files=$(git diff --name-only --diff-filter=M @^ -- 'environments/*.json' \
-          | uniq \
-          | sed 's#environments/##' \
-          | base64 -w0)
-          printf "files=%s\n" "$files" >> "$GITHUB_OUTPUT"
+          files=$(
+            git diff --name-only --diff-filter=M @^ -- 'environments/*.json' |
+              uniq |
+              sed 's#environments/##' |
+              base64 -w0
+          )
+          printf 'files=%s\n' "$files" >> "$GITHUB_OUTPUT"
       - name: Install Python
         if: steps.environment_json_changes.outputs.files != ''
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
@@ -577,43 +579,56 @@ jobs:
           SLACK_WEBHOOKS: ${{ env.SLACK_WEBHOOKS }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
         run: |
-          DECODED_FILES=$(echo "$ENCODED_FILES" | base64 --decode)
+          DECODED_FILES=$(printf '%s' "$ENCODED_FILES" | base64 --decode)
+
           echo "$DECODED_FILES" | while IFS= read -r file; do
-            PR_PATH="https://github.com/${GITHUB_REPOSITORY}/pull/$PR_NUMBER/files"
+            PR_PATH="https://github.com/${GITHUB_REPOSITORY}/pull/${PR_NUMBER}/files"
+
             slack_channel=$(jq -r '.tags["slack-channel"] // empty' "environments/$file")
+
             if [[ -z "$slack_channel" ]]; then
-              echo "No Slack channel specified in the $file or the field does not exist. Skipping."
-                continue
+              echo "No Slack channel specified in $file or the field does not exist. Skipping."
+              continue
             fi
+
             echo "Slack channel found: $slack_channel"
-            webhook_url=$(echo "$SLACK_WEBHOOKS" | jq -r --arg channel "$slack_channel" '.[$channel]')
+
+            webhook_url=$(jq -r \
+              --arg channel "$slack_channel" \
+              '.[$channel]' \
+              <<< "$SLACK_WEBHOOKS")
+
             if [[ -z "$webhook_url" || "$webhook_url" == "null" ]]; then
               echo "No webhook URL found for channel $slack_channel. Skipping notification."
               continue
             fi
+
             echo "Webhook URL found for channel $slack_channel"
-            PAYLOAD=$(cat <<EOF
-            {
-            "text": "The JSON file <${PR_PATH}|${file}> has been changed."
-            }
-            EOF
-            )
-            curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" "$webhook_url"
+
+            PAYLOAD=$(jq -n \
+              --arg text "The JSON file <${PR_PATH}|${file}> has been changed." \
+              '{text: $text}')
+
+            curl -X POST \
+              -H 'Content-type: application/json' \
+              --data "$PAYLOAD" \
+              "$webhook_url"
           done
 
       - name: Validate Notify Template Version
         if: steps.environment_json_changes.outputs.files != ''
         run: |
-          python <<EOF
+          python -c '
           from notifications_python_client.notifications import NotificationsAPIClient
-          import sys
           import os
+          import sys
 
-          api_key = os.getenv('GOV_UK_NOTIFY_API_KEY')
-          template_id = os.getenv('TEMPLATE_ID')
-          expected_version = int(os.environ.get('EXPECTED_TEMPLATE_VERSION'))
+          api_key = os.getenv("GOV_UK_NOTIFY_API_KEY")
+          template_id = os.getenv("TEMPLATE_ID")
+          expected_version = int(os.environ["EXPECTED_TEMPLATE_VERSION"])
 
           client = NotificationsAPIClient(api_key)
+
           try:
               template_details = client.get_template(template_id)
               actual_version = template_details.get("version")
@@ -623,10 +638,10 @@ jobs:
                   sys.exit(1)
 
               print(f"Template version {actual_version} validated successfully.")
-          except Exception as e:
-              print(f"Failed to fetch template details: {e}")
+          except Exception as exc:
+              print(f"Failed to fetch template details: {exc}")
               sys.exit(1)
-          EOF
+          '
       - name: Send notification to Email
         env:
           ENCODED_FILES: ${{ steps.environment_json_changes.outputs.files }}
@@ -713,3 +728,21 @@ jobs:
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  core-shared-services-deployment:
+    needs:
+      - member-bootstrap
+      - modernisation-platform-account-plan-and-apply
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+    uses: ./.github/workflows/reusable_terraform_plan_apply.yml
+    with:
+      working-directory: "terraform/environments/core-shared-services"
+      environment: "production"
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
