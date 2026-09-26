@@ -115,7 +115,7 @@ create_team_reviewers_json() {
     fi
   done
 
-  echo "${reviewers_json}" | sed 's/,$//'
+  echo "${reviewers_json%,}"
 }
 
 # Create reviewers JSON for users
@@ -131,7 +131,7 @@ create_user_reviewers_json() {
     fi
   done
 
-  echo "${reviewers_json}" | sed 's/,$//'
+  echo "${reviewers_json%,}"
 }
 
 log_step() {
@@ -215,7 +215,7 @@ setup_environment_reviewers() {
     fi
   done
 
-  filtered_teams=$(echo $filtered_teams | xargs)
+  filtered_teams=$(echo "$filtered_teams" | xargs)
   echo "Teams after Azure filtering: ${filtered_teams}"
 
   if [ -z "$filtered_teams" ]; then
@@ -237,7 +237,12 @@ setup_environment_reviewers() {
   done
 
   # Get additional reviewers
-  additional_reviewers=($(jq -r --arg e "${env}" '.environments[] | select(.name == $e) | .additional_reviewers // [] | .[]' "${json_file}"))
+  mapfile -t additional_reviewers < <(
+  jq -r \
+    --arg e "${env}" \
+    '.environments[] | select(.name == $e) | .additional_reviewers // [] | .[]' \
+    "${json_file}"
+  )
   user_ids=()
   for reviewer in "${additional_reviewers[@]}"; do
     user_id=$(get_github_user_id "${reviewer}")
