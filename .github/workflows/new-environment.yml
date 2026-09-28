@@ -70,7 +70,6 @@ jobs:
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
           permission-contents: read
           permission-pull-requests: write
-          repositories: "modernisation-platform, modernisation-platform-environments"
       - name: Authenticate GitHub CLI as the App and Check the Rate Usage
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}
@@ -146,7 +145,6 @@ jobs:
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
           permission-contents: read
           permission-pull-requests: write
-          repositories: "modernisation-platform, modernisation-platform-environments"
       - name: Authenticate GitHub CLI as the App and Check the Rate Usage
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}
