@@ -66,9 +66,14 @@ jobs:
         id: app
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
-          owner: ministryofjustice
           client-id: ${{ env.APP_ID }}
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
+          owner: ministryofjustice
+          repositories: >-
+            modernisation-platform,
+            modernisation-platform-environments,
+            modernisation-platform-ami-builds,
+            modernisation-platform-configuration-management
           permission-actions: read
           permission-contents: read
           permission-pull-requests: write
@@ -144,9 +149,14 @@ jobs:
         id: app
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
-          owner: ministryofjustice
           client-id: ${{ env.APP_ID }}
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
+          owner: ministryofjustice
+          repositories: >-
+            modernisation-platform,
+            modernisation-platform-environments,
+            modernisation-platform-ami-builds,
+            modernisation-platform-configuration-management
           permission-actions: read
           permission-contents: read
           permission-pull-requests: write
