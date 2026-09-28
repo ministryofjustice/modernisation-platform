@@ -17,6 +17,28 @@
           "level": "developer"
         }
       ]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "integration-hub",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "integration-hub",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
+        }
+      ]
     }
   ],
   "tags": {
