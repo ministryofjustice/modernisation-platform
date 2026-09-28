@@ -1,0 +1,8 @@
+---
+# zizmor 1.25.0 false positive for explicitly scoped
+# create-github-app-token repositories.
+# Remove once MegaLinter ships zizmor >= 1.25.1.
+rules:
+  github-app:
+    ignore:
+      - .github/workflows/new-environment.yml
