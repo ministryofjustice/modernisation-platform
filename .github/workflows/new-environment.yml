@@ -68,8 +68,10 @@ jobs:
         with:
           client-id: ${{ env.APP_ID }}
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
+          permission-actions: read
           permission-contents: read
           permission-pull-requests: write
+          
       - name: Authenticate GitHub CLI as the App and Check the Rate Usage
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}
@@ -143,6 +145,7 @@ jobs:
         with:
           client-id: ${{ env.APP_ID }}
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
+          permission-actions: read
           permission-contents: read
           permission-pull-requests: write
       - name: Authenticate GitHub CLI as the App and Check the Rate Usage
