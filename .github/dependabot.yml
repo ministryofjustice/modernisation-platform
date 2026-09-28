@@ -111,6 +111,7 @@ updates:
       - "/terraform/environments/integration-hub"
       - "/terraform/environments/integration-hub-api"
       - "/terraform/environments/integration-hub-file-transfer"
+      - "/terraform/environments/laa-ai-enablement"
       - "/terraform/environments/laa-ccms-soa"
       - "/terraform/environments/laa-cis"
       - "/terraform/environments/laa-enterprise-service-bus"
@@ -193,6 +194,7 @@ updates:
   - package-ecosystem: "gomod"
     directories:
       - "/scripts/internal/get-security-hub-findings"
+      - "/scripts/internal/resource-discovery"
       - "/terraform/environments/core-logging/test"
       - "/terraform/environments/core-network-services/test"
       - "/terraform/environments/core-security/test"
