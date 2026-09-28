@@ -24,6 +24,6 @@
     "slack-channel": "laa-ai-enablement-team-only",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [],
+  "github-oidc-team-repositories": ["ministryofjustice/laa-ai-enablement-document-processing-api"],
   "go-live-date": ""
 }
