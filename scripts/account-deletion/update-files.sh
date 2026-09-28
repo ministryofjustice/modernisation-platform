@@ -1,10 +1,5 @@
 #!/bin/bash
 set -e
-<<<<<<< Updated upstream
-=======
-# shellcheck disable=SC1091
-source config.txt
->>>>>>> Stashed changes
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 

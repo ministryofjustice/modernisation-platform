@@ -1,17 +1,16 @@
 #!/bin/bash
 set -e
 
-<<<<<<< Updated upstream
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+# shellcheck disable=SC1091
 CONFIG_SCRIPT="$SCRIPT_DIR/config.txt"
 
-# shellcheck source=./config.txt
+# shellcheck disable=SC1091
 source "$CONFIG_SCRIPT"
-=======
+
 # Define the path to the configuration script
 # shellcheck disable=SC1091
 CONFIG_SCRIPT="config.txt"
->>>>>>> Stashed changes
 
 set_credentials_based_on_workspace() {
     local workspace="$1"
