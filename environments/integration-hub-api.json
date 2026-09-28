@@ -3,6 +3,9 @@
   "components": [
     {
       "name": "benefit-checker-api"
+    },
+    {
+      "name": "file-transfer-api"
     }
   ],
   "environments": [
