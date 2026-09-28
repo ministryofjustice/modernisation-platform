@@ -1,5 +1,10 @@
 #!/bin/bash
 set -e
+<<<<<<< Updated upstream
+=======
+# shellcheck disable=SC1091
+source config.txt
+>>>>>>> Stashed changes
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 
@@ -60,7 +65,12 @@ for workspace in "${WORKSPACES[@]}"; do
 done
 
 echo "----------------------------------------------------------------"
+<<<<<<< Updated upstream
 printf '%s\n' \
     "This script has created a branch with the necessary file changes." \
     "" \
     "AFTER you have finished the manual steps to delete the account/s fully, you will need to raise a PR to merge your changes into main to complete the process."
+=======
+echo -e "This script has created a branch with the necessary files changes. \n
+AFTER you have finished the manual steps to delete the account/s fully, you will need to raise a PR to merge your changes into main to complete the process."
+>>>>>>> Stashed changes

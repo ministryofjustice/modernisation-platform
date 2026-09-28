@@ -3,8 +3,14 @@ set -e
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 
+<<<<<<< Updated upstream
 # shellcheck source=./config.txt
 source "$SCRIPT_DIR/config.txt"
+=======
+# If all environments are being deleted, delete the relevant files
+# shellcheck disable=SC1091
+if [[ $COMPLETE_DELETION = "yes" ]]; then
+>>>>>>> Stashed changes
 
 # Prevent destructive commands from running with missing variables.
 : "${APPLICATION_NAME:?APPLICATION_NAME must be set}"

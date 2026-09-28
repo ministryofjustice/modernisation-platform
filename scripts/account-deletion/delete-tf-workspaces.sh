@@ -1,8 +1,14 @@
 #!/bin/bash
 set -e
 
+<<<<<<< Updated upstream
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 CONFIG_FILE="$SCRIPT_DIR/config.txt"
+=======
+# Define the path to the credentials and configuration file
+# shellcheck disable=SC1091
+CONFIG_FILE="config.txt"
+>>>>>>> Stashed changes
 
 ask_for_confirmation() {
     local workspace="$1"
@@ -12,8 +18,27 @@ ask_for_confirmation() {
     [[ "$response" =~ ^[Yy]$ ]]
 }
 
+<<<<<<< Updated upstream
 # shellcheck source=./config.txt
 source "$CONFIG_FILE"
+=======
+# Function to load configurations and AWS credentials from config.sh
+load_configurations_and_credentials() {
+    echo "Loading configurations and AWS credentials..."
+    # shellcheck disable=SC1091
+    source "$CONFIG_FILE"
+    
+    # Call the MP_CREDENTIALS function to load credentials
+    MP_CREDENTIALS
+    
+    # Debugging: Echo the loaded configurations and AWS credentials to verify
+    echo "Loaded application name: $APPLICATION_NAME"
+    echo "Loaded workspaces: ${WORKSPACES[*]}"
+    echo "Debugging - AWS_ACCESS_KEY_ID is set to: $AWS_ACCESS_KEY_ID"
+    echo "Debugging - AWS_SECRET_ACCESS_KEY is set to: $AWS_SECRET_ACCESS_KEY"
+    echo "Debugging - AWS_SESSION_TOKEN is set to: $AWS_SESSION_TOKEN"
+}
+>>>>>>> Stashed changes
 
 if ! declare -F MP_CREDENTIALS >/dev/null; then
     echo "MP_CREDENTIALS is not defined in $CONFIG_FILE" >&2
