@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 environment=$1
 
@@ -17,7 +17,7 @@ if [ ! -z "${accounts}" ]; then
     for env_suffix in "development" "preproduction" "production" "test" "sandbox"; do
       if [[ "${account}" == *-${env_suffix} ]]; then
         account_environment="${env_suffix}"
-        application="${account%-${env_suffix}}"
+        application="${account%-"${env_suffix}"}"
         break
       fi
     done
@@ -35,7 +35,7 @@ if [ ! -z "${accounts}" ]; then
     # check if the required networking file exists
     if [ -f "${networking_file}" ]; then
       echo "[+] ${networking_file} exists, running RAM share."
-      bash scripts/member-account-ram-association.sh ${application} ${account_environment}
+      bash scripts/member-account-ram-association.sh "${application}" "${account_environment}"
     else 
       echo "[+] ${networking_file} does not exist, skipping RAM share."
     fi
@@ -57,7 +57,7 @@ if [ ! -z "${changed_networking_files}" ]; then
     application=${file#"terraform/environments/"}
     application=${application%"/networking.auto.tfvars.json"}
     echo "[+] Starting up RAM association for application ${application}"
-    bash scripts/member-account-ram-association.sh ${application} ${environment}
+    bash scripts/member-account-ram-association.sh "${application}" "${environment}"
   done
 else
   echo "[+] There were no networking.auto.tfvars.json changed files"

@@ -42,8 +42,8 @@ body:
     id: collaborator-github
     attributes:
       label: Collaborator GitHub username
-      description: The GitHub username of the new external collaborator.
-      placeholder: e.g., Ffffrodo
+      description: The GitHub username of the new external collaborator, or `no-value-supplied` if they do not require access to GitHub repositories.
+      placeholder: e.g., Ffffrodo or no-value-supplied
     validations:
       required: true
   - type: input
@@ -70,17 +70,6 @@ body:
   - type: markdown
     attributes:
       value: "## Additional information"
-  - type: dropdown
-    id: push-permissions
-    attributes:
-      label: Push permissions
-      description: Does this collaborator need `push` permissions for any of the following repositories?
-      multiple: true
-      options:
-        - "modernisation-platform-environments"
-        - "modernisation-platform-ami-builds"
-    validations:
-      required: false
   - type: dropdown
     id: additional-approve-deployments
     attributes:

@@ -293,6 +293,7 @@ expected :=
               "contract-work-administration-development",
               "data-factory-laa-development",
               "edw-19c-development",
+              "laa-ai-enablement-development",
               "laa-ccms-soa-development",
               "laa-cis-development",
               "laa-enterprise-service-bus-development",
@@ -442,6 +443,7 @@ expected :=
           "data-platform-test",
           "data-platform-governance-test",
           "developer-experience-test",
+          "integration-hub-file-transfer-test",
           "integration-hub-test",
           "testing-test"
         ]
@@ -469,6 +471,7 @@ expected :=
           "data-platform-production",
           "data-platform-governance-production",
           "developer-experience-production",
+          "integration-hub-file-transfer-production",
           "integration-hub-production",
           "long-term-storage-production",
           "observability-platform-production",

@@ -1,5 +1,13 @@
 {
   "account-type": "member",
+  "components": [
+    {
+      "name": "push-to-s3"
+    },
+    {
+      "name": "push-to-s3-with-hosted-pickup"
+    }
+  ],
   "environments": [
     {
       "name": "development",
@@ -7,6 +15,28 @@
         {
           "sso_group_name": "integration-hub",
           "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "integration-hub",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "integration-hub",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }

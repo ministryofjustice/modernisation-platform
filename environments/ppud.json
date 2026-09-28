@@ -35,6 +35,10 @@
         {
           "sso_group_name": "ppud-replacement-devs",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ],
       "additional_reviewers": ["umeshc-roy", "nbuckingham72"]

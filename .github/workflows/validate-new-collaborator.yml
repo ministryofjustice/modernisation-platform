@@ -20,7 +20,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@e49ac27b104b38bac12fc1e3257a13be6289a59c # v6.2.2
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@d467c7fb1bbeb73162ea736ca13adc8ba2ae74f8 # v6.2.5
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Decrypt GitHub App private key
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@e49ac27b104b38bac12fc1e3257a13be6289a59c # v6.2.2
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d467c7fb1bbeb73162ea736ca13adc8ba2ae74f8 # v6.2.5
         with:
           mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -50,7 +50,7 @@ jobs:
           permission-pull-requests: write
 
       - name: Checkout modernisation-platform-github repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: 'ministryofjustice/modernisation-platform-github'
           token: ${{ steps.app.outputs.token }}
@@ -170,12 +170,12 @@ jobs:
           fi
 
           # Field: collaborator_github
-          # GitHub usernames: 1-39 chars, alphanumeric or hyphen, no leading/trailing hyphen, no consecutive hyphens.
+          # Accept the no-access sentinel or a valid GitHub username.
           if [[ -z "$COLLABORATOR_GITHUB" ]]; then
             errors+=("Collaborator GitHub username is missing.")
           elif [[ "$COLLABORATOR_GITHUB" != "$COLLABORATOR_GITHUB_RAW" ]]; then
             errors+=("Collaborator GitHub username contained disallowed characters.")
-          elif ! [[ "$COLLABORATOR_GITHUB" =~ ^[A-Za-z0-9](-?[A-Za-z0-9]){0,38}$ ]]; then
+          elif [[ "$COLLABORATOR_GITHUB" != "no-value-supplied" ]] && ! [[ "$COLLABORATOR_GITHUB" =~ ^[A-Za-z0-9](-?[A-Za-z0-9]){0,38}$ ]]; then
             errors+=("Collaborator GitHub username is not a valid GitHub username.")
           fi
 
@@ -260,7 +260,7 @@ jobs:
 
       - name: Checkout workflow source repository (scripts)
         if: steps.validate_email.outputs.is_valid == 'true'
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           # The updater script is versioned with this workflow, not the target repo.
           path: 'workflow-source'

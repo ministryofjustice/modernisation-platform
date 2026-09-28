@@ -1246,6 +1246,10 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
       values = [
         local.environment_management.account_ids["observability-platform-development"],
         local.environment_management.account_ids["observability-platform-production"],
+        local.environment_management.account_ids["cloud-platform-development"],
+        local.environment_management.account_ids["cloud-platform-preproduction"],
+        local.environment_management.account_ids["cloud-platform-nonlive"],
+        local.environment_management.account_ids["cloud-platform-live"],
       ]
     }
   }
@@ -1419,6 +1423,35 @@ data "aws_iam_policy_document" "securityhub_insights_oidc_policy" {
       "securityhub:GetInsights",
       "securityhub:GetInsightResults"
     ]
+    resources = ["*"]
+  }
+}
+
+module "resource_discovery_oidc_role" {
+  count = (
+    local.account_data.account-type == "member-unrestricted"
+    || local.account_data.account-type == "member"
+  ) ? 1 : 0
+
+  source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
+  github_repositories = ["ministryofjustice/modernisation-platform"]
+
+  role_name = "github-actions-resource-discovery"
+  policy_jsons = [
+    data.aws_iam_policy_document.resource_discovery_policy.json
+  ]
+
+  tags = {
+    Name = format("%s-oidc-resource-discovery", terraform.workspace)
+  }
+}
+
+data "aws_iam_policy_document" "resource_discovery_policy" {
+  # checkov:skip=CKV_AWS_356: config:SelectResourceConfig does not support resource-level permissions
+  statement {
+    sid       = "AllowConfigResourceDiscovery"
+    effect    = "Allow"
+    actions   = ["config:SelectResourceConfig"]
     resources = ["*"]
   }
 }
@@ -1671,7 +1704,8 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
       "grafana:DescribeWorkspace",
       "grafana:ListWorkspaceServiceAccounts",
       "grafana:ListWorkspaceServiceAccountTokens",
-      "grafana:CreateWorkspaceServiceAccountToken"
+      "grafana:CreateWorkspaceServiceAccountToken",
+      "grafana:DeleteWorkspaceServiceAccountToken"
     ]
     resources = ["*"]
     condition {

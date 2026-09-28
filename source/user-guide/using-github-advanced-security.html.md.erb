@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
-title: Using Github Advanced Security & Secret Scanning in Modernisation Platform Environments
-last_reviewed_on: 2026-03-19
+title: Using GitHub Secret Scanning and Code Scanning in Modernisation Platform Environments
+last_reviewed_on: 2026-09-25
 review_in: 6 months
 ---
 
@@ -9,60 +9,203 @@ review_in: 6 months
 
 ## Introduction
 
-GitHub Advanced Security’s **Secret Scanning** features enables users to identify and remediate potential vulnerabilities in their infrastructure source code by automatically detecting accidental exposure of secrets such as credentials, API keys, or tokens.
+GitHub provides security features that help teams identify exposed credentials and potential issues in their source code.
 
-We have enabled general access to this feature in the [modernisation-platform-environments](https://github.com/ministryofjustice/modernisation-platform-environments) repository for all GitHub users within the `ministryofjustice` organisation via the `all-org-users` team.
+This guide covers two distinct types of alert in the [modernisation-platform-environments](https://github.com/ministryofjustice/modernisation-platform-environments) repository:
 
-We strongly encourage teams to regularly review and address any security alerts raised against their source code in this repository.
+- **Secret scanning:** identifies potential exposure of credentials, API keys, tokens and other supported secret types.
+- **Code scanning:** displays findings from configured analysis tools, including Terraform security checks and linting.
 
-## Identifying Vulnerabilities using Secret Scanning
+Teams should regularly review and address findings affecting their environments. The absence of alerts does not guarantee that code is secure or that no secrets have been exposed.
 
-- Access the Security dashboard for the Environments repository - https://github.com/ministryofjustice/modernisation-platform-environments/security
-- There are two options for Secret Scanning:
-  - Default: These are partner-validated patterns built into GitHub cover well-known providers such as AWS, Azure, Google Cloud, Slack, Stripe, Twilio, etc. As these alerts are maintained by Github they cannot be modified.
-  - Generic: These are heuristic patterns that detect common secret formats even if they don’t belong to a specific provider. Examples include:
-    - Long random alphanumeric strings.
-    - Base64-encoded tokens.
-    - Private keys (e.g., -----BEGIN PRIVATE KEY-----).
+## Accessing security alerts
 
-## Reviewing Secret Scanning Alerts
+Start from the repository's [Security dashboard](https://github.com/ministryofjustice/modernisation-platform-environments/security).
 
-Each secret scanning alert contains the following information:
+Access to security alerts depends on your GitHub permissions and the repository's security settings. Organisation membership or ordinary repository access alone does not guarantee access to all secret-scanning alerts.
 
-- Type (e.g. AWS key, GitHub token).
-- Location (branch, commit, or file where the secret was detected) and the Github account associated with the author.
-- Severity (High by default, as all secrets are sensitive).
-- First detected and last updated timestamps.
-- Status (Open, Closed as fixed, Closed as false positive, or Revoked).
+If you cannot access the required alerts, contact the Modernisation Platform team through [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1). A repository administrator should verify the appropriate access grant.
 
-When reviewing secret scanning alerts it is suggested that the following is assessed:
+Do not broaden access to secret values simply to share an investigation. Share alert links only with authorised responders.
 
-- Is the secret current and in use?
-- Does the secret relate to production infrastructure or applications?
-- Are the processes for rotating or retiring the secret from us understood?
-- In the event that an alert for a production secret is found, what processes are to be followed such as incident reporting.
+## Identifying exposed secrets using secret scanning
 
-We do suggest contacting the Modernisation Platform team should you have any questions regarding an alert.
+Open **Secret scanning** from the repository's Security dashboard.
 
-Further information on the use of Secret Scanning can be found [here](https://docs.github.com/en/enterprise-cloud@latest/code-security/secret-scanning/introduction/about-secret-scanning)
+GitHub detects supported secret formats. The patterns available depend on the enabled features and configuration.
 
-## Searching for Vulnerabilities using Code Scanning
+### Provider patterns
 
-In addition to Secret Scanning, Github also generates alerts for issues and vulnerabilities through the use of static application security testing (SAST) tools. These include trivy, checkov, tflint etc.
+Provider patterns identify supported credentials associated with services such as AWS, Azure, Google Cloud, GitHub and Slack.
 
-- Access the Code Scanning dashboard [here](https://github.com/ministryofjustice/modernisation-platform-environments/security/code-scanning).
-- By default, results are filtered with `is:open branch:main`, showing only open alerts for the `main` branch.
-- To filter by a specific environment, use the `path` option. For example:  
-  `path:terraform/environments/sprinkler` will display alerts for the _sprinkler_ environment.
-- To filter by severity, use the `severity` option. For example:  
-  `severity:critical`.
+A pattern match indicates a potential exposed credential. It does not necessarily mean that the credential is active or that GitHub has validated it with the provider.
 
-Full documentation on Code Scanning is available [here](https://docs.github.com/en/code-security/code-scanning).
+Validity checks are a separate capability and are available only for supported secret types and configurations.
+
+### Generic patterns
+
+Generic patterns identify specific secret formats that are not restricted to a single provider. Supported examples include:
+
+- Private keys.
+- HTTP Basic authentication headers.
+- HTTP Bearer authentication headers.
+- Database connection strings containing credentials.
+
+Do not assume that arbitrary long random strings or Base64-encoded values will be detected.
+
+Generic-pattern validity checks are not supported. Where available, AI-based detection and custom patterns are additional capabilities; do not assume that they are enabled in this repository.
+
+See [GitHub's supported secret scanning patterns](https://docs.github.com/en/code-security/reference/secret-security/supported-secret-scanning-patterns) for current coverage and limitations.
+
+## Reviewing secret-scanning alerts
+
+Depending on the secret type and enabled features, an alert can include:
+
+- The detected secret type.
+- Locations where the secret was found, such as files and commits.
+- Detection timestamps and an alert timeline.
+- Whether the alert is open or resolved.
+- The resolution reason, where the alert has been closed.
+- A validity result, where supported.
+- Additional credential-owner or token metadata, where available.
+
+Distinguish between:
+
+- **Alert state:** whether the finding remains open or has been resolved.
+- **Resolution reason:** why someone closed the alert.
+- **Credential validity:** whether the credential is active, inactive or cannot be verified.
+
+Closing an alert does not change the credential's validity. Similarly, a commit author is not necessarily the owner of the exposed credential.
+
+Do not assume that every secret-scanning alert has a default severity of High. Assess the risk using the credential's validity, permissions, exposure and potential impact.
+
+When reviewing an alert, establish:
+
+1. Is this a genuine secret rather than an example or false positive?
+1. Who owns the credential, and which services depend on it?
+1. Is it still active? If validity is unknown or unsupported, do not assume it is safe.
+1. What permissions and systems does it provide access to?
+1. Does it affect production, sensitive data, shared infrastructure or other environments?
+1. When and where was it exposed?
+1. Is there evidence of unauthorised use?
+1. What rotation, revocation and incident-reporting actions are required?
+
+Non-production credentials can still provide access to sensitive systems or data and must not be dismissed solely because of the environment name.
+
+See [Evaluating alerts from secret scanning](https://docs.github.com/en/code-security/tutorials/remediate-leaked-secrets/evaluating-alerts).
+
+## Responding to an exposed secret
+
+Treat a genuine secret committed to the repository as compromised. Coordinate prompt revocation or rotation with the credential owner, update dependent services, and review relevant audit logs for unauthorised activity.
+
+Removing a secret from the latest version of a file or closing its GitHub alert does not revoke the credential.
+
+### Remediation steps
+
+1. Identify the credential owner and affected systems.
+1. Coordinate prompt revocation or rotation, taking account of dependent services and the risk of continued exposure.
+1. Update services, automation and secret stores that use the credential.
+1. Verify that the replacement works and that the exposed credential is no longer usable.
+1. Remove the exposed value from source code and use an appropriate secret store or credential mechanism.
+1. Review relevant audit logs for unauthorised activity.
+1. Follow the [incident process](../runbooks/manage-an-incident.html) where appropriate, including for non-production credentials with sensitive access.
+1. After remediation, close the alert with an appropriate resolution reason and record what was done without including the secret value.
+
+If the incident constitutes a security breach, follow the Service Desk reporting guidance in the incident process.
+
+Do not paste secret values into issues, pull requests, Slack messages or incident notes. Share the alert link only with authorised responders.
+
+A later commit that removes a secret does not remove it from earlier Git history. If history cleanup is required, coordinate it with repository administrators after revocation or rotation. History rewriting is not a substitute for invalidating the exposed credential.
+
+For platform-managed credentials, also consult the [rotating secrets runbook](../runbooks/rotating-secrets.html).
+
+See [Resolving alerts from secret scanning](https://docs.github.com/en/code-security/how-tos/manage-security-alerts/manage-secret-scanning-alerts/resolving-alerts).
+
+## Preventing secret exposure with push protection
+
+Where enabled, GitHub push protection can block pushes containing supported secret types before they enter the repository.
+
+Push protection does not detect every possible secret and is not a replacement for safe credential handling or reviewing alerts.
+
+If a push is blocked:
+
+1. Identify the detected value.
+1. If it is a genuine secret, remove it from the commits being pushed and use an appropriate secret store.
+1. Assess whether the credential has already been exposed and needs revocation or rotation.
+1. Only use an available bypass process when justified and permitted by repository policy, such as for a verified false positive.
+
+Do not bypass protection simply to unblock delivery of a genuine credential.
+
+Repository administrators should confirm the current push-protection settings and bypass policy. This guide does not establish that push protection is enabled for every contributor or repository.
+
+## Reviewing findings using code scanning
+
+Open the [Code scanning dashboard](https://github.com/ministryofjustice/modernisation-platform-environments/security/code-scanning).
+
+GitHub displays findings produced by configured analysis tools. These findings may represent security vulnerabilities, infrastructure misconfigurations or code-quality issues, depending on the tool and rule.
+
+### Configured analysis tools
+
+As reviewed on 25 September 2026, the [Secure Code Analysis workflow](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/.github/workflows/code-scanning.yml) is configured as follows:
+
+| Tool | Configuration |
+| --- | --- |
+| TFLint | Runs Terraform lint checks and uploads SARIF results to GitHub code scanning. Not every lint finding is a security vulnerability. |
+| Checkov | Runs Terraform checks and uploads SARIF results. Some checks are explicitly excluded in the workflow. |
+| Trivy | The job currently creates an empty SARIF placeholder. It does not run Trivy or upload that placeholder, so this workflow does not currently provide Trivy scanning coverage. |
+
+This workflow is scheduled daily at **01:35 UTC**. It does not currently define push or pull-request triggers.
+
+A separate [Scorecards workflow](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/.github/workflows/scorecards.yml) is configured to upload OpenSSF Scorecard supply-chain security findings.
+
+Workflow configuration does not guarantee that the latest analysis completed successfully. Check the relevant workflow runs and code-scanning analysis details before relying on the results. Historical findings can remain visible after a scanner stops running.
+
+### Filtering findings
+
+Use explicit filters to focus the results:
+
+- Open findings on the default branch: `is:open branch:main`
+- Findings associated with an environment path: `path:terraform/environments/sprinkler`
+- Findings with critical security severity: `severity:critical`
+
+Filters can be combined. For example:
+
+`is:open branch:main path:terraform/environments/sprinkler`
+
+A critical-severity filter will not show every kind of finding. Lint and code-quality results may use different severity classifications.
+
+Path filtering locates findings reported at that path; it does not establish the complete impact on an environment. Also review relevant shared modules and common configuration.
+
+### Investigating and resolving findings
+
+For each relevant finding:
+
+1. Identify the reporting tool, rule, affected code and analysis date.
+1. Assess the actual impact, including affected environments and shared modules.
+1. Make the required correction through the normal pull-request process.
+1. Check the next relevant analysis to confirm that the finding is resolved.
+1. If dismissing a finding, record an accurate reason and justification.
+
+Do not dismiss findings solely to clear the dashboard. Where a risk is accepted or a finding is a false positive, follow the team's review process and document the decision.
+
+See the [GitHub code-scanning documentation](https://docs.github.com/en/code-security/code-scanning).
 
 ## Organisation Security Overview
 
-At the organisation level, the [Security Overview](https://github.com/orgs/ministryofjustice/security/overview) provides a consolidated view of all reported security vulnerabilities across repositories. Using search filters, you can refine the view to show time-based data for specific repositories or teams.
+The [organisation Security Overview](https://github.com/orgs/ministryofjustice/security/overview) provides a consolidated view of security information across repositories that you are authorised to view.
 
-For example, this [filter](https://github.com/orgs/ministryofjustice/security/overview?query=archived%3Afalse+tool%3Agithub+repo%3Amodernisation-platform-environments+team%3Amodernisation-platform) displays vulnerability alerts in the `modernisation-platform-environments` repository for code owned by the `modernisation-platform` team.
+Available views, data and actions depend on your permissions and the security features enabled for the repositories.
 
-More details on using this feature can be found in the [GitHub documentation](https://docs.github.com/en/code-security/security-overview/about-security-overview).
+Use the available repository filters to focus on `modernisation-platform-environments`. Do not assume that an organisation-level team filter identifies ownership of individual files or environment directories. For environment-specific investigation, use code-scanning path filters and review the relevant ownership information.
+
+If you cannot access the organisation overview, use the repository Security dashboard where authorised, or contact the Modernisation Platform team.
+
+See [About security overview](https://docs.github.com/en/code-security/security-overview/about-security-overview).
+
+## Getting help
+
+Contact the Modernisation Platform team through [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1) if you need help with access, alert interpretation or identifying the appropriate owner.
+
+For suspected active compromise, follow the [incident process](../runbooks/manage-an-incident.html) rather than waiting for a routine support response.
+
+Never include secret values in your request.

@@ -17,4 +17,4 @@ loop_directories() {
   done
 }
 
-loop_directories $1
+loop_directories "$1"

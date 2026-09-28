@@ -341,3 +341,12 @@ module "r53_delegations_integration_hub_file_transfer" {
 
   tags = local.tags
 }
+
+# The following Route53 DMARC is added to get the inventory of services which use legalservices.gov.uk domain. This is a temporary measure to get the inventory of services which use legalservices.gov.uk domain. Once the inventory is complete, this will be removed.
+resource "aws_route53_record" "legalservices_dmarc_test" {
+  zone_id = aws_route53_zone.application_zones["legalservices"].zone_id
+  name    = "_dmarc.legalservices.gov.uk"
+  type    = "TXT"
+  ttl     = 300
+  records = ["v=DMARC1; p=none; rua=mailto:laa-sres@justice.gov.uk; ruf=mailto:laa-sres@justice.gov.uk; fo=1"]
+}

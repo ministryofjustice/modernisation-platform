@@ -1,0 +1,461 @@
+---
+name: Resource Discovery
+
+"on":
+  workflow_dispatch:
+    inputs:
+      accounts:
+        description: "Comma-separated application or account names, or all"
+        required: true
+        type: string
+      business_unit:
+        description: "Business unit filter applied to the account selection"
+        required: true
+        type: choice
+        default: all
+        options:
+          - all
+          - CICA
+          - CJSE
+          - HMPPS
+          - HMCTS
+          - HQ
+          - LAA
+          - OPG
+          - Platforms
+          - Property
+          - YJB
+      resource_type:
+        description: "Exact AWS Config resource type, or all"
+        required: true
+        type: string
+        default: all
+      regions:
+        description: "Comma-separated AWS Config regions"
+        required: true
+        type: string
+        default: "eu-central-1,eu-west-1,eu-west-2,eu-west-3,us-east-1"
+
+permissions: {}
+
+concurrency:
+  group: resource-discovery
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  fetch-secrets:
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@d467c7fb1bbeb73162ea736ca13adc8ba2ae74f8 # v6.2.5
+    permissions:
+      id-token: write
+      contents: read
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  select-accounts:
+    name: Select accounts
+    runs-on: ubuntu-latest
+    needs: fetch-secrets
+    permissions:
+      contents: read
+    outputs:
+      block_1: ${{ steps.select.outputs.block_1 }}
+      block_2: ${{ steps.select.outputs.block_2 }}
+      block_3: ${{ steps.select.outputs.block_3 }}
+      block_4: ${{ steps.select.outputs.block_4 }}
+      selected_count: ${{ steps.select.outputs.selected_count }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Decrypt account data
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d467c7fb1bbeb73162ea736ca13adc8ba2ae74f8 # v6.2.5
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+      - name: Build account matrices
+        id: select
+        env:
+          BUSINESS_UNIT: ${{ inputs.business_unit }}
+          REQUESTED_ACCOUNTS: ${{ inputs.accounts }}
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${ENVIRONMENT_MANAGEMENT:-}" ]]; then
+            echo "ENVIRONMENT_MANAGEMENT not set after decrypt-secrets" >&2
+            exit 1
+          fi
+
+          catalog="$(
+            jq -nc '
+              [
+                inputs
+                | select(
+                    ."account-type" == "member"
+                    or ."account-type" == "member-unrestricted"
+                  )
+                | . as $definition
+                | (input_filename | split("/") | last | rtrimstr(".json")) as $application
+                | $definition.environments[]
+                | {
+                    application: $application,
+                    name: ($application + "-" + .name),
+                    business_unit: $definition.tags["business-unit"]
+                  }
+              ]
+              | sort_by(.name)
+            ' environments/*.json
+          )"
+
+          account_ids="$(jq -c '.account_ids' <<< "$ENVIRONMENT_MANAGEMENT")"
+          catalog="$(
+            jq -nc \
+              --argjson catalog "$catalog" \
+              --argjson account_ids "$account_ids" \
+              '$catalog | map(. as $account | select($account_ids[$account.name] != null))'
+          )"
+
+          normalized_scope="$(
+            jq -nr --arg value "$REQUESTED_ACCOUNTS" \
+              '$value | gsub("^\\s+|\\s+$"; "") | ascii_downcase'
+          )"
+
+          if [[ "$normalized_scope" == "all" ]]; then
+            selected="$catalog"
+          else
+            requested="$(
+              jq -nc --arg value "$REQUESTED_ACCOUNTS" '
+                $value
+                | split(",")
+                | map(gsub("^\\s+|\\s+$"; ""))
+                | map(select(length > 0))
+                | unique
+              '
+            )"
+
+            if [[ "$(jq 'length' <<< "$requested")" -eq 0 ]]; then
+              echo "At least one application or account name, or all, is required" >&2
+              exit 1
+            fi
+
+            unknown="$(
+              jq -nc \
+                --argjson requested "$requested" \
+                --argjson catalog "$catalog" '
+                  [
+                    $requested[]
+                    | select(
+                        . as $value
+                        | any($catalog[]; .name == $value or .application == $value)
+                        | not
+                      )
+                  ]
+                '
+            )"
+            if [[ "$(jq 'length' <<< "$unknown")" -gt 0 ]]; then
+              echo "Unknown or ineligible applications/accounts: $(jq -r 'join(", ")' <<< "$unknown")" >&2
+              exit 1
+            fi
+
+            selected="$(
+              jq -nc \
+                --argjson requested "$requested" \
+                --argjson catalog "$catalog" '
+                  [
+                    $catalog[]
+                    | select(
+                        . as $account
+                        | $requested
+                        | any(. == $account.name or . == $account.application)
+                      )
+                  ]
+                '
+            )"
+          fi
+
+          if [[ "$BUSINESS_UNIT" != "all" ]]; then
+            selected="$(
+              jq -c --arg business_unit "$BUSINESS_UNIT" \
+                'map(select(.business_unit == $business_unit))' <<< "$selected"
+            )"
+          fi
+
+          account_names="$(jq -c '[.[].name] | sort' <<< "$selected")"
+          total="$(jq 'length' <<< "$account_names")"
+          if (( total == 0 )); then
+            echo "The supplied application/account and business-unit filters selected no accounts" >&2
+            exit 1
+          fi
+
+          block_count=4
+          base=$((total / block_count))
+          remainder=$((total % block_count))
+          start=0
+          for block_number in $(seq 1 "$block_count"); do
+            extra=0
+            if (( block_number <= remainder )); then
+              extra=1
+            fi
+            end=$((start + base + extra))
+            block="$(jq -c ".[$start:$end]" <<< "$account_names")"
+            echo "block_${block_number}=$block" >> "$GITHUB_OUTPUT"
+            start=$end
+          done
+          echo "selected_count=$total" >> "$GITHUB_OUTPUT"
+
+          {
+            echo "## Resource discovery selection"
+            echo
+            echo "Selected **$total** account(s)."
+            echo
+            echo "| Business unit | Accounts |"
+            echo "| --- | ---: |"
+            jq -r '
+              group_by(.business_unit)[]
+              | "| \(.[0].business_unit) | \(length) |"
+            ' <<< "$selected"
+            echo
+            echo "<details>"
+            echo "<summary>Selected account names</summary>"
+            echo
+            jq -r '.[] | "- `\(.name)`"' <<< "$selected"
+            echo
+            echo "</details>"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  discover-1:
+    name: Discovery block 1
+    needs: [fetch-secrets, select-accounts]
+    if: ${{ needs.select-accounts.outputs.block_1 != '[]' }}
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        account_name: ${{ fromJSON(needs.select-accounts.outputs.block_1) }}
+    permissions:
+      id-token: write
+      contents: read
+    uses: ./.github/workflows/reusable-resource-discovery.yml
+    with:
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      account_name: ${{ matrix.account_name }}
+      resource_type: ${{ inputs.resource_type }}
+      regions: ${{ inputs.regions }}
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  discover-2:
+    name: Discovery block 2
+    needs: [fetch-secrets, select-accounts]
+    if: ${{ needs.select-accounts.outputs.block_2 != '[]' }}
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        account_name: ${{ fromJSON(needs.select-accounts.outputs.block_2) }}
+    permissions:
+      id-token: write
+      contents: read
+    uses: ./.github/workflows/reusable-resource-discovery.yml
+    with:
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      account_name: ${{ matrix.account_name }}
+      resource_type: ${{ inputs.resource_type }}
+      regions: ${{ inputs.regions }}
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  discover-3:
+    name: Discovery block 3
+    needs: [fetch-secrets, select-accounts]
+    if: ${{ needs.select-accounts.outputs.block_3 != '[]' }}
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        account_name: ${{ fromJSON(needs.select-accounts.outputs.block_3) }}
+    permissions:
+      id-token: write
+      contents: read
+    uses: ./.github/workflows/reusable-resource-discovery.yml
+    with:
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      account_name: ${{ matrix.account_name }}
+      resource_type: ${{ inputs.resource_type }}
+      regions: ${{ inputs.regions }}
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  discover-4:
+    name: Discovery block 4
+    needs: [fetch-secrets, select-accounts]
+    if: ${{ needs.select-accounts.outputs.block_4 != '[]' }}
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        account_name: ${{ fromJSON(needs.select-accounts.outputs.block_4) }}
+    permissions:
+      id-token: write
+      contents: read
+    uses: ./.github/workflows/reusable-resource-discovery.yml
+    with:
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      account_name: ${{ matrix.account_name }}
+      resource_type: ${{ inputs.resource_type }}
+      regions: ${{ inputs.regions }}
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  aggregate-results:
+    name: Aggregate results
+    runs-on: ubuntu-latest
+    needs: [select-accounts, discover-1, discover-2, discover-3, discover-4]
+    if: ${{ always() && needs.select-accounts.result == 'success' }}
+    permissions:
+      actions: read
+      contents: read
+
+    steps:
+      - name: Download account results
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        continue-on-error: true
+        with:
+          pattern: resource-discovery-*
+          path: account-results
+          merge-multiple: true
+
+      - name: Build combined JSON and CSV
+        id: combine
+        run: |
+          set -euo pipefail
+
+          mkdir -p combined-results
+          mapfile -d '' result_files < <(find account-results -type f -name '*.json' -print0 2>/dev/null || true)
+
+          if (( ${#result_files[@]} == 0 )); then
+            echo '[]' > combined-results/resource-discovery.json
+          else
+            jq -s '
+              add
+              | unique_by(
+                  if .arn != "" then
+                    .arn
+                  else
+                    [.account_id, .region, .resource_type, .identifier] | join("|")
+                  end
+                )
+              | sort_by(.account_name, .resource_type, .region, .identifier)
+            ' "${result_files[@]}" > combined-results/resource-discovery.json
+          fi
+
+          jq -r '
+            ["account_name", "account_id", "region", "resource_type", "name", "identifier", "arn"],
+            (
+              .[]
+              | [
+                  .account_name,
+                  .account_id,
+                  .region,
+                  .resource_type,
+                  (.name // ""),
+                  .identifier,
+                  .arn
+                ]
+            )
+            | @csv
+          ' combined-results/resource-discovery.json > combined-results/resource-discovery.csv
+
+          resource_count="$(jq 'length' combined-results/resource-discovery.json)"
+          echo "resource_count=$resource_count" >> "$GITHUB_OUTPUT"
+
+      - name: Display combined results
+        env:
+          BLOCK_1_RESULT: ${{ needs.discover-1.result }}
+          BLOCK_2_RESULT: ${{ needs.discover-2.result }}
+          BLOCK_3_RESULT: ${{ needs.discover-3.result }}
+          BLOCK_4_RESULT: ${{ needs.discover-4.result }}
+          RESOURCE_COUNT: ${{ steps.combine.outputs.resource_count }}
+          SELECTED_COUNT: ${{ needs.select-accounts.outputs.selected_count }}
+        run: |
+          set -euo pipefail
+
+          completed_accounts="$(
+            jq '[.[].account_name] | unique | length' \
+              combined-results/resource-discovery.json
+          )"
+          {
+            echo "## Combined resource discovery results"
+            echo
+            echo "- Selected accounts: **$SELECTED_COUNT**"
+            echo "- Accounts returning one or more resources: **$completed_accounts**"
+            echo "- Resources found: **$RESOURCE_COUNT**"
+            echo
+            echo "| Discovery block | Result |"
+            echo "| --- | --- |"
+            echo "| 1 | $BLOCK_1_RESULT |"
+            echo "| 2 | $BLOCK_2_RESULT |"
+            echo "| 3 | $BLOCK_3_RESULT |"
+            echo "| 4 | $BLOCK_4_RESULT |"
+            echo
+
+            if (( RESOURCE_COUNT > 0 )); then
+              echo "### Counts by resource type"
+              echo
+              echo "| Resource type | Count |"
+              echo "| --- | ---: |"
+              jq -r '
+                group_by(.resource_type)[]
+                | "| `\(.[0].resource_type)` | \(length) |"
+              ' combined-results/resource-discovery.json
+              echo
+              echo "### Counts by account"
+              echo
+              echo "| Account | Count |"
+              echo "| --- | ---: |"
+              jq -r '
+                group_by(.account_name)[]
+                | "| `\(.[0].account_name)` | \(length) |"
+              ' combined-results/resource-discovery.json
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload combined results
+        id: upload
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: resource-discovery-results
+          path: combined-results/
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Add download link to summary
+        env:
+          ARTIFACT_URL: ${{ steps.upload.outputs.artifact-url }}
+        run: |
+          echo >> "$GITHUB_STEP_SUMMARY"
+          echo "[Download combined JSON and CSV results]($ARTIFACT_URL)" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Fail for incomplete discovery
+        env:
+          BLOCK_1_RESULT: ${{ needs.discover-1.result }}
+          BLOCK_2_RESULT: ${{ needs.discover-2.result }}
+          BLOCK_3_RESULT: ${{ needs.discover-3.result }}
+          BLOCK_4_RESULT: ${{ needs.discover-4.result }}
+        run: |
+          set -euo pipefail
+
+          for result in "$BLOCK_1_RESULT" "$BLOCK_2_RESULT" "$BLOCK_3_RESULT" "$BLOCK_4_RESULT"; do
+            if [[ "$result" == "failure" || "$result" == "cancelled" ]]; then
+              echo "One or more discovery jobs did not complete successfully" >&2
+              exit 1
+            fi
+          done

@@ -1,3 +1,4 @@
+---
 # This is an EC2Launch V2 type user-data script
 # https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/ec2launch-v2-settings.html#ec2launch-v2-task-configuration
 # See C:\ProgramData\Amazon\EC2Launch\log for logs

@@ -33,7 +33,11 @@
           "github_action_reviewer": "false"
         },
         {
-          "sso_group_name": "octo-cyber-team",
+          "sso_group_name": "octo-cyber",
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
           "level": "security-audit"
         }
       ]
@@ -56,5 +60,6 @@
     "ministryofjustice/delius-pdm-uplift-scripts",
     "ministryofjustice/dso-modernisation-platform-automation",
     "ministryofjustice/hmpps-probation-integration-services"
-  ]
+  ],
+  "go-live-date": ""
 }

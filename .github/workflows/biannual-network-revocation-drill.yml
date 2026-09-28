@@ -54,11 +54,13 @@ jobs:
 
       - name: Add Issue to Project
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          CONTENT_ID: ${{ steps.create_issue.outputs.issue_node_id }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const projectId = "PVT_kwDOACGfts4AAftW";  // Modernisation Platform Project ID
-            const contentId = "${{ steps.create_issue.outputs.issue_node_id }}";
+            const contentId = "$CONTENT_ID";
             await github.graphql(`
               mutation($projectId: ID!, $contentId: ID!) {
                 addProjectV2ItemById(input: {
