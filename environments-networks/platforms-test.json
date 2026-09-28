@@ -10,6 +10,7 @@
           "data-platform-test",
           "data-platform-governance-test",
           "developer-experience-test",
+          "integration-hub-file-transfer-test",
           "integration-hub-test",
           "testing-test"
         ]
