@@ -71,8 +71,7 @@ jobs:
           permission-actions: read
           permission-contents: read
           permission-pull-requests: write
-          repositories: "modernisation-platform, modernisation-platform-environments, modernisation-platform-configuration-management, modernisation-platform-ami-builds"
-          
+          permission-secrets: write
       - name: Authenticate GitHub CLI as the App and Check the Rate Usage
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}
@@ -149,7 +148,7 @@ jobs:
           permission-actions: read
           permission-contents: read
           permission-pull-requests: write
-          repositories: "modernisation-platform, modernisation-platform-environments, modernisation-platform-configuration-management, modernisation-platform-ami-builds"
+          permission-secrets: write
       - name: Authenticate GitHub CLI as the App and Check the Rate Usage
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}
