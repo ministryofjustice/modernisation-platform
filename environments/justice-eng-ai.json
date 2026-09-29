@@ -1,0 +1,26 @@
+{
+  "account-type": "member",
+  "isolated-network": "true",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "modernisation-platform",
+    "business-unit": "Platforms",
+    "service-area": "Hosting",
+    "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+    "securityhub-slack-channel": "modernisation-platform",
+    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
