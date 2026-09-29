@@ -421,6 +421,8 @@ expected :=
           "data-factory-corporate-development",
           "data-factory-moj-development",
           "data-platform-development",
+          "data-platform-factory-one-development",
+          "data-platform-factory-two-development",
           "data-platform-governance-development",
           "developer-experience-development",
           "example-development",
