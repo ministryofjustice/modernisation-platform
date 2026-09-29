@@ -52,6 +52,7 @@ expected :=
     "data-factory-laa",
     "data-factory-moj",
     "data-platform",
+    "data-platform-factory-two",
     "data-platform-governance",
     "delius-alfresco",
     "delius-core",
