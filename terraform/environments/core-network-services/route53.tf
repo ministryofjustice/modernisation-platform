@@ -348,5 +348,5 @@ resource "aws_route53_record" "legalservices_dmarc_spf" {
   name    = "legalservices.gov.uk"
   type    = "TXT"
   ttl     = 300
-  records = ["v=SPF1; include:spf.protection.outlook.com -all"]
+  records = ["v=spf1 include:spf.protection.outlook.com -all"]
 }
