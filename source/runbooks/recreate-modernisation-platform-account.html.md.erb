@@ -14,6 +14,7 @@ The `Modernisation Platform` AWS account hosts resources used by other Modernisa
 | Resource        | Description                                                                                                   |
 | --------------- | ------------------------------------------------------------------------------------------------------------- |
 | S3              | Stores Terraform state files for Modernisation Platform accounts, account-local AWS Config info, cost reports |
+| DynamoDB        | Holds state locking table for Terraform                                                                       |
 | Secrets Manager | Stores values used by Modernisation Platform accounts                                                         |
 | IAM             | Contains accounts for external collaborators                                                                  |
 | KMS             | Encryption keys, some account local, but one used to secure PagerDuty secrets                                 |
