@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Modernisation Platform Account Setup
-last_reviewed_on: 2026-03-23
+last_reviewed_on: 2026-09-29
 review_in: 6 months
 ---
 
@@ -13,10 +13,9 @@ The `Modernisation Platform` AWS account hosts resources used by other Modernisa
 
 | Resource        | Description                                                                                                   |
 | --------------- | ------------------------------------------------------------------------------------------------------------- |
-| S3              | Stores Terraform state files for Modernisation Platform accounts, account-local AWS Config info, cost reports |
-| DynamoDB        | Holds state locking table for Terraform                                                                       |
+| S3              | Stores Terraform state and lock files for Modernisation Platform accounts, account-local AWS Config info, and cost reports |
 | Secrets Manager | Stores values used by Modernisation Platform accounts                                                         |
-| IAM             | Contains accounts for external collaborators                                                                  |
+| IAM             | Contains IAM users for external collaborators                                                                 |
 | KMS             | Encryption keys, some account local, but one used to secure PagerDuty secrets                                 |
 
 ## Steps
@@ -39,7 +38,7 @@ To recreate these resources you can run the [Terraform: modernisation-platform-a
 
 If a GitHub Actions deployment is not available the resources can be redeployed locally:
 
-- Navigate to the `modernisation-platfom` repository and access the `terraform/modernisation-platform-account` directory
+- Navigate to the `modernisation-platform` repository and access the `terraform/modernisation-platform-account` directory
 - Using admin credentials, execute `terraform apply` from the `default` workspace
 
 ## 3. Verify Resources
