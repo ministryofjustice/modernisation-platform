@@ -4,27 +4,27 @@
   "components": [
     {
       "name": "streaming-poc",
-      "sso_group_name": "data-factory-aker-team"
+      "sso_group_name": "justice-data-factory-administrators"
     },
     {
       "name": "streaming-poc-msk",
-      "sso_group_name": "data-factory-aker-team"
+      "sso_group_name": "justice-data-factory-administrators"
     },
     {
       "name": "streaming-poc-opensearch",
-      "sso_group_name": "data-factory-aker-team"
+      "sso_group_name": "justice-data-factory-administrators"
     },
     {
       "name": "streaming-poc-maf",
-      "sso_group_name": "data-factory-aker-team"
+      "sso_group_name": "justice-data-factory-administrators"
     },
     {
       "name": "streaming-poc-opensearch-config",
-      "sso_group_name": "data-factory-aker-team"
+      "sso_group_name": "justice-data-factory-administrators"
     },
     {
       "name": "streaming-poc-devops",
-      "sso_group_name": "data-factory-aker-team"
+      "sso_group_name": "justice-data-factory-administrators"
     },
     {
       "name": "dms-core",
@@ -56,7 +56,7 @@
           "level": "read-only"
         },
         {
-          "sso_group_name": "data-factory-aker-team",
+          "sso_group_name": "justice-data-factory-administrators",
           "level": "sandbox"
         },
         {
