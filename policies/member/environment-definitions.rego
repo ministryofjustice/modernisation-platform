@@ -21,7 +21,7 @@ valid_filename if {
 
 valid_filename if {
   some name in allowed_long_name_exceptions
-  regex.match(`^environments\/%{name}\.json$`, input.filename)
+  regex.match($`^environments\/{name}\.json$`, input.filename)
 }
 
 deny contains msg if {
