@@ -27,7 +27,7 @@
       ],
       "instance_scheduler_skip": ["true"]
     }
-    ],
+  ],
   "tags": {
     "application": "data-platform",
     "business-unit": "Platforms",
