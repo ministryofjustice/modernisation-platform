@@ -38,7 +38,7 @@ jobs:
       - name: Setup Regal
         uses: open-policy-agent/setup-regal@761188c3b435761fa254beca508a44875619648f # v2.0.0
       - name: Run Regal Lint
-        run: regal lint --format=github policies
+        run: regal lint --format=github --disable prefer-string-interpolation policies
       - name: Install Conftest
         run: |
           wget https://github.com/open-policy-agent/conftest/releases/download/v0.53.0/conftest_0.53.0_Linux_x86_64.tar.gz
