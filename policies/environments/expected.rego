@@ -51,6 +51,8 @@ expected :=
     "data-factory-corporate",
     "data-factory-laa",
     "data-factory-moj",
+    "data-platform-factory-one"
+    "data-pl
     "data-platform",
     "data-platform-governance",
     "delius-alfresco",
