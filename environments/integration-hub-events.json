@@ -1,6 +1,5 @@
 {
   "account-type": "member",
-  "codeowners": ", ",
   "environments": [
     {
       "name": "development",
