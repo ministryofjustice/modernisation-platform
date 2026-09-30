@@ -10,6 +10,15 @@
           "level": "developer"
         }
       ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "developer"
+        }
+      ]
     }
   ],
   "tags": {
@@ -22,7 +31,7 @@
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [
-    ministryofjustice/modernisation-platform-ai-prototype-builder
+    "ministryofjustice/modernisation-platform-ai-prototype-builder"
   ],
   "go-live-date": ""
 }
