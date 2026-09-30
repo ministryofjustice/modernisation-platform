@@ -10,6 +10,15 @@
           "level": "developer"
         }
       ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "developer"
+        }
+      ]
     }
   ],
   "tags": {
@@ -21,6 +30,8 @@
     "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [],
+  "github-oidc-team-repositories": [
+    "ministryofjustice/modernisation-platform-ai-prototype-builder"
+  ],
   "go-live-date": ""
 }
