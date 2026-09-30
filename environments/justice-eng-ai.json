@@ -10,6 +10,15 @@
           "level": "developer"
         }
       ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "developer"
+        }
+      ]
     }
   ],
   "tags": {
