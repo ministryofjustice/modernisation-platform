@@ -6,6 +6,9 @@
     },
     {
       "name": "push-to-s3-with-hosted-pickup"
+    },
+    {
+      "name": "slack-notifications"
     }
   ],
   "environments": [
