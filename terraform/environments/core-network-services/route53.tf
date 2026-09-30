@@ -342,11 +342,29 @@ module "r53_delegations_integration_hub_file_transfer" {
   tags = local.tags
 }
 
-# The following Route53 DMARC TXT record is added for SPF validation for legalservices.gov.uk domain.
-resource "aws_route53_record" "legalservices_dmarc_spf" {
+# The following Route53 a TXT record is added for SPF validation for legalservices.gov.uk domain.
+resource "aws_route53_record" "legalservices_spf" {
   zone_id = aws_route53_zone.application_zones["legalservices"].zone_id
-  name    = "legalservices.gov.uk"
+  name    = "spf.legalservices.gov.uk"
   type    = "TXT"
   ttl     = 300
   records = ["v=spf1 include:spf.protection.outlook.com -all"]
+}
+
+# The following Route53 a TXT record is added for DMARC for legalservices.gov.uk domain.
+resource "aws_route53_record" "legalservices_dmarc_spf" {
+  zone_id = aws_route53_zone.application_zones["legalservices"].zone_id
+  name    = "_dmarc.legalservices.gov.uk"
+  type    = "TXT"
+  ttl     = 300
+  records = ["v=DMARC1;p=reject;sp=reject;rua=mailto:dmarc-rua@dmarc.service.gov.uk"]
+}
+
+# The following CNAME record is added for CWA ALB new ACM certificate validation for legalservices.gov.uk domain.
+resource "aws_route53_record" "cwa_acm_validation" {
+  zone_id = aws_route53_zone.application_zones["legalservices"].zone_id
+  name    = "_21667427ff395f693f91ad65b1435bbe.legalservices.gov.uk."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["_54d71d558b4c0c85fe8c13a28323d320.wzccmgtwzk.acm-validations.aws."]
 }
