@@ -78,6 +78,7 @@ expected :=
     "integration-hub-api",
     "integration-hub-file-transfer",
     "justice-eng-ai",
+    "justice-engineering-ai-services",
     "laa-ai-enablement",
     "laa-ccms-soa",
     "laa-cis",

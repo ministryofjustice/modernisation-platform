@@ -1,0 +1,21 @@
+{
+  "account-type": "member",
+  "codeowners": ", ",
+  "environments": [
+    {
+      "name": "development",
+      "access": []
+    }
+  ],
+  "tags": {
+    "application": "justice-engineering-ai-services",
+    "business-unit": "Platforms",
+    "service-area": "Hosting",
+    "infrastructure-support": "ModernisationPlatform-gg@justice.gov.uk",
+    "owner": "ModernisationPlatform-gg@justice.gov.uk",
+    "slack-channel": "modernisation-platform",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
