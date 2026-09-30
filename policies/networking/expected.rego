@@ -429,6 +429,7 @@ expected :=
           "integration-hub-api-development",
           "integration-hub-development",
           "integration-hub-file-transfer-development",
+          "justice-eng-ai-development",
           "observability-platform-development",
           "octo-development",
           "octo-engineering-ai-enablement-development",
@@ -475,6 +476,7 @@ expected :=
           "developer-experience-production",
           "integration-hub-file-transfer-production",
           "integration-hub-production",
+          "justice-eng-ai-production",
           "long-term-storage-production",
           "observability-platform-production",
           "octo-engineering-ai-enablement-production"
