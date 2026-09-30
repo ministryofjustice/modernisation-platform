@@ -636,6 +636,8 @@ data "aws_iam_policy_document" "analytics_engineering" {
       "lakeformation:AddLFTagsToResource",
       "lakeformation:RemoveLFTagsFromResource",
       "lakeformation:GetDataAccess",
+      "lakeformation:GetResourceLFTags",
+      "lakeformation:GetLFTag"
     ]
     resources = ["*"]
   }
@@ -665,7 +667,6 @@ data "aws_iam_policy_document" "analytics_engineering_athena_additional" {
       "s3:ListBucketMultipartUploads",
     ]
     resources = [
-      "arn:aws:s3:::probation-query-results-*",
       "arn:aws:s3:::dpr-working-production",
       "arn:aws:s3:::dpr-structured-historical-production",
       "arn:aws:s3:::dpr-working-preproduction",
@@ -682,7 +683,6 @@ data "aws_iam_policy_document" "analytics_engineering_athena_additional" {
       "s3:PutObject",
     ]
     resources = [
-      "arn:aws:s3:::probation-query-results-*/*",
       "arn:aws:s3:::dpr-working-production/analytics/*",
       "arn:aws:s3:::dpr-structured-historical-production/*",
       "arn:aws:s3:::dpr-working-preproduction/analytics/*",
@@ -697,7 +697,6 @@ data "aws_iam_policy_document" "analytics_engineering_athena_additional" {
       "s3:DeleteObject",
     ]
     resources = [
-      "arn:aws:s3:::probation-datalake-*/*",
       "arn:aws:s3:::dpr-working-production/analytics/*",
       "arn:aws:s3:::dpr-structured-historical-production/*",
       "arn:aws:s3:::dpr-working-preproduction/analytics/*",
