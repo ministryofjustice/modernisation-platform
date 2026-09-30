@@ -9,9 +9,6 @@
       "name": "iac"
     },
     {
-      "name": "llm-gateway"
-    },
-    {
       "name": "network"
     },
     {
