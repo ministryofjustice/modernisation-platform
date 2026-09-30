@@ -428,6 +428,7 @@ expected :=
           "example-development",
           "integration-hub-api-development",
           "integration-hub-development",
+          "integration-hub-events-development",
           "integration-hub-file-transfer-development",
           "observability-platform-development",
           "octo-development",
