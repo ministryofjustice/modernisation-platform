@@ -76,6 +76,7 @@ expected :=
     "hmpps-oem",
     "integration-hub",
     "integration-hub-api",
+    "integration-hub-events",
     "integration-hub-file-transfer",
     "justice-eng-ai",
     "laa-ai-enablement",
