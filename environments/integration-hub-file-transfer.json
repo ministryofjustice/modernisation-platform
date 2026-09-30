@@ -9,6 +9,9 @@
     },
     {
       "name": "test-harness"
+    },
+    {
+      "name": "slack-notifications"
     }
   ],
   "environments": [
