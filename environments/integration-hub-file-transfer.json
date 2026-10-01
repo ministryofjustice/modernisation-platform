@@ -8,7 +8,7 @@
       "name": "push-to-s3-with-hosted-pickup"
     },
     {
-      "name": "slack-notifications"
+      "name": "pull-from-presigned-url"
     }
   ],
   "environments": [
