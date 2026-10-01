@@ -55,10 +55,8 @@ jobs:
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
           owner: ministryofjustice # zizmor: ignore[github-app]
           repositories: modernisation-platform-environments
-          permission-actions: read
-          permission-contents: read
+          permission-contents: write
           permission-pull-requests: write
-          permission-secrets: write
       - name: Authenticate GitHub CLI as the App and Check the Rate Usage
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}
