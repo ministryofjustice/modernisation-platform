@@ -11,7 +11,7 @@
       "name": "test-harness"
     },
     {
-      "name": "slack-notifications"
+      "name": "pull-from-presigned-url"
     }
   ],
   "environments": [
