@@ -6,10 +6,7 @@ name: Cleanup of Stale Branches
   schedule:
     - cron: '0 0 * * 0'
 
-permissions:
-  contents: write
-  pull-requests: write
-  id-token: write
+permissions: {}
 
 env:
   RATE_THRESHOLD: 100
@@ -17,12 +14,18 @@ env:
 
 jobs:
   fetch-secrets:
+    permissions:
+      id-token: write
     uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@2caea529829b1a7959afd2c16da632b0ea7308dc # v6.2.6
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   cleanup:
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
     name: Cleanup Stale Branches in Modernisation Platform Repos
     runs-on: ubuntu-latest
     needs: fetch-secrets
@@ -40,6 +43,7 @@ jobs:
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           fetch-depth: 1
 
       - name: Decrypt Secrets
@@ -63,7 +67,12 @@ jobs:
         with:
           client-id: ${{ env.APP_ID }}
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
-          owner: "ministryofjustice"
+          owner: "ministryofjustice" # zizmor: ignore[github-app]
+          repositories: modernisation-platform
+          permission-actions: read
+          permission-contents: write
+          permission-pull-requests: write
+          permission-secrets: write
 
       - name: Authenticate GitHub CLI as the App and Check the Rate Usage
         env:

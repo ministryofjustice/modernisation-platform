@@ -73,6 +73,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
 
       - name: Decrypt Secrets
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2caea529829b1a7959afd2c16da632b0ea7308dc
@@ -83,6 +85,8 @@ jobs:
 
       - name: Resolve member account ID (from ENVIRONMENT_MANAGEMENT.account_ids)
         id: account
+        env:
+          TF_WORKSPACE: ${{ inputs.TF_WORKSPACE }}
         run: |
           set -euo pipefail
 
@@ -91,7 +95,7 @@ jobs:
             exit 1
           fi
 
-          ACCOUNT_ID="$(jq -er --arg name "${{ inputs.TF_WORKSPACE }}" '.account_ids[$name]' <<< "$ENVIRONMENT_MANAGEMENT")"
+          ACCOUNT_ID="$(jq -er --arg name "$TF_WORKSPACE" '.account_ids[$name]' <<< "$ENVIRONMENT_MANAGEMENT")"
           echo "::add-mask::$ACCOUNT_ID"
           echo "account-id=$ACCOUNT_ID" >> "$GITHUB_OUTPUT"
 
@@ -127,7 +131,8 @@ jobs:
           USER_NOTIFY_DAYS: ${{ inputs.USER_NOTIFY_DAYS }}
           USER_DISABLE_DAYS: ${{ inputs.USER_DISABLE_DAYS }}
           USER_DELETE_DAYS: ${{ inputs.USER_DELETE_DAYS }}
+          SCRIPT_COMMAND: ${{ inputs.SCRIPT_COMMAND }}
         run: |
           set -euo pipefail
           aws sts get-caller-identity
-          ${{ inputs.SCRIPT_COMMAND }}
+          "$SCRIPT_COMMAND"
