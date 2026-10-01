@@ -15,7 +15,8 @@
           "integration-hub-production",
           "long-term-storage-production",
           "observability-platform-production",
-          "octo-engineering-ai-enablement-production"
+          "octo-engineering-ai-enablement-production",
+          "platform-operations-production"
         ]
       }
     }
