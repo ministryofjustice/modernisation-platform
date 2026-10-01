@@ -1,6 +1,5 @@
 {
   "account-type": "member",
-  "codeowners": ", ",
   "environments": [
     {
       "name": "development",
@@ -9,8 +8,7 @@
           "sso_group_name": "platform-operations",
           "level": "sandbox"
         }
-      ],
-      "nuke": ""
+      ]
     },
     {
       "name": "production",
