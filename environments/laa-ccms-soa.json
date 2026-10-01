@@ -4,12 +4,12 @@
   "components": [
     {
       "name": "ccms-soa-sandbox",
-      "sso_group_name": "laa-soa-developers",
+      "sso_group_name": "laa-sre-admins",
       "github_action_reviewer": "true"
     },
     {
       "name": "ccms-soa-sandbox",
-      "sso_group_name": "laa-sre-admins",
+      "sso_group_name": "laa-soa-developers",
       "github_action_reviewer": "true"
     }
   ],
