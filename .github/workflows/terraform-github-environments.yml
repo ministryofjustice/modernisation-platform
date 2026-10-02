@@ -67,6 +67,7 @@ jobs:
           repositories: "modernisation-platform-environments"
           permission-actions: read
           permission-administration: write
+          permission-members: read
       - name: Authenticate GitHub CLI as the App
         env:
           GH_TOKEN: ${{ steps.app-envts.outputs.token }}
