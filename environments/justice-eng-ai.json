@@ -32,7 +32,7 @@
   },
   "github-oidc-team-repositories": [
     "ministryofjustice/modernisation-platform-ai-prototype-builder",
-    "modernisation-platform-ai-application-builder"
+    "ministryofjustice/modernisation-platform-ai-application-builder"
   ],
   "go-live-date": ""
 }
