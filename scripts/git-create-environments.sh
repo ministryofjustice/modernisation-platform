@@ -58,7 +58,12 @@ check_if_environment_exists() {
 
 check_if_change_to_application_json() {
   echo "Checking if application $1 has changes..."
-  changed_envs=$(git diff --no-commit-id --name-only -r @^ | awk '{print $1}' | grep ".json" | grep -a "environments//*" | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')
+  if [ -n "${ENVIRONMENT_BASE_SHA:-}" ] && [ -n "${ENVIRONMENT_HEAD_SHA:-}" ]; then
+    changed_files=$(git diff --name-only "$ENVIRONMENT_BASE_SHA" "$ENVIRONMENT_HEAD_SHA" -- 'environments/*.json')
+  else
+    changed_files=$(git diff --no-commit-id --name-only -r @^)
+  fi
+  changed_envs=$(echo "$changed_files" | awk '{print $1}' | grep ".json" | grep -a "environments//*" | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')
   echo "Changed json files=$changed_envs"
   application_name=$1
   echo "Application name: $application_name"
