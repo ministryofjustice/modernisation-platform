@@ -1301,10 +1301,10 @@ module "create_a_derived_table_ecr_repo" {
   tags_common = local.tags
 }
 
-module "modernisation-platform-ai-prototye-core" {
+module "modernisation-platform-ai-builder-core" {
   source = "../../modules/app-ecr-repo"
 
-  app_name = "modernisation-platform-ai-prototye-core"
+  app_name = "modernisation-platform-ai-builder-core"
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["justice-eng-ai-development"]}:role/modernisation-platform-oidc-cicd",
@@ -1320,10 +1320,10 @@ module "modernisation-platform-ai-prototye-core" {
   tags_common = local.tags
 }
 
-module "modernisation-platform-ai-prototye-user-applications" {
+module "modernisation-platform-ai-builder-user-applications" {
   source = "../../modules/app-ecr-repo"
 
-  app_name = "modernisation-platform-ai-prototye-user-applications"
+  app_name = "modernisation-platform-ai-builder-user-applications"
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["justice-eng-ai-development"]}:role/modernisation-platform-oidc-cicd",
