@@ -29,6 +29,5 @@
     "slack-channel": "dso_alerts_pipeline",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [],
-  "go-live-date": ""
+  "github-oidc-team-repositories": []
 }
