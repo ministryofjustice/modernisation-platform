@@ -1,6 +1,5 @@
 {
   "account-type": "member",
-  "codeowners": ["platform-operations"],
   "environments": [
     {
       "name": "development",
@@ -30,5 +29,6 @@
     "slack-channel": "dso_alerts_pipeline",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": []
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
 }
