@@ -6,6 +6,9 @@
     },
     {
       "name": "push-to-s3-with-hosted-pickup"
+    },
+    {
+      "name": "test-harness"
     }
   ],
   "environments": [
@@ -50,6 +53,6 @@
     "slack-channel": "ask-integration-hub",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": ["ministryofjustice/integration-hub"],
+  "github-oidc-team-repositories": [""],
   "go-live-date": ""
 }
