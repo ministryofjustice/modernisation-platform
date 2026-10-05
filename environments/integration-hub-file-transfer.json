@@ -9,6 +9,9 @@
     },
     {
       "name": "test-harness"
+    },
+    {
+      "name": "pull-from-presigned-url"
     }
   ],
   "environments": [
