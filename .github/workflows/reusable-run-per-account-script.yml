@@ -135,4 +135,4 @@ jobs:
         run: |
           set -euo pipefail
           aws sts get-caller-identity
-          "$SCRIPT_COMMAND"
+          bash "$SCRIPT_COMMAND"
