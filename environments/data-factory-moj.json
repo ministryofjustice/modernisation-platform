@@ -33,6 +33,10 @@
     {
       "name": "genesys-data-ingestion",
       "sso_group_name": "data-engineering"
+    },
+    {
+      "name": "data-contract-management",
+      "sso_group_name": "probation-de"
     }
   ],
   "environments": [
