@@ -19,7 +19,7 @@ name: Reusable - Run Script Per Account
       ASSUME_ROLE_NAME:
         required: true
         type: string
-      SCRIPT_PATH:
+      SCRIPT_COMMAND:
          required: true
          type: string
 
@@ -131,8 +131,8 @@ jobs:
           USER_NOTIFY_DAYS: ${{ inputs.USER_NOTIFY_DAYS }}
           USER_DISABLE_DAYS: ${{ inputs.USER_DISABLE_DAYS }}
           USER_DELETE_DAYS: ${{ inputs.USER_DELETE_DAYS }}
-          SCRIPT_PATH: ${{ inputs.SCRIPT_PATH }}
+          SCRIPT_COMMAND: ${{ inputs.SCRIPT_COMMAND }}
         run: |
           set -euo pipefail
           aws sts get-caller-identity
-          bash "$SCRIPT_PATH"
+          bash "$SCRIPT_COMMAND"
