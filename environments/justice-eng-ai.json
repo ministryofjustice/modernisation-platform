@@ -1,17 +1,17 @@
 {
   "account-type": "member",
   "isolated-network": "true",
-    "components": [
-      {
-        "name": "web-ui"
-      },
-      {
-        "name": "backend-processing"
-      },
-      {
-        "name": "prototypes-infra"
-      }
-    ],
+  "components": [
+    {
+      "name": "web-ui"
+    },
+    {
+      "name": "backend-processing"
+    },
+    {
+      "name": "prototypes-infra"
+    }
+  ],
   "environments": [
     {
       "name": "development",
