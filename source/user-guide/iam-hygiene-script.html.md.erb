@@ -153,7 +153,7 @@ Required:
 - `environment_management` – encrypted environment management JSON
 - `TF_WORKSPACE` – account name used to resolve account ID
 - `ASSUME_ROLE_NAME` – IAM role name to assume
-- `SCRIPT_COMMAND` – shell command to execute
+- `SCRIPT_PATH` – shell command to execute
 
 Optional:
 
@@ -179,7 +179,7 @@ Secrets:
 - Authenticates via GitHub OIDC
 - Assumes the role:
 
-    arn:aws:iam::<account-id>:role/<ASSUME_ROLE_NAME>
+  arn:aws:iam::<account-id>:role/<ASSUME_ROLE_NAME>
 
 ---
 

@@ -134,7 +134,7 @@ jobs:
       TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
       EXPECTED_TEMPLATE_VERSION: "2"
 
-      SCRIPT_COMMAND: |
+      SCRIPT_PATH: |
         bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh
     secrets:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -161,7 +161,7 @@ jobs:
       TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
       EXPECTED_TEMPLATE_VERSION: "2"
 
-      SCRIPT_COMMAND: |
+      SCRIPT_PATH: |
         bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh
     secrets:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -188,7 +188,7 @@ jobs:
       TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
       EXPECTED_TEMPLATE_VERSION: "2"
 
-      SCRIPT_COMMAND: |
+      SCRIPT_PATH: |
         bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh
     secrets:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -215,7 +215,7 @@ jobs:
       TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
       EXPECTED_TEMPLATE_VERSION: "2"
 
-      SCRIPT_COMMAND: |
+      SCRIPT_PATH: |
         bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh
     secrets:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
