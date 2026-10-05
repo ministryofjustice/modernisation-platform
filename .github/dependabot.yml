@@ -145,6 +145,7 @@ updates:
       - "/terraform/environments/panda-cyber-appsec-lab"
       - "/terraform/environments/performance-hub"
       - "/terraform/environments/planetfm"
+      - "/terraform/environments/platform-operations"
       - "/terraform/environments/ppud"
       - "/terraform/environments/pra-register"
       - "/terraform/environments/prison-retail"
