@@ -7,9 +7,7 @@ name: Notify Slack with SecurityHub Findings Summary
     - cron: '30 8 * * 1-5'
   workflow_dispatch:
 
-permissions:
-  id-token: write # This is required for requesting the JWT
-  contents: read # This is required for actions/checkout
+permissions: {}
 
 defaults:
   run:
@@ -18,12 +16,18 @@ defaults:
 jobs:
 
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@2cc1ba90676147f4ebf93b67a56463473af39f1e # v6.2.3
+    permissions:
+      id-token: write
+      contents: read
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@6a78b87ea8e63646ec10701857c70cb2487738ab # v6.2.7
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   generate-account-matrix-blocks:
+    permissions:
+      id-token: write
+      contents: read
     runs-on: ubuntu-latest
     needs: fetch-secrets
     outputs:
@@ -33,7 +37,7 @@ jobs:
       matrix-group-4: ${{ steps.generate-account-matrix-blocks.outputs.block_4 }}
     steps:
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2cc1ba90676147f4ebf93b67a56463473af39f1e # v6.2.3
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@6a78b87ea8e63646ec10701857c70cb2487738ab # v6.2.7
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -76,6 +80,9 @@ jobs:
 
 
   process-security-findings-1:
+    permissions:
+      id-token: write
+      contents: read
     name: ${{ matrix.account.name }}
     needs: [fetch-secrets, generate-account-matrix-blocks]
     strategy:
@@ -91,6 +98,9 @@ jobs:
       passphrase: ${{ secrets.PASSPHRASE }}
 
   process-security-findings-2:
+    permissions:
+      id-token: write
+      contents: read
     name: ${{ matrix.account.name }}
     needs: [fetch-secrets, generate-account-matrix-blocks]
     strategy:
@@ -106,6 +116,9 @@ jobs:
       passphrase: ${{ secrets.PASSPHRASE }}
 
   process-security-findings-3:
+    permissions:
+      id-token: write
+      contents: read
     name: ${{ matrix.account.name }}
     needs: [fetch-secrets, generate-account-matrix-blocks]
     strategy:
@@ -121,6 +134,9 @@ jobs:
       passphrase: ${{ secrets.PASSPHRASE }}
 
   process-security-findings-4:
+    permissions:
+      id-token: write
+      contents: read
     name: ${{ matrix.account.name }}
     needs: [fetch-secrets, generate-account-matrix-blocks]
     strategy:

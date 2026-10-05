@@ -9,9 +9,7 @@ name: "IAM Access Key & User Hygiene - Extended Matrix"
 env:
   AWS_REGION: "eu-west-2"
 
-permissions:
-  id-token: write
-  contents: read
+permissions: {}
 
 defaults:
   run:
@@ -23,12 +21,16 @@ concurrency:
 
 jobs:
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@2cc1ba90676147f4ebf93b67a56463473af39f1e
+    permissions:
+      id-token: write
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@6a78b87ea8e63646ec10701857c70cb2487738ab
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   setup-prerequisites:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     needs: fetch-secrets
     outputs:
@@ -37,10 +39,11 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
+          persist-credentials: false
           fetch-depth: 0
 
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2cc1ba90676147f4ebf93b67a56463473af39f1e
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@6a78b87ea8e63646ec10701857c70cb2487738ab
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -110,6 +113,9 @@ jobs:
           done
 
   iam-hygiene-1:
+    permissions:
+      id-token: write
+      contents: read
     needs: [fetch-secrets, setup-prerequisites, define-jobs]
     strategy:
       fail-fast: false
@@ -128,12 +134,14 @@ jobs:
       TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
       EXPECTED_TEMPLATE_VERSION: "2"
 
-      SCRIPT_COMMAND: |
-        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh
+      SCRIPT_COMMAND: ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh
     secrets:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   iam-hygiene-2:
+    permissions:
+      id-token: write
+      contents: read
     needs: [fetch-secrets, setup-prerequisites, define-jobs]
     strategy:
       fail-fast: false
@@ -152,12 +160,14 @@ jobs:
       TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
       EXPECTED_TEMPLATE_VERSION: "2"
 
-      SCRIPT_COMMAND: |
-        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh
+      SCRIPT_COMMAND: ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh
     secrets:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   iam-hygiene-3:
+    permissions:
+      id-token: write
+      contents: read
     needs: [fetch-secrets, setup-prerequisites, define-jobs]
     strategy:
       fail-fast: false
@@ -176,12 +186,14 @@ jobs:
       TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
       EXPECTED_TEMPLATE_VERSION: "2"
 
-      SCRIPT_COMMAND: |
-        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh
+      SCRIPT_COMMAND: ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh
     secrets:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   iam-hygiene-4:
+    permissions:
+      id-token: write
+      contents: read
     needs: [fetch-secrets, setup-prerequisites, define-jobs]
     strategy:
       fail-fast: false
@@ -200,7 +212,6 @@ jobs:
       TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
       EXPECTED_TEMPLATE_VERSION: "2"
 
-      SCRIPT_COMMAND: |
-        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh
+      SCRIPT_COMMAND: ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh
     secrets:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}

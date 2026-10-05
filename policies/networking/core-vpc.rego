@@ -68,5 +68,5 @@ deny contains msg if {
 deny contains msg if {
   some account in input.cidr.subnet_sets.general.accounts
   not regex.match(`\S+(-development|-test|-preproduction|-production)`, account)
-  msg := sprintf("%v does not end include the environment name e.g. *-development|*-test|*-preproduction|*-production", [account])
+  msg := $"{account} does not end include the environment name e.g. *-development|*-test|*-preproduction|*-production"
 }

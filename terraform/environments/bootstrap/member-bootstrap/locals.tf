@@ -88,10 +88,11 @@ locals {
     "apex-test",
     "data-platform-production",
     "electronic-monitoring-data-preproduction",
-    "nomis-production",
-    "testing-test",
     "nomis-development",
+    "nomis-production",
     "oas-test",
+    "platform-operations-production",
+    "testing-test",
     "vcms-test"
   ])
 

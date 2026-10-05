@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Core Logging Production Account Setup
-last_reviewed_on: 2026-03-19
+last_reviewed_on: 2026-09-22
 review_in: 6 months
 ---
 
@@ -23,9 +23,9 @@ The core-logging AWS account is responsible for managing all core logging resour
 
 ## 1. Account Creation
 
-Please note that aliases do not have a retention period. If an alias still exists under the same organizational unit, you cannot reuse the same alias. To prevent the alias from being recreated, you need to add the environment name to the [skip alias local](https://github.com/ministryofjustice/modernisation-platform/blob/e9d5e14a25e5b0f4e544b26f0332e285e6c506a1/terraform/environments/bootstrap/member-bootstrap/locals.tf#L57).
+Please note that aliases do not have a retention period. If an alias still exists under the same organizational unit, you cannot reuse the same alias. To prevent the alias from being recreated, you need to add the environment name to the [skip alias local](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/member-bootstrap/locals.tf#L85).
 
-To initiate the account recreation process, go to the GitHub Actions page for the Modernisation Platform repository and trigger the new environment [workflow] (https://github.com/ministryofjustice/modernisation-platform/actions/workflows/new-environment.yml).
+To initiate the account recreation process, go to the GitHub Actions page for the Modernisation Platform repository and trigger the [new environment workflow](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/new-environment.yml).
 This workflow should detect that the account no longer exists and propose to recreate the account. As part of this process, it will also execute the baseline runs for the account.
 
 ## 2. Deploy Core Logging Production Resources

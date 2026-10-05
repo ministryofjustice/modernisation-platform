@@ -17,6 +17,10 @@
         {
           "sso_group_name": "hmpps-migration",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }

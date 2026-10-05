@@ -1300,3 +1300,41 @@ module "create_a_derived_table_ecr_repo" {
   # Tags
   tags_common = local.tags
 }
+
+module "modernisation-platform-ai-builder-core" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "modernisation-platform-ai-builder-core"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["justice-eng-ai-development"]}:role/modernisation-platform-oidc-cicd",
+  ]
+
+  pull_principals = [
+    local.environment_management.account_ids["justice-eng-ai-development"],
+    local.environment_management.account_ids["justice-eng-ai-production"]
+
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
+
+module "modernisation-platform-ai-builder-user-applications" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "modernisation-platform-ai-builder-user-applications"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["justice-eng-ai-development"]}:role/modernisation-platform-oidc-cicd",
+  ]
+
+  pull_principals = [
+    local.environment_management.account_ids["justice-eng-ai-development"],
+    local.environment_management.account_ids["justice-eng-ai-production"]
+
+  ]
+
+  # Tags
+  tags_common = local.tags
+}

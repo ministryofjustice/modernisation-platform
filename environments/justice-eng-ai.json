@@ -1,0 +1,49 @@
+{
+  "account-type": "member",
+  "isolated-network": "true",
+  "components": [
+    {
+      "name": "web-ui"
+    },
+    {
+      "name": "backend-processing"
+    },
+    {
+      "name": "prototypes-infra"
+    }
+  ],
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "modernisation-platform",
+    "business-unit": "Platforms",
+    "service-area": "Hosting",
+    "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+    "securityhub-slack-channel": "modernisation-platform",
+    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [
+    "ministryofjustice/modernisation-platform-ai-prototype-builder",
+    "ministryofjustice@2203574/modernisation-platform-ai-application-builder@1397733145"
+  ],
+  "go-live-date": ""
+}

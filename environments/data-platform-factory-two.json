@@ -1,0 +1,37 @@
+{
+  "account-type": "member",
+  "codeowners": "data-platform-engineering",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "data-platform-engineering",
+          "level": "read-only",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-data-platform-engineering",
+          "level": "platform-engineer-admin"
+        },
+        {
+          "sso_group_name": "data-platform-proserve-engineers",
+          "level": "platform-engineer-admin",
+          "github_action_reviewer": "true"
+        }
+      ],
+      "instance_scheduler_skip": ["true"]
+    }
+  ],
+  "tags": {
+    "application": "data-platform",
+    "business-unit": "Platforms",
+    "service-area": "Data Platform",
+    "infrastructure-support": "justicedataplatform@digital.justice.gov.uk",
+    "owner": "justicedataplatform@digital.justice.gov.uk",
+    "slack-channel": "data-platform-engineering",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": ["ministryofjustice/data-platform"],
+  "go-live-date": ""
+}

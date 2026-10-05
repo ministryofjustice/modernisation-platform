@@ -12,16 +12,20 @@
           "data-factory-corporate-development",
           "data-factory-moj-development",
           "data-platform-development",
+          "data-platform-factory-one-development",
+          "data-platform-factory-two-development",
           "data-platform-governance-development",
           "developer-experience-development",
           "example-development",
           "integration-hub-api-development",
           "integration-hub-development",
+          "integration-hub-events-development",
           "integration-hub-file-transfer-development",
           "observability-platform-development",
           "octo-development",
           "octo-engineering-ai-enablement-development",
-          "panda-cyber-appsec-lab-development"
+          "panda-cyber-appsec-lab-development",
+          "platform-operations-development"
         ]
       }
     }

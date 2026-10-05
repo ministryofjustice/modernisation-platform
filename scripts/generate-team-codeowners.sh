@@ -1,3 +1,4 @@
+#!/bin/bash
 codeowners_file=.github/CODEOWNERS
 environment_json_dir=environments
 

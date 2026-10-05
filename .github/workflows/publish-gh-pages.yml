@@ -11,10 +11,7 @@ name: Publish gh-pages
       - "config/**"
 
 # GITHUB_TOKEN permissions to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+permissions: {}
 
 # Allow one concurrent deployment
 concurrency:
@@ -23,12 +20,16 @@ concurrency:
 
 jobs:
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@2cc1ba90676147f4ebf93b67a56463473af39f1e # v6.2.3
+    permissions:
+      id-token: write
+      contents: read
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@6a78b87ea8e63646ec10701857c70cb2487738ab # v6.2.7
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   decrypt-secrets:
+    permissions: {}
     runs-on: ubuntu-latest
     needs: fetch-secrets
     outputs:
@@ -36,12 +37,14 @@ jobs:
     steps:
       - name: Decrypt Slack webhook secret
         id: decrypt
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2cc1ba90676147f4ebf93b67a56463473af39f1e # v6.2.3
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@6a78b87ea8e63646ec10701857c70cb2487738ab # v6.2.7
         with:
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
 
   build:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     needs: decrypt-secrets
     container:
@@ -49,6 +52,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Compile Markdown to HTML and create artifact
         run: /usr/local/bin/package
@@ -72,6 +77,10 @@ jobs:
         if: ${{ failure() }}
 
   deploy:
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     runs-on: ubuntu-latest
     needs: [build, decrypt-secrets]
     environment:
@@ -80,6 +89,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Setup Pages
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
@@ -89,12 +100,11 @@ jobs:
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
 
       - name: Slack failure notification
+        if: ${{ failure() }}
         uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
         with:
+          webhook: ${{ needs.decrypt-secrets.outputs.slack_webhook_url }}
           webhook-type: incoming-webhook
           payload: |
             {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},
             {"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
-        env:
-          SLACK_WEBHOOK_URL: ${{ needs.decrypt-secrets.outputs.slack_webhook_url }}
-        if: ${{ failure() }}

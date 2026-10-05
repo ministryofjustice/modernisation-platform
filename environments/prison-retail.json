@@ -27,6 +27,10 @@
         {
           "sso_group_name": "azure-aws-sso-csr-application-support",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }

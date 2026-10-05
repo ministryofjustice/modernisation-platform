@@ -1,7 +1,6 @@
+#!/bin/bash
 # This bash script sends the contents of the slack_message.son file to the modernisation platform slack channel.
 # It is dependent on the successful creation of the slack_message.json file. Otherwise no report is sent.
-
-#!/bin/bash
 
 # Ensure the script is called with the webhook URL and json file. Otherwise exit.
 if [ "$#" -ne 2 ]; then

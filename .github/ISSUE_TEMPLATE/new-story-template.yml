@@ -1,3 +1,4 @@
+---
 name: Modernisation platform Story
 description: 📖 Create Modernisation Platform story
 title: "<title>"
@@ -11,13 +12,11 @@ body:
     id: user-story
     attributes:
       label: User Story
-      placeholder: "As a… [who is the user?] 
+      placeholder: "As a… [who is the user?]
               I need/want/expect to… [what does the user want to do?]
               So that… [why does the user want to do this?] "
-      value: "As a 
-
-              I need/want/expect to 
-
+      value: "As a
+              I need/want/expect to
               So that"
     validations:
       required: true
@@ -50,7 +49,7 @@ body:
     id: additional-information
     attributes:
       description: Please add any useful links or additional information that would be beneficial to anyone working on this Issue.
-      label: Additional Information 
+      label: Additional Information
       value:
     validations:
       required: false
@@ -60,16 +59,11 @@ body:
       description: Please clearly and concisely detail the Definition of Done. (example optional checklist below)
       label: Definition of Done
       placeholder:
-
         Example
         - [ ] Documentation has been written / updated
-
-        - [ ] README has been updated  
-
-        - [ ] User docs have been updated  
-
-        - [ ] Another team member has reviewed 
-
+        - [ ] README has been updated
+        - [ ] User docs have been updated
+        - [ ] Another team member has reviewed
         - [ ] Tests are green
       value: |
         - [ ] First outcome

@@ -4,13 +4,7 @@
   "components": [
     {
       "name": "ccms-soa-sandbox",
-      "sso_group_name": "laa-soa-developers",
-      "github_action_reviewer": "true"
-    },
-    {
-      "name": "ccms-soa-sandbox",
-      "sso_group_name": "laa-sre-admins",
-      "github_action_reviewer": "true"
+      "sso_group_name": "laa-sre-admins"
     }
   ],
   "environments": [
@@ -102,6 +96,10 @@
         {
           "sso_group_name": "laa-soa-developers",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-ccms-security-testing-kpmg",
+          "level": "developer"
         }
       ]
     },
@@ -134,7 +132,11 @@
           "level": "developer"
         },
         {
-          "sso_group_name": "octo-cyber-team",
+          "sso_group_name": "octo-cyber",
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
           "level": "security-audit"
         }
       ]
@@ -148,5 +150,5 @@
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": ["ministryofjustice/laa-ccms-soa-docker"],
-  "go-live-date": ""
+  "go-live-date": [""]
 }

@@ -9,9 +9,6 @@
       "name": "iac"
     },
     {
-      "name": "llm-gateway"
-    },
-    {
       "name": "network"
     },
     {
@@ -28,6 +25,12 @@
     },
     {
       "name": "sagemaker"
+    },
+    {
+      "name": "airflow"
+    },
+    {
+      "name": "airflow-cluster"
     }
   ],
   "environments": [
@@ -62,10 +65,6 @@
         {
           "sso_group_name": "azure-aws-sso-data-platform-engineering",
           "level": "platform-engineer-admin"
-        },
-        {
-          "sso_group_name": "data-platform-proserve-engineers",
-          "level": "platform-engineer-admin"
         }
       ],
       "instance_scheduler_skip": ["true"]
@@ -80,10 +79,6 @@
         },
         {
           "sso_group_name": "azure-aws-sso-data-platform-engineering",
-          "level": "platform-engineer-admin"
-        },
-        {
-          "sso_group_name": "data-platform-proserve-engineers",
           "level": "platform-engineer-admin"
         }
       ],
@@ -106,8 +101,8 @@
           "level": "security-audit"
         },
         {
-          "sso_group_name": "data-platform-proserve-engineers",
-          "level": "platform-engineer-admin"
+          "sso_group_name": "data-platform-readonly",
+          "level": "read-only"
         }
       ]
     }

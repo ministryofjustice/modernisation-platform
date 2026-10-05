@@ -28,10 +28,7 @@ env:
   RATE_THRESHOLD: 100
   APP_ID: 2013696
 
-permissions:
-  id-token: write # This is required for requesting the JWT
-  contents: read # This is required for actions/checkout
-  pull-requests: write # This is required for updating PR comments
+permissions: {}
 
 defaults:
   run:
@@ -40,7 +37,9 @@ defaults:
 jobs:
 
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@2cc1ba90676147f4ebf93b67a56463473af39f1e # v6.2.3
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@6a78b87ea8e63646ec10701857c70cb2487738ab # v6.2.7
+    permissions:
+      id-token: write
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -49,10 +48,16 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref != 'refs/heads/main' && github.event_name != 'workflow_dispatch'
     needs: fetch-secrets
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2cc1ba90676147f4ebf93b67a56463473af39f1e # v6.2.3
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@6a78b87ea8e63646ec10701857c70cb2487738ab # v6.2.7
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
@@ -63,7 +68,12 @@ jobs:
         with:
           client-id: ${{ env.APP_ID }}
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
-          owner: "ministryofjustice"
+          owner: ministryofjustice # zizmor: ignore[github-app]
+          repositories: 'modernisation-platform,modernisation-platform-environments,modernisation-platform-ami-builds,modernisation-platform-configuration-management,modernisation-platform-security'
+          permission-actions: read
+          permission-contents: read
+          permission-pull-requests: write
+          permission-secrets: write
       - name: Authenticate GitHub CLI as the App and Check the Rate Usage
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}
@@ -72,15 +82,17 @@ jobs:
           gh auth status
           bash ./scripts/check-github-api-usage.sh
       - name: Set env vars
+        env:
+          GITHUB_APP_TOKEN: ${{ steps.app.outputs.token }}
         run: |
-          echo "TF_VAR_github_token=${{ steps.app.outputs.token }}" >> "$GITHUB_ENV"
+          echo "TF_VAR_github_token=$GITHUB_APP_TOKEN" >> "$GITHUB_ENV"
       - name: Set Account Number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
           role-session-name: githubactionsrolesession
@@ -97,27 +109,33 @@ jobs:
         run: bash scripts/terraform-plan.sh terraform/environments
 
       - name: Update PR comment with plan summary
+        env:
+          PLAN_SUMMARY: ${{ steps.tf_plan.outputs.summary }}
+          SECRET: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           PLAN="$(printf '%s\n%s\n%s\n%s\n%s\n' \
             '### Terraform Plan Summary' \
             '_terraform/environments_' \
             '```' \
-            "${{ steps.tf_plan.outputs.summary }}" \
+            "$PLAN_SUMMARY" \
             '```')"
-          bash scripts/update-pr-comments.sh "${PLAN}"
-        env:
-          SECRET: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
+          bash scripts/update-pr-comments.sh "$PLAN"
 
   create-environment:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: fetch-secrets
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2cc1ba90676147f4ebf93b67a56463473af39f1e # v6.2.3
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@6a78b87ea8e63646ec10701857c70cb2487738ab # v6.2.7
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -129,7 +147,12 @@ jobs:
         with:
           client-id: ${{ env.APP_ID }}
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
-          owner: "ministryofjustice"
+          owner: ministryofjustice # zizmor: ignore[github-app]
+          repositories: 'modernisation-platform,modernisation-platform-environments,modernisation-platform-ami-builds,modernisation-platform-configuration-management,modernisation-platform-security'
+          permission-actions: read
+          permission-contents: read
+          permission-pull-requests: write
+          permission-secrets: write
       - name: Authenticate GitHub CLI as the App and Check the Rate Usage
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}
@@ -138,15 +161,17 @@ jobs:
           gh auth status
           bash ./scripts/check-github-api-usage.sh
       - name: Set env vars
+        env:
+          GITHUB_APP_TOKEN: ${{ steps.app.outputs.token }}
         run: |
-          echo "TF_VAR_github_token=${{ steps.app.outputs.token }}" >> "$GITHUB_ENV"
+          echo "TF_VAR_github_token=$GITHUB_APP_TOKEN" >> "$GITHUB_ENV"
       - name: Set Account Number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
           role-session-name: githubactionsrolesession
@@ -173,10 +198,15 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [fetch-secrets, create-environment]
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2cc1ba90676147f4ebf93b67a56463473af39f1e # v6.2.3
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@6a78b87ea8e63646ec10701857c70cb2487738ab # v6.2.7
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -187,7 +217,7 @@ jobs:
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-apply"
           role-session-name: githubactionsrolesession
@@ -215,12 +245,16 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [fetch-secrets, provision-workspaces]
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2cc1ba90676147f4ebf93b67a56463473af39f1e # v6.2.3
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@6a78b87ea8e63646ec10701857c70cb2487738ab # v6.2.7
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -231,7 +265,7 @@ jobs:
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
           role-session-name: githubactionsrolesession
@@ -246,8 +280,10 @@ jobs:
           files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | tr '\n' ',' | awk '{$1=$1};1')
           echo "files=$files" >> "$GITHUB_OUTPUT"
       - name: Run delegate access
+        env:
+          NEW_ACCOUNT_FILES: ${{ steps.new_account.outputs.files }}
         run: |
-          IFS=',' read -r -a accounts <<< "${{ steps.new_account.outputs.files }}"
+          IFS=',' read -r -a accounts <<< "$NEW_ACCOUNT_FILES"
           if [[ ${#accounts[@]} -gt 0 ]]; then
             for i in "${accounts[@]}"; do
               echo "[+] Running delegate-access baseline for account ${i}"
@@ -270,12 +306,16 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [fetch-secrets, delegate-access]
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2cc1ba90676147f4ebf93b67a56463473af39f1e # v6.2.3
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@6a78b87ea8e63646ec10701857c70cb2487738ab # v6.2.7
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -286,7 +326,7 @@ jobs:
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-apply"
           role-session-name: githubactionsrolesession
@@ -297,8 +337,10 @@ jobs:
           files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | tr '\n' ',' | awk '{$1=$1};1')
           echo "files=$files" >> "$GITHUB_OUTPUT"
       - name: Remove Default VPC
+        env:
+          NEW_ACCOUNT_FILES: ${{ steps.new_account.outputs.files }}
         run: |
-          IFS=',' read -r -a accounts <<< "${{ steps.new_account.outputs.files }}"
+          IFS=',' read -r -a accounts <<< "$NEW_ACCOUNT_FILES"
           if [[ ${#accounts[@]} -gt 0 ]]; then
             for i in "${accounts[@]}"; do
               environments=$(jq -r '.environments[].name' "environments/${i}.json")
@@ -325,12 +367,16 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [fetch-secrets, delegate-access]
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2cc1ba90676147f4ebf93b67a56463473af39f1e # v6.2.3
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@6a78b87ea8e63646ec10701857c70cb2487738ab # v6.2.7
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -341,7 +387,7 @@ jobs:
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-apply"
           role-session-name: githubactionsrolesession
@@ -356,8 +402,10 @@ jobs:
           files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | tr '\n' ',' | awk '{$1=$1};1')
           echo "files=$files" >> "$GITHUB_OUTPUT"
       - name: Run secure baselines
+        env:
+          NEW_ACCOUNT_FILES: ${{ steps.new_account.outputs.files }}
         run: |
-          IFS=',' read -r -a accounts <<< "${{ steps.new_account.outputs.files }}"
+          IFS=',' read -r -a accounts <<< "$NEW_ACCOUNT_FILES"
           if [[ ${#accounts[@]} -gt 0 ]]; then
             for i in "${accounts[@]}"; do
               echo "[+] Running secure baseline for account ${i}"
@@ -380,12 +428,16 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.ref != 'refs/heads/main' || github.event_name != 'workflow_dispatch'
     needs: fetch-secrets
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2cc1ba90676147f4ebf93b67a56463473af39f1e # v6.2.3
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@6a78b87ea8e63646ec10701857c70cb2487738ab # v6.2.7
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -395,7 +447,7 @@ jobs:
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-plan"
           role-session-name: githubactionsrolesession
@@ -410,8 +462,10 @@ jobs:
           files=$(git diff --name-only --diff-filter=M @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | tr '\n' ',' | awk '{$1=$1};1')
           echo "files=$files" >> "$GITHUB_OUTPUT"
       - name: Run single sign on
+        env:
+          NEW_ACCOUNT_FILES: ${{ steps.new_account.outputs.files }}
         run: |
-          IFS=',' read -r -a accounts <<< "${{ steps.new_account.outputs.files }}"
+          IFS=',' read -r -a accounts <<< "$NEW_ACCOUNT_FILES"
           if [[ ${#accounts[@]} -gt 0 ]]; then
             for i in "${accounts[@]}"; do
               echo "[+] Running single sign on baseline for account ${i}"
@@ -425,12 +479,16 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [fetch-secrets, provision-workspaces, delegate-access]
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2cc1ba90676147f4ebf93b67a56463473af39f1e # v6.2.3
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@6a78b87ea8e63646ec10701857c70cb2487738ab # v6.2.7
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -441,7 +499,7 @@ jobs:
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-apply"
           role-session-name: githubactionsrolesession
@@ -456,8 +514,10 @@ jobs:
           files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | tr '\n' ',' | awk '{$1=$1};1')
           echo "files=$files" >> "$GITHUB_OUTPUT"
       - name: Run single sign on
+        env:
+          NEW_ACCOUNT_FILES: ${{ steps.new_account.outputs.files }}
         run: |
-          IFS=',' read -r -a accounts <<< "${{ steps.new_account.outputs.files }}"
+          IFS=',' read -r -a accounts <<< "$NEW_ACCOUNT_FILES"
           if [[ ${#accounts[@]} -gt 0 ]]; then
             for i in "${accounts[@]}"; do
               echo "[+] Running single sign on baseline for account ${i}"
@@ -480,13 +540,17 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main'
     needs: [fetch-secrets, single-sign-on]
+    permissions:
+      pull-requests: read
+      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           fetch-depth: 0
 
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2cc1ba90676147f4ebf93b67a56463473af39f1e # v6.2.3
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@6a78b87ea8e63646ec10701857c70cb2487738ab # v6.2.7
         with:
           slack_webhooks: ${{ needs.fetch-secrets.outputs.slack_webhooks }}
           gov_uk_notify_api_key: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
@@ -494,11 +558,13 @@ jobs:
       - name: Get modified JSON files
         id: environment_json_changes
         run: |
-          files=$(git diff --name-only --diff-filter=M @^ -- 'environments/*.json' \
-          | uniq \
-          | sed 's#environments/##' \
-          | base64 -w0)
-          printf "files=%s\n" "$files" >> "$GITHUB_OUTPUT"
+          files=$(
+            git diff --name-only --diff-filter=M @^ -- 'environments/*.json' |
+              uniq |
+              sed 's#environments/##' |
+              base64 -w0
+          )
+          printf 'files=%s\n' "$files" >> "$GITHUB_OUTPUT"
       - name: Install Python
         if: steps.environment_json_changes.outputs.files != ''
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
@@ -517,46 +583,62 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Send notification to Slack
         if: steps.environment_json_changes.outputs.files != ''
-        run: |
-          DECODED_FILES=$(echo "${{ steps.environment_json_changes.outputs.files }}" | base64 --decode)
-          echo "$DECODED_FILES" | while IFS= read -r file; do
-          PR_PATH="https://github.com/${GITHUB_REPOSITORY}/pull/${{ steps.pr_number.outputs.pr_number }}/files"
-          slack_channel=$(jq -r '.tags["slack-channel"] // empty' "environments/$file")
-          if [[ -z "$slack_channel" ]]; then
-          echo "No Slack channel specified in the $file or the field does not exist. Skipping."
-          continue
-          fi
-          echo "Slack channel found: $slack_channel"
-          webhook_url=$(echo "$SLACK_WEBHOOKS" | jq -r --arg channel "$slack_channel" '.[$channel]')
-          if [[ -z "$webhook_url" || "$webhook_url" == "null" ]]; then
-          echo "No webhook URL found for channel $slack_channel. Skipping notification."
-          continue
-          fi
-          echo "Webhook URL found for channel $slack_channel"
-          PAYLOAD=$(cat <<EOF
-          {
-          "text": "The JSON file <${PR_PATH}|${file}> has been changed."
-          }
-          EOF
-          )
-          curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" "$webhook_url"
-          done
         env:
+          ENCODED_FILES: ${{ steps.environment_json_changes.outputs.files }}
+          PR_NUMBER: ${{ steps.pr_number.outputs.pr_number }}
           SLACK_WEBHOOKS: ${{ env.SLACK_WEBHOOKS }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+        run: |
+          DECODED_FILES=$(printf '%s' "$ENCODED_FILES" | base64 --decode)
+
+          echo "$DECODED_FILES" | while IFS= read -r file; do
+            PR_PATH="https://github.com/${GITHUB_REPOSITORY}/pull/${PR_NUMBER}/files"
+
+            slack_channel=$(jq -r '.tags["slack-channel"] // empty' "environments/$file")
+
+            if [[ -z "$slack_channel" ]]; then
+              echo "No Slack channel specified in $file or the field does not exist. Skipping."
+              continue
+            fi
+
+            echo "Slack channel found: $slack_channel"
+
+            webhook_url=$(jq -r \
+              --arg channel "$slack_channel" \
+              '.[$channel]' \
+              <<< "$SLACK_WEBHOOKS")
+
+            if [[ -z "$webhook_url" || "$webhook_url" == "null" ]]; then
+              echo "No webhook URL found for channel $slack_channel. Skipping notification."
+              continue
+            fi
+
+            echo "Webhook URL found for channel $slack_channel"
+
+            PAYLOAD=$(jq -n \
+              --arg text "The JSON file <${PR_PATH}|${file}> has been changed." \
+              '{text: $text}')
+
+            curl -X POST \
+              -H 'Content-type: application/json' \
+              --data "$PAYLOAD" \
+              "$webhook_url"
+          done
+
       - name: Validate Notify Template Version
         if: steps.environment_json_changes.outputs.files != ''
         run: |
-          python <<EOF
+          python -c '
           from notifications_python_client.notifications import NotificationsAPIClient
-          import sys
           import os
+          import sys
 
-          api_key = os.getenv('GOV_UK_NOTIFY_API_KEY')
-          template_id = os.getenv('TEMPLATE_ID')
-          expected_version = int(os.environ.get('EXPECTED_TEMPLATE_VERSION'))
+          api_key = os.getenv("GOV_UK_NOTIFY_API_KEY")
+          template_id = os.getenv("TEMPLATE_ID")
+          expected_version = int(os.environ["EXPECTED_TEMPLATE_VERSION"])
 
           client = NotificationsAPIClient(api_key)
+
           try:
               template_details = client.get_template(template_id)
               actual_version = template_details.get("version")
@@ -566,27 +648,33 @@ jobs:
                   sys.exit(1)
 
               print(f"Template version {actual_version} validated successfully.")
-          except Exception as e:
-              print(f"Failed to fetch template details: {e}")
+          except Exception as exc:
+              print(f"Failed to fetch template details: {exc}")
               sys.exit(1)
-          EOF
+          '
       - name: Send notification to Email
+        env:
+          ENCODED_FILES: ${{ steps.environment_json_changes.outputs.files }}
+          PR_NUMBER: ${{ steps.pr_number.outputs.pr_number }}
         if: steps.environment_json_changes.outputs.files != ''
         run: |
-          DECODED_FILES=$(echo "${{ steps.environment_json_changes.outputs.files }}" | base64 --decode)
+          DECODED_FILES=$(printf '%s' "$ENCODED_FILES" | base64 --decode)
           python ./scripts/json-changes-notifier.py "$DECODED_FILES"
-        env:
-          PR_NUMBER: ${{ steps.pr_number.outputs.pr_number }}
+
   member-bootstrap:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [fetch-secrets, secure-baselines, single-sign-on]
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2cc1ba90676147f4ebf93b67a56463473af39f1e # v6.2.3
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@6a78b87ea8e63646ec10701857c70cb2487738ab # v6.2.7
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -597,7 +685,7 @@ jobs:
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-apply"
           role-session-name: githubactionsrolesession
@@ -612,8 +700,10 @@ jobs:
           files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | tr '\n' ',' | awk '{$1=$1};1')
           echo "files=$files" >> "$GITHUB_OUTPUT"
       - name: Run Member Bootstrap
+        env:
+          NEW_ACCOUNT_FILES: ${{ steps.new_account.outputs.files }}
         run: |
-          IFS=',' read -r -a accounts <<< "${{ steps.new_account.outputs.files }}"
+          IFS=',' read -r -a accounts <<< "$NEW_ACCOUNT_FILES"
           if [[ ${#accounts[@]} -gt 0 ]]; then
             for i in "${accounts[@]}"; do
               echo "[+] Running secure baseline for account ${i}"
@@ -636,11 +726,32 @@ jobs:
   modernisation-platform-account-plan-and-apply:
     uses: ./.github/workflows/reusable_terraform_plan_apply.yml
     needs: create-environment
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
     with:
       working-directory: "terraform/modernisation-platform-account"
       workflow_id: "modernisation-platform-account"
       set_github_app_token: true
       download_collaborators: true
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  core-shared-services-deployment:
+    needs:
+      - member-bootstrap
+      - modernisation-platform-account-plan-and-apply
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+    uses: ./.github/workflows/reusable_terraform_plan_apply.yml
+    with:
+      working-directory: "terraform/environments/core-shared-services"
+      environment: "production"
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}

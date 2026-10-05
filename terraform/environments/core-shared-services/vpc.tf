@@ -5,7 +5,6 @@ locals {
   }
 
   vpc_interface_endpoint_service_names = [
-    "com.amazonaws.${data.aws_region.current_region.region}.ec2messages",
     "com.amazonaws.${data.aws_region.current_region.region}.imagebuilder",
     "com.amazonaws.${data.aws_region.current_region.region}.logs",
     "com.amazonaws.${data.aws_region.current_region.region}.ssm",

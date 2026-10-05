@@ -34,6 +34,6 @@ jobs:
       run: sudo chown -R "$(whoami)" .git/
 
     - name: Run Signed Commit Action
-      uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@2cc1ba90676147f4ebf93b67a56463473af39f1e # v6.2.3
+      uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@6a78b87ea8e63646ec10701857c70cb2487738ab # v6.2.7
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}

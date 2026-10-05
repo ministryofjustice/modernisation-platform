@@ -1,3 +1,4 @@
+---
 rules:
   self-repository:
     ignore:

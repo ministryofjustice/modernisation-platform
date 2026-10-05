@@ -62,6 +62,10 @@
         {
           "sso_group_name": "ecp-admin",
           "level": "platform-engineer-admin"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }

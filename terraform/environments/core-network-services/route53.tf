@@ -150,6 +150,38 @@ resource "aws_route53_record" "modernisation_platform_ai_prototype" {
   ]
 }
 
+# AI Builder dev: NS delegation to the external account hosted zone
+resource "aws_route53_record" "modernisation_platform_ai_builder_dev" {
+  allow_overwrite = true
+  name            = "ai-builder-dev.${local.modernisation-platform-domain}"
+  ttl             = 30
+  type            = "NS"
+  zone_id         = aws_route53_zone.modernisation-platform.zone_id
+
+  records = [
+    "REPLACE_WITH_DEV_NAME_SERVER_1",
+    "REPLACE_WITH_DEV_NAME_SERVER_2",
+    "REPLACE_WITH_DEV_NAME_SERVER_3",
+    "REPLACE_WITH_DEV_NAME_SERVER_4"
+  ]
+}
+
+# AI Builder prod: NS delegation to the external account hosted zone
+resource "aws_route53_record" "modernisation_platform_ai_builder_prod" {
+  allow_overwrite = true
+  name            = "ai-builder.${local.modernisation-platform-domain}"
+  ttl             = 30
+  type            = "NS"
+  zone_id         = aws_route53_zone.modernisation-platform.zone_id
+
+  records = [
+    "REPLACE_WITH_PROD_NAME_SERVER_1",
+    "REPLACE_WITH_PROD_NAME_SERVER_2",
+    "REPLACE_WITH_PROD_NAME_SERVER_3",
+    "REPLACE_WITH_PROD_NAME_SERVER_4"
+  ]
+}
+
 # Submit a bulk claim LAA NS delegation to CP
 resource "aws_route53_record" "submit_a_bulk_claim_laa" {
   allow_overwrite = true
@@ -340,4 +372,31 @@ module "r53_delegations_integration_hub_file_transfer" {
   }
 
   tags = local.tags
+}
+
+# The following Route53 a TXT record is added for SPF validation for legalservices.gov.uk domain.
+resource "aws_route53_record" "legalservices_spf" {
+  zone_id = aws_route53_zone.application_zones["legalservices"].zone_id
+  name    = "spf.legalservices.gov.uk"
+  type    = "TXT"
+  ttl     = 300
+  records = ["v=spf1 include:spf.protection.outlook.com -all"]
+}
+
+# The following Route53 a TXT record is added for DMARC for legalservices.gov.uk domain.
+resource "aws_route53_record" "legalservices_dmarc_spf" {
+  zone_id = aws_route53_zone.application_zones["legalservices"].zone_id
+  name    = "_dmarc.legalservices.gov.uk"
+  type    = "TXT"
+  ttl     = 300
+  records = ["v=DMARC1;p=reject;sp=reject;rua=mailto:dmarc-rua@dmarc.service.gov.uk"]
+}
+
+# The following CNAME record is added for CWA ALB new ACM certificate validation for legalservices.gov.uk domain.
+resource "aws_route53_record" "cwa_acm_validation" {
+  zone_id = aws_route53_zone.application_zones["legalservices"].zone_id
+  name    = "_21667427ff395f693f91ad65b1435bbe.legalservices.gov.uk."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["_54d71d558b4c0c85fe8c13a28323d320.wzccmgtwzk.acm-validations.aws."]
 }

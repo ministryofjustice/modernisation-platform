@@ -42,6 +42,10 @@
         {
           "sso_group_name": "eucs-mojo-vds-engineers-elevated",
           "level": "workspace-admin"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }

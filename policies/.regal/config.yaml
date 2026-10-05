@@ -1,3 +1,4 @@
+---
 rules:
   idiomatic:
     # Not typically needed in conftest policy

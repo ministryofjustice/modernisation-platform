@@ -6,10 +6,7 @@ name: Cleanup of Stale Branches
   schedule:
     - cron: '0 0 * * 0'
 
-permissions:
-  contents: write
-  pull-requests: write
-  id-token: write
+permissions: {}
 
 env:
   RATE_THRESHOLD: 100
@@ -17,12 +14,18 @@ env:
 
 jobs:
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@2cc1ba90676147f4ebf93b67a56463473af39f1e # v6.2.3
+    permissions:
+      id-token: write
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@6a78b87ea8e63646ec10701857c70cb2487738ab # v6.2.7
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   cleanup:
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
     name: Cleanup Stale Branches in Modernisation Platform Repos
     runs-on: ubuntu-latest
     needs: fetch-secrets
@@ -40,10 +43,11 @@ jobs:
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           fetch-depth: 1
 
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2cc1ba90676147f4ebf93b67a56463473af39f1e # v6.2.3
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@6a78b87ea8e63646ec10701857c70cb2487738ab # v6.2.7
         with:
           mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -63,7 +67,12 @@ jobs:
         with:
           client-id: ${{ env.APP_ID }}
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
-          owner: "ministryofjustice"
+          owner: "ministryofjustice" # zizmor: ignore[github-app]
+          repositories: modernisation-platform
+          permission-actions: read
+          permission-contents: write
+          permission-pull-requests: write
+          permission-secrets: write
 
       - name: Authenticate GitHub CLI as the App and Check the Rate Usage
         env:

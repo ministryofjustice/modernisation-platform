@@ -293,6 +293,7 @@ expected :=
               "contract-work-administration-development",
               "data-factory-laa-development",
               "edw-19c-development",
+              "laa-ai-enablement-development",
               "laa-ccms-soa-development",
               "laa-cis-development",
               "laa-enterprise-service-bus-development",
@@ -420,16 +421,20 @@ expected :=
           "data-factory-corporate-development",
           "data-factory-moj-development",
           "data-platform-development",
+          "data-platform-factory-one-development",
+          "data-platform-factory-two-development",
           "data-platform-governance-development",
           "developer-experience-development",
           "example-development",
           "integration-hub-api-development",
           "integration-hub-development",
+          "integration-hub-events-development",
           "integration-hub-file-transfer-development",
           "observability-platform-development",
           "octo-development",
           "octo-engineering-ai-enablement-development",
-          "panda-cyber-appsec-lab-development"
+          "panda-cyber-appsec-lab-development",
+          "platform-operations-development"
         ]
       }
     },
@@ -442,6 +447,7 @@ expected :=
           "data-platform-test",
           "data-platform-governance-test",
           "developer-experience-test",
+          "integration-hub-file-transfer-test",
           "integration-hub-test",
           "testing-test"
         ]
@@ -469,10 +475,12 @@ expected :=
           "data-platform-production",
           "data-platform-governance-production",
           "developer-experience-production",
+          "integration-hub-file-transfer-production",
           "integration-hub-production",
           "long-term-storage-production",
           "observability-platform-production",
-          "octo-engineering-ai-enablement-production"
+          "octo-engineering-ai-enablement-production",
+          "platform-operations-production"
         ]
       }
     },
