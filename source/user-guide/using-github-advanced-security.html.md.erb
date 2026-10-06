@@ -14,7 +14,7 @@ GitHub provides security features that help teams identify exposed credentials a
 This guide covers two distinct types of alert in the [modernisation-platform-environments](https://github.com/ministryofjustice/modernisation-platform-environments) repository:
 
 - **Secret scanning:** identifies potential exposure of credentials, API keys, tokens and other supported secret types.
-- **Code scanning:** displays findings from configured analysis tools, including Terraform security checks and linting.
+- **Code Quality:** displays findings from configured analysis tools, including Terraform security checks and linting.
 
 Teams should regularly review and address findings affecting their environments. The absence of alerts does not guarantee that code is secure or that no secrets have been exposed.
 
@@ -146,15 +146,20 @@ GitHub displays findings produced by configured analysis tools. These findings m
 
 ### Configured analysis tools
 
-As reviewed on 25 September 2026, the [Secure Code Analysis workflow](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/.github/workflows/code-scanning.yml) is configured as follows:
+As reviewed on 06th October 2026, the [Code Quality workflow](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/.github/workflows/code-quality.yml) is configured as follows:
 
-| Tool | Configuration |
-| --- | --- |
-| TFLint | Runs Terraform lint checks and uploads SARIF results to GitHub code scanning. Not every lint finding is a security vulnerability. |
-| Checkov | Runs Terraform checks and uploads SARIF results. Some checks are explicitly excluded in the workflow. |
-| Trivy | The job currently creates an empty SARIF placeholder. It does not run Trivy or upload that placeholder, so this workflow does not currently provide Trivy scanning coverage. |
+| Tool    | Configuration                                                                                                                                                         |
+| ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| TFLint  | Enabled through MegaLinter for Terraform lint checks, with `terraform_unused_declarations` disabled. Not every lint finding is a security vulnerability.              |
+| Checkov | Enabled through MegaLinter for infrastructure-as-code checks, with `CKV_GIT_1`, `CKV_AWS_126`, `CKV2_AWS_38` and `CKV2_AWS_39` excluded.                              |
+| CodeQL  | Runs separately for GitHub Actions, Go, JavaScript/TypeScript and Python. CodeQL does not analyse Terraform; its language list does not describe MegaLinter coverage. |
+| Grype   | Enabled through MegaLinter for dependency vulnerability scanning. Trivy is deliberately excluded from the reusable workflow.                                          |
 
-This workflow is scheduled daily at **01:35 UTC**. It does not currently define push or pull-request triggers.
+This workflow runs on pushes to `main`, pull requests targeting `main`, manual dispatch and a schedule at **07:00 UTC, Monday to Friday**. Scheduled runs request full-codebase validation; other runs request changed-file validation.
+
+The [reusable Code Quality workflow](https://github.com/ministryofjustice/modernisation-platform-github-actions/blob/b9151ad79209d53d7f738430aa6868c5b7589237/.github/workflows/reusable-code-quality.yml) enables TFLint and Checkov and uploads MegaLinter's combined SARIF report only if `megalinter-reports/megalinter-report.sarif` exists. Enabling a scanner does not guarantee that its results have reached the code-scanning dashboard.
+
+If TFLint or Checkov results are missing, inspect the latest relevant `Code Quality` run's `Lint and SAST` job. Check the `Run MegaLinter` logs, the `megalinter-reports` artefact, `Check for SARIF report` and `Upload SARIF to the GitHub Security tab`. A skipped upload, failed analysis or changed-file run without relevant Terraform files can leave only the independently uploaded CodeQL results visible.
 
 A separate [Scorecards workflow](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/.github/workflows/scorecards.yml) is configured to upload OpenSSF Scorecard supply-chain security findings.
 
