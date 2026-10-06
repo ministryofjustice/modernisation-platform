@@ -159,10 +159,10 @@ resource "aws_route53_record" "modernisation_platform_ai_builder_dev" {
   zone_id         = aws_route53_zone.modernisation-platform.zone_id
 
   records = [
-    "REPLACE_WITH_DEV_NAME_SERVER_1",
-    "REPLACE_WITH_DEV_NAME_SERVER_2",
-    "REPLACE_WITH_DEV_NAME_SERVER_3",
-    "REPLACE_WITH_DEV_NAME_SERVER_4"
+    "ns-1528.awsdns-63.org.",
+    "ns-1958.awsdns-52.co.uk.",
+    "ns-508.awsdns-63.com.",
+    "ns-983.awsdns-58.net."
   ]
 }
 
