@@ -1900,6 +1900,8 @@ locals {
     planetfm-production                     = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
     prison-retail-production                = { slack_channel_id = "C0A8PGC4THQ" } # prison_retail_alarms
     dso-pipelines                           = { slack_channel_id = "C01PWKWDB9D" } # dso_alerts_pipeline
+    platform-operations-development         = { slack_channel_id = "C01PWKWDB9D" } # dso_alerts_pipeline
+    platform-operations-production          = { slack_channel_id = "C01PWKWDB9D" } # dso_alerts_pipeline
 
     nomis-production-dba = { slack_channel_id = "C07HFLM47QX", escalation_policy = data.pagerduty_escalation_policy.shef_dba.id } # nomis_alarms_prod
   }
