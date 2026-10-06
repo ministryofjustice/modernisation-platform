@@ -21,7 +21,7 @@ jobs:
       issues: write
       pull-requests: write
       security-events: write
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/reusable-code-quality.yml@b70a7dc60395eb3df40beacbf221fcee459b4c01 # v6.2.8
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/reusable-code-quality.yml@4763c6d53a69bf2add0426f9f5b9b1d437abb8a7 # v6.2.10
     with:
       validate_all_codebase: ${{ github.event_name != 'pull_request' && 'true' || 'false' }}
       filter_regex_exclude: "(^|.*/)README\\.md$|(^|.*/)terraform/modules/.*\\.md$|(^|.*/)\\.github/workflows/documentation\\.yml$"
