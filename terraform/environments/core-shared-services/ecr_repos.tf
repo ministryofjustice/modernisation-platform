@@ -1307,7 +1307,7 @@ module "modernisation-platform-ai-builder-core" {
   app_name = "modernisation-platform-ai-builder-core"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["justice-eng-ai-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["justice-eng-ai-development"]}:root",
   ]
 
   pull_principals = [
@@ -1326,7 +1326,7 @@ module "modernisation-platform-ai-builder-user-applications" {
   app_name = "modernisation-platform-ai-builder-user-applications"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["justice-eng-ai-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["justice-eng-ai-development"]}:root",
   ]
 
   pull_principals = [
