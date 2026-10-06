@@ -392,11 +392,29 @@ resource "aws_route53_record" "legalservices_dmarc_spf" {
   records = ["v=DMARC1;p=reject;sp=reject;rua=mailto:dmarc-rua@dmarc.service.gov.uk"]
 }
 
-# The following CNAME record is added for CWA ALB new ACM certificate validation for legalservices.gov.uk domain.
+# The following CNAME record is added for CWA SAFE DB3 new ACM certificate validation for legalservices.gov.uk domain.
 resource "aws_route53_record" "cwa_acm_validation" {
   zone_id = aws_route53_zone.application_zones["legalservices"].zone_id
   name    = "_21667427ff395f693f91ad65b1435bbe.legalservices.gov.uk."
   type    = "CNAME"
   ttl     = 300
   records = ["_54d71d558b4c0c85fe8c13a28323d320.wzccmgtwzk.acm-validations.aws."]
+}
+
+# The following CNAME record is added for LAA-Production-CWA-ALB and AWS certificate validation for legalservices.gov.uk domain.
+resource "aws_route53_record" "cwa_alb_cert_validation" {
+  zone_id = aws_route53_zone.application_zones["legalservices"].zone_id
+  name    = "_76c0a5fdced561d7b941f06b69065a86.legalservices.gov.uk."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["_a735418ad9ce3ee8e8d687fabdf25db7.wzccmgtwzk.acm-validations.aws."]
+}
+
+# The following CNAME record is added for LAA-Production-CWA-App-Server-1 and AWS certificate validation for legalservices.gov.uk domain.
+resource "aws_route53_record" "cwa_app_server_cert_validation" {
+  zone_id = aws_route53_zone.application_zones["legalservices"].zone_id
+  name    = "_90d2329631af4721274b97ed1c59af70.legalservices.gov.uk."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["_f877cd5c36c818ba4a45e304a479089a.wzccmgtwzk.acm-validations.aws."]
 }
