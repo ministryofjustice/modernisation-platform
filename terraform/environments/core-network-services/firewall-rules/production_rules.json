@@ -682,8 +682,8 @@
   "moj_avd_001_production_to_mp": {
     "action": "PASS",
     "source_ip": "${moj-avd-001}",
-    "destination_ip": "10.26.56.26/32"
-    "destination_port": "[1521,1522,443]"
+    "destination_ip": "10.26.56.26/32",
+    "destination_port": "[1521,1522,443]",
     "protocol": "TCP"
   }
 }
