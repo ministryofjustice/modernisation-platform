@@ -638,8 +638,8 @@ data "aws_iam_policy_document" "analytics_engineering" {
       "lakeformation:GetDataAccess",
       "lakeformation:GetResourceLFTags",
       "lakeformation:GetLFTag",
-      "lakeformation:ListLFTags"
-
+      "lakeformation:ListLFTags",
+      "lakeformation:ListPermissions"
     ]
     resources = ["*"]
   }
