@@ -175,10 +175,10 @@ resource "aws_route53_record" "modernisation_platform_ai_builder_prod" {
   zone_id         = aws_route53_zone.modernisation-platform.zone_id
 
   records = [
-    "REPLACE_WITH_PROD_NAME_SERVER_1",
-    "REPLACE_WITH_PROD_NAME_SERVER_2",
-    "REPLACE_WITH_PROD_NAME_SERVER_3",
-    "REPLACE_WITH_PROD_NAME_SERVER_4"
+    "ns-365.awsdns-45.com.",
+    "ns-1889.awsdns-44.co.uk.",
+    "ns-704.awsdns-24.net.",
+    "ns-1373.awsdns-43.org."
   ]
 }
 
