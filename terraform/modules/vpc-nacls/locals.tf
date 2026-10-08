@@ -117,7 +117,7 @@ locals {
       workspaces_cidr = "10.27.130.0/23"
       subnet_name     = "general-private"
     },
-        {
+    {
       laa_vpc_name    = "laa-development"
       rule_number     = 2201
       from_port       = 9501
