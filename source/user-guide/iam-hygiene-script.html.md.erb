@@ -248,6 +248,60 @@ Thresholds can be overridden via environment variables.
 
 ---
 
+## Age-based key rotation enforcement
+
+**Status:** Disabled by default
+
+The script supports age-based key rotation enforcement in addition to inactivity-based classification.
+
+### Enabling age-based enforcement
+
+Set the following environment variables:
+
+- `KEY_AGE_ENFORCEMENT_ENABLED=true`
+- `KEY_AGE_NOTIFY_DAYS` – notify when key age reaches this threshold
+- `KEY_AGE_DISABLE_DAYS` – disable when key age reaches this threshold
+- `KEY_AGE_DELETE_DAYS` – delete when key age reaches this threshold
+
+### Scope
+
+Age-based enforcement applies only to IAM users tagged:
+
+- Key: `AccessKeyRotation` (configurable via `KEY_ROTATION_TAG_KEY`)
+- Value: `managed` (configurable via `KEY_ROTATION_TAG_VALUE`)
+
+Users without this tag are excluded from age-based enforcement.
+
+### Exclusions
+
+To exclude specific users or keys:
+
+- Do not tag them with `AccessKeyRotation=managed`
+- Production accounts and break-glass credentials should remain untagged
+
+### Dry-run verification
+
+Before enabling age-based enforcement:
+
+1. Run the script in dry-run mode with age thresholds configured
+2. Review `iam_hygiene.json` for classification accuracy
+3. Confirm no unexpected keys are flagged
+4. Validate exclusions are correctly applied
+5. Run in dry-run mode for at least 14 days in development accounts
+6. Obtain approval from the Modernisation Platform team and Security team
+
+### Recovery
+
+If age-based enforcement causes unintended access loss:
+
+1. Set `KEY_AGE_ENFORCEMENT_ENABLED=false` to disable enforcement
+2. Restore the previous configuration
+3. Identify affected principals from audit output
+4. Have each owner rotate or restore access through the approved credential process
+5. Escalate unresolved issues to the Modernisation Platform team and Security team
+
+---
+
 ## Inactivity calculation
 
 ### Access keys
@@ -354,3 +408,7 @@ All permissions are currently scoped to `*`.
 - Review `iam_hygiene.json` before enabling enforcement
 - Ensure Notify templates and IAM user tags are correctly configured
 - User deletion is destructive and should be enabled with caution
+- Age-based enforcement is disabled by default and requires explicit enablement
+- Tag users with `AccessKeyRotation=managed` only after confirming they are in scope
+- Production accounts and break-glass credentials must remain excluded
+- Run dry-run validation for at least 14 days before enabling age-based enforcement
