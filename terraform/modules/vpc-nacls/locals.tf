@@ -94,6 +94,22 @@ locals {
       subnet_name     = "general-private"
     },
     {
+      laa_vpc_name    = "laa-development"
+      rule_number     = 2201
+      from_port       = 9501
+      to_port         = 9501
+      workspaces_cidr = "10.26.130.0/23"
+      subnet_name     = "general-private"
+    },
+    {
+      laa_vpc_name    = "laa-development"
+      rule_number     = 2202
+      from_port       = 9503
+      to_port         = 9503
+      workspaces_cidr = "10.26.130.0/23"
+      subnet_name     = "general-private"
+    },
+    {
       laa_vpc_name    = "laa-test"
       rule_number     = 2200
       from_port       = 443
