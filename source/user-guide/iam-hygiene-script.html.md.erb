@@ -232,11 +232,19 @@ In dry-run mode:
 
 Defaults (in days):
 
-### Access keys
+### Access keys (inactivity-based)
 
 - Notify: `KEY_NOTIFY_DAYS=30`
 - Disable: `KEY_DISABLE_DAYS=60`
 - Delete: `KEY_DELETE_DAYS=150`
+
+### Access keys (age-based rotation enforcement)
+
+- Notify: `KEY_MAX_AGE_NOTIFY_DAYS=0` (disabled by default)
+- Disable: `KEY_MAX_AGE_DISABLE_DAYS=0` (disabled by default)
+- Delete: `KEY_MAX_AGE_DELETE_DAYS=0` (disabled by default)
+
+**Age-based enforcement is disabled by default (0 days).** Set to a positive value to enable.
 
 ### Users
 
@@ -244,18 +252,24 @@ Defaults (in days):
 - Disable: `USER_DISABLE_DAYS=60`
 - Delete: `USER_DELETE_DAYS=150`
 
-Thresholds can be overridden via environment variables.
+All thresholds can be overridden via environment variables.
 
 ---
 
-## Inactivity calculation
+## Inactivity and age calculation
 
-### Access keys
+### Access keys (inactivity)
 
 - If the key has been used:
   - Inactivity = days since last use
 - If the key has never been used:
   - Inactivity = days since creation
+
+### Access keys (age-based rotation)
+
+- Age = days since key creation
+- Applied independently of inactivity
+- Both inactivity and age thresholds are evaluated; the most restrictive action applies
 
 ### Users
 
@@ -350,7 +364,18 @@ All permissions are currently scoped to `*`.
 
 ## Operational guidance
 
-- Always run in **dry-run mode first**
-- Review `iam_hygiene.json` before enabling enforcement
+### Enabling age-based key rotation
+
+1. **Always run in dry-run mode first** with proposed thresholds
+2. Review `iam_hygiene.json` and classification output
+3. Confirm affected users and workloads with stakeholders
+4. Set `KEY_MAX_AGE_NOTIFY_DAYS`, `KEY_MAX_AGE_DISABLE_DAYS`, and `KEY_MAX_AGE_DELETE_DAYS` to positive values
+5. Run in live mode only after accountable review
+
+### General guidance
+
+- Age-based enforcement is **disabled by default** (all thresholds = 0)
 - Ensure Notify templates and IAM user tags are correctly configured
 - User deletion is destructive and should be enabled with caution
+- Both inactivity and age thresholds are evaluated independently
+- Document exclusions and their accountable owners
