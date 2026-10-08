@@ -39,6 +39,7 @@ locals {
     vodafone_wan_nicts_aggregate        = "10.80.0.0/12" # for devices connected to Prison Networks
     youth-justice-networking-production = "10.20.224.0/21"
     xsiam-prod-vpc                      = "10.180.96.0/22"
+    moj-avd-001                         = "10.192.64.0/21"
 
     # hmpps azure cidr ranges
     noms-live-vnet         = "10.40.0.0/18"

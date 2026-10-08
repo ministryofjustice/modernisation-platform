@@ -678,5 +678,12 @@
     "destination_ip": "${noms-transit-live-fw-1}",
     "destination_port": "445",
     "protocol": "TCP"
+  },
+  "moj_avd_001_production_to_mp": {
+    "action": "PASS",
+    "source_ip": "${moj-avd-001}",
+    "destination_ip": "${laa-development}",
+    "destination_port": "$LAA_MP_WORKSPACES_TCP",
+    "protocol": "TCP"
   }
 }
