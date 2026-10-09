@@ -1,122 +1,113 @@
 #!/bin/bash
 
-# Check required programs are installed
-check_requirements() {
-   local required_programs=("terraform" "jq")
-   local missing=0
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+log_file="$SCRIPT_DIR/execution_log.txt"
 
-   for program in "${required_programs[@]}"; do
-        if ! command -v "$program" &> /dev/null; then
+scripts=(
+    "$SCRIPT_DIR/delete-tf-state.sh"
+    "$SCRIPT_DIR/update-files.sh"
+    "$SCRIPT_DIR/delete-tf-resources.sh"
+    "$SCRIPT_DIR/delete-tf-workspaces.sh"
+    "$SCRIPT_DIR/delete-files.sh"
+)
+
+# Check required programs are installed.
+check_requirements() {
+    local required_programs=("terraform" "jq")
+    local missing=0
+
+    for program in "${required_programs[@]}"; do
+        if ! command -v "$program" &>/dev/null; then
             echo "Error: $program is not installed."
             missing=1
         fi
     done
-   
-   if [ $missing -eq 1 ]; then
+
+    if [[ "$missing" -eq 1 ]]; then
         echo "Please install the missing programs and try again."
         exit 1
-    else
-        echo "All required programs are installed."
     fi
+
+    echo "All required programs are installed."
+}
+
+# Execute a script and record its result.
+execute_script() {
+    local script_path="$1"
+    local status
+
+    printf '%s - Executing %s...\n' \
+        "$(date '+%Y-%m-%d %H:%M:%S')" \
+        "$script_path" |
+        tee -a "$log_file"
+
+    # Execute without redirecting stdout or stderr to allow user interaction.
+    if "$script_path"; then
+        printf '%s - Success: %s completed successfully.\n' \
+            "$(date '+%Y-%m-%d %H:%M:%S')" \
+            "$script_path" |
+            tee -a "$log_file"
+
+        return 0
+    else
+        status=$?
+
+        printf '%s - Error: %s failed with status %s.\n' \
+            "$(date '+%Y-%m-%d %H:%M:%S')" \
+            "$script_path" \
+            "$status" |
+            tee -a "$log_file"
+
+        return "$status"
+    fi
+}
+
+run_script_confirmation() {
+    local response
+
+    read -r -p "Do you want to continue? (y/n) " response
+    [[ "$response" =~ ^[Yy]$ ]]
 }
 
 check_requirements
 
-# Define script names
-script1="./delete-tf-state.sh"
-script2="./update-files.sh"
-script3="./delete-tf-resources.sh"
-script4="./delete-tf-workspaces.sh"
-script5="./delete-files.sh"
-log_file="execution_log.txt"
+# Initialise or clear the log file.
+: > "$log_file"
 
+# Ensure the child scripts are executable.
+chmod +x "${scripts[@]}"
 
-# Initialize or clear the log file at the start of the script
-> "$log_file"
+printf '%s\n' \
+    "Before you execute this script:" \
+    "" \
+    "* Be aware that some resources, such as S3 buckets, cannot be destroyed until you manually empty all objects and versions in them." \
+    "" \
+    "* Ensure that you have fetched the most recent updates in your local MP and MPE directories by executing a git pull command." \
+    "" \
+    "* Ensure that you have deleted all local .terraform directories and .terraform.lock.hcl files." \
+    ""
 
-
-# Function to execute a script
-execute_script() {
-   local script_path="$1"
-   echo "$(date "+%Y-%m-%d %H:%M:%S") - Executing $script_path..." | tee -a "$log_file"
-   # Execute the script without redirecting stdout/stderr to allow for user interaction
-   if "$script_path"; then
-       echo "$(date "+%Y-%m-%d %H:%M:%S") - Success: $script_path completed successfully." | tee -a "$log_file"
-       return 0
-   else
-       local status=$?
-       echo "$(date "+%Y-%m-%d %H:%M:%S") - Error: $script_path failed with status $status." | tee -a "$log_file"
-       return $status
-   fi
-}
-
-
-# Ensure scripts are executable
-chmod +x "$script1" "$script2" "$script3" "$script4" "$script5"
-
-# Warning message
-
-echo -e "Before you execute this script:
-
-* Be aware that some resources such as s3 buckets cannot be destroyed until you manually empty all the objects and versions in them.
-
-* Ensure that you have fetched the most recent updates in your local MP and MPE directories by executing a git pull command.
-
-* Ensure that you have deleted all local .terraform and .terraform.lock.hcl files
-
-"
-
-#Ask for confirmation
-run_script_confirmation() {
-    read -p "Do you want to continue? (y/n) " response
-    if [[ $response =~ ^[Yy]$ ]]; then
-        return 0
-    else
-        return 1
-    fi
-}
-
-if run_script_confirmation; then
-   # Execute scripts in sequence, checking for success after each
-   echo "$(date "+%Y-%m-%d %H:%M:%S") - Starting to execute scripts..." | tee -a "$log_file"
-
-   execute_script "$script1"
-   status=$?
-   if [ $status -ne 0 ]; then
-      echo "$(date "+%Y-%m-%d %H:%M:%S") - Stopping execution due to failure." | tee -a "$log_file"
-      exit $status
-   fi
-
-   execute_script "$script2"
-   status=$?
-   if [ $status -ne 0 ]; then
-      echo "$(date "+%Y-%m-%d %H:%M:%S") - Stopping execution due to failure." | tee -a "$log_file"
-      exit $status
-   fi
-
-   execute_script "$script3"
-   status=$?
-   if [ $status -ne 0 ]; then
-      echo "$(date "+%Y-%m-%d %H:%M:%S") - Stopping execution due to failure." | tee -a "$log_file"
-      exit $status
-   fi
-
-   execute_script "$script4"
-   status=$?
-   if [ $status -ne 0 ]; then
-      echo "$(date "+%Y-%m-%d %H:%M:%S") - Stopping execution due to failure." | tee -a "$log_file"
-      exit $status
-   fi
-
-   execute_script "$script5"
-   status=$?
-   if [ $status -ne 0 ]; then
-      echo "$(date "+%Y-%m-%d %H:%M:%S") - Stopping execution due to failure." | tee -a "$log_file"
-      exit $status
-   fi
-
-   echo "$(date "+%Y-%m-%d %H:%M:%S") - All scripts executed successfully." | tee -a "$log_file"
-
-else
-   echo "Cancelling script run"
+if ! run_script_confirmation; then
+    echo "Cancelling script run"
+    exit 0
 fi
+
+printf '%s - Starting to execute scripts...\n' \
+    "$(date '+%Y-%m-%d %H:%M:%S')" |
+    tee -a "$log_file"
+
+for script_path in "${scripts[@]}"; do
+    if ! execute_script "$script_path"; then
+        status=$?
+
+        printf '%s - Stopping execution due to failure.\n' \
+            "$(date '+%Y-%m-%d %H:%M:%S')" |
+            tee -a "$log_file"
+
+        exit "$status"
+    fi
+done
+
+printf '%s - All scripts executed successfully.\n' \
+    "$(date '+%Y-%m-%d %H:%M:%S')" |
+    tee -a "$log_file"
