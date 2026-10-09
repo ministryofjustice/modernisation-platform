@@ -232,11 +232,21 @@ In dry-run mode:
 
 Defaults (in days):
 
-### Access keys
+### Access keys (inactivity-based)
 
 - Notify: `KEY_NOTIFY_DAYS=30`
 - Disable: `KEY_DISABLE_DAYS=60`
 - Delete: `KEY_DELETE_DAYS=150`
+
+### Access keys (age-based rotation enforcement)
+
+**Disabled by default.** Set `KEY_MAX_AGE_ENABLED=true` to enable.
+
+- Notify: `KEY_MAX_AGE_NOTIFY_DAYS=75`
+- Disable: `KEY_MAX_AGE_DISABLE_DAYS=85`
+- Delete: `KEY_MAX_AGE_DELETE_DAYS=90`
+
+**Important:** Age-based enforcement applies to all keys regardless of usage. Always run in dry-run mode first and review output before enabling.
 
 ### Users
 
@@ -244,7 +254,7 @@ Defaults (in days):
 - Disable: `USER_DISABLE_DAYS=60`
 - Delete: `USER_DELETE_DAYS=150`
 
-Thresholds can be overridden via environment variables.
+All thresholds can be overridden via environment variables.
 
 ---
 
@@ -256,6 +266,15 @@ Thresholds can be overridden via environment variables.
   - Inactivity = days since last use
 - If the key has never been used:
   - Inactivity = days since creation
+
+### Access key age-based rotation
+
+When `KEY_MAX_AGE_ENABLED=true`:
+
+- Key age = days since creation
+- Applied independently of inactivity classification
+- Both inactivity and age classifications can apply to the same key
+- The most restrictive action (delete > disable > notify) takes precedence
 
 ### Users
 
@@ -350,7 +369,19 @@ All permissions are currently scoped to `*`.
 
 ## Operational guidance
 
+### Before enabling age-based rotation
+
+1. Run in **dry-run mode** with `KEY_MAX_AGE_ENABLED=true` and `DRY_RUN=true`
+2. Review `iam_hygiene.json` to identify affected keys
+3. Confirm scope excludes application credentials requiring migration
+4. Notify affected users and workload owners
+5. Document rollback procedure and escalation contacts
+6. Set appropriate thresholds (notify < disable < delete)
+
+### General guidance
+
 - Always run in **dry-run mode first**
 - Review `iam_hygiene.json` before enabling enforcement
 - Ensure Notify templates and IAM user tags are correctly configured
 - User deletion is destructive and should be enabled with caution
+- Age-based enforcement is **disabled by default** and requires explicit enablement
