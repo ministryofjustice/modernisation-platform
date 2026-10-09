@@ -438,7 +438,7 @@ resource "aws_route53_record" "cwa_db_safedb_cert_validation" {
 }
 
 # The following CNAME record is added for LAA-Production-CWA-Safe-Database2 and AWS certificate validation for legalservices.gov.uk domain.
-resource "aws_route53_record" "cwa_db_safedb_cert_validation" {
+resource "aws_route53_record" "cwa_db_safedb2_cert_validation" {
   zone_id = aws_route53_zone.application_zones["legalservices"].zone_id
   name    = "_67bd3f05dd1544a3290cabea03c1b510.legalservices.gov.uk."
   type    = "CNAME"
