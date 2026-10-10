@@ -378,6 +378,13 @@
     "destination_port": "636",
     "protocol": "TCP"
   },
+  "delius_prod_to_hmpps_production_dss_443": {
+    "action": "PASS",
+    "source_ip": "${delius-prod}",
+    "destination_ip": "${hmpps-production}",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
   "cp_to_mp_hmpps_production_ldap": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
@@ -677,13 +684,6 @@
     "source_ip": "${hmpps-production}",
     "destination_ip": "${noms-transit-live-fw-1}",
     "destination_port": "445",
-    "protocol": "TCP"
-  },
-  "moj_avd_001_production_to_mp": {
-    "action": "PASS",
-    "source_ip": "${moj-avd-001}",
-    "destination_ip": "${laa-development}",
-    "destination_port": "$LAA_MP_WORKSPACES_TCP",
     "protocol": "TCP"
   }
 }
