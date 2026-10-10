@@ -329,6 +329,13 @@
     "destination_port": "1522",
     "protocol": "TCP"
   },
+  "delius_prod_to_hmpps_production_dss_443": {
+    "action": "PASS",
+    "source_ip": "${delius-prod}",
+    "destination_ip": "${hmpps-production}",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
   "hmpps_production_to_delius_eng_prod_oracledb": {
     "action": "PASS",
     "source_ip": "${hmpps-production}",
