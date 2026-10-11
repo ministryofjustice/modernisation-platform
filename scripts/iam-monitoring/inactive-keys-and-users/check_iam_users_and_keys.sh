@@ -79,6 +79,14 @@ fi
 : "${USER_DISABLE_DAYS:=60}"
 : "${USER_DELETE_DAYS:=150}"
 
+# Age-based rotation enforcement (disabled by default)
+: "${KEY_AGE_NOTIFY_DAYS:=}"
+: "${KEY_AGE_DISABLE_DAYS:=}"
+: "${KEY_AGE_DELETE_DAYS:=}"
+KEY_AGE_ENFORCEMENT_ENABLED="${KEY_AGE_ENFORCEMENT_ENABLED:-false}"
+KEY_ROTATION_TAG_KEY="${KEY_ROTATION_TAG_KEY:-AccessKeyRotation}"
+KEY_ROTATION_TAG_VALUE="${KEY_ROTATION_TAG_VALUE:-managed}"
+
 IAM_USER_PATH_PREFIX="${IAM_USER_PATH_PREFIX:-}"
 IAM_USER_TAG_KEY="${IAM_USER_TAG_KEY:-}"      # optional filter
 IAM_USER_TAG_VALUE="${IAM_USER_TAG_VALUE:-}"  # optional filter value
@@ -94,6 +102,14 @@ echo "Using user thresholds (days):"
 echo "  notify : ${USER_NOTIFY_DAYS}"
 echo "  disable: ${USER_DISABLE_DAYS}"
 echo "  delete : ${USER_DELETE_DAYS}"
+echo "Age-based key rotation enforcement:"
+echo "  enabled: ${KEY_AGE_ENFORCEMENT_ENABLED}"
+if [[ "${KEY_AGE_ENFORCEMENT_ENABLED}" == "true" ]]; then
+  echo "  notify at age : ${KEY_AGE_NOTIFY_DAYS:-<not set>} days"
+  echo "  disable at age: ${KEY_AGE_DISABLE_DAYS:-<not set>} days"
+  echo "  delete at age : ${KEY_AGE_DELETE_DAYS:-<not set>} days"
+  echo "  scope tag     : ${KEY_ROTATION_TAG_KEY}=${KEY_ROTATION_TAG_VALUE}"
+fi
 echo "Optional filters:"
 echo "  IAM_USER_PATH_PREFIX    = ${IAM_USER_PATH_PREFIX:-<none>}"
 echo "  IAM_USER_TAG_KEY        = ${IAM_USER_TAG_KEY:-<none>}"
@@ -222,6 +238,17 @@ while [[ "$MORE" == "true" ]]; do
       fi
     fi
 
+    # Check if user is in scope for age-based rotation enforcement
+    USER_IN_AGE_SCOPE="false"
+    if [[ "${KEY_AGE_ENFORCEMENT_ENABLED}" == "true" ]]; then
+      AGE_TAG="$(echo "$USER_TAGS_JSON" | jq -r --arg k "$KEY_ROTATION_TAG_KEY" --arg v "$KEY_ROTATION_TAG_VALUE" '
+        .Tags[]? | select(.Key == $k and .Value == $v) | .Key
+      ' || true)"
+      if [[ -n "$AGE_TAG" ]]; then
+        USER_IN_AGE_SCOPE="true"
+      fi
+    fi
+
     # Optional path filter
     if [[ -n "$IAM_USER_PATH_PREFIX" && "$USER_PATH" != "$IAM_USER_PATH_PREFIX"* ]]; then
       continue
@@ -286,6 +313,7 @@ while [[ "$MORE" == "true" ]]; do
       SHOULD_DELETE="false"
       REASONS=()
 
+      # Inactivity-based classification (existing behavior)
       if [[ -n "$INACTIVE_DAYS" ]]; then
         if (( INACTIVE_DAYS >= KEY_DELETE_DAYS )); then
           SHOULD_DELETE="true"
@@ -296,6 +324,20 @@ while [[ "$MORE" == "true" ]]; do
         elif (( INACTIVE_DAYS >= KEY_NOTIFY_DAYS )); then
           SHOULD_NOTIFY="true"
           REASONS+=("inactive_ge_${KEY_NOTIFY_DAYS}d")
+        fi
+      fi
+
+      # Age-based classification (new enforcement, disabled by default)
+      if [[ "${USER_IN_AGE_SCOPE}" == "true" && -n "${KEY_AGE_DAYS}" ]]; then
+        if [[ -n "${KEY_AGE_DELETE_DAYS}" ]] && (( KEY_AGE_DAYS >= KEY_AGE_DELETE_DAYS )); then
+          SHOULD_DELETE="true"
+          REASONS+=("age_ge_${KEY_AGE_DELETE_DAYS}d")
+        elif [[ -n "${KEY_AGE_DISABLE_DAYS}" ]] && (( KEY_AGE_DAYS >= KEY_AGE_DISABLE_DAYS )); then
+          SHOULD_DISABLE="true"
+          REASONS+=("age_ge_${KEY_AGE_DISABLE_DAYS}d")
+        elif [[ -n "${KEY_AGE_NOTIFY_DAYS}" ]] && (( KEY_AGE_DAYS >= KEY_AGE_NOTIFY_DAYS )); then
+          SHOULD_NOTIFY="true"
+          REASONS+=("age_ge_${KEY_AGE_NOTIFY_DAYS}d")
         fi
       fi
 
