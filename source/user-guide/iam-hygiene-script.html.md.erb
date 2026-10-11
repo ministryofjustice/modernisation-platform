@@ -232,11 +232,20 @@ In dry-run mode:
 
 Defaults (in days):
 
-### Access keys
+### Access keys (inactivity-based)
 
 - Notify: `KEY_NOTIFY_DAYS=30`
 - Disable: `KEY_DISABLE_DAYS=60`
 - Delete: `KEY_DELETE_DAYS=150`
+
+### Access keys (age-based rotation)
+
+- Notify: `KEY_MAX_AGE_NOTIFY_DAYS=80`
+- Disable: `KEY_MAX_AGE_DISABLE_DAYS=90`
+- Delete: `KEY_MAX_AGE_DELETE_DAYS=100`
+- Enforcement: `KEY_MAX_AGE_ENFORCEMENT=disabled`
+
+**Important:** Age-based enforcement defaults to `disabled`. Set `KEY_MAX_AGE_ENFORCEMENT=enabled` only after dry-run verification in the approved development account.
 
 ### Users
 
@@ -248,14 +257,20 @@ Thresholds can be overridden via environment variables.
 
 ---
 
-## Inactivity calculation
+## Inactivity and age calculation
 
-### Access keys
+### Access keys (inactivity)
 
 - If the key has been used:
   - Inactivity = days since last use
 - If the key has never been used:
   - Inactivity = days since creation
+
+### Access keys (age-based rotation)
+
+- Age = days since key creation
+- Age-based actions are applied **only when** `KEY_MAX_AGE_ENFORCEMENT=enabled`
+- Both inactivity and age classifications are evaluated; the most restrictive action applies
 
 ### Users
 
@@ -352,5 +367,11 @@ All permissions are currently scoped to `*`.
 
 - Always run in **dry-run mode first**
 - Review `iam_hygiene.json` before enabling enforcement
+- Age-based rotation enforcement defaults to **disabled**
+- Enable age-based enforcement only after:
+  - Running fixture tests
+  - Completing a 14-day dry run in the approved development account
+  - Two Modernisation Platform reviewers confirm thresholds, scope, exclusions, and zero unexpected active-key candidates
 - Ensure Notify templates and IAM user tags are correctly configured
 - User deletion is destructive and should be enabled with caution
+- To disable age-based enforcement: set `KEY_MAX_AGE_ENFORCEMENT=disabled` or restore the previous script revision
