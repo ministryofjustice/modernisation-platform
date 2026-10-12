@@ -25,6 +25,10 @@
         {
           "sso_group_name": "modernisation-platform-audit",
           "level": "security-audit"
+        },
+        {
+          "sso_group_name": "laa-cyber-security-team",
+          "level": "developer"
         }
       ],
       "nuke": "exclude"
@@ -52,6 +56,10 @@
         {
           "sso_group_name": "modernisation-platform-audit",
           "level": "security-audit"
+        },
+        {
+          "sso_group_name": "laa-cyber-security-team",
+          "level": "developer"
         }
       ]
     },
