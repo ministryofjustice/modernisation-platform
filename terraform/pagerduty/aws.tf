@@ -38,6 +38,7 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     iaps_prod_alarms                      = pagerduty_service_integration.iaps_prod_cloudwatch.integration_key,
     integration_hub_high_priority         = pagerduty_service_integration.integration_hub_high_priority_alerts.integration_key
     integration_hub_low_priority          = pagerduty_service_integration.integration_hub_low_priority_alerts.integration_key
+    integration_hub_deployment_failure    = pagerduty_service_integration.integration_hub_deployment_failure_alerts.integration_key
     jitbit_nonprod_alarms                 = pagerduty_service_integration.jitbit_nonprod_cloudwatch.integration_key,
     jitbit_prod_alarms                    = pagerduty_service_integration.jitbit_prod_cloudwatch.integration_key,
     laa_apex_nonprod_alarms               = pagerduty_service_integration.apex_non_prod.integration_key

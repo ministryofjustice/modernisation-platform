@@ -2745,3 +2745,47 @@ resource "pagerduty_slack_connection" "integration_hub_low_priority_alerts" {
     priorities = ["*"]
   }
 }
+
+# Slack channel: #integration_hub_deployment_failure_alerts
+resource "pagerduty_service" "integration_hub_deployment_failure_alerts" {
+  name                    = "Integration Hub File Transfer Deployment Failures"
+  description             = "Failed Integration Hub File Transfer deployments on main"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "integration_hub_deployment_failure_alerts" {
+  name    = "GitHub Actions"
+  service = pagerduty_service.integration_hub_deployment_failure_alerts.id
+  type    = "events_api_v2_inbound_integration"
+}
+
+resource "pagerduty_slack_connection" "integration_hub_deployment_failure_alerts" {
+  source_id         = pagerduty_service.integration_hub_deployment_failure_alerts.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C0C8HD0J5JS"
+  notification_type = "responder"
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+  }
+}
