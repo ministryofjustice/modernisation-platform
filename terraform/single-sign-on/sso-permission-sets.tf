@@ -750,6 +750,15 @@ data "aws_iam_policy_document" "em_reconciliation_approver" {
   }
 
   statement {
+    sid    = "RedeemEMSlackOAuthCode"
+    effect = "Allow"
+    actions = [
+      "chatbot:RedeemSlackOauthCode",
+    ]
+    resources = ["*"]
+  }
+
+  statement {
     sid    = "ReadIAMRolesForChatbot"
     effect = "Allow"
     actions = [
@@ -759,6 +768,7 @@ data "aws_iam_policy_document" "em_reconciliation_approver" {
     resources = ["*"]
   }
 }
+
 
 
 resource "aws_ssoadmin_permission_set_inline_policy" "em_reconciliation_approver" {
