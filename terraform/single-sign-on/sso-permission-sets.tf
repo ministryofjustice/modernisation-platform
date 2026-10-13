@@ -742,8 +742,19 @@ data "aws_iam_policy_document" "em_reconciliation_approver" {
     sid    = "ReadEMSlackConfiguration"
     effect = "Allow"
     actions = [
-      "chatbot:DescribeSlackChannelConfigurations",
-      "chatbot:GetSlackOauthParameters",
+      "chatbot:Describe*",
+      "chatbot:Get*",
+      "chatbot:List*",
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "ReadIAMRolesForChatbot"
+    effect = "Allow"
+    actions = [
+      "iam:GetRole",
+      "iam:ListRoles",
     ]
     resources = ["*"]
   }
