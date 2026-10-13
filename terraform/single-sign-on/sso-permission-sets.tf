@@ -720,26 +720,35 @@ resource "aws_ssoadmin_permission_set" "em_reconciliation_approver" {
   tags             = {}
 }
 
+
 data "aws_iam_policy_document" "em_reconciliation_approver" {
   statement {
     sid    = "PassEMReconciliationApproverToChatbot"
     effect = "Allow"
-
     actions = [
       "iam:PassRole",
     ]
-
     resources = [
       "arn:aws:iam::443370694497:role/downstream_reconciliation_approver",
     ]
-
     condition {
       test     = "StringEquals"
       variable = "iam:PassedToService"
       values   = ["chatbot.amazonaws.com"]
     }
   }
+
+  statement {
+    sid    = "ReadEMSlackConfiguration"
+    effect = "Allow"
+    actions = [
+      "chatbot:DescribeSlackChannelConfigurations",
+      "chatbot:GetSlackOauthParameters",
+    ]
+    resources = ["*"]
+  }
 }
+
 
 resource "aws_ssoadmin_permission_set_inline_policy" "em_reconciliation_approver" {
   provider           = aws.sso-management
