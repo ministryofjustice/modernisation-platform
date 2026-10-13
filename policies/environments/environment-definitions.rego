@@ -46,16 +46,6 @@ valid_em_reconciliation_approver(access) if {
   access.sso_group_name == "hmpps-electronic-monitoring-reconciliation-approvers"
 }
 
-deny contains msg if {
-  some environment in input.environments
-  some access in environment.access
-
-  access.level == "em-reconciliation-approver"
-  not valid_em_reconciliation_approver(access)
-
-  msg := "em-reconciliation-approver access is restricted to the EM reconciliation approvers group"
-}
-
 allowed_nuke := [
   "include",
   "exclude",
@@ -178,4 +168,15 @@ deny contains msg if {
   not startswith(input.filename, "environments/data-platform")
   not is_boolean(input.tags["critical-national-infrastructure"])
   msg := sprintf("`%v` has invalid `critical-national-infrastructure` value: got `%v`, expected a boolean (true or false)", [input.filename, input.tags["critical-national-infrastructure"]])
+}
+
+
+deny contains msg if {
+  msg := "em-reconciliation-approver access is restricted to the EM reconciliation approvers group"
+
+  some environment in input.environments
+  some access in environment.access
+
+  access.level == "em-reconciliation-approver"
+  not valid_em_reconciliation_approver(access)
 }
