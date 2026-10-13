@@ -21,6 +21,7 @@ allowed_access := [
   "data-engineer",
   "data-scientist",
   "developer",
+  "em-reconciliation-approver",
   "instance-access",
   "instance-management",
   "migration",
@@ -39,6 +40,11 @@ allowed_access := [
   "workspace-user-admin",
   "workspace-admin"
 ]
+
+valid_em_reconciliation_approver(access) if {
+  input.filename == "environments/electronic-monitoring-data.json"
+  access.sso_group_name == "hmpps-electronic-monitoring-reconciliation-approvers"
+}
 
 allowed_nuke := [
   "include",
@@ -162,4 +168,15 @@ deny contains msg if {
   not startswith(input.filename, "environments/data-platform")
   not is_boolean(input.tags["critical-national-infrastructure"])
   msg := sprintf("`%v` has invalid `critical-national-infrastructure` value: got `%v`, expected a boolean (true or false)", [input.filename, input.tags["critical-national-infrastructure"]])
+}
+
+
+deny contains msg if {
+  msg := "em-reconciliation-approver access is restricted to the EM reconciliation approvers group"
+
+  some environment in input.environments
+  some access in environment.access
+
+  access.level == "em-reconciliation-approver"
+  not valid_em_reconciliation_approver(access)
 }

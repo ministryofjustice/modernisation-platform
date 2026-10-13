@@ -709,3 +709,42 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
     path = "/"
   }
 }
+
+# EM historical reconciliation approval - preprod only
+resource "aws_ssoadmin_permission_set" "em_reconciliation_approver" {
+  provider         = aws.sso-management
+  name             = "em-reconciliation-approver"
+  description      = "EM historical reconciliation approver role mapping in preprod"
+  instance_arn     = local.sso_admin_instance_arn
+  session_duration = "PT1H"
+  tags             = {}
+}
+
+data "aws_iam_policy_document" "em_reconciliation_approver" {
+  statement {
+    sid    = "PassEMReconciliationApproverToChatbot"
+    effect = "Allow"
+
+    actions = [
+      "iam:PassRole",
+    ]
+
+    resources = [
+      "arn:aws:iam::443370694497:role/downstream_reconciliation_approver",
+    ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "iam:PassedToService"
+      values   = ["chatbot.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_ssoadmin_permission_set_inline_policy" "em_reconciliation_approver" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.em_reconciliation_approver.arn
+  inline_policy      = data.aws_iam_policy_document.em_reconciliation_approver.json
+}
+

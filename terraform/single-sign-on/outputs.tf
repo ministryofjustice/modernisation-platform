@@ -94,3 +94,10 @@ output "workspace_user_admin" {
 output "workspace_admin" {
   value = aws_ssoadmin_permission_set.modernisation_platform_workspace_admin.arn
 }
+
+
+output "em_reconciliation_approver_permission_set_arn" {
+  description = "Permission set ARN for EM reconciliation approval role mapping"
+  value       = aws_ssoadmin_permission_set.em_reconciliation_approver.arn
+}
+
