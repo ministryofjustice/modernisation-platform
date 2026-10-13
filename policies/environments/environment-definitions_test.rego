@@ -43,11 +43,73 @@ test_business_units_character if {
 }
 
 test_unexpected_access if {
-  deny["`example.json` uses an unexpected access level: got `incorrect-access`, expected one of: administrator, analytics-engineer, data-engineer, data-scientist, developer, instance-access, instance-management, migration, mwaa-user, platform-engineer-admin, read-only, secrets-manager-editor, reporting-operations, sandbox, security-audit, ssm-session-access, view-only, powerbi-user, fleet-manager, quicksight-admin, workspace-user-admin, workspace-admin"] with input as { "filename": "example.json", "environments": [{"access": [{"level": "incorrect-access"}]}]}
+  deny["`example.json` uses an unexpected access level: got `incorrect-access`, expected one of: administrator, analytics-engineer, data-engineer, data-scientist, developer, em-reconciliation-approver, instance-access, instance-management, migration, mwaa-user, platform-engineer-admin, read-only, secrets-manager-editor, reporting-operations, sandbox, security-audit, ssm-session-access, view-only, powerbi-user, fleet-manager, quicksight-admin, workspace-user-admin, workspace-admin"] with input as { "filename": "example.json", "environments": [{"access": [{"level": "incorrect-access"}]}]}
 }
 
 test_unexpected_access_assignment if {
   deny["`example.json` uses `powerbi-user` access level but is not an analytical platform or sprinkler account"] with input as { "filename": "example.json", "environments": [{"access": [{"level": "powerbi-user"}]}]}
+}
+
+test_em_reconciliation_approver_valid_preprod if {
+  valid_em_reconciliation_approver({
+    "sso_group_name": "hmpps-electronic-monitoring-reconciliation-approvers"
+  }) with input as {
+    "filename": "environments/electronic-monitoring-data.json"
+  }
+}
+
+test_em_reconciliation_approver_valid_for_future_production if {
+  test_input := {
+    "filename": "environments/electronic-monitoring-data.json",
+    "environments": [
+      {
+        "name": "production",
+        "access": [
+          {
+            "sso_group_name": "hmpps-electronic-monitoring-reconciliation-approvers",
+            "level": "em-reconciliation-approver"
+          }
+        ]
+      }
+    ]
+  }
+
+  message := "em-reconciliation-approver access is restricted to the EM reconciliation approvers group"
+  not deny[message] with input as test_input
+}
+
+test_em_reconciliation_approver_rejects_other_group if {
+  deny["em-reconciliation-approver access is restricted to the EM reconciliation approvers group"] with input as {
+    "filename": "environments/electronic-monitoring-data.json",
+    "environments": [
+      {
+        "name": "preproduction",
+        "access": [
+          {
+            "sso_group_name": "hmpps-electronic-monitoring-data-store",
+            "level": "em-reconciliation-approver"
+          }
+        ]
+      }
+    ]
+  }
+}
+
+test_em_reconciliation_approver_rejects_other_environment_file if {
+  deny["em-reconciliation-approver access is restricted to the EM reconciliation approvers group"] with input as {
+    "filename": "environments/another-application.json",
+    "environments": [
+      {
+        "name": "preproduction",
+        "access": [
+          {
+            "sso_group_name": "hmpps-electronic-monitoring-reconciliation-approvers",
+            "level": "em-reconciliation-approver"
+          }
+        ]
+      }
+    ]
+  }
 }
 
 test_unexpected_nuke if {
@@ -59,7 +121,7 @@ test_invalid_email if {
 }
 
 test_critical_national_infastructure_empty if {
-    deny["`example.json` is missing the `critical-national-infrastructure` field"] with input as { 
+    deny["`example.json` is missing the `critical-national-infrastructure` field"] with input as {
         "filename": "example.json",
         "tags": {}
     }

@@ -21,6 +21,7 @@ allowed_access := [
   "data-engineer",
   "data-scientist",
   "developer",
+  "em-reconciliation-approver",
   "instance-access",
   "instance-management",
   "migration",
@@ -39,6 +40,21 @@ allowed_access := [
   "workspace-user-admin",
   "workspace-admin"
 ]
+
+valid_em_reconciliation_approver(access) if {
+  input.filename == "environments/electronic-monitoring-data.json"
+  access.sso_group_name == "hmpps-electronic-monitoring-reconciliation-approvers"
+}
+
+deny contains msg if {
+  some environment in input.environments
+  some access in environment.access
+
+  access.level == "em-reconciliation-approver"
+  not valid_em_reconciliation_approver(access)
+
+  msg := "em-reconciliation-approver access is restricted to the EM reconciliation approvers group"
+}
 
 allowed_nuke := [
   "include",

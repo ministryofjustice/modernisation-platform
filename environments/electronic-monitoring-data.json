@@ -62,6 +62,10 @@
         {
           "sso_group_name": "hmpps-electronic-monitoring-data-store-read-only",
           "level": "data-scientist"
+        },
+        {
+          "sso_group_name": "hmpps-electronic-monitoring-reconciliation-approvers",
+          "level": "em-reconciliation-approver"
         }
       ]
     },
