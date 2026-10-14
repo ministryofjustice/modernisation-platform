@@ -28,7 +28,6 @@
 /terraform/environments/core-shared-services/cfo-data-management-system.tf @ministryofjustice/hmpps-creating-future-opportunities-devs @ministryofjustice/hmpps-creating-future-opportunities-live @ministryofjustice/modernisation-platform-audit 
 /terraform/environments/core-shared-services/cica-sandbox.tf @ministryofjustice/cica-external-developers @ministryofjustice/cica-review-case-documents 
 /terraform/environments/core-shared-services/cica-tariff.tf @ministryofjustice/cica-mp-tariff @ministryofjustice/modernisation-platform-audit 
-/terraform/environments/core-shared-services/cloud-platform-live.tf @ministryofjustice/cloud-platform-engineers 
 /terraform/environments/core-shared-services/cloud-platform-non-live.tf @ministryofjustice/cloud-platform-engineers 
 /terraform/environments/core-shared-services/cloud-platform.tf @ministryofjustice/cloud-platform-engineers 
 /terraform/environments/core-shared-services/coat.tf @ministryofjustice/cloud-optimisation-and-accountability @ministryofjustice/modernisation-platform-audit 
