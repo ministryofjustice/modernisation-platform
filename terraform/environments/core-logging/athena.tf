@@ -7,6 +7,12 @@ data "aws_kms_alias" "environment_management" {
   name     = "alias/environment-management-multi-region"
 }
 
+variable "enable_forensics_queries" {
+  description = "Enable opt-in Athena named queries for security forensics (PoC)"
+  type        = bool
+  default     = false
+}
+
 #S3 Bucket for Athena temp SQL queries 
 
 module "s3-bucket-athena" {
@@ -295,4 +301,71 @@ resource "aws_lambda_permission" "allow_cloudwatch_to_call_lambda" {
   function_name = aws_lambda_function.athena_table_update.function_name
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.every_day.arn
+}
+
+# Forensics named queries (opt-in PoC for SIP #123)
+resource "aws_athena_named_query" "forensics_iam_changes" {
+  count       = var.enable_forensics_queries ? 1 : 0
+  name        = "forensics-iam-changes"
+  workgroup   = aws_athena_workgroup.mod-platform.id
+  database    = aws_athena_database.mod_cloudtrail_logs.name
+  description = "Investigate IAM policy, role, user, and group modifications for forensic analysis"
+  query       = <<-EOQ
+    SELECT
+      eventtime,
+      useridentity.principalid,
+      useridentity.arn,
+      eventname,
+      sourceipaddress,
+      useragent,
+      errorcode,
+      errormessage,
+      requestparameters,
+      responseelements
+    FROM mod_cloudtrail_logs.cloudtrail_logs
+    WHERE account = 'REPLACE_WITH_ACCOUNT_ID'
+      AND region = 'REPLACE_WITH_REGION'
+      AND timestamp BETWEEN 'YYYY/MM/DD' AND 'YYYY/MM/DD'
+      AND eventname IN (
+        'PutRolePolicy', 'DeleteRolePolicy', 'AttachRolePolicy', 'DetachRolePolicy',
+        'PutUserPolicy', 'DeleteUserPolicy', 'AttachUserPolicy', 'DetachUserPolicy',
+        'PutGroupPolicy', 'DeleteGroupPolicy', 'AttachGroupPolicy', 'DetachGroupPolicy',
+        'CreateRole', 'DeleteRole', 'UpdateAssumeRolePolicy',
+        'CreateUser', 'DeleteUser', 'UpdateUser',
+        'CreateGroup', 'DeleteGroup',
+        'CreateAccessKey', 'DeleteAccessKey', 'UpdateAccessKey',
+        'CreatePolicy', 'DeletePolicy', 'CreatePolicyVersion', 'DeletePolicyVersion',
+        'PutUserPermissionsBoundary', 'DeleteUserPermissionsBoundary',
+        'PutRolePermissionsBoundary', 'DeleteRolePermissionsBoundary'
+      )
+    ORDER BY eventtime DESC
+    LIMIT 1000;
+  EOQ
+}
+
+resource "aws_athena_named_query" "forensics_failed_console_logins" {
+  count       = var.enable_forensics_queries ? 1 : 0
+  name        = "forensics-failed-console-logins"
+  workgroup   = aws_athena_workgroup.mod-platform.id
+  database    = aws_athena_database.mod_cloudtrail_logs.name
+  description = "Track unsuccessful AWS console authentication attempts for security investigations"
+  query       = <<-EOQ
+    SELECT
+      eventtime,
+      useridentity.principalid,
+      useridentity.type,
+      sourceipaddress,
+      useragent,
+      errorcode,
+      errormessage,
+      additionaleventdata
+    FROM mod_cloudtrail_logs.cloudtrail_logs
+    WHERE account = 'REPLACE_WITH_ACCOUNT_ID'
+      AND region = 'REPLACE_WITH_REGION'
+      AND timestamp BETWEEN 'YYYY/MM/DD' AND 'YYYY/MM/DD'
+      AND eventname = 'ConsoleLogin'
+      AND errorcode IS NOT NULL
+    ORDER BY eventtime DESC
+    LIMIT 500;
+  EOQ
 }
