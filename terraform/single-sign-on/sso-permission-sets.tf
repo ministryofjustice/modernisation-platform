@@ -710,11 +710,11 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
   }
 }
 
-# EM historical reconciliation approval - preprod only
+# EM historical reconciliation approval
 resource "aws_ssoadmin_permission_set" "em_reconciliation_approver" {
   provider         = aws.sso-management
   name             = "em-reconciliation-approver"
-  description      = "EM historical reconciliation approver role mapping in preprod"
+  description      = "EM historical reconciliation approver role mapping"
   instance_arn     = local.sso_admin_instance_arn
   session_duration = "PT1H"
   tags             = {}
@@ -729,7 +729,10 @@ data "aws_iam_policy_document" "em_reconciliation_approver" {
       "iam:PassRole",
     ]
     resources = [
-      "arn:aws:iam::443370694497:role/downstream_reconciliation_approver",
+      "arn:aws:iam::443370694497:role/downstream_reconciliation_approver", #preprod
+      "arn:aws:iam::976799291502:role/downstream_reconciliation_approver", #prod
+      "arn:aws:iam::800964199911:role/downstream_reconciliation_approver", #dev
+      "arn:aws:iam::396913731313:role/downstream_reconciliation_approver", #test
     ]
     condition {
       test     = "StringEquals"
