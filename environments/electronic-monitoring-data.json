@@ -19,6 +19,10 @@
         {
           "sso_group_name": "hmpps-electronic-monitoring-data-no-sc",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "hmpps-electronic-monitoring-reconciliation-approvers",
+          "level": "em-reconciliation-approver"
         }
       ],
       "nuke": "exclude"
@@ -41,6 +45,10 @@
         {
           "sso_group_name": "hmpps-electronic-monitoring-data-store",
           "level": "data-scientist"
+        },
+        {
+          "sso_group_name": "hmpps-electronic-monitoring-reconciliation-approvers",
+          "level": "em-reconciliation-approver"
         }
       ]
     },
@@ -83,6 +91,10 @@
         {
           "sso_group_name": "modernisation-platform-audit",
           "level": "security-audit"
+        },
+        {
+          "sso_group_name": "hmpps-electronic-monitoring-reconciliation-approvers",
+          "level": "em-reconciliation-approver"
         }
       ]
     }
