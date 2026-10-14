@@ -161,6 +161,17 @@ resource "aws_network_acl_rule" "https-out-to-internet" {
   to_port        = 443
 }
 
+resource "aws_network_acl_rule" "https-out-to-azure-virtual-desktop-development" {
+  cidr_block     = local.azure_virtual_desktop_cidr.development
+  egress         = true
+  from_port      = 443
+  network_acl_id = aws_network_acl.live-data-additional.id
+  protocol       = "tcp"
+  rule_action    = "allow"
+  rule_number    = 5200
+  to_port        = 443
+}
+
 resource "aws_network_acl_rule" "http-out-to-internet" {
   cidr_block     = "0.0.0.0/0"
   egress         = true
