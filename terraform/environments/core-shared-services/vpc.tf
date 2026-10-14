@@ -3,7 +3,7 @@ locals {
     live_data     = "10.20.64.0/19"
     non_live_data = "10.20.96.0/19"
   }
-  
+
   azure_virtual_desktop_cidr = {
     development = "10.192.64.0/21"
   }
