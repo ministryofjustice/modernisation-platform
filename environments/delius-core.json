@@ -283,6 +283,10 @@
         {
           "sso_group_name": "modernisation-platform-audit",
           "level": "security-audit"
+        },
+        {
+          "sso_group_name": "probation-de",
+          "level": "developer"
         }
       ]
     }
