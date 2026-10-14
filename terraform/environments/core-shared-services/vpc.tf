@@ -5,7 +5,7 @@ locals {
   }
   
   azure_virtual_desktop_cidr = {
-    development = "10.20.128.0/19"
+    development = "10.192.64.0/21"
   }
 
   vpc_interface_endpoint_service_names = [
