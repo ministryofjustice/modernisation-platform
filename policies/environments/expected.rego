@@ -32,7 +32,6 @@ expected :=
     "cica-sandbox",
     "cica-tariff",
     "cloud-platform",
-    "cloud-platform-non-live",
     "coat",
     "container-platform-cd",
     "container-platform-hmpps",
