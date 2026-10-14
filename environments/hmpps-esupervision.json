@@ -27,8 +27,8 @@
   "tags": {
     "application": "Remote probation supervision",
     "business-unit": "HMPPS",
-    "infrastructure-support": "techforcom@justice.gov.uk",
-    "owner": "techforcom@justice.gov.uk",
+    "infrastructure-support": "checkinwithprobation@justice.gov.uk",
+    "owner": "checkinwithprobation@justice.gov.uk",
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""],
