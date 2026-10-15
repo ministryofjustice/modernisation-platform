@@ -46,6 +46,10 @@
         {
           "sso_group_name": "azure-aws-sso-digital-studio-operations",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "hmpps-vcms-write-team",
+          "level": "developer"
         }
       ]
     },
@@ -63,6 +67,10 @@
         {
           "sso_group_name": "modernisation-platform-audit",
           "level": "security-audit"
+        },
+        {
+          "sso_group_name": "hmpps-vcms-write-team",
+          "level": "developer"
         }
       ]
     }
