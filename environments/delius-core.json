@@ -310,6 +310,5 @@
     "ministryofjustice/hmpps-probation-integration-services",
     "ministryofjustice/hmpps-supervision",
     "ministryofjustice/delius-releases"
-  ],
-  "go-live-date": ""
+  ]
 }
