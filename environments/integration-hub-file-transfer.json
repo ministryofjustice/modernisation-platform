@@ -2,16 +2,19 @@
   "account-type": "member",
   "components": [
     {
+      "name": "pull-from-presigned-url"
+    },
+    {
       "name": "push-to-s3"
     },
     {
       "name": "push-to-s3-with-hosted-pickup"
     },
     {
-      "name": "test-harness"
+      "name": "push-to-sftp"
     },
     {
-      "name": "pull-from-presigned-url"
+      "name": "test-harness"
     }
   ],
   "environments": [
