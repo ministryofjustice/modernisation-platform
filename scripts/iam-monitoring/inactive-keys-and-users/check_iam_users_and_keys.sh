@@ -79,6 +79,12 @@ fi
 : "${USER_DISABLE_DAYS:=60}"
 : "${USER_DELETE_DAYS:=150}"
 
+# Age-based rotation enforcement (disabled by default)
+: "${KEY_MAX_AGE_ENABLED:=false}"
+: "${KEY_MAX_AGE_NOTIFY_DAYS:=75}"
+: "${KEY_MAX_AGE_DISABLE_DAYS:=85}"
+: "${KEY_MAX_AGE_DELETE_DAYS:=90}"
+
 IAM_USER_PATH_PREFIX="${IAM_USER_PATH_PREFIX:-}"
 IAM_USER_TAG_KEY="${IAM_USER_TAG_KEY:-}"      # optional filter
 IAM_USER_TAG_VALUE="${IAM_USER_TAG_VALUE:-}"  # optional filter value
@@ -86,10 +92,15 @@ IAM_USER_TAG_VALUE="${IAM_USER_TAG_VALUE:-}"  # optional filter value
 # Tag used to find per-user email
 IAM_NOTIFY_EMAIL_TAG_KEY="${IAM_NOTIFY_EMAIL_TAG_KEY:-infrastructure-support}"
 
-echo "Using key thresholds (days):"
+echo "Using key inactivity thresholds (days):"
 echo "  notify : ${KEY_NOTIFY_DAYS}"
 echo "  disable: ${KEY_DISABLE_DAYS}"
 echo "  delete : ${KEY_DELETE_DAYS}"
+echo "Using key age-based rotation thresholds (days):"
+echo "  enabled: ${KEY_MAX_AGE_ENABLED}"
+echo "  notify : ${KEY_MAX_AGE_NOTIFY_DAYS}"
+echo "  disable: ${KEY_MAX_AGE_DISABLE_DAYS}"
+echo "  delete : ${KEY_MAX_AGE_DELETE_DAYS}"
 echo "Using user thresholds (days):"
 echo "  notify : ${USER_NOTIFY_DAYS}"
 echo "  disable: ${USER_DISABLE_DAYS}"
@@ -286,6 +297,7 @@ while [[ "$MORE" == "true" ]]; do
       SHOULD_DELETE="false"
       REASONS=()
 
+      # Inactivity-based classification
       if [[ -n "$INACTIVE_DAYS" ]]; then
         if (( INACTIVE_DAYS >= KEY_DELETE_DAYS )); then
           SHOULD_DELETE="true"
@@ -296,6 +308,20 @@ while [[ "$MORE" == "true" ]]; do
         elif (( INACTIVE_DAYS >= KEY_NOTIFY_DAYS )); then
           SHOULD_NOTIFY="true"
           REASONS+=("inactive_ge_${KEY_NOTIFY_DAYS}d")
+        fi
+      fi
+
+      # Age-based rotation enforcement (only if enabled)
+      if [[ "$KEY_MAX_AGE_ENABLED" == "true" && -n "$KEY_AGE_DAYS" ]]; then
+        if (( KEY_AGE_DAYS >= KEY_MAX_AGE_DELETE_DAYS )); then
+          SHOULD_DELETE="true"
+          REASONS+=("age_ge_${KEY_MAX_AGE_DELETE_DAYS}d")
+        elif (( KEY_AGE_DAYS >= KEY_MAX_AGE_DISABLE_DAYS )); then
+          SHOULD_DISABLE="true"
+          REASONS+=("age_ge_${KEY_MAX_AGE_DISABLE_DAYS}d")
+        elif (( KEY_AGE_DAYS >= KEY_MAX_AGE_NOTIFY_DAYS )); then
+          SHOULD_NOTIFY="true"
+          REASONS+=("age_ge_${KEY_MAX_AGE_NOTIFY_DAYS}d")
         fi
       fi
 
