@@ -66,8 +66,6 @@ updates:
       - "/terraform/environments/cica-sandbox"
       - "/terraform/environments/cica-tariff"
       - "/terraform/environments/cloud-platform"
-      - "/terraform/environments/cloud-platform-live"
-      - "/terraform/environments/cloud-platform-non-live"
       - "/terraform/environments/coat"
       - "/terraform/environments/container-platform-cd"
       - "/terraform/environments/container-platform-hmpps"
