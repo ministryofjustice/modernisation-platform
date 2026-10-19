@@ -84,16 +84,16 @@ resource "aws_iam_policy" "wiz_resource_count" {
   policy      = data.aws_iam_policy_document.wiz_resource_count[0].json
 }
 
-module "wiz-resource-count-access" {
-  count      = local.wiz_role_enabled ? 1 : 0
-  source     = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5"
-  account_id = data.aws_ssm_parameter.modernisation_platform_account_id.value
-  additional_trust_roles = [
-    one(data.aws_iam_roles.member-sso-admin-access.arns)
-  ]
-  policy_arn = aws_iam_policy.wiz_resource_count[0].arn
-  role_name  = "WizResourceCountAccess"
-}
+# module "wiz-resource-count-access" {
+#   count      = local.wiz_role_enabled ? 1 : 0
+#   source     = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5"
+#   account_id = data.aws_ssm_parameter.modernisation_platform_account_id.value
+#   additional_trust_roles = [
+#     one(data.aws_iam_roles.member-sso-admin-access.arns)
+#   ]
+#   policy_arn = aws_iam_policy.wiz_resource_count[0].arn
+#   role_name  = "WizResourceCountAccess"
+# }
 
 module "member-access" {
   count      = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
