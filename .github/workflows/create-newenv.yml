@@ -164,7 +164,7 @@ jobs:
 
       - name: Create a signed commit for new accounts
         if: env.EXISTING_ACCOUNT == 'No'
-        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@6a78b87ea8e63646ec10701857c70cb2487738ab # v6.2.7
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@ebec2f2fda2f93172de61774b5875b9cef7462bc # v6.2.12
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "Automated environment request for $APP_NAME"
@@ -173,7 +173,7 @@ jobs:
 
       - name: Commit changes for existing accounts
         if: env.EXISTING_ACCOUNT == 'Yes'
-        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@6a78b87ea8e63646ec10701857c70cb2487738ab # v6.2.7
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@ebec2f2fda2f93172de61774b5875b9cef7462bc # v6.2.12
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "Automated environment amendment request for $APP_NAME"
@@ -192,7 +192,7 @@ jobs:
       - name: Save network setup info
         run: |
           echo "{\"pr_number\": ${{ github.event.pull_request.number }}, ISOLATED_ACCOUNT, \"app_name\": \"$APP_NAME\", \"business_unit\": \"$BUSINESS_UNIT\", \"environments\": $(echo "$ENV_SELECTIONS_JSON" | jq -c 'map(.name)')}" > network-setup-info.json
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: network-setup-info
           path: network-setup-info.json
