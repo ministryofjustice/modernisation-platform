@@ -40,7 +40,7 @@ jobs:
           persist-credentials: false
 
       - name: Decrypt account data
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@6a78b87ea8e63646ec10701857c70cb2487738ab # v6.2.7
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@ebec2f2fda2f93172de61774b5875b9cef7462bc # v6.2.12
         with:
           environment_management: ${{ inputs.environment_management }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -142,7 +142,7 @@ jobs:
 
       - name: Upload account results
         id: upload
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: resource-discovery-${{ inputs.account_name }}
           path: ${{ steps.discovery.outputs.output-file }}
