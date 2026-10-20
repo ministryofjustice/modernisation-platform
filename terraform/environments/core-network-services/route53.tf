@@ -3,19 +3,57 @@ locals {
   modernisation-platform-internal-domain = "modernisation-platform.internal"
 
   application-zones = {
-    ccms-ebs      = "ccms-ebs.service.justice.gov.uk",
-    dacp          = "divorce-section-search.service.justice.gov.uk",
-    delius-jitbit = "jitbit.cr.probation.service.justice.gov.uk",
-    equip         = "equip.service.justice.gov.uk",
-    mlra          = "maat-libra-administration-tool.service.justice.gov.uk",
-    mojfin        = "laa-finance-data.service.justice.gov.uk",
-    ncas          = "neutral-citation-allocation.service.justice.gov.uk",
-    pra-register  = "parental-responsibility-agreement.service.justice.gov.uk",
-    tipstaff      = "tipstaff.service.justice.gov.uk",
-    wardship      = "wardship-agreements-register.service.justice.gov.uk"
+    ccms-ebs                                    = "ccms-ebs.service.justice.gov.uk",
+    cdpt-chaps                                  = "correspondence-handling-and-processing.service.justice.gov.uk",
+    cdpt-chaps-dev                              = "cdpt-chaps.hq-development.modernisation-platform.service.justice.gov.uk",
+    cdpt-chaps-preprod                          = "cdpt-chaps.hq-preproduction.modernisation-platform.service.justice.gov.uk"
+    cdpt-ifs                                    = "integrated-fraud-system.service.justice.gov.uk",
+    dacp                                        = "divorce-section-search.service.justice.gov.uk",
+    delius-jitbit                               = "jitbit.cr.probation.service.justice.gov.uk",
+    equip                                       = "equip.service.justice.gov.uk",
+    integration-hub-file-transfer-development   = "development.file-transfer.service.justice.gov.uk",
+    integration-hub-file-transfer-preproduction = "preproduction.file-transfer.service.justice.gov.uk",
+    integration-hub-file-transfer-production    = "file-transfer.service.justice.gov.uk",
+    integration-hub-file-transfer-test          = "test.file-transfer.service.justice.gov.uk",
+    laa-apex                                    = "laa-apex.service.justice.gov.uk",
+    maat                                        = "means-assessment-administration.service.justice.gov.uk",
+    mlra                                        = "maat-libra-administration-tool.service.justice.gov.uk",
+    mojfin                                      = "laa-finance-data.service.justice.gov.uk",
+    ncas                                        = "neutral-citation-allocation.service.justice.gov.uk",
+    ppud                                        = "ppud.justice.gov.uk",
+    pra-register                                = "parental-responsibility-agreement.service.justice.gov.uk",
+    tipstaff                                    = "tipstaff.service.justice.gov.uk",
+    tribunals                                   = "tribunals.gov.uk",
+    wardship                                    = "wardship-agreements-register.service.justice.gov.uk"
+    legalservices                               = "legalservices.gov.uk"
+    laa                                         = "laa.service.justice.gov.uk"
   }
 
   private-application-zones = {
+    aws-prd-legalservices-gov-uk = "aws.prd.legalservices.gov.uk"
+    yjaf-development             = "development.yjaf"
+    yjaf-test                    = "test.yjaf",
+    yjaf-preproduction           = "preproduction.yjaf",
+    yjaf-production              = "production.yjaf"
+  }
+
+  legalservices_records = {
+    "legalservices"             = { name = "legalservices.gov.uk", type = "A", ttl = 300, records = ["151.101.2.30"] }
+    "wwwlegalservices"          = { name = "www.legalservices.gov.uk", type = "A", ttl = 300, records = ["151.101.2.30"] }
+    "mxlegalservices"           = { name = "legalservices.gov.uk", type = "MX", ttl = 300, records = ["0 legalservices-gov-uk.mail.protection.outlook.com"] }
+    "securetransfer"            = { name = "securetransfer.legalservices.gov.uk", type = "A", ttl = 300, records = ["34.240.69.223"] }
+    "gwasecuretransfer"         = { name = "gwa.securetransfer.legalservices.gov.uk", type = "A", ttl = 300, records = ["34.240.69.223"] }
+    "hybridtoolssecuretransfer" = { name = "hybridtools.securetransfer.legalservices.gov.uk", type = "A", ttl = 300, records = ["34.240.69.223"] }
+    "managersecuretransfer"     = { name = "manager.securetransfer.legalservices.gov.uk", type = "A", ttl = 300, records = ["34.240.69.223"] }
+    "oosecuretransfer"          = { name = "oo.securetransfer.legalservices.gov.uk", type = "A", ttl = 300, records = ["34.240.69.223"] }
+    "gwphybrid"                 = { name = "gwphybrid.securetransfer.legalservices.gov.uk", type = "A", ttl = 300, records = ["34.240.69.223"] }
+    "dev"                       = { name = "dev.legalservices.gov.uk", type = "NS", ttl = 300, records = ["ns-674.awsdns-20.net", "ns-1463.awsdns-54.org", "ns-1537.awsdns-00.co.uk", "ns-495.awsdns-61.com"] }
+    "tst"                       = { name = "tst.legalservices.gov.uk", type = "NS", ttl = 300, records = ["ns-1914.awsdns-47.co.uk", "ns-609.awsdns-12.net", "ns-195.awsdns-24.com", "ns-1187.awsdns-20.org"] }
+    "uat"                       = { name = "uat.legalservices.gov.uk", type = "NS", ttl = 300, records = ["ns-938.awsdns-53.net", "ns-1046.awsdns-02.org", "ns-334.awsdns-41.com", "ns-1731.awsdns-24.co.uk"] }
+    "stg"                       = { name = "stg.legalservices.gov.uk", type = "NS", ttl = 300, records = ["ns-1269.awsdns-30.org", "ns-1897.awsdns-45.co.uk", "ns-296.awsdns-37.com", "ns-917.awsdns-50.net"] }
+    "ses-1"                     = { name = "u2hsqlvidbbhlfkkiff3fpuwjm6gu5mq._domainkey.legalservices.gov.uk", type = "CNAME", ttl = 300, records = ["u2hsqlvidbbhlfkkiff3fpuwjm6gu5mq.dkim.amazonses.com"] }
+    "ses-2"                     = { name = "3jn7gxoog7vhao6dnt4vytejnkwrxaow._domainkey.legalservices.gov.uk", type = "CNAME", ttl = 300, records = ["3jn7gxoog7vhao6dnt4vytejnkwrxaow.dkim.amazonses.com"] }
+    "ses-3"                     = { name = "lr4yk5yyneh2seaoiujphvk23mow7vty._domainkey.legalservices.gov.uk", type = "CNAME", ttl = 300, records = ["lr4yk5yyneh2seaoiujphvk23mow7vty.dkim.amazonses.com"] }
   }
 }
 
@@ -97,6 +135,94 @@ resource "aws_route53_record" "bichard7" {
   ]
 }
 
+# External account NS delegation under modernisation-platform.service.justice.gov.uk
+resource "aws_route53_record" "modernisation_platform_ai_prototype" {
+  allow_overwrite = true
+  name            = "ai-prototype.${local.modernisation-platform-domain}"
+  ttl             = 30
+  type            = "NS"
+  zone_id         = aws_route53_zone.modernisation-platform.zone_id
+  records = [
+    "ns-1877.awsdns-42.co.uk.",
+    "ns-208.awsdns-26.com.",
+    "ns-997.awsdns-60.net.",
+    "ns-1225.awsdns-25.org."
+  ]
+}
+
+# AI Builder dev: NS delegation to the external account hosted zone
+resource "aws_route53_record" "modernisation_platform_ai_builder_dev" {
+  allow_overwrite = true
+  name            = "ai-builder-dev.${local.modernisation-platform-domain}"
+  ttl             = 30
+  type            = "NS"
+  zone_id         = aws_route53_zone.modernisation-platform.zone_id
+
+  records = [
+    "ns-1528.awsdns-63.org.",
+    "ns-1958.awsdns-52.co.uk.",
+    "ns-508.awsdns-63.com.",
+    "ns-983.awsdns-58.net."
+  ]
+}
+
+# AI Builder prod: NS delegation to the external account hosted zone
+resource "aws_route53_record" "modernisation_platform_ai_builder_prod" {
+  allow_overwrite = true
+  name            = "ai-builder.${local.modernisation-platform-domain}"
+  ttl             = 30
+  type            = "NS"
+  zone_id         = aws_route53_zone.modernisation-platform.zone_id
+
+  records = [
+    "ns-365.awsdns-45.com.",
+    "ns-1889.awsdns-44.co.uk.",
+    "ns-704.awsdns-24.net.",
+    "ns-1373.awsdns-43.org."
+  ]
+}
+
+# Submit a bulk claim LAA NS delegation to CP
+resource "aws_route53_record" "submit_a_bulk_claim_laa" {
+  allow_overwrite = true
+  name            = "submit-a-bulk-claim.laa.service.justice.gov.uk"
+  ttl             = 30
+  type            = "NS"
+  zone_id         = aws_route53_zone.application_zones["laa"].zone_id
+  records = [
+    "ns-1297.awsdns-34.org.",
+    "ns-167.awsdns-20.com.",
+    "ns-1932.awsdns-49.co.uk.",
+    "ns-513.awsdns-00.net."
+  ]
+}
+
+# Amend a claim LAA NS delegation to CP
+resource "aws_route53_record" "amend_a_claim_laa" {
+  allow_overwrite = true
+  name            = "amend-a-claim.laa.service.justice.gov.uk"
+  ttl             = 30
+  type            = "NS"
+  zone_id         = aws_route53_zone.application_zones["laa"].zone_id
+  records = [
+    "ns-1285.awsdns-32.org.",
+    "ns-2014.awsdns-59.co.uk.",
+    "ns-28.awsdns-03.com.",
+    "ns-746.awsdns-29.net."
+  ]
+}
+
+resource "aws_route53_record" "laa_service_txt" {
+  allow_overwrite = true
+  name            = "laa.service.justice.gov.uk"
+  ttl             = 30
+  type            = "TXT"
+  zone_id         = aws_route53_zone.application_zones["laa"].zone_id
+  records = [
+    "ixab6noq11"
+  ]
+}
+
 # Github pages user guidance CNAME record
 
 resource "aws_route53_record" "github_pages" {
@@ -142,4 +268,180 @@ resource "aws_route53_record" "pagerduty_tls-certificate" {
   type    = "CNAME"
   ttl     = "300"
   records = ["_2b9d3139a782805455e260f16df743e1.xpybkgmvdt.acm-validations.aws."]
+}
+
+# Legalservices records
+resource "aws_route53_record" "legalservices" {
+  #checkov:skip=CKV2_AWS_23:"Route53 A Record has Attached Resource"
+  for_each = local.legalservices_records
+  zone_id  = aws_route53_zone.application_zones["legalservices"].zone_id
+  name     = each.value.name
+  type     = each.value.type
+  ttl      = each.value.ttl
+  records  = each.value.records
+}
+
+resource "aws_route53_record" "portal" {
+  # checkov:skip=CKV2_AWS_23: "Route53 A Record has Attached Resource"
+  zone_id = aws_route53_zone.application_zones["legalservices"].zone_id
+  name    = "portal.legalservices.gov.uk"
+  type    = "A"
+
+  alias {
+    name                   = "d1yzmx9d5z0sdz.cloudfront.net"
+    zone_id                = "Z2FDTNDATAQYW2"
+    evaluate_target_health = false
+  }
+}
+
+# aws.prd.legalservices.gov.uk records
+resource "aws_route53_record" "cwa-prod-db" {
+  # checkov:skip=CKV2_AWS_23: "Route53 A Record has Attached Resource"
+  zone_id = aws_route53_zone.private_application_zones["aws-prd-legalservices-gov-uk"].zone_id
+  name    = "cwa-prod-db"
+  type    = "A"
+
+  alias {
+    name                   = "cwa-production-db-nlb-blue-green-6a4d60ef7d3e7b0b.elb.eu-west-2.amazonaws.com"
+    zone_id                = "ZD4D7Y8KGAS4G"
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "cwa-prod-db1" {
+  # checkov:skip=CKV2_AWS_23: "Route53 A Record has Attached Resource"
+  zone_id = aws_route53_zone.private_application_zones["aws-prd-legalservices-gov-uk"].zone_id
+  name    = "cwa-prod-db1"
+  type    = "A"
+
+  alias {
+    name                   = "cwa-production-database-nlb-12d44851fda0f196.elb.eu-west-2.amazonaws.com"
+    zone_id                = "ZD4D7Y8KGAS4G"
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "cwa-prod-db3" {
+  # checkov:skip=CKV2_AWS_23: "Route53 A Record has Attached Resource"
+  zone_id = aws_route53_zone.private_application_zones["aws-prd-legalservices-gov-uk"].zone_id
+  name    = "cwa-prod-db3"
+  type    = "A"
+
+  alias {
+    name                   = "cwa-production-db-nlb-green-68322e6a90023a4a.elb.eu-west-2.amazonaws.com"
+    zone_id                = "ZD4D7Y8KGAS4G"
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "cwa-prod-db2" {
+  # checkov:skip=CKV2_AWS_23: "Route53 A Record has Attached Resource"
+  zone_id = aws_route53_zone.private_application_zones["aws-prd-legalservices-gov-uk"].zone_id
+  name    = "cwa-prod-db2"
+  type    = "A"
+
+  alias {
+    name                   = "cwa-production-db-nlb-safe2-54d001c6914e7379.elb.eu-west-2.amazonaws.com"
+    zone_id                = "ZD4D7Y8KGAS4G"
+    evaluate_target_health = false
+  }
+}
+
+module "r53_delegations_integration_hub_file_transfer" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-route53.git?ref=301fdd6f0876acfd737005dace317e6ac8cae186" # v6.5.0
+
+  # Do not create the parent zone here; use the existing one.
+  create_zone = false
+  name        = local.application-zones["integration-hub-file-transfer-production"]
+
+  depends_on = [aws_route53_zone.application_zones["integration-hub-file-transfer-production"]]
+
+  records = {
+    for zone_key in toset([
+      "development",
+      "test",
+      "preproduction",
+      ]) : zone_key => {
+      name            = zone_key
+      type            = "NS"
+      ttl             = 30
+      allow_overwrite = true
+
+      records = aws_route53_zone.application_zones["integration-hub-file-transfer-${zone_key}"].name_servers
+    }
+  }
+
+  tags = local.tags
+}
+
+# The following Route53 a TXT record is added for SPF validation for legalservices.gov.uk domain.
+resource "aws_route53_record" "legalservices_spf" {
+  zone_id = aws_route53_zone.application_zones["legalservices"].zone_id
+  name    = "spf.legalservices.gov.uk"
+  type    = "TXT"
+  ttl     = 300
+  records = ["v=spf1 include:spf.protection.outlook.com -all"]
+}
+
+# The following Route53 a TXT record is added for DMARC for legalservices.gov.uk domain.
+resource "aws_route53_record" "legalservices_dmarc_spf" {
+  zone_id = aws_route53_zone.application_zones["legalservices"].zone_id
+  name    = "_dmarc.legalservices.gov.uk"
+  type    = "TXT"
+  ttl     = 300
+  records = ["v=DMARC1;p=reject;sp=reject;rua=mailto:dmarc-rua@dmarc.service.gov.uk"]
+}
+
+# The following CNAME record is added for CWA SAFE DB3 new ACM certificate validation for legalservices.gov.uk domain.
+resource "aws_route53_record" "cwa_acm_validation" {
+  zone_id = aws_route53_zone.application_zones["legalservices"].zone_id
+  name    = "_21667427ff395f693f91ad65b1435bbe.legalservices.gov.uk."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["_54d71d558b4c0c85fe8c13a28323d320.wzccmgtwzk.acm-validations.aws."]
+}
+
+# The following CNAME record is added for LAA-Production-CWA-ALB and AWS certificate validation for legalservices.gov.uk domain.
+resource "aws_route53_record" "cwa_alb_cert_validation" {
+  zone_id = aws_route53_zone.application_zones["legalservices"].zone_id
+  name    = "_76c0a5fdced561d7b941f06b69065a86.legalservices.gov.uk."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["_a735418ad9ce3ee8e8d687fabdf25db7.wzccmgtwzk.acm-validations.aws."]
+}
+
+# The following CNAME record is added for LAA-Production-CWA-App-Server-1 and AWS certificate validation for legalservices.gov.uk domain.
+resource "aws_route53_record" "cwa_app_server_cert_validation" {
+  zone_id = aws_route53_zone.application_zones["legalservices"].zone_id
+  name    = "_90d2329631af4721274b97ed1c59af70.legalservices.gov.uk."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["_f877cd5c36c818ba4a45e304a479089a.wzccmgtwzk.acm-validations.aws."]
+}
+
+# The following CNAME record is added for LAA-Production-CWA-DB-LB and AWS certificate validation for legalservices.gov.uk domain.
+resource "aws_route53_record" "cwa_db_nlb_cert_validation" {
+  zone_id = aws_route53_zone.application_zones["legalservices"].zone_id
+  name    = "_a603a4ec4f5b13f1ff22e06cc9c4b2bb.legalservices.gov.uk."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["_379198145866944180d9f5e660f3e8f6.wzccmgtwzk.acm-validations.aws."]
+}
+
+# The following CNAME record is added for LAA-Production-CWA-Safe-Database and AWS certificate validation for legalservices.gov.uk domain.
+resource "aws_route53_record" "cwa_db_safedb_cert_validation" {
+  zone_id = aws_route53_zone.application_zones["legalservices"].zone_id
+  name    = "_caebe8028ca462263fc3cbf2c5cc5a07.legalservices.gov.uk."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["_f2ec87ca5d3ee1b6e5bff0dfe80f0c71.wzccmgtwzk.acm-validations.aws."]
+}
+
+# The following CNAME record is added for LAA-Production-CWA-Safe-Database2 and AWS certificate validation for legalservices.gov.uk domain.
+resource "aws_route53_record" "cwa_db_safedb2_cert_validation" {
+  zone_id = aws_route53_zone.application_zones["legalservices"].zone_id
+  name    = "_67bd3f05dd1544a3290cabea03c1b510.legalservices.gov.uk."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["_ddde7e70cdff7a2f19b9545cea305324.wzccmgtwzk.acm-validations.aws."]
 }

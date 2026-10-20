@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Backups
-last_reviewed_on: 2023-11-16
+last_reviewed_on: 2026-05-21
 review_in: 6 months
 ---
 
@@ -13,7 +13,7 @@ AWS Backup supports most common AWS resources, such as EC2 instances, EBS and EF
 
 For a full list of supported resources please see here - https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html
 
-Please note that some resources may need extra configuration and new services may require an additional opt in.  Please refer to the AWS documentation and if you have any questions please ask the [Modernisation Platform team](../../getting-help).
+Please note that some resources may need extra configuration and new services may require an additional opt in. Please refer to the AWS documentation and if you have any questions please ask the [Modernisation Platform team](../../getting-help).
 
 ## Production Backups
 
@@ -46,10 +46,20 @@ Backups are retained for 30 days.
 
 ## Custom backup plans
 
-If the above built in backup plans are not suitable, you can create your own backup plans via code in the modernisation-platform-environments repository.
+If the above built in backup plans are not suitable, you can create your own backup plans via code in the modernisation-platform-environments repository, however we will not be responsible for your lifecycle rules, backups can be costly if not removed.
+
+## On-Demand backups
+
+We have added, to the developer role, the ability to take on-demand backups of resources for those occasions where a one-off backup is required. This can be done via the AWS Backup console or via the AWS CLI. As with other backups, these can be costly if long retention periods are used.
+
+Note that when using this feature, the backup IAM role AWSBackup must be selected.
 
 ## How to find your backups
 
-You can view your backups my navigating to AWS Backup in the AWS console and clicking "Backup vaults".
+You can view your backups by navigating to AWS Backup in the AWS console and clicking "Backup vaults".
 
 You can also view backups via the normal methods for viewing snapshots and AMIs (eg. EC2, Elastic Block Store, Snapshots).
+
+## Backup Validation & Restore Testing
+
+<%= warning_text('The Modernisation Platform does not monitor the success of the default backup strategy deployed in accounts, and cannot validate whether your resources can be successfully restored from the backups made by this service. Backup validation and restore testing is the responsibility of application teams.') %>

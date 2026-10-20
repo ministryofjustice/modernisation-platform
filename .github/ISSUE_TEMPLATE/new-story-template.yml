@@ -1,3 +1,4 @@
+---
 name: Modernisation platform Story
 description: 📖 Create Modernisation Platform story
 title: "<title>"
@@ -11,14 +12,12 @@ body:
     id: user-story
     attributes:
       label: User Story
-      placeholder: "As a… [who is the user?] 
+      placeholder: "As a… [who is the user?]
               I need/want/expect to… [what does the user want to do?]
               So that… [why does the user want to do this?] "
-      value: "As a…  
-
-              I need/want/expect to… 
-
-              So that…"
+      value: "As a
+              I need/want/expect to
+              So that"
     validations:
       required: true
   - type: textarea
@@ -26,6 +25,14 @@ body:
     attributes:
       description: Describe the value and purpose of the ticket.
       label: Value / Purpose
+      value:
+    validations:
+      required: true
+  - type: textarea
+    id: context-background
+    attributes:
+      description: Outline the background for this ticket such as how or where the requirement originated.
+      label: Context / Background
       value:
     validations:
       required: true
@@ -42,25 +49,8 @@ body:
     id: additional-information
     attributes:
       description: Please add any useful links or additional information that would be beneficial to anyone working on this Issue.
-      label: Additional Information 
+      label: Additional Information
       value:
-    validations:
-      required: false
-  - type: textarea
-    id: proposal-unknowns
-    attributes:
-      description: Assumptions, Hypothesis, Questions, Unknowns
-      label: Proposal / Unknowns
-      value:
-        "### Hypothesis 
-        If we... [do a thing]
-        Then... [this will happ]
-
-        ### Proposal
-        A proposal that is something testable, don't worry whether it works or not, it's a place for ideas. 
-
-        ### Unknowns
-        Potential pitfalls that could cause the story to expand beyond its original scope. Ideally this section will remain blank."
     validations:
       required: false
   - type: textarea
@@ -68,18 +58,16 @@ body:
     attributes:
       description: Please clearly and concisely detail the Definition of Done. (example optional checklist below)
       label: Definition of Done
-      value:
-
+      placeholder:
         Example
         - [ ] Documentation has been written / updated
-
-        - [ ] README has been updated  
-
-        - [ ] User docs have been updated  
-
-        - [ ] Another team member has reviewed 
-
+        - [ ] README has been updated
+        - [ ] User docs have been updated
+        - [ ] Another team member has reviewed
         - [ ] Tests are green
+      value: |
+        - [ ] First outcome
+        - [ ] Second outcome
     validations:
       required: true
   - type: markdown

@@ -5,16 +5,43 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "laa-ccms-migration-team",
+          "sso_group_name": "laa-ccms-migration-team",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "sandbox",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
           "level": "developer"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",
       "access": [
         {
-          "github_slug": "laa-ccms-migration-team",
+          "sso_group_name": "laa-ccms-migration-team",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
           "level": "developer"
         }
       ]
@@ -23,7 +50,20 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "laa-ccms-migration-team",
+          "sso_group_name": "laa-ccms-migration-team",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
           "level": "developer"
         }
       ]
@@ -32,8 +72,25 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "laa-ccms-migration-team",
+          "sso_group_name": "laa-ccms-migration-team",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
@@ -42,7 +99,8 @@
     "application": "laa-oem",
     "business-unit": "LAA",
     "infrastructure-support": "donovan.artz@digital.justice.gov.uk",
-    "owner": "donovan.artz@digital.justice.gov.uk"
+    "owner": "donovan.artz@digital.justice.gov.uk",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""]
 }

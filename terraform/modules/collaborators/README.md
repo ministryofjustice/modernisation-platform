@@ -15,21 +15,21 @@ If you're looking to raise an issue with this module, please create a new issue 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.0 |
 | <a name="requirement_time"></a> [time](#requirement\_time) | ~> 0.8 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 6.0 |
 | <a name="provider_time"></a> [time](#provider\_time) | ~> 0.8 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_iam_user"></a> [iam\_user](#module\_iam\_user) | terraform-aws-modules/iam/aws//modules/iam-user | ~> 5.0 |
+| <a name="module_iam_user"></a> [iam\_user](#module\_iam\_user) | terraform-aws-modules/iam/aws//modules/iam-user | ~> 6.0 |
 
 ## Resources
 
@@ -44,7 +44,7 @@ If you're looking to raise an issue with this module, please create a new issue 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_accounts"></a> [accounts](#input\_accounts) | List of accounts to give access to with access levels | `list(any)` | n/a | yes |
-| <a name="input_environment_management"></a> [environment\_management](#input\_environment\_management) | Environment management json | <pre>object({<br>    account_ids                                 = map(string)<br>    aws_organizations_root_account_id           = string<br>    modernisation_platform_account_id           = string<br>    modernisation_platform_organisation_unit_id = string<br>  })</pre> | n/a | yes |
+| <a name="input_environment_management"></a> [environment\_management](#input\_environment\_management) | Environment management json | <pre>object({<br/>    account_ids                                 = map(string)<br/>    aws_organizations_root_account_id           = string<br/>    modernisation_platform_account_id           = string<br/>    modernisation_platform_organisation_unit_id = string<br/>  })</pre> | n/a | yes |
 | <a name="input_username"></a> [username](#input\_username) | User name | `string` | n/a | yes |
 
 ## Outputs

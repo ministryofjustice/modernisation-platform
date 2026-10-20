@@ -1,0 +1,89 @@
+---
+owner_slack: "#modernisation-platform"
+title: Using the AWS Transform CLI
+last_reviewed_on: 2026-08-25
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+AWS Transform custom can be used from your local machine with the AWS Transform CLI. This guide covers the platform-specific setup needed by Modernisation Platform users. For the full AWS Transform custom guide, see the [AWS Transform CLI getting started documentation](https://docs.aws.amazon.com/transform/latest/userguide/custom-get-started.html).
+
+## Access and permissions
+
+The AWS Transform CLI uses AWS credentials to authenticate. You do not need to use the AWS Transform web application or AWS IAM Identity Center to use the CLI.
+
+The required AWS Transform permissions have been added to the Modernisation Platform developer role. Use temporary credentials for that role, as described in [Getting AWS Credentials](getting-aws-credentials.html), and select the account and region where you want to run the transformation.
+
+## Note regarding Regions
+
+The [getting started guide](https://docs.aws.amazon.com/transform/latest/userguide/custom-get-started.html\#custom-region-configuration) shows the regions where Transform us supported.
+
+As of writing and following the experiences of users, we recommend setting the default region to eu-central-1 (Frankfurt) as using eu-west-2 has been known to result in errors.
+
+## Prerequisites
+
+You need:
+
+- Node.js 22 or later
+- Git
+- a working directory that is a Git repository
+- an internet connection that can reach the endpoints listed in the [AWS Transform network requirements](https://docs.aws.amazon.com/transform/latest/userguide/custom-get-started.html#custom-network-requirements)
+
+Install the AWS CLI if it is not already available on your machine. Follow AWS's [AWS CLI installation instructions](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html), then configure credentials using [Getting AWS Credentials](getting-aws-credentials.html).
+
+## Install the AWS Transform CLI
+
+Follow AWS's [AWS Transform CLI installation instructions](https://docs.aws.amazon.com/transform/latest/userguide/custom-get-started.html#custom-installation).
+
+On macOS, run:
+
+```shell
+curl -fsSL https://transform-cli.awsstatic.com/install.sh | bash
+```
+
+Check that the installation succeeded:
+
+```shell
+atx --version
+```
+
+## Configure authentication and region
+
+Configure the AWS credentials for the Modernisation Platform developer role using the [AWS credentials instructions](getting-aws-credentials.html). The CLI supports the same AWS profiles and environment variables as the AWS CLI.
+
+Set the region to London, which is the AWS Transform region used by the Modernisation Platform:
+
+```shell
+export AWS_REGION=eu-west-2
+```
+
+If you use an AWS CLI profile, set it for the current shell instead:
+
+```shell
+export AWS_PROFILE=<your-profile-name>
+```
+
+## Run a transformation
+
+Change to a Git repository containing the code you want to transform and start the CLI:
+
+```shell
+atx
+```
+
+You can then ask the agent to run a transformation, for example:
+
+```text
+Execute the AWS/java-aws-sdk-v1-to-v2 transformation on the codebase at ./my-java-project
+```
+
+For non-interactive execution and the available command options, see the [AWS Transform CLI command reference](https://docs.aws.amazon.com/transform/latest/userguide/custom-command-reference.html).
+
+Review the changes made by the transformation with standard Git commands, such as `git status`, `git diff`, and `git log`.
+
+## Further information
+
+- [AWS Transform custom getting started guide](https://docs.aws.amazon.com/transform/latest/userguide/custom-get-started.html)
+- [AWS Transform custom IAM permissions](https://docs.aws.amazon.com/transform/latest/userguide/security-iam-awsmanpol.html)
+- [AWS Transform custom command reference](https://docs.aws.amazon.com/transform/latest/userguide/custom-command-reference.html)

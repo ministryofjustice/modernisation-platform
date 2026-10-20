@@ -1,0 +1,36 @@
+{
+  "account-type": "member",
+  "components": [
+    {
+      "name": "benefit-checker-api"
+    },
+    {
+      "name": "file-transfer-api"
+    }
+  ],
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "integration-hub",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "integration-hub-api-platform",
+    "business-unit": "Platforms",
+    "service-area": "Data",
+    "infrastructure-support": "integration-hub@justice.gov.uk",
+    "owner": "Platforms",
+    "slack-channel": "ask-integration-hub",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [
+    "ministryofjustice/integration-hub-api-platform",
+    "ministryofjustice/integration-hub-file-transfer-api"
+  ],
+  "go-live-date": ""
+}

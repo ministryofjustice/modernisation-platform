@@ -5,12 +5,22 @@
         "cidr": "10.27.72.0/21",
         "accounts": [
           "apex-preproduction",
-          "mlra-preproduction",
           "ccms-ebs-preproduction",
+          "ccms-edrms-preproduction",
+          "ccms-oia-preproduction",
+          "ccms-pui-internal-preproduction",
+          "ccms-pui-preproduction",
+          "contract-work-administration-preproduction",
+          "edw-19c-preproduction",
+          "laa-ccms-soa-preproduction",
+          "laa-cis-preproduction",
+          "laa-oem-preproduction",
+          "laa-pui-secure-browser-preproduction",
           "maat-preproduction",
-          "oas-preproduction",
-          "portal-preproduction",
-          "laa-oem-preproduction"
+          "maatdb-preproduction",
+          "mlra-preproduction",
+          "mojfin-preproduction",
+          "oas-preproduction"
         ]
       }
     }
@@ -21,7 +31,13 @@
     "additional_endpoints": [
       "com.amazonaws.eu-west-2.xray",
       "com.amazonaws.eu-west-2.secretsmanager",
-      "com.amazonaws.eu-west-2.email-smtp"
+      "com.amazonaws.eu-west-2.email-smtp",
+      "com.amazonaws.eu-west-2.ecs",
+      "com.amazonaws.eu-west-2.ecs-agent",
+      "com.amazonaws.eu-west-2.ecs-telemetry",
+      "com.amazonaws.eu-west-2.ecr.api",
+      "com.amazonaws.eu-west-2.ecr.dkr",
+      "com.amazonaws.eu-west-2.logs"
     ],
     "additional_private_zones": [],
     "additional_vpcs": [],

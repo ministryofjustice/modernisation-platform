@@ -1,30 +1,90 @@
 {
   "account-type": "member",
+  "components": [
+    {
+      "name": "workspaces-secure-browser",
+      "sso_group_name": "aws-root-account-admin-team"
+    },
+    {
+      "name": "ccms-ebs-ssogen",
+      "sso_group_name": "laa-sre-admins"
+    },
+    {
+      "name": "ccms-file-transfer",
+      "sso_group_name": "laa-sre-admins"
+    }
+  ],
   "environments": [
     {
       "name": "development",
       "access": [
         {
-          "github_slug": "laa-ccms-migration-team",
-          "level": "sandbox",
-          "nuke": "exclude"
+          "sso_group_name": "laa-ccms-migration-team",
+          "level": "sandbox"
         },
         {
-          "github_slug": "modernisation-platform-security",
-          "level": "view-only"
+          "sso_group_name": "laa-sre-admins",
+          "level": "sandbox",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-ccms-developers",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-soa-developers",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-ccms-instance-access",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",
       "access": [
         {
-          "github_slug": "laa-ccms-migration-team",
+          "sso_group_name": "laa-ccms-migration-team",
           "level": "developer"
         },
         {
-          "github_slug": "modernisation-platform-security",
-          "level": "view-only"
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "laa-ccms-developers",
+          "level": "secrets-manager-editor"
+        },
+        {
+          "sso_group_name": "laa-ccms-instance-access",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-ccms-migration-team",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     },
@@ -32,12 +92,41 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "laa-ccms-migration-team",
+          "sso_group_name": "laa-ccms-migration-team",
           "level": "developer"
         },
         {
-          "github_slug": "modernisation-platform-security",
-          "level": "view-only"
+          "sso_group_name": "laa-ccms-ebs-developers",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "laa-ccms-developers",
+          "level": "secrets-manager-editor"
+        },
+        {
+          "sso_group_name": "laa-ccms-instance-access",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-ccms-migration-team",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "laa-ccms-security-testing-kpmg",
+          "level": "developer"
         }
       ]
     },
@@ -45,12 +134,37 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "laa-ccms-migration-team",
+          "sso_group_name": "laa-ccms-migration-team",
           "level": "developer"
         },
         {
-          "github_slug": "modernisation-platform-security",
-          "level": "view-only"
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "laa-ccms-developers",
+          "level": "secrets-manager-editor"
+        },
+        {
+          "sso_group_name": "laa-ccms-migration-team",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "octo-cyber",
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
@@ -58,9 +172,14 @@
   "tags": {
     "application": "ccms-ebs",
     "business-unit": "LAA",
-    "infrastructure-support": "laa-ccms-platform-tea-aaaaeti4e5egi736k6a4k46qtm@moj.org.slack.com",
-    "owner": "donovan.artz@digital.justice.gov.uk"
+    "infrastructure-support": "ApplicationOperations@justice.gov.uk",
+    "owner": "ApplicationOperations@justice.gov.uk",
+    "critical-national-infrastructure": true
   },
-  "github-oidc-team-repositories": [""],
-  "go-live-date": "2023-05-26"
+  "github-oidc-team-repositories": [
+    "ministryofjustice/ccms-payments-received",
+    "ministryofjustice/ccms-financial-transfers",
+    "ministryofjustice/laa-ccms-ebs-scripts"
+  ],
+  "go-live-date": ["2023-05-26"]
 }

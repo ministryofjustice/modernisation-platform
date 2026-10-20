@@ -1,0 +1,117 @@
+{
+  "account-type": "member",
+  "codeowners": ["data-engineering", "data-platform-engineering"],
+  "components": [
+    {
+      "name": "streaming-poc",
+      "sso_group_name": "justice-data-factory-administrators"
+    },
+    {
+      "name": "streaming-poc-msk",
+      "sso_group_name": "justice-data-factory-administrators"
+    },
+    {
+      "name": "streaming-poc-opensearch",
+      "sso_group_name": "justice-data-factory-administrators"
+    },
+    {
+      "name": "streaming-poc-maf",
+      "sso_group_name": "justice-data-factory-administrators"
+    },
+    {
+      "name": "streaming-poc-opensearch-config",
+      "sso_group_name": "justice-data-factory-administrators"
+    },
+    {
+      "name": "streaming-poc-devops",
+      "sso_group_name": "justice-data-factory-administrators"
+    },
+    {
+      "name": "dms-core",
+      "sso_group_name": "probation-de"
+    },
+    {
+      "name": "genesys-data-ingestion",
+      "sso_group_name": "data-engineering"
+    },
+    {
+      "name": "data-contract-management",
+      "sso_group_name": "probation-de"
+    }
+  ],
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "data-engineering",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "data-factory-security-team",
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-data-platform-engineering",
+          "level": "platform-engineer-admin"
+        },
+        {
+          "sso_group_name": "data-platform-engineering",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "justice-data-factory-administrators",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "probation-de",
+          "level": "sandbox"
+        }
+      ],
+      "nuke": "exclude"
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "data-engineering",
+          "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "probation-de",
+          "level": "data-engineer"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "data-engineering",
+          "level": "data-engineer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "data-engineering",
+          "level": "data-engineer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "Data Factory - MOJ",
+    "business-unit": "Platforms",
+    "infrastructure-support": "DataEngineering-gg@justice.gov.uk",
+    "owner": "DataEngineering-gg@justice.gov.uk",
+    "slack-channel": "data-engineering-notifications",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [
+    "ministryofjustice/data-factory-lambda-functions"
+  ],
+  "go-live-date": ""
+}

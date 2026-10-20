@@ -18,9 +18,35 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
+plan_output=""
+plan_summary=""
+
 if [ ! -z "$2" ]; then
   options="$2"
-  terraform -chdir="$1" plan -input=false -no-color $options | ./scripts/redact-output.sh
+  plan_output=$(terraform -chdir="$1" plan -input=false -no-color "$options" | ./scripts/redact-output.sh)  # Capture full output
 else
-  terraform -chdir="$1" plan -input=false -no-color | ./scripts/redact-output.sh
+  plan_output=$(terraform -chdir="$1" plan -input=false -no-color | ./scripts/redact-output.sh) # Capture full output
 fi
+
+
+plan_summary=$(echo "$plan_output" | grep -E 'Plan:|No changes. Your infrastructure matches the configuration.' || true)  # Extract summary from full output
+
+if [ -z "$plan_summary" ]; then # If summary only contains "Changes to Outputs:"
+  plan_summary="$(
+    echo "$plan_output" | awk '
+      /^Changes to Outputs:$/ { inblock=1; print; next }
+      inblock && NF==0 { exit }
+      inblock && $1 ~ /^[~+-]/ { print }
+    '
+  )"
+fi
+
+if tty -s; then
+    echo "$plan_output" | tee /dev/tty    # Output full redacted plan to terminal if available
+else
+    echo "$plan_output"                   # Output full redacted plan to stdout (GitHub Actions logs)
+fi
+
+echo "summary<<EOF" >> $GITHUB_OUTPUT
+echo "$plan_summary" >> $GITHUB_OUTPUT
+echo "EOF" >> $GITHUB_OUTPUT

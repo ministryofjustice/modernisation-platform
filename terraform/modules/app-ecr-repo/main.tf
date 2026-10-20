@@ -1,7 +1,7 @@
 #tfsec:ignore:AWS078 tfsec:ignore:aws-ecr-repository-customer-key
 resource "aws_ecr_repository" "ecr_repo" {
   #checkov:skip=CKV_AWS_51:Skip Tag Mutable requirement we want tags to be overwritten   
-  name                 = "${var.app_name}-ecr-repo"
+  name                 = var.app_name
   image_tag_mutability = "MUTABLE"
 
   encryption_configuration {
@@ -14,46 +14,57 @@ resource "aws_ecr_repository" "ecr_repo" {
 
   lifecycle {
     prevent_destroy = true
+    ignore_changes = [
+      name,
+    ]
   }
 
   tags = merge(
     var.tags_common,
     {
-      Name = "${var.app_name}-ecr-repo"
+      Name = var.app_name
     }
   )
 }
 
 data "aws_iam_policy_document" "ecr_repo_policy" {
-  statement {
-    sid    = "AllowPush"
-    effect = "Allow"
-    actions = [
-      "ecr:CompleteLayerUpload",
-      "ecr:BatchCheckLayerAvailability",
-      "ecr:PutImage",
-      "ecr:InitiateLayerUpload",
-      "ecr:UploadLayerPart",
-      "ecr:DescribeImages"
-    ]
-    principals {
-      type        = "AWS"
-      identifiers = var.push_principals
+  dynamic "statement" {
+    for_each = length(var.push_principals) > 0 ? [1] : []
+
+    content {
+      sid    = "AllowPush"
+      effect = "Allow"
+      actions = [
+        "ecr:CompleteLayerUpload",
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:PutImage",
+        "ecr:InitiateLayerUpload",
+        "ecr:UploadLayerPart",
+        "ecr:DescribeImages"
+      ]
+      principals {
+        type        = "AWS"
+        identifiers = var.push_principals
+      }
     }
   }
 
-  statement {
-    sid    = "AllowPull"
-    effect = "Allow"
-    actions = [
-      "ecr:GetDownloadUrlForLayer",
-      "ecr:BatchGetImage",
-      "ecr:DescribeRepositories",
-      "ecr:ListImages"
-    ]
-    principals {
-      type        = "AWS"
-      identifiers = var.pull_principals
+  dynamic "statement" {
+    for_each = length(var.pull_principals) > 0 ? [1] : []
+
+    content {
+      sid    = "AllowPull"
+      effect = "Allow"
+      actions = [
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:BatchGetImage",
+        "ecr:DescribeRepositories",
+        "ecr:ListImages"
+      ]
+      principals {
+        type        = "AWS"
+        identifiers = var.pull_principals
+      }
     }
   }
 

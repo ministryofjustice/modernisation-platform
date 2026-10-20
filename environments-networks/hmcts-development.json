@@ -4,13 +4,14 @@
       "general": {
         "cidr": "10.26.40.0/21",
         "accounts": [
-          "xhibit-portal-development",
+          "dacp-development",
+          "hmcts-claude-provider-development",
+          "ncas-development",
+          "pra-register-development",
           "tipstaff-development",
           "tribunals-development",
-          "dacp-development",
-          "pra-register-development",
-          "ncas-development",
-          "wardship-development"
+          "wardship-development",
+          "xhibit-portal-development"
         ]
       }
     }
@@ -18,7 +19,12 @@
   "options": {
     "bastion_linux": true,
     "additional_cidrs": [],
-    "additional_endpoints": [],
+    "additional_endpoints": [
+      "com.amazonaws.eu-west-2.ecr.dkr",
+      "com.amazonaws.eu-west-2.ecr.api",
+      "com.amazonaws.eu-west-2.secretsmanager",
+      "com.amazonaws.eu-west-2.elasticloadbalancing"
+    ],
     "additional_private_zones": [],
     "additional_vpcs": [],
     "dns_zone_extend": []

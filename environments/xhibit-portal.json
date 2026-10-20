@@ -5,30 +5,73 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "xhibit-portal-dev",
-          "level": "administrator"
+          "sso_group_name": "xhibit-portal-dev",
+          "level": "sandbox"
         },
         {
-          "github_slug": "cjse-xhibit-portal-discovery",
+          "sso_group_name": "octo-cyber",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "octo-cyber",
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "octo-cyber",
+          "level": "view-only"
+        },
+        {
+          "sso_group_name": "cjse-xhibit-portal-discovery",
           "level": "developer"
         }
-      ]
+      ],
+      "instance_scheduler_skip": ["true"],
+      "nuke": "exclude"
     },
     {
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "xhibit-portal-dev",
+          "sso_group_name": "octo-cyber",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "octo-cyber",
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "octo-cyber",
+          "level": "view-only"
+        },
+        {
+          "sso_group_name": "xhibit-portal-dev",
           "level": "developer"
         }
-      ]
+      ],
+      "instance_scheduler_skip": ["true"]
     },
     {
       "name": "production",
       "access": [
         {
-          "github_slug": "xhibit-portal-dev",
+          "sso_group_name": "octo-cyber",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "octo-cyber",
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "octo-cyber",
+          "level": "view-only"
+        },
+        {
+          "sso_group_name": "xhibit-portal-dev",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
@@ -36,8 +79,9 @@
   "tags": {
     "application": "xhibit-portal",
     "business-unit": "HMCTS",
-    "infrastructure-support": "xpsupport@digital.justice.gov.uk",
-    "owner": "dom.tomkins@digital.justice.gov.uk"
+    "infrastructure-support": "xhibitportalsupportteam-gg@justice.gov.uk",
+    "owner": "dom.tomkins@justice.gov.uk",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""],
   "go-live-date": "2022-03-25"

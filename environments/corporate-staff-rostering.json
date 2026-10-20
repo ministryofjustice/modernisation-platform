@@ -2,50 +2,35 @@
   "account-type": "member",
   "environments": [
     {
-      "name": "development",
-      "access": [
-        {
-          "github_slug": "studio-webops",
-          "level": "sandbox",
-          "nuke": "exclude"
-        },
-        {
-          "github_slug": "studio-webops",
-          "level": "migration"
-        }
-      ]
-    },
-    {
-      "name": "test",
-      "access": [
-        {
-          "github_slug": "studio-webops",
-          "level": "developer"
-        },
-        {
-          "github_slug": "studio-webops",
-          "level": "migration"
-        },
-        {
-          "github_slug": "csr-application-support",
-          "level": "instance-management"
-        }
-      ]
-    },
-    {
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "hosting-migrations",
           "level": "developer"
         },
         {
-          "github_slug": "studio-webops",
-          "level": "migration"
+          "sso_group_name": "studio-webops",
+          "level": "developer"
         },
         {
-          "github_slug": "csr-application-support",
-          "level": "instance-management"
+          "sso_group_name": "csr-application-support",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "syscon-devs",
+          "level": "instance-access"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-csr-application-support",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-csr-access",
+          "level": "instance-access"
         }
       ]
     },
@@ -53,16 +38,36 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "hosting-migrations",
           "level": "developer"
         },
         {
-          "github_slug": "studio-webops",
-          "level": "migration"
+          "sso_group_name": "studio-webops",
+          "level": "developer"
         },
         {
-          "github_slug": "csr-application-support",
-          "level": "instance-management"
+          "sso_group_name": "csr-application-support",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "syscon-devs",
+          "level": "instance-access"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-csr-application-support",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-csr-access",
+          "level": "instance-access"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
@@ -71,7 +76,11 @@
     "application": "corporate-staff-rostering",
     "business-unit": "HMPPS",
     "infrastructure-support": "digital-studio-operations-team@digital.justice.gov.uk",
-    "owner": "digital-studio-operations-team@digital.justice.gov.uk"
+    "owner": "digital-studio-operations-team@digital.justice.gov.uk",
+    "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": [
+    "ministryofjustice/dso-modernisation-platform-automation"
+  ],
+  "go-live-date": "2024-03-11"
 }

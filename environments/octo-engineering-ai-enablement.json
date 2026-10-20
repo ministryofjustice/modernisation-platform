@@ -1,0 +1,53 @@
+{
+  "account-type": "member",
+  "codeowners": "justice-engineering-ai-enablement, justice-engineering-ai-enablement",
+  "components": [
+    {
+      "name": "ai-gateway"
+    }
+  ],
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "azure-aws-sso-kiro-admins",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "justice-engineering-ai-enablement",
+          "level": "sandbox"
+        }
+      ],
+      "nuke": "exclude"
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "azure-aws-sso-kiro-admins",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "justice-engineering-ai-enablement",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "octo-engineering-ai-enablement",
+    "business-unit": "Platforms",
+    "service-area": "Hosting",
+    "infrastructure-support": "justice-engineering-ai-enablement@JusticeUK.onmicrosoft.com",
+    "owner": "justice-engineering-ai-enablement@JusticeUK.onmicrosoft.com",
+    "slack-channel": "justice-engineering-ai-enablement",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}

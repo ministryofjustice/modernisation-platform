@@ -4,7 +4,10 @@ Date: 2023-06-20
 
 ## Status
 
-✅ Accepted
+⌛ Superseded
+
+[Member infrastructure code was moved to the modernisation-platform-environments respository.](https://github.com/ministryofjustice/modernisation-platform/issues/5926).
+There may be occasions where we store secrets within the MP repository as they need to persist in case of an environment rebuild, but otherwise all member infrastructure is provisioned through [modernisation-platform-environments](https://github.com/ministryofjustice/modernisation-platform-environments).
 
 ## Context
 

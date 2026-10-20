@@ -1,0 +1,33 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "platform-operations",
+          "level": "sandbox"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "platform-operations",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "platform-operations",
+    "business-unit": "Platforms",
+    "service-area": "Hosting",
+    "infrastructure-support": "platform-operations@justice.gov.uk",
+    "owner": "Platform Operations: platform-operations@justice.gov.uk",
+    "slack-channel": "dso_alerts_pipeline",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": []
+}

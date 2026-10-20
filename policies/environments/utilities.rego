@@ -1,6 +1,8 @@
-package main
+package policies.environments
 
-has_field(object, field) {
-  object[field]
-  object[field] != ""
+import rego.v1
+
+has_field(obj, field) if {
+	field in object.keys(obj)
+	obj[field] != ""
 }

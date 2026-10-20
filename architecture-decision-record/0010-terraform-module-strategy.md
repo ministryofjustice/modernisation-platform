@@ -8,7 +8,7 @@ Date: 2021-06-18
 
 ## Context
 
-The Modernisation Platform uses [Terraform](https://www.terraform.io/) for its infrastructure as code. To make infrastructure reusable, or to simply tidy up code you can use [Terraform Modules](https://www.terraform.io/docs/language/modules/). There are different use cases in the platform for using modules, and this ADR outlines how we plan to use them.
+The Modernisation Platform uses [Terraform](https://www.terraform.io/) for its infrastructure as code. To make infrastructure reusable, or to simply tidy up code you can use [Terraform Modules](https://developer.hashicorp.com/terraform/language/modules). There are different use cases in the platform for using modules, and this ADR outlines how we plan to use them.
 
 ## Decision
 

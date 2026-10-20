@@ -20,6 +20,7 @@ resource "aws_kms_key" "general" {
 }
 
 resource "aws_kms_alias" "general" {
+
   target_key_id = aws_kms_key.general.id
   name          = format("alias/general-%s", var.business_unit)
 }
@@ -121,8 +122,37 @@ data "aws_iam_policy_document" "kms-general" {
     resources = ["*"]
 
     principals {
-      type        = "Service"
-      identifiers = ["cloudwatch.amazonaws.com"]
+      type = "Service"
+      identifiers = [
+        "cloudwatch.amazonaws.com",
+        "ses.amazonaws.com",
+        "s3.amazonaws.com",
+        "dms.amazonaws.com"
+      ]
+    }
+  }
+  statement {
+    effect = "Allow"
+    actions = [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey"
+    ]
+
+    resources = ["*"]
+
+    principals {
+      type = "Service"
+      identifiers = [
+        "logs.eu-west-2.amazonaws.com"
+      ]
+    }
+    condition {
+      test     = "ArnLike"
+      variable = "kms:EncryptionContext:aws:logs:arn"
+      values   = ["arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:*"]
     }
   }
 }

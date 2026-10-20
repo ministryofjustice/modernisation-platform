@@ -1,57 +1,69 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Adding collaborators to Modernisation Platform accounts
-last_reviewed_on: 2023-09-18
+last_reviewed_on: 2026-09-22
 review_in: 6 month
 ---
 
 # <%= current_page.data.title %>
 
-Collaborators are defined as GitHub users which are not part of the `ministryofjustice` GitHub organisation.
-Users who are part of the organisation are added to the platform by joining a [GitHub team](../user-guide/creating-environments.html#github-team-slug).
+Collaborators are GitHub users who are not members of the `ministryofjustice` GitHub organisation.
+Organisation members access the Modernisation Platform through a [GitHub team](../user-guide/creating-environments.html#sso-group-name).
 
 To enable collaborators to use the Modernisation Platform we need to give them the following access:
 
-- Access to our Github repositories (if needed)
+- Access to our GitHub repositories (if needed)
 - Access to the relevant AWS accounts
 - Access to be able to approve deployments (if needed)
 
-## Access to our Github repositories
+External collaborator access must be requested by a Ministry of Justice member of the relevant application team using the [New Collaborator](https://github.com/ministryofjustice/modernisation-platform/issues/new/choose) issue template. External collaborators must not submit requests on their own behalf.
 
-In order to create infrastructure, collaborators will need to have `push` permissions to the following repositories:
+Submitting the issue automatically raises a pull request to add the collaborator. The Modernisation Platform team must review the pull request and confirm the requested access with the requester before approving it.
 
-- [modernisation-platform-environments](https://github.com/ministryofjustice/modernisation-platform-environments) (only needed if writing infrastructure code)
-- [modernisation-platform-ami-builds](https://github.com/ministryofjustice/modernisation-platform-ami-builds) (only needed if building AMIs)
+## Review the request
 
-Please follow the instructions in the MoJ [github-collaborators](https://github.com/ministryofjustice/github-collaborators) repository on how to add them.
+Before approving the automatically raised pull request:
 
-Under "reason" please put the name of the Modernisation Platform application that they require access to.
+- Confirm that the requester is a Ministry of Justice member of the relevant application team.
+- Confirm the collaborator's details and requested AWS access with the requester.
+- Confirm whether GitHub repository access or deployment approval permissions are required.
+- Ensure you have contact details for the external collaborator.
+
+## Access to our GitHub repositories
+
+Collaborators who need to create infrastructure require `push` access to the [modernisation-platform-environments](https://github.com/ministryofjustice/modernisation-platform-environments) repository. Enter the collaborator's valid GitHub username in the issue form. The automatically raised pull request adds it to `collaborators.json`, and our [GitHub Terraform code](https://github.com/ministryofjustice/modernisation-platform-github/tree/main/terraform/github) grants the required access.
+
+If the collaborator does not require access to GitHub repositories, enter the exact value `no-value-supplied` in the **Collaborator GitHub username** field. This prevents Terraform from granting repository access.
+
+This process does not grant access to other repositories, including [modernisation-platform-ami-builds](https://github.com/ministryofjustice/modernisation-platform-ami-builds).
 
 ## Access to the relevant AWS accounts
 
-Add the collaborators to the [collaborators.json](https://github.com/ministryofjustice/modernisation-platform/blob/main/collaborators.json) file.
+The automatically raised pull request adds the collaborator to the [collaborators.json](https://github.com/ministryofjustice/modernisation-platform-github/blob/main/collaborators.json) file. Check that the generated account names and access levels match the request before approving it.
 
-Valid access levels are `read-only` (read only access) and `developer` (read only plus additional permissions detailed [here](../user-guide/creating-environments.html#developer))
+Valid access levels are detailed [here](../user-guide/platform-user-roles.html#developer).
 
-The modernisation-platform-account workflow will create the users when a pull request with these changes is merged.
+When the pull request is merged, the **Terraform: GitHub resources** workflow applies the GitHub changes and automatically triggers the **Terraform: modernisation-platform-account** workflow. This workflow downloads the updated `collaborators.json` file and creates the collaborator's IAM user and account access. Confirm that both workflows complete successfully before configuring console access.
 
 Once their IAM user has been created, log into the AWS console yourself and:
 
-- switch into the superadmin role in the Modernisation Platform account
-- go to their IAM user in IAM Users
-- go to the Security Credentials tab
-- configure console access with an autogenerated password. Note a user can only update their password once MFA has been enabled.
-- the user will need to assign an MFA device on the first log in
-- the user will need to log out and back in to finish enabling MFA
-- the user can go to the Security Credentials tab to change the password
+- Switch into the superadmin role in the Modernisation Platform account.
+- Go to their IAM user in IAM Users.
+- Go to the Security Credentials tab.
+- Configure console access with an autogenerated password (Note a user can only update their password once MFA has been enabled).
+- The user will need to assign an MFA device on the first log in.
+- The user will need to log out and back in to finish enabling MFA.
+- The user can go to the Security Credentials tab to change the password.
+
+Send the collaborator the [Working as a Collaborator](../user-guide/working-as-a-collaborator.html) guide, which explains how to sign in, configure MFA and use their access.
 
 #### Example file entries
 
-```
+```json
 {
   "users": [
     {
-      "username": "test-collaborator-1",
+      "username": "test.collaborator1@example.com",
       "github-username": "test-github-1",
       "accounts": [
         {
@@ -69,8 +81,8 @@ Once their IAM user has been created, log into the AWS console yourself and:
       ]
     },
     {
-      "username": "test-collaborator-2",
-      "github-username": "test-git-2",
+      "username": "test.collaborator2@example.com",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "sprinkler-development",
@@ -84,17 +96,27 @@ Once their IAM user has been created, log into the AWS console yourself and:
 
 #### Diagram
 
-![Collaborators](../images/collaborators.png)
+![Collaborator onboarding flow](../images/collaborators.svg)
 
-## Access to be able to approve deployments
+## Access to approve deployments
 
-The limit of the number of reviewers (teams or users) that can be added to a GitHub environment is [six](https://docs.github.com/en/rest/reference/deployments#create-or-update-an-environment--parameters).
-Two of these spaces will be taken by the application GitHub team and by the Modernisation Platform GitHub team leaving only four spaces to add collaborators.
+If the request specifies deployment approval access, add the collaborator's GitHub username to the `additional_reviewers` list for each requested environment in the relevant `environments/<application>.json` file. Raise and merge a separate pull request for this change.
 
-The deployment approver(s) should be added as 'additional_reviewers' specified per an environment in the application.json file (See: "additional_reviewers" in [Another example](../user-guide/creating-environments.html#another-example) for an example).
+GitHub environments support a maximum of [six reviewers](https://docs.github.com/en/rest/reference/deployments#create-or-update-an-environment--parameters). The application team and Modernisation Platform team occupy two of these places, leaving space for up to four additional reviewers.
+
+See [`additional_reviewers` in the environment example](../user-guide/creating-environments.html#another-example).
+
+## Inactive collaborators
+
+Collaborator access is monitored automatically. After 30 days of inactivity, the application team is notified. After 45 days, the collaborator's access keys and console access are disabled. After 60 days, a pull request is raised to remove the collaborator.
+
+See [Access Key Management](../user-guide/access-key-management.html) for more information.
 
 ## Removing collaborators
 
-To remove collaborators reverse the above steps.
+1. Remove the collaborator from every `additional_reviewers` list in the relevant `environments/<application>.json` files.
+1. Remove the collaborator's entry from [collaborators.json](https://github.com/ministryofjustice/modernisation-platform-github/blob/main/collaborators.json) and merge the pull request.
+1. Confirm that the **Terraform: GitHub resources** workflow completes successfully and triggers the **Terraform: modernisation-platform-account** workflow.
+1. Confirm that the account workflow removes the collaborator's IAM user and access.
 
-In order to remove the collaborator IAM user, the Terraform in `modernisation-platform/terraform/modernisation-platform-account` must be run locally as a `superadmin` user, as the pipelines do not have permissions to delete users. Alternatively the pipeline can be run, then when it fails delete the user and rerun the failed job. 
+If the account workflow cannot delete the IAM user, delete it manually as a `superadmin`, then rerun the failed workflow.

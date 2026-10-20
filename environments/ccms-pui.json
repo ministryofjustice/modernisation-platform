@@ -1,0 +1,108 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "sandbox",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-ccms-developers",
+          "level": "secrets-manager-editor"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
+        }
+      ],
+      "nuke": "exclude"
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "laa-ccms-developers",
+          "level": "secrets-manager-editor"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "laa-ccms-developers",
+          "level": "secrets-manager-editor"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "laa-ccms-security-testing-kpmg",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "laa-ccms-developers",
+          "level": "secrets-manager-editor"
+        },
+        {
+          "sso_group_name": "octo-cyber",
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "ccms-pui",
+    "business-unit": "LAA",
+    "infrastructure-support": "ApplicationOperations@justice.gov.uk",
+    "owner": "ApplicationOperations@justice.gov.uk",
+    "slack-channel": "",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": ["ministryofjustice/laa-ccms-provider-ui"],
+  "go-live-date": [""]
+}

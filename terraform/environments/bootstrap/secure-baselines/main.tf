@@ -4,9 +4,9 @@ data "aws_kms_key" "cloudtrail_key" {
   key_id   = "alias/s3-logging-cloudtrail"
 }
 
+#trivy:ignore:AVD-AWS-0136
 module "baselines" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=2f01841c0a3a3b9894cdd7bc6999802a5dc81c01" # v6.2.1
-
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=8d8e55e89b9d1c807c3172c1408b3ef802844b8e" # v10.1.4
   providers = {
     # Default and replication regions
     aws                    = aws.workspace-eu-west-2
@@ -16,6 +16,7 @@ module "baselines" {
     aws.eu-central-1 = aws.workspace-eu-central-1
     aws.eu-west-1    = aws.workspace-eu-west-1
     aws.eu-west-2    = aws.workspace-eu-west-2
+    aws.eu-west-3    = aws.workspace-eu-west-3
     aws.us-east-1    = aws.workspace-us-east-1
 
     # We're part of a Organization SCP that restricts regional usage, so we can't assume roles in non-restricted regions.
@@ -30,7 +31,6 @@ module "baselines" {
     aws.ap-northeast-1 = aws.workspace-eu-west-2
     aws.ap-northeast-2 = aws.workspace-eu-west-2
     aws.ap-south-1     = aws.workspace-eu-west-2
-    aws.eu-west-3      = aws.workspace-eu-west-2
     aws.ap-southeast-1 = aws.workspace-eu-west-2
     aws.ap-southeast-2 = aws.workspace-eu-west-2
     aws.ca-central-1   = aws.workspace-eu-west-2
@@ -39,6 +39,15 @@ module "baselines" {
     aws.us-west-1      = aws.workspace-eu-west-2
     aws.us-west-2      = aws.workspace-eu-west-2
   }
+
+  # Ensure bucket policy references correct account
+  current_account_id = local.environment_management.account_ids[terraform.workspace]
+
+  # Selectively reduce pre prod backups on certain accounts
+  reduced_preprod_backup_retention = local.reduced_preprod_backup_retention
+
+  # Selectively enable CloudTrail object-level logging
+  enable_cloudtrail_s3_mgmt_events = local.enable-cloudtrail-events
 
   # Regions to enable IAM Access Analyzer in
   enabled_access_analyzer_regions = local.enabled_baseline_regions
@@ -58,10 +67,47 @@ module "baselines" {
   # Regions to enable Security Hub in
   enabled_securityhub_regions = local.enabled_baseline_regions
 
-  # Regions to enable default VPC configuration and VPC Flow Logs in
-  enabled_vpc_regions = local.enabled_baseline_regions
-
   cloudtrail_kms_key = data.aws_kms_key.cloudtrail_key.arn
   root_account_id    = local.root_account.master_account_id
   tags               = local.environments
+
+  # Regions to enable IMDSv2 in
+  enabled_imdsv2_regions = local.enabled_baseline_regions
+
+  # Enable Session Manager transcript logging
+  enable_session_manager_logging = true
+  session_manager_log_forwarding_destination_arns = {
+    eu-west-2 = "arn:aws:logs:eu-west-2:${local.environment_management.account_ids["core-logging-production"]}:destination:session-manager-logs-destination"
+  }
+
+  # Pass in pagerduty integration key for security hub alerts
+  pagerduty_integration_key = local.pagerduty_integration_keys["security_hub_members"]
+
+  # PagerDuty Key for High Priority Alarms
+  high_priority_pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_high_priority_cloudwatch"]
+
+  # Individual Slack Alerts for CRITICAL and other severity SecurityHub alerts if the account is in scope and the criticality is set.
+  enable_securityhub_slack_alerts                    = local.securityhub_slack_alerts_accounts
+  securityhub_slack_alerts_scope                     = local.securityhub_slack_alerts_scope
+  securityhub_slack_alerts_pagerduty_integration_key = local.pagerduty_integration_keys["security_hub_alerts_critical_priority"]
+  enable_securityhub_event_forwarding                = local.enable_securityhub_event_forwarding
+  securityhub_central_event_bus_arn                  = local.securityhub_central_event_bus_arn
+
+}
+
+# Keys for pagerduty
+data "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
+  provider  = aws.modernisation-secrets-read
+  secret_id = data.aws_secretsmanager_secret.pagerduty_integration_keys.id
+}
+
+# Get the map of pagerduty integration keys
+data "aws_secretsmanager_secret" "pagerduty_integration_keys" {
+  provider = aws.modernisation-secrets-read
+  name     = "pagerduty_integration_keys"
+}
+
+# Keys for pagerduty
+locals {
+  pagerduty_integration_keys = jsondecode(data.aws_secretsmanager_secret_version.pagerduty_integration_keys.secret_string)
 }

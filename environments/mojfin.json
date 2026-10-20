@@ -5,25 +5,102 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-mojfin-developers",
           "level": "developer"
         },
         {
-          "github_slug": "laa-mojfin-developers",
+          "sso_group_name": "laa-mojfin-database-access",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-mojfin-ssm",
+          "level": "ssm-session-access"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "true"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-mojfin-developers",
           "level": "developer"
         },
         {
-          "github_slug": "laa-mojfin-developers",
+          "sso_group_name": "laa-mojfin-database-access",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-mojfin-ssm",
+          "level": "ssm-session-access"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "laa-mojfin-developers",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-mojfin-database-access",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-mojfin-ssm",
+          "level": "ssm-session-access"
+        },
+        {
+          "sso_group_name": "laa-mojfin-security",
+          "level": "view-only"
+        },
+        {
+          "sso_group_name": "laa-mojfin-security",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "laa-mojfin-security",
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-mojfin-security",
+          "level": "view-only"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-mojfin-security",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-mojfin-security",
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "true"
         }
       ]
     },
@@ -31,12 +108,29 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-mojfin-developers",
           "level": "developer"
         },
         {
-          "github_slug": "laa-mojfin-developers",
+          "sso_group_name": "laa-mojfin-database-access",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-mojfin-ssm",
+          "level": "ssm-session-access"
+        },
+        {
+          "sso_group_name": "laa-ccms-ebs-developers",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
@@ -44,8 +138,9 @@
   "tags": {
     "application": "mojfin",
     "business-unit": "LAA",
-    "infrastructure-support": "aws-webops-laa@digital.justice.gov.uk",
-    "owner": "william.moran@justice.gov.uk"
+    "infrastructure-support": "ApplicationOperations@justice.gov.uk",
+    "owner": "william.moran@justice.gov.uk",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""],
   "go-live-date": "2023-07-05"

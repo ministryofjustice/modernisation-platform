@@ -1,58 +1,108 @@
 {
   "account-type": "member",
-  "codeowners": ["data-platform-apps-and-tools", "data-platform-labs"],
+  "codeowners": ["data-platform-engineering"],
+  "components": [
+    {
+      "name": "dns"
+    },
+    {
+      "name": "iac"
+    },
+    {
+      "name": "network"
+    },
+    {
+      "name": "cluster"
+    },
+    {
+      "name": "ai-gateway"
+    },
+    {
+      "name": "app"
+    },
+    {
+      "name": "monitoring"
+    },
+    {
+      "name": "sagemaker"
+    },
+    {
+      "name": "airflow"
+    },
+    {
+      "name": "airflow-cluster"
+    }
+  ],
   "environments": [
     {
       "name": "development",
       "access": [
         {
-          "github_slug": "data-platform-development-sandbox",
-          "level": "sandbox",
-          "nuke": "exclude"
+          "sso_group_name": "data-platform-engineering",
+          "level": "read-only",
+          "github_action_reviewer": "true"
         },
         {
-          "github_slug": "data-platform-audit-and-security",
-          "level": "security-audit",
-          "nuke": "exclude"
+          "sso_group_name": "azure-aws-sso-data-platform-engineering",
+          "level": "platform-engineer-admin"
+        },
+        {
+          "sso_group_name": "data-platform-proserve-engineers",
+          "level": "platform-engineer-admin"
         }
-      ]
+      ],
+      "instance_scheduler_skip": ["true"],
+      "nuke": "exclude"
     },
     {
       "name": "test",
       "access": [
         {
-          "github_slug": "data-platform-test-developer",
-          "level": "developer"
+          "sso_group_name": "data-platform-engineering",
+          "level": "read-only",
+          "github_action_reviewer": "true"
         },
         {
-          "github_slug": "data-platform-audit-and-security",
-          "level": "security-audit"
+          "sso_group_name": "azure-aws-sso-data-platform-engineering",
+          "level": "platform-engineer-admin"
         }
-      ]
+      ],
+      "instance_scheduler_skip": ["true"]
     },
     {
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "data-platform-preproduction-developer",
-          "level": "developer"
+          "sso_group_name": "data-platform-engineering",
+          "level": "read-only",
+          "github_action_reviewer": "true"
         },
         {
-          "github_slug": "data-platform-audit-and-security",
-          "level": "security-audit"
+          "sso_group_name": "azure-aws-sso-data-platform-engineering",
+          "level": "platform-engineer-admin"
         }
-      ]
+      ],
+      "instance_scheduler_skip": ["true"]
     },
     {
       "name": "production",
       "access": [
         {
-          "github_slug": "data-platform-production-developer",
-          "level": "developer"
+          "sso_group_name": "data-platform-engineering",
+          "level": "read-only",
+          "github_action_reviewer": "true"
         },
         {
-          "github_slug": "data-platform-audit-and-security",
+          "sso_group_name": "azure-aws-sso-data-platform-engineering",
+          "level": "platform-engineer-admin"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
           "level": "security-audit"
+        },
+        {
+          "sso_group_name": "data-platform-readonly",
+          "level": "read-only"
         }
       ]
     }

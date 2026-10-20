@@ -1,0 +1,229 @@
+---
+owner_slack: "#modernisation-platform"
+title: Shared Configuration Access (Secrets Manager and SSM Parameter Store)
+last_reviewed_on: 2026-08-04
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+## Overview
+
+Modernisation Platform provides a shared configuration access mechanism that allows application teams to manage their own business unit configuration values stored in:
+
+* AWS Secrets Manager
+* AWS Systems Manager Parameter Store (SSM)
+
+Only resources created in the eu-west-2 (London) Region are supported. Resources created in other AWS Regions are not supported.
+
+Access is provided through a dedicated IAM role created for each business unit in the `core-shared-services-production` account.
+
+Each business unit has its own role:
+
+```
+<business-unit>-shared-configuration-access
+```
+
+For example:
+
+```
+opg-shared-configuration-access
+hmpps-shared-configuration-access
+platforms-shared-configuration-access
+```
+
+Application teams can assume this role from their AWS account to create, update, retrieve, and delete their business unit secrets and parameters.
+
+---
+
+# Access Model
+
+The access flow is:
+
+```
+Application AWS Account
+
+        |
+        |
+        | AssumeRole
+        |
+        v
+
+core-shared-services-production
+
+        |
+        |
+        v
+
+<business-unit>-shared-configuration-access Role
+
+        |
+        |
+        +---- Secrets Manager
+        |
+        +---- SSM Parameter Store
+```
+
+The role trust relationship only allows approved accounts belonging to the business unit.
+
+---
+
+# Resource Naming Requirements
+
+To ensure isolation between business units, secrets and parameters must follow the business unit prefix convention.
+
+## Secrets Manager
+
+Secrets must start with the business unit name:
+
+Example:
+
+```
+platforms/database/password
+platforms/client_id
+platforms/application/config
+```
+
+The platforms role can only manage:
+
+```
+platforms/*
+```
+
+It cannot access:
+```
+hmpps/*
+opg/*
+```
+---
+
+## SSM Parameter Store
+
+Parameters must also start with the business unit name:
+
+Example:
+
+```
+/platforms/database/password
+/platforms/config
+```
+
+The platforms role can only manage:
+
+```
+/opg/*
+```
+
+---
+
+# Using the Role from Terraform
+
+A provider has been added to your application folder which allows Terraform to assume the business unit role in the `core-shared-services-production` account.
+
+# Creating a Secret Using Terraform
+
+Example:
+
+```hcl
+resource "aws_secretsmanager_secret" "database_password" {
+  provider = aws.shared-configuration-access
+  name = "platforms/database/password"
+  description = "Database password"
+}
+```
+
+---
+
+# Reading a Secret Using Terraform
+
+Example:
+
+```hcl
+data "aws_secretsmanager_secret" "database_password" {
+  provider = aws.shared-configuration-access
+  name = "platforms/database/password"
+
+}
+
+data "aws_secretsmanager_secret_version" "database_password" {
+  provider = aws.shared-services
+  secret_id = data.aws_secretsmanager_secret.database_password.id
+}
+```
+---
+
+# Accessing the Role from AWS Console
+
+If you need to manually access Secrets Manager or Parameter Store using the AWS Console, you can switch roles.
+
+## Steps
+
+1. Login to your AWS account using your Administrator SSO role.
+
+2. Open the AWS Console.
+
+3. Ensure the AWS Region is set to: `Europe (London)`
+
+4. Select your account menu in the top-right corner.
+
+5. Choose:
+
+```
+Switch Role
+```
+
+6. Enter the following details:
+
+### Account
+
+```
+core-shared-services-production
+```
+
+### Role name
+
+```
+<business-unit>-shared-configuration-access
+```
+
+---
+
+# Using AWS Console After Switching Role
+
+After switching role:
+
+## Secrets Manager
+
+Navigate to:
+
+```
+AWS Console
+ -> Secrets Manager
+ -> Secrets
+```
+
+You will only be able to access secrets matching:
+
+```
+<business-unit>/*
+```
+
+Example:
+
+```
+platforms/database/password
+platforms/config
+```
+
+Similarly for AWS System Manager Parameter Store
+---
+
+# Important Notes
+
+* Do not create secrets without the business unit prefix.
+* Secrets outside your business unit namespace cannot be accessed.
+* The IAM role does not provide access to other business units.
+* Terraform resources managing shared configuration must use the `shared-configuration-access` AWS provider.
+* The role should be used only for application configuration management.
+
+Following the naming convention ensures that each business unit remains isolated while allowing teams to manage their own configuration securely.

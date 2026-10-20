@@ -1,6 +1,8 @@
-package main
+package policies.member
 
-has_field(object, field) {
-  object[field]
-  object[field] != ""
+import rego.v1
+
+has_field(obj, field) if {
+	obj[field]
+	obj[field] != ""
 }

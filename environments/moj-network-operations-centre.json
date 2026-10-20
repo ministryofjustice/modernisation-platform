@@ -5,17 +5,43 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "moj-official-techops",
+          "sso_group_name": "moj-official-techops",
           "level": "administrator"
+        },
+        {
+          "sso_group_name": "moj-official-noc-preprod",
+          "level": "administrator"
+        },
+        {
+          "sso_group_name": "moj-official-techops-readonly",
+          "level": "view-only"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "moj-official-techops",
+          "level": "administrator"
+        },
+        {
+          "sso_group_name": "moj-official-techops-readonly",
+          "level": "view-only"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
   ],
   "tags": {
-    "application": "moj-official",
+    "application": "NOC",
     "business-unit": "HQ",
-    "infrastructure-support": "MOJNOC@justice.gov.uk",
-    "owner": "chinyere.onuoha@justice.gov.uk"
+    "infrastructure-support": "NetworkAutomation@justice.gov.uk",
+    "owner": "NetworkAutomation@justice.gov.uk",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""]
 }

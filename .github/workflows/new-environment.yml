@@ -1,6 +1,7 @@
+---
 name: "Terraform: New environment"
 
-on:
+"on":
   push:
     branches:
       - main
@@ -8,7 +9,7 @@ on:
       - '.github/workflows/new-environment.yml'
       - 'terraform/environments/*.tf'
       - 'environments/**.json'
-      - 'terraform/environments/bootstrap/**'
+      - '!**.md'
   pull_request:
     branches:
       - main
@@ -22,114 +23,206 @@ on:
 env:
   TF_IN_AUTOMATION: true
   AWS_REGION: "eu-west-2"
-  ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
+  TEMPLATE_ID: "1f0f5ccc-0f67-4ee2-942f-6e48804828ea"
+  EXPECTED_TEMPLATE_VERSION: "1" # Update with your expected template version
+  RATE_THRESHOLD: 100
+  APP_ID: 2013696
 
-permissions:
-  id-token: write # This is required for requesting the JWT
-  contents: read # This is required for actions/checkout
+permissions: {}
 
 defaults:
   run:
     shell: bash
 
 jobs:
+
+  fetch-secrets:
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@ebec2f2fda2f93172de61774b5875b9cef7462bc # v6.2.12
+    permissions:
+      id-token: write
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
   check-environments-deployment-plan:
     runs-on: ubuntu-latest
     if: github.ref != 'refs/heads/main' && github.event_name != 'workflow_dispatch'
-    env:
-      TF_VAR_github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
-
+    needs: fetch-secrets
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      - name: Set Account Number
-        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@010d0da01d0b5a38af31e9c3470dbfdabdecca3a # v4.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
-          role-session-name: githubactionsrolesession
-          aws-region: ${{ env.AWS_REGION }}
-      - uses: hashicorp/setup-terraform@a1502cd9e758c50496cc9ac5308c4843bcd56d36 # v3.0.0
+          persist-credentials: false
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@ebec2f2fda2f93172de61774b5875b9cef7462bc # v6.2.12
         with:
-          terraform_version: "~1"
-          terraform_wrapper: false
-
-      - name: Run terraform plan for root terraform/environments
-        run: |
-          terraform --version
-          # Test if this is a PR or PULL event
-
-          #USE IF RUNNING IN GITHUB ACTIONS
-          if [ ! -z ${{ github.event.pull_request.number }} ]
-          then
-
-          #USE IF USING ACT
-          # if [ ! -z ${PULL_REQUEST_NUMBER} ]
-          # then
-
-          #CONFIGURE TERRAFORM
-          bash scripts/terraform-init.sh terraform/environments
-
-          #RUN TERRAFORM PLAN
-          PLAN=`bash scripts/terraform-plan.sh terraform/environments | tee /dev/stderr | grep '^Plan: \|^No changes.'`
-          PLAN="> TERRAFORM PLAN RESULT - ACCOUNTS-TO-CREATE/MODIFY/DELETE -
-          ${PLAN}"
-          bash scripts/update-pr-comments.sh "${PLAN}"
-          fi
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      - name: Create GitHub App token
+        id: app
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ env.APP_ID }}
+          private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
+          owner: ministryofjustice # zizmor: ignore[github-app]
+          repositories: 'modernisation-platform,modernisation-platform-environments,modernisation-platform-ami-builds,modernisation-platform-configuration-management,modernisation-platform-security'
+          permission-actions: read
+          permission-contents: read
+          permission-pull-requests: write
+          permission-secrets: write
+      - name: Authenticate GitHub CLI as the App and Check the Rate Usage
         env:
-          SECRET: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
-          PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
-  create-environment:
-    runs-on: ubuntu-latest
-    if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
-    env:
-      TF_VAR_github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
-    steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+        run: |
+          # gh automatically uses GH_TOKEN if set — no `gh auth login` needed
+          gh auth status
+          bash ./scripts/check-github-api-usage.sh
+      - name: Set env vars
+        env:
+          GITHUB_APP_TOKEN: ${{ steps.app.outputs.token }}
+        run: |
+          echo "TF_VAR_github_token=$GITHUB_APP_TOKEN" >> "$GITHUB_ENV"
       - name: Set Account Number
-        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
+        run: |
+          ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@010d0da01d0b5a38af31e9c3470dbfdabdecca3a # v4.0.1
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
-      - uses: hashicorp/setup-terraform@a1502cd9e758c50496cc9ac5308c4843bcd56d36 # v3.0.0
+      - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
         with:
           terraform_version: "~1"
           terraform_wrapper: false
       - name: Run terraform init in terraform/environments
         run: bash scripts/terraform-init.sh terraform/environments
+
       - name: Run terraform plan in terraform/environments
+        id: tf_plan
         run: bash scripts/terraform-plan.sh terraform/environments
+
+      - name: Update PR comment with plan summary
+        env:
+          PLAN_SUMMARY: ${{ steps.tf_plan.outputs.summary }}
+          SECRET: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          PLAN="$(printf '%s\n%s\n%s\n%s\n%s\n' \
+            '### Terraform Plan Summary' \
+            '_terraform/environments_' \
+            '```' \
+            "$PLAN_SUMMARY" \
+            '```')"
+          bash scripts/update-pr-comments.sh "$PLAN"
+
+  create-environment:
+    runs-on: ubuntu-latest
+    if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    needs: fetch-secrets
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@ebec2f2fda2f93172de61774b5875b9cef7462bc # v6.2.12
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+          mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      - name: Create GitHub App token
+        id: app
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ env.APP_ID }}
+          private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
+          owner: ministryofjustice # zizmor: ignore[github-app]
+          repositories: 'modernisation-platform,modernisation-platform-environments,modernisation-platform-ami-builds,modernisation-platform-configuration-management,modernisation-platform-security'
+          permission-actions: read
+          permission-contents: read
+          permission-pull-requests: write
+          permission-secrets: write
+      - name: Authenticate GitHub CLI as the App and Check the Rate Usage
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+        run: |
+          # gh automatically uses GH_TOKEN if set — no `gh auth login` needed
+          gh auth status
+          bash ./scripts/check-github-api-usage.sh
+      - name: Set env vars
+        env:
+          GITHUB_APP_TOKEN: ${{ steps.app.outputs.token }}
+        run: |
+          echo "TF_VAR_github_token=$GITHUB_APP_TOKEN" >> "$GITHUB_ENV"
+      - name: Set Account Number
+        run: |
+          ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+      - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
+        with:
+          terraform_version: "~1"
+          terraform_wrapper: false
+      - name: Run terraform init in terraform/environments
+        run: bash scripts/terraform-init.sh terraform/environments
       - name: Run terraform apply in terraform/environments
         run: bash scripts/terraform-apply.sh terraform/environments
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117 # v1.24.0
+        uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
         with:
+          webhook-type: incoming-webhook
           payload: |
             {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
         if: ${{ failure() }}
+
   provision-workspaces:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
-    needs: [create-environment]
+    needs: [fetch-secrets, create-environment]
+    permissions:
+      id-token: write
+      contents: read
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      - name: Set Account Number
-        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@010d0da01d0b5a38af31e9c3470dbfdabdecca3a # v4.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
+          persist-credentials: false
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@ebec2f2fda2f93172de61774b5875b9cef7462bc # v6.2.12
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      - name: Set Account Number
+        run: |
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-apply"
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
-      - uses: hashicorp/setup-terraform@a1502cd9e758c50496cc9ac5308c4843bcd56d36 # v3.0.0
+      - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
         with:
           terraform_version: "~1"
           terraform_wrapper: false
@@ -137,219 +230,528 @@ jobs:
         run: bash scripts/provision-terraform-workspaces.sh bootstrap
       - name: Provision workspaces in terraform/environments/*
         run: bash scripts/provision-terraform-workspaces.sh all-environments
+      - name: Provision Member Component Workspaces
+        run: bash scripts/provision-member-component-workspaces.sh
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117 # v1.24.0
+        uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
         with:
+          webhook-type: incoming-webhook
           payload: |
             {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
         if: ${{ failure() }}
   delegate-access:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
-    needs: [provision-workspaces]
+    needs: [fetch-secrets, provision-workspaces]
+    permissions:
+      id-token: write
+      contents: read
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           fetch-depth: 0
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@ebec2f2fda2f93172de61774b5875b9cef7462bc # v6.2.12
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
-        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
+        run: |
+          ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@010d0da01d0b5a38af31e9c3470dbfdabdecca3a # v4.0.1
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
-      - uses: hashicorp/setup-terraform@a1502cd9e758c50496cc9ac5308c4843bcd56d36 # v3.0.0
+      - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
         with:
           terraform_version: "~1"
           terraform_wrapper: false
       - name: get new account(s)
         id: new_account
         run: |
-          echo "files=$(cat <<EOF
-          $(git diff --no-commit-id --name-only --diff-filter=AM -r @^ | awk '{print $1}' | grep ".json" | grep -a "environments//*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')
-          EOF
-          )" >> $GITHUB_OUTPUT
+          files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | tr '\n' ',' | awk '{$1=$1};1')
+          echo "files=$files" >> "$GITHUB_OUTPUT"
       - name: Run delegate access
+        env:
+          NEW_ACCOUNT_FILES: ${{ steps.new_account.outputs.files }}
         run: |
-          accounts=(${{ steps.new_account.outputs.files }})
-          if [ ! -z ${accounts} ]
-          then
-          for i in "${accounts[@]}"
-          do
-          echo "[+] Running delegate-access baseline for account ${i}"
-          bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
-          bash scripts/setup-baseline.sh terraform/environments/bootstrap/delegate-access "${i}" plan
-          bash scripts/setup-baseline.sh terraform/environments/bootstrap/delegate-access "${i}" apply
-          done
+          IFS=',' read -r -a accounts <<< "$NEW_ACCOUNT_FILES"
+          if [[ ${#accounts[@]} -gt 0 ]]; then
+            for i in "${accounts[@]}"; do
+              echo "[+] Running delegate-access baseline for account ${i}"
+              bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
+              bash scripts/setup-baseline.sh terraform/environments/bootstrap/delegate-access "${i}" apply
+            done
           else
-          echo "[+] There were no AWS member accounts to process"
+            echo "[+] There were no AWS member accounts to process"
           fi
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117 # v1.24.0
+        uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
         with:
+          webhook-type: incoming-webhook
           payload: |
             {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
+        if: ${{ failure() }}
+  remove-default-vpc:
+    runs-on: ubuntu-latest
+    if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    needs: [fetch-secrets, delegate-access]
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@ebec2f2fda2f93172de61774b5875b9cef7462bc # v6.2.12
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      - name: Set Account Number
+        run: |
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-apply"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+      - name: get new account(s)
+        id: new_account
+        run: |
+          files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | tr '\n' ',' | awk '{$1=$1};1')
+          echo "files=$files" >> "$GITHUB_OUTPUT"
+      - name: Remove Default VPC
+        env:
+          NEW_ACCOUNT_FILES: ${{ steps.new_account.outputs.files }}
+        run: |
+          IFS=',' read -r -a accounts <<< "$NEW_ACCOUNT_FILES"
+          if [[ ${#accounts[@]} -gt 0 ]]; then
+            for i in "${accounts[@]}"; do
+              environments=$(jq -r '.environments[].name' "environments/${i}.json")
+              while IFS= read -r env; do
+                key="${i}-${env}"
+                account_number=$(echo "$AWS_ENVIRONMENTS" | jq -r ".account_ids[\"$key\"]")
+                echo "[+] Running remove-default-vpc for account ${account_number}"
+                # bash ./scripts/internal/remove-default-vpc/remove_default_vpc_new_account.sh $account_number
+              done <<< "$environments"
+            done
+          else
+            echo "[+] There were no AWS member accounts to process"
+          fi
+      - name: Slack failure notification
+        uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
+        with:
+          webhook-type: incoming-webhook
+          payload: |
+            {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
+        env:
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
         if: ${{ failure() }}
   secure-baselines:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
-    needs: [delegate-access]
+    needs: [fetch-secrets, delegate-access]
+    permissions:
+      id-token: write
+      contents: read
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           fetch-depth: 0
-      - name: Set Account Number
-        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@010d0da01d0b5a38af31e9c3470dbfdabdecca3a # v4.0.1
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@ebec2f2fda2f93172de61774b5875b9cef7462bc # v6.2.12
         with:
-          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      - name: Set Account Number
+        run: |
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-apply"
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
-      - uses: hashicorp/setup-terraform@a1502cd9e758c50496cc9ac5308c4843bcd56d36 # v3.0.0
+      - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
         with:
           terraform_version: "~1"
           terraform_wrapper: false
       - name: get new account(s)
         id: new_account
         run: |
-          echo "files=$(cat <<EOF
-          $(git diff --no-commit-id --name-only --diff-filter=AM -r @^ | awk '{print $1}' | grep ".json" | grep -a "environments//*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')
-          EOF
-          )" >> $GITHUB_OUTPUT
+          files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | tr '\n' ',' | awk '{$1=$1};1')
+          echo "files=$files" >> "$GITHUB_OUTPUT"
       - name: Run secure baselines
+        env:
+          NEW_ACCOUNT_FILES: ${{ steps.new_account.outputs.files }}
         run: |
-          accounts=(${{ steps.new_account.outputs.files }})
-          if [ ! -z ${accounts} ]
-          then
-          for i in "${accounts[@]}"
-          do
-          echo "[+] Running secure baseline for account ${i}"
-          bash scripts/terraform-init.sh terraform/environments/bootstrap/secure-baselines
-          bash scripts/setup-baseline.sh terraform/environments/bootstrap/secure-baselines "${i}" plan
-          bash scripts/setup-baseline.sh terraform/environments/bootstrap/secure-baselines "${i}" apply
-          done
+          IFS=',' read -r -a accounts <<< "$NEW_ACCOUNT_FILES"
+          if [[ ${#accounts[@]} -gt 0 ]]; then
+            for i in "${accounts[@]}"; do
+              echo "[+] Running secure baseline for account ${i}"
+              bash scripts/terraform-init.sh terraform/environments/bootstrap/secure-baselines
+              bash scripts/setup-baseline.sh terraform/environments/bootstrap/secure-baselines "${i}" apply
+            done
           else
-          echo "[+] There were no AWS member accounts to process"
+            echo "[+] There were no AWS member accounts to process"
           fi
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117 # v1.24.0
+        uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
         with:
+          webhook-type: incoming-webhook
           payload: |
             {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
         if: ${{ failure() }}
+  single-sign-on-plan:
+    runs-on: ubuntu-latest
+    if: github.event.ref != 'refs/heads/main' || github.event_name != 'workflow_dispatch'
+    needs: fetch-secrets
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@ebec2f2fda2f93172de61774b5875b9cef7462bc # v6.2.12
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      - name: Set Account Number
+        run: |
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-plan"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+      - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
+        with:
+          terraform_version: "~1"
+          terraform_wrapper: false
+      - name: get new account(s)
+        id: new_account
+        run: |
+          files=$(git diff --name-only --diff-filter=M @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | tr '\n' ',' | awk '{$1=$1};1')
+          echo "files=$files" >> "$GITHUB_OUTPUT"
+      - name: Run single sign on
+        env:
+          NEW_ACCOUNT_FILES: ${{ steps.new_account.outputs.files }}
+        run: |
+          IFS=',' read -r -a accounts <<< "$NEW_ACCOUNT_FILES"
+          if [[ ${#accounts[@]} -gt 0 ]]; then
+            for i in "${accounts[@]}"; do
+              echo "[+] Running single sign on baseline for account ${i}"
+              bash scripts/terraform-init.sh terraform/environments/bootstrap/single-sign-on
+              bash scripts/setup-baseline.sh terraform/environments/bootstrap/single-sign-on "${i}" plan
+            done
+          else
+            echo "[+] There were no AWS member accounts to process"
+          fi
   single-sign-on:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
-    needs: [provision-workspaces, delegate-access]
+    needs: [fetch-secrets, provision-workspaces, delegate-access]
+    permissions:
+      id-token: write
+      contents: read
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           fetch-depth: 0
-      - name: Set Account Number
-        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@010d0da01d0b5a38af31e9c3470dbfdabdecca3a # v4.0.1
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@ebec2f2fda2f93172de61774b5875b9cef7462bc # v6.2.12
         with:
-          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      - name: Set Account Number
+        run: |
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-apply"
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
-      - uses: hashicorp/setup-terraform@a1502cd9e758c50496cc9ac5308c4843bcd56d36 # v3.0.0
+      - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
         with:
           terraform_version: "~1"
           terraform_wrapper: false
       - name: get new account(s)
         id: new_account
         run: |
-          echo "files=$(cat <<EOF
-          $(git diff --no-commit-id --name-only --diff-filter=AM -r @^ | awk '{print $1}' | grep ".json" | grep -a "environments//*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')
-          EOF
-          )" >> $GITHUB_OUTPUT
+          files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | tr '\n' ',' | awk '{$1=$1};1')
+          echo "files=$files" >> "$GITHUB_OUTPUT"
       - name: Run single sign on
+        env:
+          NEW_ACCOUNT_FILES: ${{ steps.new_account.outputs.files }}
         run: |
-          accounts=(${{ steps.new_account.outputs.files }})
-          if [ ! -z ${accounts} ]
-          then
-          for i in "${accounts[@]}"
-          do
-          echo "[+] Running single sign on baseline for account ${i}"
-          bash scripts/terraform-init.sh terraform/environments/bootstrap/single-sign-on
-          bash scripts/setup-baseline.sh terraform/environments/bootstrap/single-sign-on "${i}" plan
-          bash scripts/setup-baseline.sh terraform/environments/bootstrap/single-sign-on "${i}" apply
-          done
+          IFS=',' read -r -a accounts <<< "$NEW_ACCOUNT_FILES"
+          if [[ ${#accounts[@]} -gt 0 ]]; then
+            for i in "${accounts[@]}"; do
+              echo "[+] Running single sign on baseline for account ${i}"
+              bash scripts/terraform-init.sh terraform/environments/bootstrap/single-sign-on
+              bash scripts/setup-baseline.sh terraform/environments/bootstrap/single-sign-on "${i}" apply
+            done
           else
-          echo "[+] There were no AWS member accounts to process"
+            echo "[+] There were no AWS member accounts to process"
           fi
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117 # v1.24.0
+        uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
         with:
+          webhook-type: incoming-webhook
           payload: |
             {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
         if: ${{ failure() }}
+  environment_json_changes_notification:
+    runs-on: ubuntu-latest
+    if: github.event.ref == 'refs/heads/main'
+    needs: [fetch-secrets, single-sign-on]
+    permissions:
+      pull-requests: read
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@ebec2f2fda2f93172de61774b5875b9cef7462bc # v6.2.12
+        with:
+          slack_webhooks: ${{ needs.fetch-secrets.outputs.slack_webhooks }}
+          gov_uk_notify_api_key: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      - name: Get modified JSON files
+        id: environment_json_changes
+        run: |
+          files=$(
+            git diff --name-only --diff-filter=M @^ -- 'environments/*.json' |
+              uniq |
+              sed 's#environments/##' |
+              base64 -w0
+          )
+          printf 'files=%s\n' "$files" >> "$GITHUB_OUTPUT"
+      - name: Install Python
+        if: steps.environment_json_changes.outputs.files != ''
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.10'
+      - name: Install the client
+        if: steps.environment_json_changes.outputs.files != ''
+        run: pip install notifications-python-client
+      - name: Get PR number
+        id: pr_number
+        if: steps.environment_json_changes.outputs.files != ''
+        run: |
+          PR_NUMBER=$(gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/pulls" --jq '.[0].number')
+          echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Send notification to Slack
+        if: steps.environment_json_changes.outputs.files != ''
+        env:
+          ENCODED_FILES: ${{ steps.environment_json_changes.outputs.files }}
+          PR_NUMBER: ${{ steps.pr_number.outputs.pr_number }}
+          SLACK_WEBHOOKS: ${{ env.SLACK_WEBHOOKS }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+        run: |
+          DECODED_FILES=$(printf '%s' "$ENCODED_FILES" | base64 --decode)
+
+          echo "$DECODED_FILES" | while IFS= read -r file; do
+            PR_PATH="https://github.com/${GITHUB_REPOSITORY}/pull/${PR_NUMBER}/files"
+
+            slack_channel=$(jq -r '.tags["slack-channel"] // empty' "environments/$file")
+
+            if [[ -z "$slack_channel" ]]; then
+              echo "No Slack channel specified in $file or the field does not exist. Skipping."
+              continue
+            fi
+
+            echo "Slack channel found: $slack_channel"
+
+            webhook_url=$(jq -r \
+              --arg channel "$slack_channel" \
+              '.[$channel]' \
+              <<< "$SLACK_WEBHOOKS")
+
+            if [[ -z "$webhook_url" || "$webhook_url" == "null" ]]; then
+              echo "No webhook URL found for channel $slack_channel. Skipping notification."
+              continue
+            fi
+
+            echo "Webhook URL found for channel $slack_channel"
+
+            PAYLOAD=$(jq -n \
+              --arg text "The JSON file <${PR_PATH}|${file}> has been changed." \
+              '{text: $text}')
+
+            curl -X POST \
+              -H 'Content-type: application/json' \
+              --data "$PAYLOAD" \
+              "$webhook_url"
+          done
+
+      - name: Validate Notify Template Version
+        if: steps.environment_json_changes.outputs.files != ''
+        run: |
+          python -c '
+          from notifications_python_client.notifications import NotificationsAPIClient
+          import os
+          import sys
+
+          api_key = os.getenv("GOV_UK_NOTIFY_API_KEY")
+          template_id = os.getenv("TEMPLATE_ID")
+          expected_version = int(os.environ["EXPECTED_TEMPLATE_VERSION"])
+
+          client = NotificationsAPIClient(api_key)
+
+          try:
+              template_details = client.get_template(template_id)
+              actual_version = template_details.get("version")
+
+              if actual_version != expected_version:
+                  print(f"Error: Template version mismatch! Expected: {expected_version}, Actual: {actual_version}")
+                  sys.exit(1)
+
+              print(f"Template version {actual_version} validated successfully.")
+          except Exception as exc:
+              print(f"Failed to fetch template details: {exc}")
+              sys.exit(1)
+          '
+      - name: Send notification to Email
+        env:
+          ENCODED_FILES: ${{ steps.environment_json_changes.outputs.files }}
+          PR_NUMBER: ${{ steps.pr_number.outputs.pr_number }}
+        if: steps.environment_json_changes.outputs.files != ''
+        run: |
+          DECODED_FILES=$(printf '%s' "$ENCODED_FILES" | base64 --decode)
+          python ./scripts/json-changes-notifier.py "$DECODED_FILES"
+
   member-bootstrap:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
-    needs: [single-sign-on]
+    needs: [fetch-secrets, secure-baselines, single-sign-on]
+    permissions:
+      id-token: write
+      contents: read
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           fetch-depth: 0
-      - name: Set Account Number
-        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@010d0da01d0b5a38af31e9c3470dbfdabdecca3a # v4.0.1
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@ebec2f2fda2f93172de61774b5875b9cef7462bc # v6.2.12
         with:
-          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      - name: Set Account Number
+        run: |
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-apply"
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
-      - uses: hashicorp/setup-terraform@a1502cd9e758c50496cc9ac5308c4843bcd56d36 # v3.0.0
+      - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
         with:
           terraform_version: "~1"
           terraform_wrapper: false
       - name: get new account(s)
         id: new_account
         run: |
-          echo "files=$(cat <<EOF
-          $(git diff --no-commit-id --name-only --diff-filter=AM -r @^ | awk '{print $1}' | grep ".json" | grep -a "environments//*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')
-          EOF
-          )" >> $GITHUB_OUTPUT
-      - name: Run secure baselines
+          files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | tr '\n' ',' | awk '{$1=$1};1')
+          echo "files=$files" >> "$GITHUB_OUTPUT"
+      - name: Run Member Bootstrap
+        env:
+          NEW_ACCOUNT_FILES: ${{ steps.new_account.outputs.files }}
         run: |
-          accounts=(${{ steps.new_account.outputs.files }})
-          if [ ! -z ${accounts} ]
-          then
-          for i in "${accounts[@]}"
-          do
-          echo "[+] Running secure baseline for account ${i}"
-          bash scripts/terraform-init.sh terraform/environments/bootstrap/member-bootstrap
-          bash scripts/setup-baseline.sh terraform/environments/bootstrap/member-bootstrap "${i}" plan
-          bash scripts/setup-baseline.sh terraform/environments/bootstrap/member-bootstrap "${i}" apply
-          done
+          IFS=',' read -r -a accounts <<< "$NEW_ACCOUNT_FILES"
+          if [[ ${#accounts[@]} -gt 0 ]]; then
+            for i in "${accounts[@]}"; do
+              echo "[+] Running secure baseline for account ${i}"
+              bash scripts/terraform-init.sh terraform/environments/bootstrap/member-bootstrap
+              bash scripts/setup-baseline.sh terraform/environments/bootstrap/member-bootstrap "${i}" apply
+            done
           else
-          echo "[+] There were no AWS member accounts to process"
+            echo "[+] There were no AWS member accounts to process"
           fi
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117 # v1.24.0
+        uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
         with:
+          webhook-type: incoming-webhook
           payload: |
             {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
         if: ${{ failure() }}
+
+  modernisation-platform-account-plan-and-apply:
+    uses: ./.github/workflows/reusable_terraform_plan_apply.yml
+    needs: create-environment
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+    with:
+      working-directory: "terraform/modernisation-platform-account"
+      workflow_id: "modernisation-platform-account"
+      set_github_app_token: true
+      download_collaborators: true
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  core-shared-services-deployment:
+    needs:
+      - member-bootstrap
+      - modernisation-platform-account-plan-and-apply
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+    uses: ./.github/workflows/reusable_terraform_plan_apply.yml
+    with:
+      working-directory: "terraform/environments/core-shared-services"
+      environment: "production"
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}

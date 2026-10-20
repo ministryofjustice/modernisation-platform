@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: How to use shared KMS keys
-last_reviewed_on: 2023-11-16
+last_reviewed_on: 2026-05-21
 review_in: 6 months
 ---
 
@@ -9,17 +9,17 @@ review_in: 6 months
 
 ## Introduction
 
-Sometimes you may need to share encrypted things between accounts, like snapshots.  To do this you can either create your own [KMS key](https://aws.amazon.com/kms/) and share to the relevant accounts, or you can use one of the shared keys provided per business unit.
+Sometimes you may need to share encrypted things between accounts, like snapshots. To do this you can either create your own [KMS key](https://aws.amazon.com/kms/) and share to the relevant accounts, or you can use one of the shared keys provided per business unit.
 
 ## Shared per business unit KMS keys
 
 KMS keys are created for each business unit (eg HMPPS, LAA). These keys are shared to all of the accounts in the business unit, so anything encrypted with these keys can be shared between accounts in the business unit. The shared keys are located in the core-shared-services account.
 
-|Key alias|Recommended usage|
-|---|---|
-|`general-<business-unit>`| General encryption |
-|`ebs-<business-unit>`| Encrypt EBS volumes and snapshots |
-|`rds-<business-unit>`| Encrypt RDS databases and snapshots |
+| Key alias                 | Recommended usage                   |
+| ------------------------- | ----------------------------------- |
+| `general-<business-unit>` | General encryption                  |
+| `ebs-<business-unit>`     | Encrypt EBS volumes and snapshots   |
+| `rds-<business-unit>`     | Encrypt RDS databases and snapshots |
 
 ## How to use
 

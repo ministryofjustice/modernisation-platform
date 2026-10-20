@@ -1,0 +1,64 @@
+{
+  "account-type": "member",
+  "components": [
+    {
+      "name": "pull-from-presigned-url"
+    },
+    {
+      "name": "push-to-s3"
+    },
+    {
+      "name": "push-to-s3-with-hosted-pickup"
+    },
+    {
+      "name": "push-to-sftp"
+    },
+    {
+      "name": "test-harness"
+    }
+  ],
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "integration-hub",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "integration-hub",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "integration-hub",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "integration-hub-file-transfer",
+    "business-unit": "Platforms",
+    "service-area": "Data",
+    "infrastructure-support": "integration-hub@justice.gov.uk",
+    "owner": "Platforms",
+    "slack-channel": "ask-integration-hub",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
+}

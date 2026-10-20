@@ -19,6 +19,7 @@ resource "aws_ram_principal_association" "default" {
   resource_share_arn = data.aws_ram_resource_share.default.arn
 }
 
+
 #configure acm certificate share association
 data "aws_ram_resource_share" "acm" {
   provider = aws.share-acm

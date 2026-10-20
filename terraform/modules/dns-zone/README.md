@@ -3,6 +3,7 @@
 Terraform module for creating core DNS zones
 
 ## Looking for issues?
+
 If you're looking to raise an issue with this module, please create a new issue in the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform/issues).
 
 <!-- BEGIN_TF_DOCS -->
@@ -11,15 +12,15 @@ If you're looking to raise an issue with this module, please create a new issue 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.0 |
-| <a name="provider_aws.aws-us-east-1"></a> [aws.aws-us-east-1](#provider\_aws.aws-us-east-1) | ~> 5.0 |
-| <a name="provider_aws.core-network-services"></a> [aws.core-network-services](#provider\_aws.core-network-services) | ~> 5.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 6.0 |
+| <a name="provider_aws.aws-us-east-1"></a> [aws.aws-us-east-1](#provider\_aws.aws-us-east-1) | ~> 6.0 |
+| <a name="provider_aws.core-network-services"></a> [aws.core-network-services](#provider\_aws.core-network-services) | ~> 6.0 |
 
 ## Modules
 

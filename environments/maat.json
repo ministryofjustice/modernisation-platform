@@ -5,17 +5,42 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
-          "level": "developer"
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "sandbox",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "sandbox",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
-          "level": "developer"
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
         }
       ]
     },
@@ -23,8 +48,22 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
-          "level": "developer"
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
         }
       ]
     },
@@ -32,8 +71,30 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
-          "level": "developer"
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "octo-cyber",
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "modernisation-platform-audit",
+          "level": "security-audit"
         }
       ]
     }
@@ -41,11 +102,13 @@
   "tags": {
     "application": "Means Assessment Administration Tool - MAAT",
     "business-unit": "LAA",
-    "infrastructure-support": "laa-role-sre@digital.justice.gov.uk",
-    "owner": "laa-crime-apps@digital.justice.gov.uk"
+    "infrastructure-support": "laa-crime-assess-apps-core@justice.gov.uk",
+    "owner": "laacrimeapps@justice.gov.uk",
+    "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": [
     "ministryofjustice/laa-maat-application",
     "ministryofjustice/laa-maat-court-data-api"
-  ]
+  ],
+  "go-live-date": ""
 }

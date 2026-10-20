@@ -4,13 +4,13 @@
       "general": {
         "cidr": "10.27.24.0/21",
         "accounts": [
-          "xhibit-portal-preproduction",
+          "dacp-preproduction",
+          "ncas-preproduction",
+          "pra-register-preproduction",
           "tipstaff-preproduction",
           "tribunals-preproduction",
-          "dacp-preproduction",
-          "pra-register-preproduction",
-          "ncas-preproduction",
-          "wardship-preproduction"
+          "wardship-preproduction",
+          "xhibit-portal-preproduction"
         ]
       }
     }
@@ -18,7 +18,12 @@
   "options": {
     "bastion_linux": false,
     "additional_cidrs": [],
-    "additional_endpoints": [],
+    "additional_endpoints": [
+      "com.amazonaws.eu-west-2.ecr.dkr",
+      "com.amazonaws.eu-west-2.ecr.api",
+      "com.amazonaws.eu-west-2.secretsmanager",
+      "com.amazonaws.eu-west-2.elasticloadbalancing"
+    ],
     "additional_private_zones": [],
     "additional_vpcs": [],
     "dns_zone_extend": []

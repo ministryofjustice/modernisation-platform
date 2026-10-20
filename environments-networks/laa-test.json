@@ -5,14 +5,24 @@
         "cidr": "10.26.96.0/21",
         "accounts": [
           "apex-test",
-          "eric-test",
-          "mlra-test",
           "ccms-ebs-test",
+          "ccms-ebs-upgrade-test",
+          "ccms-edrms-test",
+          "ccms-oia-test",
+          "ccms-pui-internal-test",
+          "ccms-pui-test",
+          "contract-work-administration-test",
+          "data-factory-laa-test",
+          "edw-19c-test",
+          "laa-ccms-soa-test",
+          "laa-enterprise-service-bus-test",
           "laa-oem-test",
+          "laa-pui-secure-browser-test",
           "maat-test",
-          "oas-test",
-          "portal-test",
-          "mojfin-test"
+          "maatdb-test",
+          "mlra-test",
+          "mojfin-test",
+          "oas-test"
         ]
       }
     }
@@ -23,9 +33,17 @@
     "additional_endpoints": [
       "com.amazonaws.eu-west-2.xray",
       "com.amazonaws.eu-west-2.secretsmanager",
-      "com.amazonaws.eu-west-2.email-smtp"
+      "com.amazonaws.eu-west-2.email-smtp",
+      "com.amazonaws.eu-west-2.sns",
+      "com.amazonaws.eu-west-2.sqs",
+      "com.amazonaws.eu-west-2.ecs",
+      "com.amazonaws.eu-west-2.ecs-agent",
+      "com.amazonaws.eu-west-2.ecs-telemetry",
+      "com.amazonaws.eu-west-2.ecr.api",
+      "com.amazonaws.eu-west-2.ecr.dkr",
+      "com.amazonaws.eu-west-2.logs"
     ],
-    "additional_private_zones": [],
+    "additional_private_zones": ["aws.prd.legalservices.gov.uk"],
     "additional_vpcs": [],
     "dns_zone_extend": []
   }

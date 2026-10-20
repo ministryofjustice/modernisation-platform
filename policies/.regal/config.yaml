@@ -1,3 +1,4 @@
+---
 rules:
   idiomatic:
     # Not typically needed in conftest policy
@@ -8,6 +9,8 @@ rules:
   # so certainly optional
   # https://docs.styra.com/regal/category/style
   style:
+    file-length:
+      level: ignore
     line-length:
       level: ignore
     opa-fmt:

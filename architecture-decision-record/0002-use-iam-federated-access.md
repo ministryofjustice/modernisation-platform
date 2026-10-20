@@ -21,5 +21,5 @@ Rather than managing the administrative burden of the Joiners, Movers and Leaver
 - We will need to ensure people are onboarded and offboarded in a timely manner to reduce our risks
 - People who need to use the Modernisation Platform will need a GitHub account that is part of the Ministry of Justice organisation
 - We don't have to manage MFA or password rotation for any self-service accounts
-- IAM user accounts through IAM Federated Access don't actually exist, so can't be suspended as mentioned in the [MOJ Security Guidance](https://ministryofjustice.github.io/security-guidance/baseline-aws-accounts/#identity-and-access-management), only removed at a GitHub level
+- IAM user accounts through IAM Federated Access don't actually exist, so cannot be suspended in the same way as IAM users; access must be removed at the identity provider (for example, GitHub) level
 - We align ourselves with the [cloud-platform](https://github.com/ministryofjustice/cloud-platform) and [analytics-platform](https://github.com/ministryofjustice/analytics-platform) teams

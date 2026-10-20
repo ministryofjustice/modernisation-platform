@@ -1,0 +1,23 @@
+{
+  "default_block_sandbox_house_ingress": {
+    "action": "DROP",
+    "source_ip": "0.0.0.0/0",
+    "destination_ip": "${mp-sandbox-house}",
+    "destination_port": "ANY",
+    "protocol": "IP"
+  },
+  "mp_garden_to_house_sandbox_https": {
+    "action": "PASS",
+    "source_ip": "${mp-sandbox-garden}",
+    "destination_ip": "${mp-sandbox-house}",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
+  "mp_house_to_garden_sandbox_https": {
+    "action": "PASS",
+    "source_ip": "${mp-sandbox-house}",
+    "destination_ip": "${mp-sandbox-garden}",
+    "destination_port": "443",
+    "protocol": "TCP"
+  }
+}

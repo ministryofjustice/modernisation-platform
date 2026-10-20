@@ -1,0 +1,79 @@
+{
+  "mp_ad_azure_dc_to_azure_devtest_TCP": {
+    "action": "PASS",
+    "source_ip": "$AD_AZURE_DCS",
+    "destination_ip": "$AZURE_DEVTEST",
+    "destination_port": "$DOMAIN_CONTROLLER_TCP",
+    "protocol": "TCP"
+  },
+  "mp_ad_azure_dc_to_azure_devtest_UDP": {
+    "action": "PASS",
+    "source_ip": "$AD_AZURE_DCS",
+    "destination_ip": "$AZURE_DEVTEST",
+    "destination_port": "$DOMAIN_CONTROLLER_UDP",
+    "protocol": "UDP"
+  },
+  "azure_devtest_to_mp_ad_azure_dcs_TCP": {
+    "action": "PASS",
+    "source_ip": "$AZURE_DEVTEST",
+    "destination_ip": "$AD_AZURE_DCS",
+    "destination_port": "$DOMAIN_CONTROLLER_TCP",
+    "protocol": "TCP"
+  },
+  "azure_devtest_to_mp_ad_azure_dcs_UDP": {
+    "action": "PASS",
+    "source_ip": "$AZURE_DEVTEST",
+    "destination_ip": "$AD_AZURE_DCS",
+    "destination_port": "$DOMAIN_CONTROLLER_UDP",
+    "protocol": "UDP"
+  },
+  "mp_ad_azure_rdlic_to_azure_devtest_TCP": {
+    "action": "PASS",
+    "source_ip": "$AD_AZURE_RD_LICENSING",
+    "destination_ip": "$AZURE_DEVTEST",
+    "destination_port": "$DOMAIN_CONTROLLER_TCP",
+    "protocol": "TCP"
+  },
+  "mp_ad_azure_rdlic_to_azure_devtest_UDP": {
+    "action": "PASS",
+    "source_ip": "$AD_AZURE_RD_LICENSING",
+    "destination_ip": "$AZURE_DEVTEST",
+    "destination_port": "$DOMAIN_CONTROLLER_UDP",
+    "protocol": "UDP"
+  },
+  "azure_devtest_to_mp_ad_azure_rdlic_TCP": {
+    "action": "PASS",
+    "source_ip": "$AZURE_DEVTEST",
+    "destination_ip": "$AD_AZURE_RD_LICENSING",
+    "destination_port": "$RD_LICENSING_TCP",
+    "protocol": "TCP"
+  },
+  "container_platform_nonlive_to_cloud_platform_postgres": {
+    "action": "PASS",
+    "source_ip": "${container-platform-nonlive}",
+    "destination_ip": "${cloud-platform}",
+    "destination_port": "5432",
+    "protocol": "TCP"
+  },
+  "container_platform_nonlive_to_cloud_platform_mysql_mariadb": {
+    "action": "PASS",
+    "source_ip": "${container-platform-nonlive}",
+    "destination_ip": "${cloud-platform}",
+    "destination_port": "3306",
+    "protocol": "TCP"
+  },
+  "container_platform_nonlive_to_cloud_platform_sqlserver": {
+    "action": "PASS",
+    "source_ip": "${container-platform-nonlive}",
+    "destination_ip": "${cloud-platform}",
+    "destination_port": "1433",
+    "protocol": "TCP"
+  },
+  "container_platform_nonlive_to_cloud_platform_redis": {
+    "action": "PASS",
+    "source_ip": "${container-platform-nonlive}",
+    "destination_ip": "${cloud-platform}",
+    "destination_port": "6379",
+    "protocol": "TCP"
+  }
+}

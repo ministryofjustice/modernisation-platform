@@ -1,0 +1,83 @@
+---
+owner_slack: "#modernisation-platform"
+title: Networking Scope and Limitations
+last_reviewed_on: 2026-09-15
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+This page sets out what the Modernisation Platform provides as part of its networking service, what you configure yourself, and the constraints that apply.
+
+For how the networking is put together, see [networking approach](networking-approach.html).
+
+## What we provide
+
+Every account gets, without you having to ask:
+
+- a shared business unit VPC, with [private, public and data subnets](subnet-allocation.html) across three availability zones
+- [baseline NACL rules](subnet-nacls.html)
+- [VPC endpoints](networking-approach.html#protected) for EC2, EC2 Messages, SSM, SSM Messages and S3
+- outbound internet access via a centralised NAT gateway, inspected by the [AWS Network Firewall](network-firewall.html)
+- [DNS zones](dns.html) and [certificate services](certificate-services.html)
+- [Route 53 Resolver DNS Firewall](r53-resolver-dns-firewall.html) protection
+- Transit Gateway connectivity to the wider MoJ network
+
+## What you configure yourself
+
+Most networking changes are self-service. You raise a pull request against the Modernisation Platform repository and the team reviews it. There is no ticket queue.
+
+| Change | Where |
+| ------ | ----- |
+| Firewall rules for outbound traffic | [firewall rules JSON](network-firewall.html#amending-rules) |
+| Additional VPC endpoints | `additional_endpoints` in [environments-networks JSON](../../user-guide/environments-networks-json-explained.html) |
+| Access from external CIDR ranges | `additional_cidrs` |
+| Access from other MoJ ranges | `additional_vpcs` |
+| More address space | `secondary_cidr_blocks` |
+| Custom DNS allow or block lists | [r53-dns-firewall module](r53-resolver-dns-firewall.html#custom-domain-lists) |
+
+Security groups sit inside your own account and are entirely yours to manage.
+
+## Getting help with a connection problem
+
+If a connection is failing, please try the self-service route first. Most connectivity problems come down to a missing firewall rule, a security group, or a NACL restriction, and you can usually resolve them yourself using the table above.
+
+If you have tried that and the connection still fails, post in [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1). Modernisation Platform DevOps engineers will help you debug it, including connections to third parties and other parts of the MoJ.
+
+It helps if you can tell us what you have already tried, the source and destination addresses and ports, and whether it has ever worked.
+
+## Limitations
+
+These are properties of the platform rather than things awaiting a fix. Please take them into account when planning.
+
+### Networking is shared across your business unit
+
+VPCs, NACLs, DNS firewall rules and protected subnet capacity are shared between every account in a business unit. A change made for one application affects the others, which is why some requests take longer to agree than you might expect.
+
+### London region only
+
+There is a single Transit Gateway, in `eu-west-2`. We do not operate networking in any other AWS region.
+
+### PSN connectivity is production and preproduction only
+
+The route to the PSN range exists in the `live_data` route table only. You cannot test PSN connectivity from development, test or sandbox.
+
+### Sandbox is not routable
+
+Sandbox uses a separate address range with no connectivity to the wider MoJ network or to other Modernisation Platform environments. It is for local experimentation only.
+
+### Outbound internet traffic is inspected
+
+Traffic leaving a private subnet goes through the centralised NAT gateway and is subject to Network Firewall rules, including FQDN-based inspection. Reaching a new external endpoint usually needs a rule.
+
+### East/west traffic is restricted by design
+
+NACLs deliberately prevent traffic crossing between business unit VPCs. We can open specific routes with `additional_vpcs`, but we try to avoid it.
+
+### Isolated networks are a separate model
+
+Accounts created with the [isolated network option](networking-approach.html#isolated-networks) do not get most of the above. They build their own VPC with private subnets only and no Transit Gateway attachment.
+
+## If something here does not fit
+
+If a limitation blocks what you are trying to do, please raise it in [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1) rather than working around it. Some constraints have exceptions already, and others we can revisit.

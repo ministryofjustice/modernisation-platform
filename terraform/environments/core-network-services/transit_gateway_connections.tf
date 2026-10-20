@@ -13,10 +13,10 @@ data "aws_ec2_transit_gateway_vpc_attachment" "transit_gateway_all" {
   id       = each.key
 }
 
-data "aws_ec2_transit_gateway_peering_attachment" "pttp-tgw" {
+data "aws_ec2_transit_gateway_peering_attachment" "moj_tgw" {
   filter {
     name   = "tag:Name"
-    values = ["PTTP-Transit-Gateway-attachment-accepter"]
+    values = ["MOJ-TGW-attachment-accepter"]
   }
 }
 
@@ -67,6 +67,7 @@ locals {
     "modernisation-platform-core"     = "10.20.0.0/16"
     "modernisation-platform-non-live" = "10.26.0.0/16",
     "modernisation-platform-live"     = "10.27.0.0/16"
+    "container-platform-nonlive"      = "10.195.0.0/16"
   }
 
   inspection_static_routes = {
@@ -74,19 +75,21 @@ locals {
   }
 
   tgw_live_data_attachments = {
-    for k, v in data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all : k => v.tags.Name if(
+    for k, v in data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all : k => v.tags.Name if try(
       length(regexall("(?:production-attachment)", v.tags.Name)) > 0 ||
       length(regexall("(?:preproduction-attachment)", v.tags.Name)) > 0 ||
-      length(regexall("(?:-live_data-attachment)", v.tags.Name)) > 0
+      length(regexall("(?:-live_data-attachment)", v.tags.Name)) > 0,
+      false
     )
   }
 
   tgw_non_live_data_attachments = {
-    for k, v in data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all : k => v.tags.Name if(
+    for k, v in data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all : k => v.tags.Name if try(
       length(regexall("(?:development-attachment)", v.tags.Name)) > 0 ||
       length(regexall("(?:sandbox-attachment)", v.tags.Name)) > 0 ||
       length(regexall("(?:test-attachment)", v.tags.Name)) > 0 ||
-      length(regexall("(?:-non_live_data-attachment)", v.tags.Name)) > 0
+      length(regexall("(?:-non_live_data-attachment)", v.tags.Name)) > 0,
+      false
     )
   }
 
@@ -96,10 +99,10 @@ locals {
 # TGW Peering  #
 ################
 
-resource "aws_ec2_transit_gateway_peering_attachment_accepter" "PTTP-Production" {
-  transit_gateway_attachment_id = data.aws_ec2_transit_gateway_peering_attachment.pttp-tgw.id
+resource "aws_ec2_transit_gateway_peering_attachment_accepter" "moj_tgw_production" {
+  transit_gateway_attachment_id = data.aws_ec2_transit_gateway_peering_attachment.moj_tgw.id
   tags = {
-    Name = "PTTP-Transit-Gateway-attachment-accepter"
+    Name = "MOJ-TGW-attachment-accepter"
     Side = "Acceptor"
   }
 
@@ -146,16 +149,16 @@ resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_firewall" 
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
 
-# add external egress routes for non-live-data TGW route table to PTTP attachment
-resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_non_live_data_to_PTTP" {
+# add external egress routes for non-live-data TGW route table to MOJ attachment
+resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_non_live_data_to_moj" {
   for_each                       = local.non_live_data_static_routes
   destination_cidr_block         = each.value
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.external_inspection_in.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["non_live_data"].id
 }
 
-# add external egress routes for live-data TGW route table to PTTP attachment
-resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_live_data_to_PTTP" {
+# add external egress routes for live-data TGW route table to MOJ TGW attachment
+resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_live_data_to_moj" {
   for_each                       = local.live_data_static_routes
   destination_cidr_block         = each.value
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.external_inspection_in.id
@@ -172,13 +175,13 @@ resource "aws_ec2_transit_gateway_route" "external_static_routes" {
 resource "aws_ec2_transit_gateway_route" "inspection_static_routes" {
   for_each                       = local.inspection_static_routes
   destination_cidr_block         = each.value
-  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.pttp-tgw.id
+  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.moj_tgw.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
 
-# associate tgw external-inspection-in routing table with PTTP peering attachment
+# associate tgw external-inspection-in routing table with MOJ-TGW peering attachment
 resource "aws_ec2_transit_gateway_route_table_association" "external_inspection_in" {
-  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.pttp-tgw.id
+  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.moj_tgw.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
 }
 
@@ -186,4 +189,72 @@ resource "aws_ec2_transit_gateway_route_table_association" "external_inspection_
 resource "aws_ec2_transit_gateway_route_table_association" "external_inspection_out" {
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.external_inspection_in.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
+}
+
+# ECP Peering
+data "aws_ec2_transit_gateway_peering_attachment" "ecp_tgw" {
+  filter {
+    name   = "tag:Name"
+    values = ["ECP-TGW-attachment-accepter"]
+  }
+}
+
+resource "aws_ec2_transit_gateway_peering_attachment_accepter" "ecp_tgw_production" {
+  transit_gateway_attachment_id = data.aws_ec2_transit_gateway_peering_attachment.ecp_tgw.id
+  tags = {
+    Name = "ECP-TGW-attachment-accepter"
+    Side = "Acceptor"
+  }
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+# ECP routing
+
+# associate tgw external-inspection-in routing table with ECP-TGW peering attachment
+resource "aws_ec2_transit_gateway_route_table_association" "external_inspection_in_ecp" {
+  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.ecp_tgw.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
+}
+
+resource "aws_ec2_transit_gateway_route" "inspection_static_routes_ecp_safedb" {
+  for_each                       = toset(["10.205.10.0/24", "10.205.11.0/24", "10.205.14.0/24", "10.205.15.0/24"])
+  destination_cidr_block         = each.key
+  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.ecp_tgw.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
+}
+
+######################################
+# Centralised endpoints TGW routing
+######################################
+# Propagate live and non-live consumer VPC attachments into the hub's TGW route
+# table so return traffic from endpoint ENIs can find its way back to consumer VPCs.
+resource "aws_ec2_transit_gateway_route_table_propagation" "centralised_endpoints_from_live" {
+  for_each = local.tgw_live_data_attachments
+
+  transit_gateway_attachment_id  = each.key
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.centralised_endpoints.id
+}
+
+resource "aws_ec2_transit_gateway_route_table_propagation" "centralised_endpoints_from_non_live" {
+  for_each = local.tgw_non_live_data_attachments
+
+  transit_gateway_attachment_id  = each.key
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.centralised_endpoints.id
+}
+
+# Static routes for the hub VPC CIDR in the live_data and non_live_data TGW
+# route tables so consumer VPCs can initiate connections to the endpoint ENIs.
+resource "aws_ec2_transit_gateway_route" "centralised_endpoints_live_data" {
+  destination_cidr_block         = local.centralised_endpoint_vpc_cidr
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.centralised_endpoints.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["live_data"].id
+}
+
+resource "aws_ec2_transit_gateway_route" "centralised_endpoints_non_live_data" {
+  destination_cidr_block         = local.centralised_endpoint_vpc_cidr
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.centralised_endpoints.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["non_live_data"].id
 }

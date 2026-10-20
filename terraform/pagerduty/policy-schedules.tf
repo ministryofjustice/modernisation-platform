@@ -19,6 +19,19 @@ resource "pagerduty_escalation_policy" "on_call" {
   }
 }
 
+resource "pagerduty_escalation_policy" "high_priority" {
+  name  = "Modernisation Platform High Priority Policy"
+  teams = [pagerduty_team.modernisation_platform.id]
+
+  rule {
+    escalation_delay_in_minutes = 10
+    target {
+      type = "user_reference"
+      id   = pagerduty_user.pager_duty_users["modernisation_platform"].id
+    }
+  }
+}
+
 resource "pagerduty_escalation_policy" "low_priority" {
   name  = "Modernisation Platform Low Priority Policy"
   teams = [pagerduty_team.modernisation_platform.id]
@@ -64,17 +77,18 @@ resource "pagerduty_schedule" "primary" {
     rotation_virtual_start       = "2022-07-25T06:00:00Z"
     rotation_turn_length_seconds = 604800
     users = [
-      local.david_sibley,
-      local.david_elliott,
-      local.stephen_linden,
+      local.richard_green,
       local.edward_proctor,
       local.ewa_stempel,
       local.mark_roberts,
-      local.aaron_robinson
+      local.aaron_robinson,
+      local.sukesh_reddygade
     ]
   }
 
   teams = [pagerduty_team.modernisation_platform.id]
+
+  depends_on = [pagerduty_team_membership.modernisation_platform_membership]
 }
 
 resource "pagerduty_schedule" "secondary" {
@@ -94,15 +108,16 @@ resource "pagerduty_schedule" "secondary" {
     rotation_virtual_start       = "2022-07-25T06:00:00Z"
     rotation_turn_length_seconds = 604800
     users = [
-      local.david_elliott,
-      local.stephen_linden,
-      local.david_sibley,
       local.ewa_stempel,
+      local.richard_green,
       local.edward_proctor,
-      local.aaron_robinson,
-      local.mark_roberts
+      local.sukesh_reddygade,
+      local.mark_roberts,
+      local.aaron_robinson
     ]
   }
 
   teams = [pagerduty_team.modernisation_platform.id]
+
+  depends_on = [pagerduty_team_membership.modernisation_platform_membership]
 }

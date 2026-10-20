@@ -1,0 +1,125 @@
+# Auth0 Deprecation Resolution Summary
+ 
+---
+owner_slack: "#modernisation-platform"
+title: Auth0 Deprecation Resolution Summary
+last_reviewed_on: 2026-07-01
+review_in: 6 months
+---
+
+ ---
+ 
+ ## Background
+ 
+ Auth0 notified us of deprecation changes affecting the `ministryofjustice@eu` tenant via email along with notifications from AWS. This is summarised in ticket https://github.com/ministryofjustice/modernisation-platform/issues/13150.
+ Two separate deprecations were identified and resolved.
+ 
+ ---
+ 
+ ## 1: Legacy Management of Connection's Enabled Clients
+ 
+ ### What was deprecated
+ The `enabled_clients` field was being removed from the following Management API endpoints:
+ - `GET /api/v2/connections`
+ - `GET /api/v2/connections/{id}`
+ - `PATCH /api/v2/connections/{id}`
+ 
+ **End of life:** July 13, 2026
+ 
+ ### Investigation
+ 
+ - Reviewed the Terraform module [`moj-terraform-aws-sso`](https://github.com/ministryofjustice/moj-terraform-aws-sso) — no explicit use of `enabled_clients` in any Terraform resources
+ - Confirmed the Auth0 Terraform provider in use was `v1.43.0` (via `.terraform.lock.hcl` in [`aws-root-account`](https://github.com/ministryofjustice/aws-root-account)) — above the required `v1.29.0` threshold per the [Auth0 migration guide](https://auth0.com/docs/troubleshoot/product-lifecycle/deprecations-and-migrations/migrate-dedicated-connection-endpoints)
+ - Reviewed provider source code — confirmed `auth0_connection` resource does not use `enabled_clients`; the provider already uses the dedicated `GET /api/v2/connections/{id}/clients` endpoint
+ - Checked Auth0 tenant logs with query:
+   ``` type:depnote AND description:Legacy\ Management\ of\ Connection's\ Enabled\ Clients* ```
+
+ - Depnotes were linked to the "Terraform Machine to Machine" client — triggered because the tenant migration toggle was still ON, causing Auth0 to include enabled_clients in all connection responses and log a depnote each time
+ - Reviewed a Terraform plan run (https://github.com/ministryofjustice/aws-root-account/actions/runs/28439111898/job/84272262153) — all Auth0 resources refreshed cleanly with no errors or planned changes
+
+ ### Resolution
+
+ - Navigated to Auth0 Dashboard → Tenant Settings → Advanced → Migrations
+ - Toggled off "Legacy Management of Connection's Enabled Clients"
+ - Verified no new depnote log entries appeared after the next Terraform plan run
+
+No code changes required
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## 2: New Management API Scopes Required for Connection Options
+
+### What was deprecated
+
+Requests to Management API connection endpoints require new scopes to access the options field:
+
+ - read:connections_options — required for GET /api/v2/connections and GET /api/v2/connections/{id}
+ - update:connections_options — required for PATCH /api/v2/connections/{id}
+
+End of life: July 8, 2025
+
+### Investigation
+
+ - Identified depnote log entries with query:
+   ``` type:depnote AND description:New\ Management\ API\ Scopes\ Required\ for\ Connection\ Options* ```
+ - Log entries were linked to the "Terraform" application's client ID — the bootstrap M2M client used by the Terraform Auth0 provider to authenticate and manage resources (credentials stored in AWS Secrets Manager as auth0_saml)
+ - Confirmed this is a separate client from auth0_client.idp_token ("Management API: Auth0") which is managed by the Terraform module and used by Auth0 Actions at login time
+ - Searched all non-archived ministryofjustice (https://github.com/ministryofjustice) repositories — confirmed neither read:connections_options nor update:connections_options are defined in code anywhere across the organisation
+ - The "Terraform" application client grants are not managed by Terraform (bootstrap credentials cannot manage themselves)
+
+### Resolution
+
+ - Navigated to Auth0 Dashboard → Applications → Applications → Terraform → APIs tab
+ - Expanded the Auth0 Management API dropdown
+ - Added the following scopes to the client grant:
+   - read:connections_options
+   - update:connections_options
+ - Verified no new depnote log entries appeared after the next Terraform plan run
+
+No code changes required
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## Outcome
+
+Both deprecations were resolved through Auth0 dashboard configuration changes only. No Terraform code changes were required. Post-resolution monitoring confirmed no new deprecation notices are appearing in the Auth0 tenant logs.
+
+Auth0 Terraform Provider
+
+┌─────────────────────────┬────────────┬──────────────────┐
+│ Repo                    │ Constraint │ Locked Version   │
+├─────────────────────────┼────────────┼──────────────────┤
+│ moj-terraform-aws-sso   │ >= 1.0.0   │ (no lock file)   │
+├─────────────────────────┼────────────┼──────────────────┤
+│ aws-root-account        │ >= 1.0.0   │ 1.43.0           │
+└─────────────────────────┴────────────┴──────────────────┘
+
+Provider v1.43.0 is fully compatible with both deprecation migrations.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## Note regarding update:connections_options
+
+The update:connections_options scope grants the ability to modify the options field of Auth0 connections (client IDs, secrets, scopes, domains etc.). In isolation that sounds sensitive, but in this context it is not a security risk for the following reasons:
+
+1. The "Terraform" client already had broad management permissions
+
+The Terraform application was already granted scopes to create, read, update and delete connections, clients, actions and other Auth0 resources. The ability to update connection options is a subset of what it could already do — adding this scope doesn't materially expand its attack surface.
+
+2. It's a machine-to-machine credential stored securely
+
+The client_id and client_secret for the "Terraform" application are stored in AWS Secrets Manager (auth0_saml), access-controlled by IAM policies. Only the GitHub Actions CI pipeline can retrieve them.
+
+3. It's scoped to Auth0 configuration only
+
+update:connections_options can only modify Auth0 connection configuration — it cannot affect AWS resources, user data, or the SAML authentication flow directly.
+
+4. All changes are auditable and version controlled
+
+Any connection changes made by Terraform are driven by code in aws-root-account, reviewed via pull requests, and logged in both GitHub Actions and Auth0 audit logs.
+
+5. Principle of least privilege is maintained relative to purpose
+
+Terraform's purpose is to fully manage the Auth0 tenant configuration. Granting it the scopes it needs to do that job completely is correct. Withholding update:connections_options was an omission, not an intentional restriction — evidenced by the deprecation notices.
+
+See also https://auth0.com/docs/troubleshoot/product-lifecycle/deprecations-and-migrations#new-management-api-scopes-required-for-connection-options
