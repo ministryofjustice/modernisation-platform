@@ -35,6 +35,8 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "codebuild:StartBuild",
       "codebuild:BatchGetBuilds",
       "codepipeline:StartPipelineExecution",
+      "cloudwatch:DeleteAlarms",
+      "cloudwatch:PutMetricAlarm",
       "dms:StartReplicationTask",
       "dms:StopReplicationTask",
       "dms:TestConnection",
