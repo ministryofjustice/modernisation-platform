@@ -122,6 +122,26 @@ module "vpc" {
   tags_prefix = each.key
 }
 
+# DynamoDB gateway endpoint for HMPPS shared VPCs.
+resource "aws_vpc_endpoint" "hmpps_dynamodb" {
+  for_each = {
+    for key, vpc in module.vpc : key => vpc
+    if startswith(key, "hmpps-")
+  }
+
+  vpc_id            = each.value.vpc_id
+  service_name      = "com.amazonaws.${data.aws_region.current.region}.dynamodb"
+  vpc_endpoint_type = "Gateway"
+  route_table_ids   = each.value.private_route_tables
+
+  tags = merge(
+    local.tags,
+    {
+      Name = "${each.key}-dynamodb"
+    },
+  )
+}
+
 module "vpc_nacls" {
   source           = "../../modules/vpc-nacls"
   for_each         = local.vpcs[terraform.workspace]
