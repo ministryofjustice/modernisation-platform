@@ -264,6 +264,7 @@ data "aws_iam_policy_document" "member-access-compute" {
       "lambda:*",
       "logs:*",
       "mq:*",
+      "pipes:*",
       "workspaces:*",
       "workspaces-web:*"
     ]
