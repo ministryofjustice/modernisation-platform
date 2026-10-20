@@ -331,6 +331,8 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "scheduler:ListSchedules",
       "scheduler:TagResource",
       "scheduler:UntagResource",
+      "cloudwatch:DeleteAlarms",
+      "cloudwatch:PutMetricAlarm",
       "lakeformation:RevokePermissions"
     ]
     resources = ["*"]
