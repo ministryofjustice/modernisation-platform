@@ -132,7 +132,10 @@ resource "aws_vpc_endpoint" "hmpps_dynamodb" {
   vpc_id            = each.value.vpc_id
   service_name      = "com.amazonaws.${data.aws_region.current.region}.dynamodb"
   vpc_endpoint_type = "Gateway"
-  route_table_ids   = each.value.private_route_tables
+
+  route_table_ids = toset(
+    values(each.value.private_route_tables)
+  )
 
   tags = merge(
     local.tags,
