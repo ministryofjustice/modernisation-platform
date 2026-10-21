@@ -607,5 +607,12 @@
     "destination_ip": "${cica-onprem-lan}",
     "destination_port": "ANY",
     "protocol": "TCP"
+  },
+  "hmpps_test_to_cp": {
+     "action": "PASS",
+    "source_ip": "${hmpps-test}",
+    "destination_ip": "${cloud-platform}",
+    "destination_port": "443",
+    "protocol": "TCP"
   }
 }
