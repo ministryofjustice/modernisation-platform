@@ -57,7 +57,27 @@ jobs:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-apply"
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
+          
+      - name: Validate Environment JSON
+        env:
+          ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
+        run: |
+          if [[ -z "$ENVIRONMENT" ]]; then
+            echo "ERROR: ENVIRONMENT secret is empty or unavailable."
+            exit 1
+          fi
 
+          echo "ENVIRONMENT length: ${#ENVIRONMENT}"
+
+          if jq -e '
+            (.account_ids | type == "array")
+            and all(.account_ids[]; type == "string")
+          ' <<< "$ENVIRONMENT" >/dev/null; then
+            echo "ENVIRONMENT JSON is valid."
+          else
+            echo "ERROR: ENVIRONMENT is malformed JSON or has the wrong structure."
+            exit 1
+          fi
       - name: Remove Default VPC
         run: bash ./scripts/internal/remove-default-vpc/remove_default_vpc_all_accounts.sh
         env:
