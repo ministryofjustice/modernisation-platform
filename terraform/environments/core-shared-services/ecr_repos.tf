@@ -1312,6 +1312,7 @@ module "modernisation-platform-ai-builder-core" {
 
   pull_principals = [
     local.environment_management.account_ids["justice-eng-ai-development"],
+    local.environment_management.account_ids["justice-eng-ai-test"],
     local.environment_management.account_ids["justice-eng-ai-production"]
 
   ]
@@ -1331,6 +1332,7 @@ module "modernisation-platform-ai-builder-user-applications" {
 
   pull_principals = [
     local.environment_management.account_ids["justice-eng-ai-development"],
+    local.environment_management.account_ids["justice-eng-ai-test"],
     local.environment_management.account_ids["justice-eng-ai-production"]
 
   ]
