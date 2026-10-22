@@ -1434,8 +1434,11 @@ module "resource_discovery_oidc_role" {
     || local.account_data.account-type == "member"
   ) ? 1 : 0
 
-  source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
-  github_repositories = ["ministryofjustice/modernisation-platform"]
+  source = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
+  github_repositories = [
+    "ministryofjustice/modernisation-platform",
+    "ministryofjustice/modernisation-platform-security"
+  ]
 
   role_name = "github-actions-resource-discovery"
   policy_jsons = [
@@ -1448,11 +1451,24 @@ module "resource_discovery_oidc_role" {
 }
 
 data "aws_iam_policy_document" "resource_discovery_policy" {
-  # checkov:skip=CKV_AWS_356: config:SelectResourceConfig does not support resource-level permissions
+  # checkov:skip=CKV_AWS_356: Config queries and ELB/WAF discovery list/describe actions require wildcard resources
   statement {
     sid       = "AllowConfigResourceDiscovery"
     effect    = "Allow"
     actions   = ["config:SelectResourceConfig"]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "AllowLoadBalancerLoggingDiscovery"
+    effect = "Allow"
+    actions = [
+      "elasticloadbalancing:DescribeLoadBalancers",
+      "elasticloadbalancing:DescribeLoadBalancerAttributes",
+      "wafv2:ListWebACLs",
+      "wafv2:ListLoggingConfigurations",
+      "wafv2:ListResourcesForWebACL"
+    ]
     resources = ["*"]
   }
 }
