@@ -1,8 +1,8 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Deleting an environment (AWS account)
-last_reviewed_on: 2026-04-22
-review_in: 6 month
+last_reviewed_on: 2026-10-22
+review_in: 6 months
 ---
 
 # <%= current_page.data.title %>
@@ -26,7 +26,7 @@ local.environment_management.account_ids["example-account-name-to-be-deleted"]
 Disable the following workflows:
 
 - [Terraform: New environment](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment.yml)
-- [Terraform: Member environments]()
+- [Terraform: Member environments](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/terraform-member-environment.yml)
 
 This is required as if these workflows are run during the deletion process it could result in the account being re-created and some steps having to be re-run.
 
@@ -40,7 +40,7 @@ In `modernisation-platform/scripts/account-deletion` we have a set of bash scrip
 
 1. `delete-tf-state.sh` - Removes the AWS account from Modernisation Platform state management
 1. `update-files.sh`- Removes the environment definition in `environments/*.json`
-1. `delete-tf-resources`- Deletes Terraform resources for the environment (in the MP and MP Environments repos)
+1. `delete-tf-resources.sh`- Deletes Terraform resources for the environment (in the MP and MP Environments repos)
 1. `delete-tf-workspaces.sh`- Deletes Terraform workspaces for the environment in `terraform/environments/bootstrap/*`
 1. `delete-files.sh`- Removes Environment Files (only if removing all environments for an application)
 
@@ -64,7 +64,7 @@ To use the scripts, follow these steps:
 
 > The script execution logs will be written to a file called `execution_log.txt` which show the progress being made and help to debug any issues that may arise.
 
-> If the script fails at any point you can try to re-run the `account-deletion.sh` script or manually run a combination of the individual scripts that it calls using the order mentioned above.
+> If the script fails at any point you can try to re-run the `delete-accounts.sh` script or manually run a combination of the individual scripts that it calls using the order mentioned above.
 
 > Where the script has made changes to files in the MP/MP Environments repos it will have created them on a new branch with a unique name. You will need to merge these in at a later stage of the process.
 
