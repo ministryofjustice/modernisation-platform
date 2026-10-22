@@ -21,7 +21,6 @@ jobs:
 
   remove-default-vpc:
     runs-on: ubuntu-latest
-    needs: fetch-secrets
     permissions:
       id-token: write # This is required for requesting the JWT
       contents: read # This is required for actions/checkout
