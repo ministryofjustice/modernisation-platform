@@ -7,6 +7,10 @@
         {
           "sso_group_name": "modernisation-platform",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "hmcts-ai-ops",
+          "level": "developer"
         }
       ],
       "additional_reviewers": ["linusnorton"]
