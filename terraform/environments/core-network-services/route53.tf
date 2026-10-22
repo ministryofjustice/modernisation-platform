@@ -166,6 +166,22 @@ resource "aws_route53_record" "modernisation_platform_ai_builder_dev" {
   ]
 }
 
+# AI Builder Test: NS delegation to the external account hosted zone
+resource "aws_route53_record" "modernisation_platform_ai_builder_test" {
+  allow_overwrite = true
+  name            = "ai-builder-test.${local.modernisation-platform-domain}"
+  ttl             = 30
+  type            = "NS"
+  zone_id         = aws_route53_zone.modernisation-platform.zone_id
+
+  records = [
+    "ns-76.awsdns-09.com.",
+    "ns-1906.awsdns-46.co.uk.",
+    "ns-1191.awsdns-20.org.",
+    "ns-684.awsdns-21.net."
+  ]
+}
+
 # AI Builder prod: NS delegation to the external account hosted zone
 resource "aws_route53_record" "modernisation_platform_ai_builder_prod" {
   allow_overwrite = true
