@@ -23,6 +23,15 @@
       ]
     },
     {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "developer"
+        }
+      ]
+    },
+    {
       "name": "production",
       "access": [
         {
