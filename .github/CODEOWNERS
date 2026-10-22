@@ -59,7 +59,7 @@
 /terraform/environments/core-shared-services/eucs-appstream.tf @ministryofjustice/mojo-vds-team 
 /terraform/environments/core-shared-services/example.tf @ministryofjustice/green-ops @ministryofjustice/modernisation-platform @ministryofjustice/octo-cyber 
 /terraform/environments/core-shared-services/genesys-call-centre-data.tf @ministryofjustice/genesys-call-centre-data @ministryofjustice/modernisation-platform-audit 
-/terraform/environments/core-shared-services/hmcts-claude-provider.tf @ministryofjustice/modernisation-platform 
+/terraform/environments/core-shared-services/hmcts-claude-provider.tf @ministryofjustice/hmcts-ai-ops @ministryofjustice/modernisation-platform 
 /terraform/environments/core-shared-services/hmpps-court-data-ingestion-api.tf @ministryofjustice/cloud-platform-engineers @ministryofjustice/hmpps-calculate-release-dates-team-devs 
 /terraform/environments/core-shared-services/hmpps-domain-services.tf @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
 /terraform/environments/core-shared-services/hmpps-esupervision.tf @ministryofjustice/modernisation-platform-audit @ministryofjustice/stg-pathfinders 
