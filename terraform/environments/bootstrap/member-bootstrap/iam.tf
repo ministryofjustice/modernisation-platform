@@ -1448,24 +1448,11 @@ module "resource_discovery_oidc_role" {
 }
 
 data "aws_iam_policy_document" "resource_discovery_policy" {
-  # checkov:skip=CKV_AWS_356: Config queries and ELB/WAF discovery list/describe actions require wildcard resources
+  # checkov:skip=CKV_AWS_356: config:SelectResourceConfig does not support resource-level permissions
   statement {
     sid       = "AllowConfigResourceDiscovery"
     effect    = "Allow"
     actions   = ["config:SelectResourceConfig"]
-    resources = ["*"]
-  }
-
-  statement {
-    sid    = "AllowLoadBalancerLoggingDiscovery"
-    effect = "Allow"
-    actions = [
-      "elasticloadbalancing:DescribeLoadBalancers",
-      "elasticloadbalancing:DescribeLoadBalancerAttributes",
-      "wafv2:ListWebACLs",
-      "wafv2:ListLoggingConfigurations",
-      "wafv2:ListResourcesForWebACL"
-    ]
     resources = ["*"]
   }
 }
