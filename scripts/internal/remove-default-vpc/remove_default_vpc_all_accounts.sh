@@ -37,21 +37,21 @@ for cmd in aws jq; do
     fi
 done
 
-if [[ -z "${ENVIRONMENT_MANAGEMENT:-}" ]]; then
-    echo "ERROR: ENVIRONMENT_MANAGEMENT is empty or not set." >&2
+if [[ -z "${ENVIRONMENT:-}" ]]; then
+    echo "ERROR: ENVIRONMENT is empty or not set." >&2
     exit 1
 fi
 
 if ! jq -e '
     (.account_ids | type == "array")
     and all(.account_ids[]; type == "string")
-' <<< "$ENVIRONMENT_MANAGEMENT" >/dev/null; then
-    echo "ERROR: ENVIRONMENT_MANAGEMENT must contain a string account_ids array." >&2
+' <<< "$ENVIRONMENT" >/dev/null; then
+    echo "ERROR: ENVIRONMENT must contain a string account_ids array." >&2
     exit 1
 fi
 
 # Extract account IDs without process substitution.
-account_lines=$(jq -r '.account_ids[]' <<< "$ENVIRONMENT_MANAGEMENT") || {
+account_lines=$(jq -r '.account_ids[]' <<< "$ENVIRONMENT") || {
     echo "ERROR: Unable to read account IDs." >&2
     exit 1
 }
