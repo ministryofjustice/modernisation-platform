@@ -1,4 +1,3 @@
-
 #!/usr/bin/env bash
 
 set -u
@@ -21,7 +20,10 @@ ROOT_AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID:-}"
 ROOT_AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY:-}"
 ROOT_AWS_SESSION_TOKEN="${AWS_SESSION_TOKEN:-}"
 
-# Validate prerequisites.
+# --------------------------------------------------
+# Validate prerequisites
+# --------------------------------------------------
+
 for cmd in aws jq; do
     if ! command -v "$cmd" >/dev/null 2>&1; then
         echo "ERROR: Required command not found: $cmd" >&2
@@ -29,9 +31,12 @@ for cmd in aws jq; do
     fi
 done
 
-# CSV header.
+# --------------------------------------------------
+# CSV header
+# --------------------------------------------------
+
 printf '%s\n' \
-'"AccountId","Region","ALBName","ALBArn","Scheme","AccessLogsEnabled","S3Bucket","S3Prefix","CloudWatchMetrics","MatchingAlarms","Status"' \
+'"AccountName","AccountId","Region","ALBName","AccessLogsEnabled","Status","S3Bucket","S3Prefix","CloudWatchMetrics","MatchingAlarms","ALBArn","Scheme"' \
 > "$OUTPUT"
 
 # --------------------------------------------------
@@ -39,7 +44,20 @@ printf '%s\n' \
 # --------------------------------------------------
 
 csv_row() {
-    jq -cn --args '$ARGS.positional | @csv' "$@"
+    jq -nr --args '$ARGS.positional | @csv' "$@"
+}
+
+get_account_name() {
+    local account_id="$1"
+
+    jq -r --arg account_id "$account_id" '
+        [
+            .account_ids
+            | to_entries[]
+            | select((.value | tostring) == $account_id)
+            | .key
+        ][0] // "N/A"
+    ' <<< "$ENVIRONMENT_MANAGEMENT"
 }
 
 # --------------------------------------------------
@@ -47,8 +65,17 @@ csv_row() {
 # --------------------------------------------------
 
 restore_root_credentials() {
-    export AWS_ACCESS_KEY_ID="$ROOT_AWS_ACCESS_KEY_ID"
-    export AWS_SECRET_ACCESS_KEY="$ROOT_AWS_SECRET_ACCESS_KEY"
+    if [[ -n "$ROOT_AWS_ACCESS_KEY_ID" ]]; then
+        export AWS_ACCESS_KEY_ID="$ROOT_AWS_ACCESS_KEY_ID"
+    else
+        unset AWS_ACCESS_KEY_ID
+    fi
+
+    if [[ -n "$ROOT_AWS_SECRET_ACCESS_KEY" ]]; then
+        export AWS_SECRET_ACCESS_KEY="$ROOT_AWS_SECRET_ACCESS_KEY"
+    else
+        unset AWS_SECRET_ACCESS_KEY
+    fi
 
     if [[ -n "$ROOT_AWS_SESSION_TOKEN" ]]; then
         export AWS_SESSION_TOKEN="$ROOT_AWS_SESSION_TOKEN"
@@ -75,9 +102,14 @@ getAssumeRoleCfg() {
     export AWS_SECRET_ACCESS_KEY
     export AWS_SESSION_TOKEN
 
-    AWS_ACCESS_KEY_ID=$(jq -r '.AccessKeyId' <<< "$credentials")
-    AWS_SECRET_ACCESS_KEY=$(jq -r '.SecretAccessKey' <<< "$credentials")
-    AWS_SESSION_TOKEN=$(jq -r '.SessionToken' <<< "$credentials")
+    AWS_ACCESS_KEY_ID=$(jq -er '.AccessKeyId' <<< "$credentials") ||
+        return 1
+
+    AWS_SECRET_ACCESS_KEY=$(jq -er '.SecretAccessKey' <<< "$credentials") ||
+        return 1
+
+    AWS_SESSION_TOKEN=$(jq -er '.SessionToken' <<< "$credentials") ||
+        return 1
 }
 
 # --------------------------------------------------
@@ -88,16 +120,25 @@ while IFS= read -r account_id; do
 
     [[ -z "$account_id" ]] && continue
 
-    echo "========================================"
-    echo "Account: $account_id"
+    account_name=$(get_account_name "$account_id")
+    account_name=${account_name:-N/A}
 
+    echo "========================================"
+    echo "Account Name: $account_name"
+    echo "Account ID  : $account_id"
+
+    # Start each account with the original credentials.
     restore_root_credentials
 
     if ! getAssumeRoleCfg "$account_id"; then
-        echo "ERROR: Failed to assume role in $account_id"
+        echo "ERROR: Failed to assume role in $account_id" >&2
 
-        csv_row "$account_id" "" "" "" "" "" "" "" "" "" \
-            "ASSUME_ROLE_FAILED" >> "$OUTPUT"
+        csv_row \
+            "$account_name" \
+            "$account_id" \
+            "" "" "" \
+            "ASSUME_ROLE_FAILED" \
+            "" "" "" "" "" "" >> "$OUTPUT"
 
         continue
     fi
@@ -116,16 +157,23 @@ while IFS= read -r account_id; do
             --query "LoadBalancers[?Type=='application'].[LoadBalancerName,LoadBalancerArn,Scheme]" \
             --output json 2>/dev/null); then
 
-            echo "    WARNING: Cannot list ALBs in $region"
+            echo "WARNING: Cannot list ALBs in $region" >&2
 
-            csv_row "$account_id" "$region" "" "" "" "" "" "" "" "" \
-                "DESCRIBE_FAILED" >> "$OUTPUT"
+            csv_row \
+                "$account_name" \
+                "$account_id" \
+                "$region" \
+                "" "" \
+                "DESCRIBE_FAILED" \
+                "" "" "" "" "" "" >> "$OUTPUT"
 
             continue
         fi
 
-        # Iterate through ALBs without process substitution
-        # in the individual field extraction.
+        # ------------------------------------------
+        # Iterate through ALBs
+        # ------------------------------------------
+
         while IFS= read -r lb; do
 
             [[ -z "$lb" ]] && continue
@@ -145,11 +193,20 @@ while IFS= read -r account_id; do
                 --load-balancer-arn "$lb_arn" \
                 --output json 2>/dev/null); then
 
-                echo "      ERROR: Failed to retrieve ALB attributes"
+                echo "ERROR: Failed to retrieve ALB attributes" >&2
 
-                csv_row "$account_id" "$region" "$lb_name" "$lb_arn" \
-                    "$scheme" "" "" "" "Automatic" "" \
-                    "ATTRIBUTES_FAILED" >> "$OUTPUT"
+                csv_row \
+                    "$account_name" \
+                    "$account_id" \
+                    "$region" \
+                    "$lb_name" \
+                    "" \
+                    "ATTRIBUTES_FAILED" \
+                    "" "" \
+                    "Automatic" \
+                    "" \
+                    "$lb_arn" \
+                    "$scheme" >> "$OUTPUT"
 
                 continue
             fi
@@ -189,7 +246,7 @@ while IFS= read -r account_id; do
             esac
 
             # --------------------------------------
-            # CloudWatch metric alarms
+            # CloudWatch metric and composite alarms
             # --------------------------------------
 
             # ALB dimension format:
@@ -200,39 +257,41 @@ while IFS= read -r account_id; do
                 --region "$region" \
                 --output json 2>/dev/null); then
 
-                alarms=$(jq -r --arg lb "$lb_dimension" '
+                # Find metric alarms matching this ALB.
+                metric_alarms_json=$(jq -c --arg lb "$lb_dimension" '
                     [
-                      .MetricAlarms[]?
-                      | select(any(.Dimensions[]?;
-                          .Name == "LoadBalancer" and .Value == $lb))
-                      | .AlarmName
+                        .MetricAlarms[]?
+                        | select(any(.Dimensions[]?;
+                            .Name == "LoadBalancer" and .Value == $lb))
+                        | .AlarmName
+                    ] | unique
+                ' <<< "$alarms_json")
+
+                alarms=$(jq -r 'join(";")' <<< "$metric_alarms_json")
+
+                # Identify composite alarms that reference matching
+                # metric alarms. AlarmRule is an expression string.
+                matching_composites=$(jq -r \
+                    --argjson names "$metric_alarms_json" '
+                    [
+                        .CompositeAlarms[]?
+                        | . as $composite
+                        | select(
+                            any($names[];
+                                . as $name
+                                | ($composite.AlarmRule // "")
+                                | contains($name)
+                            )
+                        )
+                        | .AlarmName
                     ] | unique | join(";")
                 ' <<< "$alarms_json")
 
-                # Composite alarms may reference metric alarms.
-                composite_alarms=$(jq -r --argjson names "$(
-                    jq -c --arg lb "$lb_dimension" '
-                        [
-                          .MetricAlarms[]?
-                          | select(any(.Dimensions[]?;
-                              .Name == "LoadBalancer" and .Value == $lb))
-                          | .AlarmName
-                        ] | unique
-                    ' <<< "$alarms_json"
-                )" '
-                    [
-                      .CompositeAlarms[]?
-                      | select(any(.AlarmRuleAlarmNames[]?;
-                          . as $name | ($names | index($name)) != null))
-                      | .AlarmName
-                    ] | unique | join(";")
-                ' <<< "$alarms_json")
-
-                if [[ -n "$composite_alarms" ]]; then
+                if [[ -n "$matching_composites" ]]; then
                     if [[ -n "$alarms" ]]; then
-                        alarms="${alarms};${composite_alarms}"
+                        alarms="${alarms};${matching_composites}"
                     else
-                        alarms="$composite_alarms"
+                        alarms="$matching_composites"
                     fi
                 fi
 
@@ -243,7 +302,7 @@ while IFS= read -r account_id; do
             fi
 
             # --------------------------------------
-            # Final status
+            # Determine final status
             # --------------------------------------
 
             if [[ "$log_status" == "UNKNOWN" ]]; then
@@ -255,21 +314,22 @@ while IFS= read -r account_id; do
             fi
 
             # --------------------------------------
-            # Write CSV row
+            # Write CSV row in requested column order
             # --------------------------------------
 
             csv_row \
+                "$account_name" \
                 "$account_id" \
                 "$region" \
                 "$lb_name" \
-                "$lb_arn" \
-                "$scheme" \
                 "$logging_enabled" \
+                "$final_status" \
                 "$bucket" \
                 "$prefix" \
                 "AWS/ApplicationELB (automatic publication)" \
                 "$alarms" \
-                "$final_status" >> "$OUTPUT"
+                "$lb_arn" \
+                "$scheme" >> "$OUTPUT"
 
             echo "      Access logging : $log_status"
             echo "      S3 bucket      : ${bucket:-N/A}"
@@ -280,27 +340,40 @@ while IFS= read -r account_id; do
 
     done
 
-    # Restore original credentials before next account.
+    # Restore original credentials before the next account.
     restore_root_credentials
 
 done < <(jq -r '.account_ids[]' <<< "$ENVIRONMENT_MANAGEMENT")
 
+# Restore original credentials before uploading.
 restore_root_credentials
 
+# --------------------------------------------------
+# Preview and upload CSV to S3
+# --------------------------------------------------
+
 echo
-echo "======================================"
+echo "========================================"
 echo "Audit completed."
 echo "Report: $OUTPUT"
+echo
+echo "CSV preview:"
+head -n 5 "$CSV_FILE"
+echo
 echo "Uploading CSV to S3..."
 
 if aws s3 cp "$CSV_FILE" "$S3_FILE_PATH" \
     --sse aws:kms \
     --sse-kms-key-id "$KMS_KEY_ID"; then
+
     echo "Upload successful: $S3_FILE_PATH"
+
+    # Remove the local report only after successful upload.
     rm -f "$CSV_FILE"
 else
     echo "ERROR: Failed to upload CSV to S3." >&2
+    echo "Local report retained at: $CSV_FILE" >&2
     exit 1
 fi
 
-echo "======================================"
+echo "========================================"
