@@ -9,7 +9,7 @@ name: "Remove Default VPC"
 
 env:
   AWS_REGION: "eu-west-2"
-  ENVIRONMENT_MANAGEMENT: ${{secrets.ENVIRONMENT}}
+  
 
 permissions: {}
 
@@ -19,8 +19,18 @@ defaults:
 
 jobs:
 
+  fetch-secrets:
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@ebec2f2fda2f93172de61774b5875b9cef7462bc # v6.2.12
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # This is required for actions/checkout
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
   remove-default-vpc:
     runs-on: ubuntu-latest
+    needs: fetch-secrets
     permissions:
       id-token: write # This is required for requesting the JWT
       contents: read # This is required for actions/checkout
@@ -29,9 +39,15 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@ebec2f2fda2f93172de61774b5875b9cef7462bc # v6.2.12
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
       - name: Set Account Number
         run: |
-          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT")
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
 
@@ -44,3 +60,5 @@ jobs:
 
       - name: Remove Default VPC
         run: bash ./scripts/internal/remove-default-vpc/remove_default_vpc_all_accounts.sh
+        env:
+          ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
