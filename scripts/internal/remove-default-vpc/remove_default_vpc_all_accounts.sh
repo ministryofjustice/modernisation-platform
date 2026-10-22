@@ -29,17 +29,6 @@ for cmd in aws jq; do
     fi
 done
 
-if [[ -z "${ENVIRONMENT_MANAGEMENT:-}" ]]; then
-    echo "ERROR: ENVIRONMENT_MANAGEMENT is empty or not set." >&2
-    exit 1
-fi
-
-if ! jq -e '.account_ids | type == "array"' \
-    <<< "$ENVIRONMENT_MANAGEMENT" >/dev/null; then
-    echo "ERROR: ENVIRONMENT_MANAGEMENT must contain an account_ids array." >&2
-    exit 1
-fi
-
 # CSV header.
 printf '%s\n' \
 '"AccountId","Region","ALBName","ALBArn","Scheme","AccessLogsEnabled","S3Bucket","S3Prefix","CloudWatchMetrics","MatchingAlarms","Status"' \
