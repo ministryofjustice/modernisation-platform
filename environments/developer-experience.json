@@ -8,6 +8,9 @@
       "name": "github-audit-log-stream"
     },
     {
+      "name": "github-backup"
+    },
+    {
       "name": "github-management"
     }
   ],
