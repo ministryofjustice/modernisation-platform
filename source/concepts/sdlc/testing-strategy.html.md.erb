@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Testing Strategy
-last_reviewed_on: 2026-04-24
+last_reviewed_on: 2026-10-27
 review_in: 6 months
 ---
 
@@ -36,10 +36,10 @@ Tests running in GitHub actions use the `github-actions-testing` OIDC role.
 | ------------------------------------- | ---------------- | ------------ | --------------------- | ---------------------------------------------------------------------------- |
 | Modules in standalone repositories    | Unit test        | Terratest    | testing-test          |                                                                              |
 | Modules in the main repository        | Unit test        | Terratest    | testing-test          |                                                                              |
-| Terrafom not in modules               |                  |              |                       | Not currently tested, we should work to move this code into testable modules |
+| Terraform not in modules              |                  |              |                       | Not currently tested, we should work to move this code into testable modules |
 | Environment and networking JSON files | Unit test        | OPA          | local / Github action |                                                                              |
 | Scripts                               |                  |              |                       | Not currently tested, as we rewrite this in Go we should add tests           |
-| Core platform                         | Integration test |              |                       | We currently have no such tests                                              |
+| Core platform                         | Integration test | Terratest    | testing-test          | Integration tests exist for selected core platform environments              |
 | Core platform                         | End to end test  |              |                       | We currently have no such tests                                              |
 | Core platform                         | Smoke test       |              |                       | We currently have no such tests                                              |
 | Member infrastructure                 | All              |              | testing-test          | We currently have no such tests                                              |
