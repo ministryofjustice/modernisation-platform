@@ -38,8 +38,8 @@ Tests running in GitHub actions use the `github-actions-testing` OIDC role.
 | Modules in the main repository        | Unit test        | Terratest    | testing-test          |                                                                              |
 | Terraform not in modules              |                  |              |                       | Not consistently tested; we should work to move this code into testable modules |
 | Environment and networking JSON files | Unit test        | OPA          | local / Github action |                                                                              |
-| Scripts                               | Unit test        | Go testing library | local              | Tests exist for selected Go scripts; as we rewrite scripts in Go we should add tests |
-| Core platform                         | Integration test | Terratest    | Core production accounts | Integration tests exist for selected core platform environments           |
+| Scripts                               |                  |              |                       | Not currently tested, as we rewrite this in Go we should add tests           |
+| Core platform                         | Integration test |              |                       | We currently have no such tests                                              |
 | Core platform                         | End to end test  |              |                       | We currently have no such tests                                              |
 | Core platform                         | Smoke test       |              |                       | We currently have no such tests                                              |
 | Member infrastructure                 | All              |              | testing-test          | We currently have no such tests                                              |
