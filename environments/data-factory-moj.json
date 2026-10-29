@@ -45,6 +45,10 @@
     {
       "name": "ingestion-artifacts",
       "sso_group_name": "probation-de"
+    },
+    {
+      "name": "service-ingestion",
+      "sso_group_name": "probation-de"
     }
   ],
   "environments": [
