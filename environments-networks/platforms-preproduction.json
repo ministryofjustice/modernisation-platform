@@ -17,7 +17,6 @@
     "bastion_linux": false,
     "additional_cidrs": [],
     "additional_endpoints": [
-      "com.amazonaws.eu-west-2.dynamodb",
       "com.amazonaws.eu-west-2.events",
       "com.amazonaws.eu-west-2.secretsmanager",
       "com.amazonaws.eu-west-2.sts"
