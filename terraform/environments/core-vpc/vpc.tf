@@ -122,26 +122,23 @@ module "vpc" {
   tags_prefix = each.key
 }
 
-# DynamoDB gateway endpoint for HMPPS shared VPCs.
-resource "aws_vpc_endpoint" "hmpps_dynamodb" {
-  for_each = {
-    for key, vpc in module.vpc : key => vpc
-    if startswith(key, "hmpps-")
-  }
+moved {
+  from = aws_vpc_endpoint.hmpps_dynamodb
+  to   = aws_vpc_endpoint.dynamodb
+}
 
-  vpc_id            = each.value.vpc_id
+resource "aws_vpc_endpoint" "dynamodb" {
+  for_each = toset([
+    for key in keys(module.vpc) : key
+    if startswith(key, "hmpps-") || startswith(key, "platforms-")
+  ])
+  vpc_id            = module.vpc[each.key].vpc_id
   service_name      = "com.amazonaws.${data.aws_region.current.region}.dynamodb"
   vpc_endpoint_type = "Gateway"
-
-  route_table_ids = toset(
-    values(each.value.private_route_tables)
-  )
-
+  route_table_ids   = toset(values(module.vpc[each.key].private_route_tables))
   tags = merge(
     local.tags,
-    {
-      Name = "${each.key}-dynamodb"
-    },
+    { Name = "${each.key}-dynamodb" },
   )
 }
 
