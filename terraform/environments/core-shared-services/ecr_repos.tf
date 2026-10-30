@@ -1047,12 +1047,14 @@ module "edrms_ecr_repo" {
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["ccms-edrms-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-edrms-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["ccms-feasibility-development"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   pull_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["ccms-edrms-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-edrms-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["ccms-edrms-test"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["ccms-edrms-preproduction"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["ccms-edrms-production"]}:root",
