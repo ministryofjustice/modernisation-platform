@@ -26,7 +26,6 @@ expected :=
     "ccms-pui",
     "ccms-pui-internal",
     "ccms-upg",
-    "cdpt-chaps",
     "cdpt-ifs",
     "cfo-data-management-system",
     "cica-sandbox",
