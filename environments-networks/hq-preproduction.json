@@ -3,9 +3,7 @@
     "subnet_sets": {
       "general": {
         "cidr": "10.27.40.0/21",
-        "accounts": [
-          "cdpt-ifs-preproduction"
-        ]
+        "accounts": ["cdpt-ifs-preproduction"]
       }
     }
   },
