@@ -391,6 +391,7 @@ data "aws_iam_policy_document" "member-access-network" {
       "route53profiles:*",
       "scheduler:*",
       "secretsmanager:*",
+      "servicediscovery:*",
       "ses:*",
       "shield:*",
       "signer:*",
