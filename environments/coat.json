@@ -30,7 +30,8 @@
     "business-unit": "Platforms",
     "infrastructure-support": "CloudOptimisationandAccountabilityTeam@justice.gov.uk",
     "owner": "CloudOptimisationandAccountabilityTeam@justice.gov.uk",
-    "critical-national-infrastructure": false
+    "critical-national-infrastructure": false,
+    "service-area": "Hosting"
   },
   "github-oidc-team-repositories": [],
   "go-live-date": ""
