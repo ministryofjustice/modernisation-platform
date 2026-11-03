@@ -223,6 +223,12 @@ data "aws_iam_policy_document" "developer_additional" {
       "athena:St*",
       "aws-marketplace:ViewSubscriptions",
       "backup:StartBackupJob",
+      "cloudshell:CreateSession",
+      "cloudshell:CreateEnvironment",
+      "cloudshell:GetEnvironmentStatus",
+      "cloudshell:StartEnvironment",
+      "cloudshell:PutCredentials",
+      "cloudshell:DescribeEnvironments"
       "cloudwatch:DisableAlarmActions",
       "cloudwatch:EnableAlarmActions",
       "cloudwatch:PutDashboard",
