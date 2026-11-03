@@ -1,5 +1,23 @@
 {
   "account-type": "member",
+  "components": [
+    {
+      "name": "api",
+      "sso_group_name": "integration-hub"
+    },
+    {
+      "name": "api-client-lib",
+      "sso_group_name": "integration-hub"
+    },
+    {
+      "name": "event-subscriber-admin-ui",
+      "sso_group_name": "integration-hub"
+    },
+    {
+      "name": "kafka",
+      "sso_group_name": "integration-hub"
+    }
+  ],
   "environments": [
     {
       "name": "development",
