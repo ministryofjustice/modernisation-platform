@@ -9,6 +9,7 @@ locals {
     delius-jitbit                               = "jitbit.cr.probation.service.justice.gov.uk",
     equip                                       = "equip.service.justice.gov.uk",
     integration-hub-events-development          = "development.events.service.justice.gov.uk",
+    integration-hub-events-production           = "events.service.justice.gov.uk",
     integration-hub-file-transfer-development   = "development.file-transfer.service.justice.gov.uk",
     integration-hub-file-transfer-preproduction = "preproduction.file-transfer.service.justice.gov.uk",
     integration-hub-file-transfer-production    = "file-transfer.service.justice.gov.uk",
@@ -382,6 +383,31 @@ module "r53_delegations_integration_hub_file_transfer" {
       allow_overwrite = true
 
       records = aws_route53_zone.application_zones["integration-hub-file-transfer-${zone_key}"].name_servers
+    }
+  }
+
+  tags = local.tags
+}
+
+module "r53_delegations_integration_hub_events" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-route53.git?ref=301fdd6f0876acfd737005dace317e6ac8cae186" # v6.5.0
+
+  # Do not create the parent zone here; use the existing one.
+  create_zone = false
+  name        = local.application-zones["integration-hub-events-production"]
+
+  depends_on = [aws_route53_zone.application_zones["integration-hub-events-production"]]
+
+  records = {
+    for zone_key in toset([
+      "development",
+      ]) : zone_key => {
+      name            = zone_key
+      type            = "NS"
+      ttl             = 30
+      allow_overwrite = true
+
+      records = aws_route53_zone.application_zones["integration-hub-events-${zone_key}"].name_servers
     }
   }
 
