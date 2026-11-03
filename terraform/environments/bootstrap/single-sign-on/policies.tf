@@ -228,7 +228,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "cloudshell:GetEnvironmentStatus",
       "cloudshell:StartEnvironment",
       "cloudshell:PutCredentials",
-      "cloudshell:DescribeEnvironments"
+      "cloudshell:DescribeEnvironments",
       "cloudwatch:DisableAlarmActions",
       "cloudwatch:EnableAlarmActions",
       "cloudwatch:PutDashboard",
