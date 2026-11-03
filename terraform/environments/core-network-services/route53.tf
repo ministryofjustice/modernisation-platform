@@ -8,6 +8,7 @@ locals {
     dacp                                        = "divorce-section-search.service.justice.gov.uk",
     delius-jitbit                               = "jitbit.cr.probation.service.justice.gov.uk",
     equip                                       = "equip.service.justice.gov.uk",
+    integration-hub-events-development          = "development.events.service.justice.gov.uk",
     integration-hub-file-transfer-development   = "development.file-transfer.service.justice.gov.uk",
     integration-hub-file-transfer-preproduction = "preproduction.file-transfer.service.justice.gov.uk",
     integration-hub-file-transfer-production    = "file-transfer.service.justice.gov.uk",
