@@ -9,7 +9,8 @@ locals {
     delius-jitbit                               = "jitbit.cr.probation.service.justice.gov.uk",
     equip                                       = "equip.service.justice.gov.uk",
     integration-hub-events-development          = "development.events.service.justice.gov.uk",
-    integration-hub-events-production           = "events.service.justice.gov.uk",
+    integration-hub-events-service-development  = "development.integration-hub-events.service.justice.gov.uk",
+    integration-hub-events-service-production   = "integration-hub-events.service.justice.gov.uk",
     integration-hub-file-transfer-development   = "development.file-transfer.service.justice.gov.uk",
     integration-hub-file-transfer-preproduction = "preproduction.file-transfer.service.justice.gov.uk",
     integration-hub-file-transfer-production    = "file-transfer.service.justice.gov.uk",
@@ -394,9 +395,9 @@ module "r53_delegations_integration_hub_events" {
 
   # Do not create the parent zone here; use the existing one.
   create_zone = false
-  name        = local.application-zones["integration-hub-events-production"]
+  name        = local.application-zones["integration-hub-events-service-production"]
 
-  depends_on = [aws_route53_zone.application_zones["integration-hub-events-production"]]
+  depends_on = [aws_route53_zone.application_zones["integration-hub-events-service-production"]]
 
   records = {
     for zone_key in toset([
@@ -407,7 +408,7 @@ module "r53_delegations_integration_hub_events" {
       ttl             = 30
       allow_overwrite = true
 
-      records = aws_route53_zone.application_zones["integration-hub-events-${zone_key}"].name_servers
+      records = aws_route53_zone.application_zones["integration-hub-events-service-${zone_key}"].name_servers
     }
   }
 
