@@ -79,6 +79,7 @@ expected :=
     "laa-ai-enablement",
     "laa-ccms-soa",
     "laa-cis",
+    "laa-data-factory",
     "laa-enterprise-service-bus",
     "laa-new-workspaces",
     "laa-oem",
