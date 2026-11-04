@@ -13,11 +13,7 @@
           "level": "sandbox"
         },
         {
-          "sso_group_name": "azure-aws-sso-electronic-monitoring-data-non-prod",
-          "level": "sandbox"
-        },
-        {
-          "sso_group_name": "hmpps-electronic-monitoring-data-no-sc",
+          "sso_group_name": "hmpps-electronic-monitoring-devs",
           "level": "sandbox"
         },
         {
