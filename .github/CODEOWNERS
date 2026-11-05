@@ -38,7 +38,7 @@
 /terraform/environments/core-shared-services/corporate-staff-rostering.tf @ministryofjustice/csr-application-support @ministryofjustice/hosting-migrations @ministryofjustice/modernisation-platform-audit @ministryofjustice/studio-webops @ministryofjustice/syscon-devs 
 /terraform/environments/core-shared-services/dacp.tf @ministryofjustice/dts-legacy @ministryofjustice/modernisation-platform-audit 
 /terraform/environments/core-shared-services/data-factory-corporate.tf @ministryofjustice/corporate-data-factory-admins 
-/terraform/environments/core-shared-services/data-factory-laa.tf @ministryofjustice/laa-data-factory-engineering 
+/terraform/environments/core-shared-services/data-factory-laa.tf @ministryofjustice/data-factory-laa @ministryofjustice/laa-data-factory-engineering 
 /terraform/environments/core-shared-services/data-factory-moj.tf @ministryofjustice/data-engineering @ministryofjustice/data-platform-engineering 
 /terraform/environments/core-shared-services/data-platform-factory-one.tf @ministryofjustice/data-platform-engineering 
 /terraform/environments/core-shared-services/data-platform-factory-two.tf @ministryofjustice/data-platform-engineering 
