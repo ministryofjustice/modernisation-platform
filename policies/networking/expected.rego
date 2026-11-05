@@ -345,6 +345,7 @@ expected :=
               "edw-19c-preproduction",
               "laa-ccms-soa-preproduction",
               "laa-cis-preproduction",
+              "data-factory-laa-preproduction",
               "laa-oem-preproduction",
               "laa-pui-secure-browser-preproduction",
               "maat-preproduction",
