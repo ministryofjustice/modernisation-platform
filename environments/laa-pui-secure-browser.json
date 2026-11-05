@@ -7,7 +7,7 @@
     },
     {
       "name": "workspaces-secure-browser",
-      "sso_group_name": "ecp-admin"
+      "sso_group_name": "laa-sre-admins"
     }
   ],
   "codeowners": ["laa-sre-admins", "ecp-admin"],
