@@ -12,6 +12,9 @@
       "name": "events-platform"
     },
     {
+      "name": "iac"
+    },
+    {
       "name": "managed-file-transfer"
     }
   ],
