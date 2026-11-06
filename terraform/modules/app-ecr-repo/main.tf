@@ -98,3 +98,27 @@ resource "aws_ecr_repository_policy" "ecr_repository_policy" {
   repository = aws_ecr_repository.ecr_repo.name
   policy     = data.aws_iam_policy_document.ecr_repo_policy.json
 }
+
+resource "aws_ecr_lifecycle_policy" "ecr_repo" {
+  repository = aws_ecr_repository.example.name
+
+  policy = <<EOF
+{
+  "rules": [
+    {
+      "rulePriority": 1,
+      "description": "Expire images older than 14 days",
+      "selection": {
+        "tagStatus": "untagged",
+        "countType": "sinceImagePushed",
+        "countUnit": "days",
+        "countNumber": 14
+      },
+      "action": {
+        "type": "expire"
+      }
+    }
+  ]
+}
+EOF
+}
