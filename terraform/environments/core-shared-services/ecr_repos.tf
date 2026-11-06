@@ -874,6 +874,8 @@ module "electronic_monitoring_data_lambdas_ecr_repo" {
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-test"]}:function:*",
   ]
 
+  remove_untagged_images = true
+  
   # Tags
   tags_common = local.tags
 }
@@ -1227,6 +1229,8 @@ module "electronic_monitoring_ears_sars_ecr_repo" {
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-test"]}:function:*",
   ]
 
+  remove_untagged_images = true
+
   # Tags
   tags_common = local.tags
 }
@@ -1257,6 +1261,8 @@ module "electronic_monitoring_emds_gdpr_ecr_repo" {
     "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-preproduction"]}:role/emds-gdpr-execution-role",
     "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/emds-gdpr-execution-role"
   ]
+
+  remove_untagged_images = true
 
   # Tags
   tags_common = local.tags

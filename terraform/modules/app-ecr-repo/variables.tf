@@ -25,3 +25,9 @@ variable "enable_retrieval_policy_for_lambdas" {
   type        = list(string)
   default     = []
 }
+
+variable "remove_untagged_images" {
+  description = "Remove untagged images after 14 days."
+  type        = bool
+  default     = false
+}

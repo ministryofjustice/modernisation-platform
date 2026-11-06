@@ -99,8 +99,9 @@ resource "aws_ecr_repository_policy" "ecr_repository_policy" {
   policy     = data.aws_iam_policy_document.ecr_repo_policy.json
 }
 
-resource "aws_ecr_lifecycle_policy" "ecr_repo" {
-  repository = aws_ecr_repository.example.name
+resource "aws_ecr_lifecycle_policy" "ecr_repo_lifecycle_policy" {
+  count = var.remove_untagged_images ? 1 : 0
+  repository = aws_ecr_repository.ecr_repo.name
 
   policy = <<EOF
 {

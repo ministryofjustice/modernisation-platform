@@ -25,6 +25,8 @@ No modules.
 | [aws_ecr_repository.ecr_repo](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository) | resource |
 | [aws_ecr_repository_policy.ecr_repository_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository_policy) | resource |
 | [aws_iam_policy_document.ecr_repo_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_ecr_lifecycle_policy.ecr_repo_lifecycle_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repo_lifecycle_policy) | resource |
+
 
 ## Inputs
 
@@ -35,6 +37,7 @@ No modules.
 | <a name="input_pull_principals"></a> [pull\_principals](#input\_pull\_principals) | AWS principals which require access to pull from the repository | `list(string)` | `[]` | no |
 | <a name="input_push_principals"></a> [push\_principals](#input\_push\_principals) | AWS principals which require access to push to the repository | `list(string)` | `[]` | no |
 | <a name="input_tags_common"></a> [tags\_common](#input\_tags\_common) | MOJ required tags | `map(string)` | n/a | yes |
+| <a name="input_remove_untagged_images"></a> [remove\_untagged\_images](#remove\_untagged\_images) | Remove untagged images after 14 days. | `bool` | n/a | false |
 
 ## Outputs
 
