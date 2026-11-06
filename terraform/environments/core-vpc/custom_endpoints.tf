@@ -2,7 +2,8 @@
 # Terraform to create custom VPC Endpoints and Security Group Associations.
 #
 # For each entry in the vpc_endpoint_access local, this creates an Interface VPC endpoint (for the given service_name) owned
-# directly by core-vpc, with subnet_ids set to the general-private subnets (across all three AZs) of the relevant member VPC.
+# directly by core-vpc, with subnet_ids set to the general-private subnets of the relevant member VPC, in each AZ (a, b, c)
+# that the endpoint service supports.
 #
 # This is used for endpoints that need subnet placement other than Protected - e.g. endpoints that need to be accessible
 # from member account services or other MoJ Platforms - and is independent of the member-vpc module's additional_endpoints.
@@ -112,12 +113,13 @@ locals {
     ]) : entry.key => entry
   }
 
-  # subnet ids per endpoint (set on aws_vpc_endpoint.subnet_ids below), grouped back up from the per-az lookups above
+  # subnet ids per endpoint (set on aws_vpc_endpoint.subnet_ids below), grouped back up from the per-az lookups above.
+  # Only subnets in AZs that the endpoint service supports are used, as some third-party services don't cover every AZ.
   vpc_endpoint_access_subnet_ids = {
     for key in keys(local.vpc_endpoint_access_for_workspace) : key => [
       for subnet_key, subnet in local.vpc_endpoint_access_subnets :
       data.aws_subnet.vpc_endpoint_access[subnet_key].id
-      if subnet.endpoint_key == key
+      if subnet.endpoint_key == key && contains(data.aws_vpc_endpoint_service.vpc_endpoint_access[key].availability_zones, data.aws_subnet.vpc_endpoint_access[subnet_key].availability_zone)
     ]
   }
 }
@@ -136,6 +138,12 @@ data "aws_subnet" "vpc_endpoint_access" {
   tags = {
     Name = each.value.name
   }
+}
+
+data "aws_vpc_endpoint_service" "vpc_endpoint_access" {
+  for_each = local.vpc_endpoint_access_for_workspace
+
+  service_name = each.value.service_name
 }
 
 resource "aws_vpc_endpoint" "vpc_endpoint_access" {
