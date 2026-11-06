@@ -1,4 +1,3 @@
-
 # ---------------------------------------------------------------------------------------------------------------------------
 # Terraform to create custom VPC Endpoints and Security Group Associations.
 #
@@ -14,6 +13,8 @@
 # NOTE: 
 #
 # - Currently supports just one ingress rule per security group.
+#
+# - Entries default to the key "<business_unit>-<environment>". Set "key" when a VPC needs more than one endpoint.
 #
 # - the security group MUST be owned by core-vpc (this account) - shared VPCs do not allow the VPC owner to attach a security group created by a participant account to
 # resources it owns (see https://docs.aws.amazon.com/vpc/latest/userguide/vpc-share-limitations.html).
@@ -61,12 +62,34 @@ locals {
       name               = "hmpps-production-execute-api-cp-access"
       description        = "Allow Container Platform access to execute-api endpoint"
       subnet_name_prefix = "general-private"
+    },
+    {
+      key                = "platforms-development-grafana-pdc-api"
+      business_unit      = "platforms"
+      environment        = "development"
+      cidr_block         = "10.26.16.0/21"
+      port               = 443
+      service_name       = "com.amazonaws.vpce.eu-west-2.vpce-svc-0b12fa07b304f0d79"
+      name               = "platforms-development-grafana-pdc-api"
+      description        = "Allow Grafana PDC agents to reach the Grafana Cloud PDC API over PrivateLink"
+      subnet_name_prefix = "general-private"
+    },
+    {
+      key                = "platforms-development-grafana-pdc-gateway"
+      business_unit      = "platforms"
+      environment        = "development"
+      cidr_block         = "10.26.16.0/21"
+      port               = 22
+      service_name       = "com.amazonaws.vpce.eu-west-2.vpce-svc-04a3bf37de7c4c8be"
+      name               = "platforms-development-grafana-pdc-gateway"
+      description        = "Allow Grafana PDC agents to reach the Grafana Cloud PDC SSH gateway over PrivateLink"
+      subnet_name_prefix = "general-private"
     }
   ]
 
   vpc_endpoint_access_for_workspace = {
     for entry in local.vpc_endpoint_access :
-    "${entry.business_unit}-${entry.environment}" => merge(entry, {
+    try(entry.key, "${entry.business_unit}-${entry.environment}") => merge(entry, {
       vpc_name = "${entry.business_unit}-${entry.environment}"
     })
     if "core-vpc-${entry.environment}" == terraform.workspace
@@ -127,7 +150,7 @@ resource "aws_vpc_endpoint" "vpc_endpoint_access" {
   tags = merge(
     local.tags,
     {
-      Name = "${each.value.business_unit}-${each.value.environment}-com.amazonaws.${data.aws_region.current.region}.execute-api"
+      Name = "${each.value.business_unit}-${each.value.environment}-${each.value.service_name}"
     }
   )
 }
