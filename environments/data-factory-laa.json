@@ -23,6 +23,15 @@
           "level": "reporting-operations"
         }
       ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "laa-data-factory-engineering",
+          "level": "data-engineer"
+        }
+      ]
     }
   ],
   "tags": {

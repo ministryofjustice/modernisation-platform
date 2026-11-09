@@ -60,7 +60,6 @@ updates:
       - "/terraform/environments/ccms-pui"
       - "/terraform/environments/ccms-pui-internal"
       - "/terraform/environments/ccms-upg"
-      - "/terraform/environments/cdpt-chaps"
       - "/terraform/environments/cdpt-ifs"
       - "/terraform/environments/cfo-data-management-system"
       - "/terraform/environments/cica-sandbox"
