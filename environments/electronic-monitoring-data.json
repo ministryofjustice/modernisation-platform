@@ -27,7 +27,7 @@
       "name": "test",
       "access": [
         {
-          "sso_group_name": "hmpps-electronic-monitoring-data-store",
+          "sso_group_name": "hmpps-electronic-monitoring-data-hub-live",
           "level": "data-engineer"
         },
         {
@@ -39,7 +39,7 @@
           "level": "data-scientist"
         },
         {
-          "sso_group_name": "hmpps-electronic-monitoring-data-store",
+          "sso_group_name": "hmpps-electronic-monitoring-data-hub-live",
           "level": "data-scientist"
         },
         {
@@ -52,7 +52,7 @@
       "name": "preproduction",
       "access": [
         {
-          "sso_group_name": "hmpps-electronic-monitoring-data-store",
+          "sso_group_name": "hmpps-electronic-monitoring-data-hub-live",
           "level": "data-engineer"
         },
         {
@@ -64,7 +64,7 @@
           "level": "data-scientist"
         },
         {
-          "sso_group_name": "hmpps-electronic-monitoring-data-store-read-only",
+          "sso_group_name": "hmpps-electronic-monitoring-data-hub-live",
           "level": "data-scientist"
         },
         {
@@ -77,7 +77,7 @@
       "name": "production",
       "access": [
         {
-          "sso_group_name": "hmpps-electronic-monitoring-data-store",
+          "sso_group_name": "hmpps-electronic-monitoring-data-hub-live",
           "level": "data-engineer"
         },
         {
