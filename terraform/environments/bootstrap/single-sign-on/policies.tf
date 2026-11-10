@@ -1617,6 +1617,8 @@ data "aws_iam_policy_document" "reporting-operations" {
       "ec2:DescribeVpcs",
       "ec2:DescribeSubnets",
       "ec2:DescribeSecurityGroups",
+      "glue:CreateDatabase",
+      "glue:CreateTable",
       "glue:GetTables",
       "glue:GetPartitions",
       "glue:BatchGetPartition",
