@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Incident Process
-last_reviewed_on: 2026-08-10
+last_reviewed_on: 2026-11-10
 review_in: 3 months
 ---
 
@@ -9,7 +9,7 @@ review_in: 3 months
 
 This document describes our incident handling process for network, operations and security issues.
 
-> This document assumes the user has a PagerDuty account and is part of the Modernisation Platform team. To use the in Slack features the user must authorise the PagerDuty app in Slack.
+> This document assumes the user has a PagerDuty account and is part of the Modernisation Platform team. To use the Slack features the user must authorise the PagerDuty app in Slack.
 
 ## Overview:
 
@@ -120,7 +120,7 @@ The two roles which **must** be filled for every incident are the **Incident Lea
 
 > In rare cases, the same person might fill both roles, but this is discouraged because it generally leads to poor record keeping.
 
-To fill these roles, ask for volunteers from the team, either verbally or via [#modernisation-platform](<(https://mojdt.slack.com/archives/C013RM6MFFW)>). In the unlikely event that you don't get any volunteers, appoint someone.
+To fill these roles, ask for volunteers from the team, either verbally or via [#modernisation-platform](https://mojdt.slack.com/archives/C013RM6MFFW). In the unlikely event that you don't get any volunteers, appoint someone.
 
 ### 3.1 Incident Lead
 
@@ -168,7 +168,7 @@ As well as communicating to our user base, the following people should be inform
 
 ### 4.2 Recording notes
 
-Entries on the incident can be created from Slack using the **Add a Note** action option on the Incident Post in the incident dedicated slack channel (see below)
+Entries on the incident can be created from Slack using the **Add a Note** action option on the Incident Post in the dedicated incident Slack channel (see below)
 
 ![PagerDuty incident actions in slack](../../images/pd-incident-actions.png)
 
@@ -176,7 +176,7 @@ or via PagerDuty Incident page by clicking **+ Add Note** button (see below)
 
 ![PagerDuty incident page management](../../images/pd-incident-page.png)
 
-> NOTE, other incident actions are also listed in the slack UI, e.g. **Assign Roles**, however not all of them are currently enabled (as some features cost extra). Therefore, managing these information may require a manual recording through **Add a Note** action instead.
+> NOTE, other incident actions are also listed in the Slack UI, e.g. **Assign Roles**, however not all of them are currently enabled (as some features cost extra). Therefore, managing this information may require manual recording through the **Add a Note** action instead.
 >
 > Similarly, these features will not be available in the incident page.
 
@@ -190,13 +190,13 @@ To publish the update to the external status page, click the link in the email o
 
 Fill in the details for the update and publish it, this will also post an update to the #ask-modernisation-platform and #modernisation-platform-update Slack channels.
 
-It is important to use the External Status page as this feeds in to other services in PagerDuty dependant on the Modernisation Platform.
+It is important to use the External Status page as this feeds in to other services in PagerDuty dependent on the Modernisation Platform.
 
 ### 4.4 Transferring roles
 
 It may be necessary to transfer roles from one team member to another, e.g. during long-running incidents. In this case, it is the responsibility of whoever is in a role to ensure that someone else takes it over.
 
-Whoever assumes a role should announce it in the incident slack channel (or thread if the channel was not created), so that the team is aware.
+Whoever assumes a role should announce it in the incident Slack channel (or thread if the channel was not created), so that the team is aware.
 
 ## 5. Fix the problem
 
@@ -209,7 +209,7 @@ For AWS support, log a call in the AWS account affected.
 
 | 3rd Party | How to log a support ticket                                                                        | Escalation process                                                                         |
 | --------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| AWS       | [Creating a support case](https://docs.aws.amazon.com/awssupport/latest/user/case-management.html) | On the case, or post in [#ext-aws] (https://moj.enterprise.slack.com/archives/C015UBQ78MR) |
+| AWS       | [Creating a support case](https://docs.aws.amazon.com/awssupport/latest/user/case-management.html) | On the case, or post in [#ext-aws](https://moj.enterprise.slack.com/archives/C015UBQ78MR)  |
 
 ## 6. End the incident
 
@@ -231,7 +231,7 @@ Resolving an incident in PagerDuty automatically generates status page entries, 
 
 You may find multiple entries pending approval for the same incident (e.g. Detected, Investigating, and Resolved). Review and approve each one so that the public status page accurately reflects the full incident timeline.
 
-Failing to approve these entries means the external status page will show no updates for the incident, which can cause confusion for users and dependant services.
+Failing to approve these entries means the external status page will show no updates for the incident, which can cause confusion for users and dependent services.
 
 ## 7. Post-incident procedure
 
