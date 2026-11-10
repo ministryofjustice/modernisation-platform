@@ -66,7 +66,7 @@ As these environments are identical, and controlled via code, we would recommend
 
 ### Tags
 
-These will be used to tag your AWS resources, for further guidance on tagging please see [here](https://cloud-optimisation-and-accountability.justice.gov.uk/documentation/finops-and-greenops-at-moj/standards/tagging.html#tags-you-should-use)
+These will be used to tag your AWS resources, for further guidance on tagging please see [here](https://octo-strategic-docs.apps.live.cloud-platform.service.justice.gov.uk/docs/standards/tagging-standard.html#tags-you-should-use)
 
 The is-production tag will be inferred if the environment is production.
 
@@ -77,7 +77,7 @@ The is-production tag will be inferred if the environment is production.
 | owner         | <find-a-solicitor@ministryofjustice.gov.uk> |
 
 Valid business-unit values
-HQ,HMPPS,OPG,LAA,HMCTS,CICA,Platforms,Property,CJSE,YJB
+`HMPPS`, `OPG`, `LAA`, `Central Digital`, `Technology Services`, `HMCTS`, `CICA`, `Platforms` (pending changes to support `OCTO` value), `YJB`, or `HQ`
 
 For the "owner" tag, we will contact you periodically using this address to confirm whether it and any other contact details remain current. If they have changed, please do let us know as soon as possible.
 
@@ -104,7 +104,7 @@ Here are some examples of the environments JSON file that the Modernisation Plat
 - the `name` key and `access` object are required, see: [Another example](#another-example)
 - `github_action_reviewer` is an optional true/false for each team listed and determines if the team should be the approver for GitHub action runs.
 - the `nuke` key is optional and is only read if the `access.level` is `sandbox`.
-- `tags` should be an object of the mandatory tags defined in the MoJ [Tagging Guidance](https://cloud-optimisation-and-accountability.justice.gov.uk/documentation/finops-and-greenops-at-moj/standards/tagging.html#tagging-your-infrastructure). You can omit `is-production` as we infer this from the environment name. Note that the `infrastructure-support` tag must contain a valid email address.
+- `tags` should be an object of the mandatory tags defined in the MoJ [Tagging Guidance](https://octo-strategic-docs.apps.live.cloud-platform.service.justice.gov.uk/docs/standards/tagging-standard.html#infrastucture-tagging-standard). You can omit `is-production` as we infer this from the environment name. Note that the `infrastructure-support` tag must contain a valid email address.
 
 ### Blank example
 
@@ -131,6 +131,7 @@ Here are some examples of the environments JSON file that the Modernisation Plat
   "tags": {
     "application": "",
     "business-unit": "",
+    "service-area": "",
     "infrastructure-support": "",
     "owner": ""
   },
@@ -174,6 +175,7 @@ An JSON definition for a nonsensical application called [`glados`](https://en.wi
   "tags": {
     "application": "GLaDOS",
     "business-unit": "Platforms",
+    "service-area": "",
     "infrastructure-support": "aperture-science@digital.justice.gov.uk",
     "owner": "GLaDOS (Genetic Lifeform and Disk Operating System): aperture-science@digital.justice.gov.uk"
   },
