@@ -108,7 +108,7 @@
 /terraform/environments/core-shared-services/testing.tf @ministryofjustice/modernisation-platform @ministryofjustice/octo-cyber 
 /terraform/environments/core-shared-services/tipstaff.tf @ministryofjustice/dts-legacy @ministryofjustice/modernisation-platform-audit 
 /terraform/environments/core-shared-services/tribunals.tf @ministryofjustice/dts-legacy @ministryofjustice/modernisation-platform-audit 
-/terraform/environments/core-shared-services/vcms.tf @ministryofjustice/hmpps-vcms-write-team @ministryofjustice/hosting-migrations @ministryofjustice/modernisation-platform-audit 
+/terraform/environments/core-shared-services/vcms.tf @ministryofjustice/hosting-migrations @ministryofjustice/modernisation-platform-audit @ministryofjustice/vcms-non-production @ministryofjustice/vcms-production 
 /terraform/environments/core-shared-services/wardship.tf @ministryofjustice/dts-legacy @ministryofjustice/modernisation-platform-audit 
 /terraform/environments/core-shared-services/xhibit-portal.tf @ministryofjustice/cjse-xhibit-portal-discovery @ministryofjustice/modernisation-platform-audit @ministryofjustice/octo-cyber @ministryofjustice/xhibit-portal-dev 
 /terraform/environments/core-shared-services/youth-justice-app-framework.tf @ministryofjustice/modernisation-platform-audit @ministryofjustice/modernisation-platform-engineers 
