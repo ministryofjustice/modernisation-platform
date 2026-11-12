@@ -55,7 +55,7 @@
     "business-unit": "Platforms",
     "service-area": "Data",
     "infrastructure-support": "integration-hub@justice.gov.uk",
-    "owner": "Platforms",
+    "owner": "integration-hub@justice.gov.uk",
     "slack-channel": "ask-integration-hub",
     "critical-national-infrastructure": false
   },
