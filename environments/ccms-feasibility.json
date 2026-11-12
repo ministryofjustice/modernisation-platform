@@ -21,6 +21,10 @@
     {
       "name": "ccms-edrms",
       "sso_group_name": "laa-sre-admins"
+    },
+    {
+      "name": "ccms-file-transfer",
+      "sso_group_name": "laa-sre-admins"
     }
   ],
   "environments": [
@@ -59,7 +63,9 @@
     "ministryofjustice/laa-ccms-edrms-web-service",
     "ministryofjustice/oracle-policy-automation-docker",
     "ministryofjustice/laa-ccms-connector",
-    "ministryofjustice/laa-ccms-service-adapter"
+    "ministryofjustice/laa-ccms-service-adapter",
+    "ministryofjustice/ccms-payments-received",
+    "ministryofjustice/ccms-financial-transfers"
   ],
   "go-live-date": ""
 }
