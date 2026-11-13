@@ -14,7 +14,7 @@
 /terraform/environments/core-shared-services/analytical-platform.tf @ministryofjustice/analytical-platform-data-development-data-engineer @ministryofjustice/analytical-platform-engineers @ministryofjustice/data-platform-audit-and-security @ministryofjustice/modernisation-platform-audit 
 /terraform/environments/core-shared-services/apex.tf @ministryofjustice/laa-apex-developer @ministryofjustice/laa-ccms-ebs-developers @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-audit 
 /terraform/environments/core-shared-services/bichard7.tf @ministryofjustice/cjse-bichard7-next 
-/terraform/environments/core-shared-services/ccms-ebs-ai.tf @ministryofjustice/laa-sre-admins, laa-sre-admins 
+/terraform/environments/core-shared-services/ccms-ebs-ai.tf @ministryofjustice/laa-sre-admins 
 /terraform/environments/core-shared-services/ccms-ebs-upgrade.tf @ministryofjustice/laa-ccms-ebs-developers @ministryofjustice/laa-ccms-migration-team @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-audit 
 /terraform/environments/core-shared-services/ccms-ebs.tf @ministryofjustice/laa-ccms-developers @ministryofjustice/laa-ccms-ebs-developers @ministryofjustice/laa-ccms-instance-access @ministryofjustice/laa-ccms-migration-team @ministryofjustice/laa-ccms-security-testing-kpmg @ministryofjustice/laa-soa-developers @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-audit @ministryofjustice/octo-cyber 
 /terraform/environments/core-shared-services/ccms-edrms.tf @ministryofjustice/laa-sre-admins 
@@ -22,7 +22,7 @@
 /terraform/environments/core-shared-services/ccms-oia.tf @ministryofjustice/laa-ccms-developers @ministryofjustice/laa-ccms-security-testing-kpmg @ministryofjustice/laa-dba @ministryofjustice/laa-oia-developers @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-audit @ministryofjustice/octo-cyber 
 /terraform/environments/core-shared-services/ccms-pui-internal.tf @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-audit 
 /terraform/environments/core-shared-services/ccms-pui.tf @ministryofjustice/laa-ccms-developers @ministryofjustice/laa-ccms-security-testing-kpmg @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-audit @ministryofjustice/octo-cyber 
-/terraform/environments/core-shared-services/ccms-upg.tf @ministryofjustice/laa-sre-admins, laa-sre-admins 
+/terraform/environments/core-shared-services/ccms-upg.tf @ministryofjustice/laa-sre-admins 
 /terraform/environments/core-shared-services/cdpt-ifs.tf @ministryofjustice/central-digital-product-team @ministryofjustice/modernisation-platform-audit 
 /terraform/environments/core-shared-services/cfo-data-management-system.tf @ministryofjustice/hmpps-creating-future-opportunities-devs @ministryofjustice/hmpps-creating-future-opportunities-live @ministryofjustice/modernisation-platform-audit 
 /terraform/environments/core-shared-services/cica-sandbox.tf @ministryofjustice/cica-external-developers @ministryofjustice/cica-review-case-documents 
@@ -92,7 +92,7 @@
 /terraform/environments/core-shared-services/oasys-national-reporting.tf @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
 /terraform/environments/core-shared-services/oasys.tf @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
 /terraform/environments/core-shared-services/observability-platform.tf @ministryofjustice/modernisation-platform-audit @ministryofjustice/observability-platform 
-/terraform/environments/core-shared-services/octo-engineering-ai-enablement.tf @ministryofjustice/justice-engineering-ai-enablement, justice-engineering-ai-enablement 
+/terraform/environments/core-shared-services/octo-engineering-ai-enablement.tf @ministryofjustice/justice-engineering-ai-enablement 
 /terraform/environments/core-shared-services/octo.tf @ministryofjustice/octo 
 /terraform/environments/core-shared-services/opg-lpa-data-store.tf @ministryofjustice/opg-modernising-lpa-team @ministryofjustice/opg-webops 
 /terraform/environments/core-shared-services/panda-cyber-appsec-lab.tf @ministryofjustice/octo-cyber 
