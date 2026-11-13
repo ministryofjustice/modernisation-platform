@@ -1,6 +1,6 @@
 {
   "account-type": "member",
-  "codeowners": "laa-sre-admins, laa-sre-admins",
+  "codeowners": "laa-sre-admins",
   "components": [
     {
       "name": "ccms-ebs-ref",
