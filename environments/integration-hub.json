@@ -3,19 +3,7 @@
   "codeowners": ["integration-hub"],
   "components": [
     {
-      "name": "api-platform"
-    },
-    {
-      "name": "downstream-mock-api"
-    },
-    {
-      "name": "events-platform"
-    },
-    {
       "name": "iac"
-    },
-    {
-      "name": "managed-file-transfer"
     }
   ],
   "environments": [
