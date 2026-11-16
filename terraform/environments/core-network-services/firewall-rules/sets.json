@@ -215,6 +215,8 @@
 
     "LAA_MP_WORKSPACES_TCP": ["443", "1521", "1522", "9501", "9503"],
 
-    "LAA_FTP_TCP": ["22", "8022"]
+    "LAA_FTP_TCP": ["22", "8022"],
+
+    "AZURE_VIRTUAL_DESKTOP_TCP": ["22"]
   }
 }
