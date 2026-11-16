@@ -32,7 +32,7 @@ locals {
     {
       business_unit      = "hmpps"
       environment        = "development"
-      cidr_blocks        = ["172.20.0.0/16", module.vpc["hmpps-development"].vpc_cidr_block]
+      cidr_blocks        = local.is-development ? ["172.20.0.0/16", module.vpc["hmpps-development"].vpc_cidr_block] : ["172.20.0.0/16"]
       port               = 443
       service_name       = "com.amazonaws.${data.aws_region.current.region}.execute-api"
       name               = "hmpps-development-execute-api-cp-access"
