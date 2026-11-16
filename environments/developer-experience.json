@@ -15,6 +15,9 @@
     },
     {
       "name": "github-management"
+    },
+    {
+      "name": "github-sts"
     }
   ],
   "environments": [
