@@ -42,7 +42,7 @@ locals {
     {
       business_unit      = "hmpps"
       environment        = "test"
-      cidr_blocks        = ["172.20.0.0/16"]
+      cidr_blocks        = local.is-test ? ["172.20.0.0/16", module.vpc["hmpps-test"].vpc_cidr_block] : ["172.20.0.0/16"]
       port               = 443
       service_name       = "com.amazonaws.${data.aws_region.current.region}.execute-api"
       name               = "hmpps-test-execute-api-cp-access"
@@ -52,7 +52,7 @@ locals {
     {
       business_unit      = "hmpps"
       environment        = "preproduction"
-      cidr_blocks        = ["172.20.0.0/16"]
+      cidr_blocks        = local.is-preproduction ? ["172.20.0.0/16", module.vpc["hmpps-preproduction"].vpc_cidr_block] : ["172.20.0.0/16"]
       port               = 443
       service_name       = "com.amazonaws.${data.aws_region.current.region}.execute-api"
       name               = "hmpps-preproduction-execute-api-cp-access"
@@ -62,7 +62,7 @@ locals {
     {
       business_unit      = "hmpps"
       environment        = "production"
-      cidr_blocks        = ["172.20.0.0/16"]
+      cidr_blocks        = local.is-production ? ["172.20.0.0/16", module.vpc["hmpps-production"].vpc_cidr_block] : ["172.20.0.0/16"]
       port               = 443
       service_name       = "com.amazonaws.${data.aws_region.current.region}.execute-api"
       name               = "hmpps-production-execute-api-cp-access"

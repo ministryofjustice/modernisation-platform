@@ -15,6 +15,8 @@ locals {
   is-production  = substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production"
   is-development = substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-development"
   is-live_data   = (substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production") || (substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-preproduction")
+  is-preproduction = substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-preproduction"
+  is-test = substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-test"
 
   core_logging_bucket_arns = jsondecode(data.aws_ssm_parameter.core_logging_bucket_arns.insecure_value)
 
