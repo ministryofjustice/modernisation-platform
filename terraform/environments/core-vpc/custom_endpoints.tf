@@ -89,8 +89,8 @@ locals {
     }
   }
 
-  # Non-production only. Sandbox VPCs are left out as they're internal to the Modernisation Platform.
-  grafana_pdc_environments = ["development", "test", "preproduction"]
+  # Non-production only. Sandbox is included so the PDC agent can be tested in the Modernisation Platform's own sandbox accounts.
+  grafana_pdc_environments = ["sandbox", "development", "test", "preproduction"]
 
   # one entry per Grafana PDC endpoint service for each business unit VPC in those environments with at least one member account,
   # allowing access from the VPC's general subnet set. A VPC gets its endpoints when its first account is added in environments-networks.
