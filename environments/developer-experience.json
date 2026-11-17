@@ -2,6 +2,9 @@
   "account-type": "member",
   "components": [
     {
+      "name": "app"
+    },
+    {
       "name": "auth0-event-stream"
     },
     {
@@ -25,10 +28,6 @@
       "name": "development",
       "access": [
         {
-          "sso_group_name": "octo-developer-experience",
-          "level": "developer"
-        },
-        {
           "sso_group_name": "developer-experience",
           "level": "developer"
         }
@@ -37,10 +36,6 @@
     {
       "name": "test",
       "access": [
-        {
-          "sso_group_name": "octo-developer-experience",
-          "level": "developer"
-        },
         {
           "sso_group_name": "developer-experience",
           "level": "developer"
@@ -51,10 +46,6 @@
       "name": "preproduction",
       "access": [
         {
-          "sso_group_name": "octo-developer-experience",
-          "level": "developer"
-        },
-        {
           "sso_group_name": "developer-experience",
           "level": "developer"
         }
@@ -63,10 +54,6 @@
     {
       "name": "production",
       "access": [
-        {
-          "sso_group_name": "octo-developer-experience",
-          "level": "developer"
-        },
         {
           "sso_group_name": "developer-experience",
           "level": "developer"
