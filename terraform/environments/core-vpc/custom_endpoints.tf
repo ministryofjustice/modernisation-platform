@@ -22,13 +22,16 @@
 #
 # - Entries default to the key "<business_unit>-<environment>". Set "key" when a VPC needs more than one endpoint.
 #
+# - Grafana Cloud Private Data Source Connect (PDC) entries aren't listed by hand. They're generated from environments-networks for every
+#   business unit VPC with member accounts in each environment in grafana_pdc_environments (see grafana_pdc_endpoint_definitions).
+#
 # - the security group MUST be owned by core-vpc (this account) - shared VPCs do not allow the VPC owner to attach a security group created by a participant account to
 # resources it owns (see https://docs.aws.amazon.com/vpc/latest/userguide/vpc-share-limitations.html).
 #
 # ---------------------------------------------------------------------------------------------------------------------------
 
 locals {
-  custom_endpoint_definitions = [
+  custom_endpoint_definitions = concat([
     {
       business_unit      = "hmpps"
       environment        = "development"
@@ -68,30 +71,47 @@ locals {
       name               = "hmpps-production-execute-api-cp-access"
       description        = "Allow Container Platform access to execute-api endpoint"
       subnet_name_prefix = "general-private"
-    },
-    {
-      key                = "platforms-development-grafana-pdc-api"
-      business_unit      = "platforms"
-      environment        = "development"
-      cidr_blocks        = ["10.26.16.0/21"]
-      port               = 443
-      service_name       = "com.amazonaws.vpce.eu-west-2.vpce-svc-0b12fa07b304f0d79"
-      name               = "platforms-development-grafana-pdc-api"
-      description        = "Allow Grafana PDC agents to reach the Grafana Cloud PDC API over PrivateLink"
-      subnet_name_prefix = "general-private"
-    },
-    {
-      key                = "platforms-development-grafana-pdc-gateway"
-      business_unit      = "platforms"
-      environment        = "development"
-      cidr_blocks        = ["10.26.16.0/21"]
-      port               = 22
-      service_name       = "com.amazonaws.vpce.eu-west-2.vpce-svc-04a3bf37de7c4c8be"
-      name               = "platforms-development-grafana-pdc-gateway"
-      description        = "Allow Grafana PDC agents to reach the Grafana Cloud PDC SSH gateway over PrivateLink"
-      subnet_name_prefix = "general-private"
     }
-  ]
+  ], local.grafana_pdc_endpoint_definitions)
+
+  # Grafana Cloud PDC endpoint services (cluster prod-gb-south-1), shared by both Observability Platform Grafana Cloud stacks.
+  # The PDC agents that the Observability Platform tenant module runs in member accounts' general-private subnets connect to these.
+  grafana_pdc_endpoint_services = {
+    api = {
+      port         = 443
+      service_name = "com.amazonaws.vpce.eu-west-2.vpce-svc-0b12fa07b304f0d79"
+      description  = "Allow Grafana PDC agents to reach the Grafana Cloud PDC API over PrivateLink"
+    }
+    gateway = {
+      port         = 22
+      service_name = "com.amazonaws.vpce.eu-west-2.vpce-svc-04a3bf37de7c4c8be"
+      description  = "Allow Grafana PDC agents to reach the Grafana Cloud PDC SSH gateway over PrivateLink"
+    }
+  }
+
+  # Non-production only. Sandbox VPCs are left out as they're internal to the Modernisation Platform.
+  grafana_pdc_environments = ["development", "test", "preproduction"]
+
+  # one entry per Grafana PDC endpoint service for each business unit VPC in those environments with at least one member account,
+  # allowing access from the VPC's general subnet set. A VPC gets its endpoints when its first account is added in environments-networks.
+  # Keys are "<vpc name>-grafana-pdc-<api|gateway>"; changing that format would recreate the endpoints.
+  grafana_pdc_endpoint_definitions = flatten([
+    for environment in local.grafana_pdc_environments : [
+      for vpc_name, vpc in local.vpcs["core-vpc-${environment}"] : [
+        for service_key, service in local.grafana_pdc_endpoint_services : {
+          key                = "${vpc_name}-grafana-pdc-${service_key}"
+          business_unit      = trimsuffix(vpc_name, "-${environment}")
+          environment        = environment
+          cidr_blocks        = [vpc.cidr.subnet_sets.general.cidr]
+          port               = service.port
+          service_name       = service.service_name
+          name               = "${vpc_name}-grafana-pdc-${service_key}"
+          description        = service.description
+          subnet_name_prefix = "general-private"
+        }
+      ] if anytrue([for subnet_set in values(vpc.cidr.subnet_sets) : length(subnet_set.accounts) > 0])
+    ]
+  ])
 
   # definitions for the current workspace's environment only, keyed by endpoint key
   custom_endpoints = {
