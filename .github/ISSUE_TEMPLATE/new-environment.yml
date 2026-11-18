@@ -199,6 +199,7 @@ body:
         - CICA
         - Platforms
         - Technology Services
+        - Justice AI Unit
     validations:
       required: true
   - type: input
