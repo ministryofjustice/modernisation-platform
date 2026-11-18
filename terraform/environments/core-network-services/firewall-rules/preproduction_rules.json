@@ -575,7 +575,7 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
-    "laa_preproduction_to_cloud_platform_postgres": {
+  "laa_preproduction_to_cloud_platform_postgres": {
     "action": "PASS",
     "source_ip": "${laa-preproduction}",
     "destination_ip": "${cloud-platform}",
