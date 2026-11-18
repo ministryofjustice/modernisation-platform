@@ -369,7 +369,7 @@ module "github_actions_read_environment_management_role" {
   ]
   role_name    = "github-actions-read-environment-management"
   policy_jsons = [data.aws_iam_policy_document.oidc_assume_read_environment_management_role.json]
-  tags = { "Name" = "GitHub Actions Read Environment Management" }
+  tags         = { "Name" = "GitHub Actions Read Environment Management" }
 }
 
 data "aws_iam_policy_document" "oidc_assume_read_environment_management_role" {
