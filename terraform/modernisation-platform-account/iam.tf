@@ -361,6 +361,29 @@ data "aws_iam_policy_document" "oidc_assume_read_secrets_role_member" {
   }
 }
 
+# Dedicated GitHub Actions OIDC role for workflows that only require access to the environment management secret.
+module "github_actions_read_environment_management_role" {
+  source = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
+  github_repositories = [
+    "ministryofjustice/container-platform-environments"
+  ]
+  role_name    = "github-actions-read-environment-management"
+  policy_jsons = [data.aws_iam_policy_document.oidc_assume_read_environment_management_role.json]
+  tags         = { "Name" = "GitHub Actions Read Environment Management" }
+}
+
+data "aws_iam_policy_document" "oidc_assume_read_environment_management_role" {
+  statement {
+    effect = "Allow"
+    resources = [
+      "arn:aws:secretsmanager:eu-west-2:${data.aws_caller_identity.current.account_id}:secret:environment_management-*"
+    ]
+    actions = [
+      "kms:Decrypt",
+      "secretsmanager:GetSecretValue"
+    ]
+  }
+}
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "sso_customer_managed_policy_engineer" {
