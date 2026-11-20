@@ -154,12 +154,3 @@ resource "github_actions_secret" "environment_management" {
     { account_ids : module.environments.environment_account_ids }
   ))
 }
-
-resource "github_actions_variable" "grafana_pdc_token_rotator_release_role_arn" {
-  repository    = "observability-platform-grafana-pdc-token-rotator"
-  variable_name = "AWS_RELEASE_ROLE_ARN"
-  value = sensitive(format(
-    "arn:aws:iam::%s:role/modernisation-platform-oidc-cicd",
-    local.environment_management.account_ids["observability-platform-development"]
-  ))
-}

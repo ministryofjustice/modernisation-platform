@@ -69,8 +69,8 @@ jobs:
           client-id: ${{ env.APP_ID }}
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
           owner: ministryofjustice # zizmor: ignore[github-app]
-          repositories: 'modernisation-platform,modernisation-platform-environments,modernisation-platform-ami-builds,modernisation-platform-configuration-management,modernisation-platform-security,observability-platform-grafana-pdc-token-rotator'
-          permission-actions: write
+          repositories: 'modernisation-platform,modernisation-platform-environments,modernisation-platform-ami-builds,modernisation-platform-configuration-management,modernisation-platform-security'
+          permission-actions: read
           permission-contents: read
           permission-pull-requests: write
           permission-secrets: write
@@ -148,8 +148,8 @@ jobs:
           client-id: ${{ env.APP_ID }}
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
           owner: ministryofjustice # zizmor: ignore[github-app]
-          repositories: 'modernisation-platform,modernisation-platform-environments,modernisation-platform-ami-builds,modernisation-platform-configuration-management,modernisation-platform-security,observability-platform-grafana-pdc-token-rotator'
-          permission-actions: write
+          repositories: 'modernisation-platform,modernisation-platform-environments,modernisation-platform-ami-builds,modernisation-platform-configuration-management,modernisation-platform-security'
+          permission-actions: read
           permission-contents: read
           permission-pull-requests: write
           permission-secrets: write
