@@ -300,6 +300,17 @@ resource "aws_secretsmanager_secret" "modernisation_platform_ai_prototype_accoun
   }
 }
 
+resource "aws_secretsmanager_secret" "test" {
+  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
+  name        = "test"
+  description = "test"
+  kms_key_id  = aws_kms_key.secrets_key_multi_region.id
+  tags        = local.tags
+  replica {
+    region = local.replica_region
+  }
+}
+
 resource "aws_secretsmanager_secret" "modernisation_platform_ai_prototype_r53_hosted_zone_id" {
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   name        = "modernisation_platform_ai_prototype_r53_hosted_zone_id"
