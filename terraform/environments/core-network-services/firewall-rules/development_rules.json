@@ -789,5 +789,12 @@
     "destination_ip": "${cica-onprem-lan}",
     "destination_port": "ANY",
     "protocol": "TCP"
+  },
+  "mp_laa_development_to_azure_desktop_workspaces": {
+    "action": "PASS",
+    "source_ip": "${laa-development}",
+    "destination_ip": "${laa-mp-workspaces-non-prod}",
+    "destination_port": "$AZURE_VIRTUAL_DESKTOP_TCP",
+    "protocol": "TCP"
   }
 }
