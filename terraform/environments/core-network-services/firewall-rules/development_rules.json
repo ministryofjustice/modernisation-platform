@@ -790,10 +790,10 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
-  "mp_laa_development_to_azure_desktop_workspaces": {
+    "moj_avd_001_to_mp_laa_development": {
     "action": "PASS",
-    "source_ip": "${laa-development}",
-    "destination_ip": "${laa-mp-workspaces-non-prod}",
+    "source_ip": "${moj-avd-001}",
+    "destination_ip": "${laa-development}",
     "destination_port": "$AZURE_VIRTUAL_DESKTOP_TCP",
     "protocol": "TCP"
   }
