@@ -29,6 +29,10 @@
           "level": "fleet-manager"
         },
         {
+          "sso_group_name": "hmpps-pds-platform-devs",
+          "level": "developer"
+        },
+        {
           "sso_group_name": "national-applications-reporting-team",
           "level": "developer"
         },
@@ -63,6 +67,10 @@
         {
           "sso_group_name": "hmpps-delius-mis",
           "level": "fleet-manager"
+        },
+        {
+          "sso_group_name": "hmpps-pds-platform-devs",
+          "level": "developer"
         },
         {
           "sso_group_name": "national-applications-reporting-team",
