@@ -13,7 +13,7 @@
           "level": "fleet-manager"
         }
       ],
-      "additional_reviewers": ["umeshc-roy", "nbuckingham72"]
+      "additional_reviewers": ["nbuckingham72"]
     },
     {
       "name": "preproduction",
@@ -27,7 +27,7 @@
           "level": "fleet-manager"
         }
       ],
-      "additional_reviewers": ["umeshc-roy", "nbuckingham72"]
+      "additional_reviewers": ["nbuckingham72"]
     },
     {
       "name": "production",
@@ -41,7 +41,7 @@
           "level": "security-audit"
         }
       ],
-      "additional_reviewers": ["umeshc-roy", "nbuckingham72"]
+      "additional_reviewers": ["nbuckingham72"]
     }
   ],
   "tags": {
