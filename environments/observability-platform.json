@@ -33,6 +33,7 @@
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [
-    "ministryofjustice/observability-platform-grafana-api-key-rotator"
+    "ministryofjustice/observability-platform-grafana-api-key-rotator",
+    "ministryofjustice/observability-platform-grafana-pdc-token-rotator"
   ]
 }

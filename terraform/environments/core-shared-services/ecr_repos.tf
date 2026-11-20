@@ -846,6 +846,27 @@ module "observability_platform_grafana_api_key_rotator_ecr_repo" {
   tags_common = local.tags
 }
 
+module "observability_platform_grafana_pdc_token_rotator_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "observability-platform-grafana-pdc-token-rotator"
+
+  push_principals = ["arn:aws:iam::${local.environment_management.account_ids["observability-platform-development"]}:role/modernisation-platform-oidc-cicd"]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["observability-platform-development"]}:role/modernisation-platform-oidc-cicd",
+    local.environment_management.account_ids["observability-platform-development"],
+    local.environment_management.account_ids["observability-platform-production"]
+  ]
+
+  enable_retrieval_policy_for_lambdas = [
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["observability-platform-development"]}:function:grafana-pdc-token-rotator*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["observability-platform-production"]}:function:grafana-pdc-token-rotator*"
+  ]
+
+  tags_common = local.tags
+}
+
 # Repo for electronic monitoring data account lambda
 module "electronic_monitoring_data_lambdas_ecr_repo" {
   source = "../../modules/app-ecr-repo"
