@@ -1,0 +1,27 @@
+{
+  "account-type": "member",
+  "codeowners": ", ",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "kbsf-prototype",
+          "level": "sandbox"
+        }
+      ],
+      "nuke": ""
+    }
+  ],
+  "tags": {
+    "application": "kbsf-prototype",
+    "business-unit": "LAA",
+    "service-area": "Data service area",
+    "infrastructure-support": "Alastair.Mottram-Epson@justice.gov.uk",
+    "owner": "LAA",
+    "slack-channel": "ai-contact-alastair-m-e",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
