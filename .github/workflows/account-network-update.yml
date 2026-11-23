@@ -7,14 +7,15 @@ name: Account Network Update
     branches:
       - main
 
-permissions:
-  contents: write
-  issues: read
-  pull-requests: write
+permissions: read-all
 
 
 jobs:
   network-setup:
+    permissions:
+      contents: write
+      issues: read
+      pull-requests: write
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
