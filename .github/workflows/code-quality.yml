@@ -11,7 +11,7 @@ name: Code Quality
     - cron: "0 7 * * 1-5"
   workflow_dispatch:
 
-permissions: {}
+permissions: read-all
 
 jobs:
   code-quality:
