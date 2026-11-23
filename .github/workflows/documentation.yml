@@ -9,7 +9,7 @@ name: Generate Terraform README docs
       - 'terraform/modules/**/*.md'
       - '.github/workflows/documentation.yml'
 
-permissions: {}
+permissions: read-all
 
 jobs:
   docs:
