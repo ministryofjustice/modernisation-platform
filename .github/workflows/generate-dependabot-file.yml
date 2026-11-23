@@ -12,7 +12,7 @@ name: Generate dependabot file
       - 'scripts/generate-dependabot-file.sh'
   workflow_dispatch:
 
-permissions: {}
+permissions: read-all
 
 defaults:
   run:
