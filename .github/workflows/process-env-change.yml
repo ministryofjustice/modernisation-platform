@@ -3,13 +3,14 @@ name: Process structured environment JSON change
 "on":
   issues:
     types: [opened, edited]
-permissions:
-  contents: write
-  pull-requests: write
-  issues: read
+permissions: read-all
 
 jobs:
   apply:
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: read
     if: contains(github.event.issue.labels.*.name, 'account_amendment')
     runs-on: ubuntu-latest
     steps:
