@@ -16,7 +16,7 @@ concurrency:
     group: generate-metrics
     cancel-in-progress: false
 
-permissions: {}
+permissions: read-all
 
 env:
     APP_ID: 2013696
