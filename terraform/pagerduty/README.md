@@ -47,13 +47,10 @@ The [status-page-subscriptions.tf](status-page-subscriptions.tf) automatically m
 
 ### Adding additional emails
 
-To add ad-hoc emails that aren't in the `environments/*.json` files, add them to the `additional_subscriber_emails` list in [status-page-subscriptions.tf](status-page-subscriptions.tf):
+To add ad-hoc emails that aren't in the `environments/*.json` files, add them to the `status_page_additional_emails` list in the `pagerduty_users` AWS Secrets Manager secret (format documented in [data.tf](data.tf)):
 
-```hcl
-additional_subscriber_emails = [
-  "team-email@digital.justice.gov.uk",
-  "external-partner@example.com",
-]
+```json
+"status_page_additional_emails": ["team-email@example.com", "external-partner@example.com"]
 ```
 
 The script will automatically subscribe these emails on the next `terraform apply`.
