@@ -27,6 +27,10 @@ Submit a pull request and when it's merged, they will appear on [our team page](
 
 > You can view a [sample PR](https://github.com/ministryofjustice/modernisation-platform/pull/376) in case you get stuck.
 
+## Adding them to PagerDuty
+
+User details and on-call rotas are held in the `pagerduty_users` secret in AWS Secrets Manager, not in the repository. Follow the steps in the [PagerDuty Terraform README](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/pagerduty/README.md) to add them and put them on the rota, then run the `terraform-pagerduty.yml` workflow manually from `main` to apply the change.
+
 ## Adding them to our GitHub team
 
 To add them to our GitHub team, update the file at [terraform/github/locals.tf](https://github.com/ministryofjustice/modernisation-platform-github/blob/main/terraform/github/locals.tf) with:
