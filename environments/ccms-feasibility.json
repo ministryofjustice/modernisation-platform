@@ -7,6 +7,10 @@
       "sso_group_name": "laa-sre-admins"
     },
     {
+      "name": "ccms-ebs-fin",
+      "sso_group_name": "laa-sre-admins"
+    },
+    {
       "name": "ccms-pui",
       "sso_group_name": "laa-sre-admins"
     },

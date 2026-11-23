@@ -6,7 +6,7 @@ name: Cleanup of Stale Branches
   schedule:
     - cron: '0 0 * * 0'
 
-permissions: {}
+permissions: read-all
 
 env:
   RATE_THRESHOLD: 100
