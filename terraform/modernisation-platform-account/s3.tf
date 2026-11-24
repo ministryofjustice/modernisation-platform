@@ -757,6 +757,18 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
   }
 
   statement {
+    sid       = "AllowSprinklerGithubActionsWriteMemberState"
+    effect    = "Allow"
+    actions   = ["s3:PutObject"]
+    resources = ["${module.state-bucket.bucket.arn}/environments/members/sprinkler/sprinkler-development/terraform.tfstate"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions"]
+    }
+  }
+
+  statement {
     sid    = "AllowSprinklerGithubActionRoleDeleteLock"
     effect = "Allow"
     actions = [
