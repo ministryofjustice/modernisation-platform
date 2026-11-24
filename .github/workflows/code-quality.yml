@@ -17,7 +17,7 @@ jobs:
   code-quality:
     permissions:
       actions: read
-      contents: write
+      contents: write # zizmor: ignore[github-app]
       issues: write
       pull-requests: write
       security-events: write
