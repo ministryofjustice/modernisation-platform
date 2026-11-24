@@ -332,3 +332,14 @@ resource "aws_secretsmanager_secret" "modernisation_platform_ai_prototype_acm_ce
     region = local.replica_region
   }
 }
+
+resource "aws_secretsmanager_secret" "pagerduty_users" {
+  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
+  name        = "pagerduty_users"
+  description = "Holds the user and email address information of pagerduty users"
+  kms_key_id  = aws_kms_key.secrets_key_multi_region.id
+  tags        = local.tags
+  replica {
+    region = local.replica_region
+  }
+}

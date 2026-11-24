@@ -22,6 +22,10 @@
         {
           "sso_group_name": "data-platform-proserve-engineers",
           "level": "platform-engineer-admin"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-jdp-governance-admins",
+          "level": "platform-engineer-admin"
         }
       ],
       "instance_scheduler_skip": ["true"],

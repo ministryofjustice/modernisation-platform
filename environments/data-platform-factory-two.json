@@ -18,6 +18,10 @@
           "sso_group_name": "data-platform-proserve-engineers",
           "level": "platform-engineer-admin",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-jdp-factory-two-owners",
+          "level": "analytics-engineer"
         }
       ],
       "instance_scheduler_skip": ["true"]

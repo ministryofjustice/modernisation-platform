@@ -239,6 +239,15 @@ resource "aws_route53_record" "laa_service_txt" {
   ]
 }
 
+# LAA Developer Portal CNAME record for GitHub Pages site. Repository: https://github.com/ministryofjustice/laa-developer-portal/
+resource "aws_route53_record" "laa_developer_portal_github_pages" {
+  zone_id = aws_route53_zone.application_zones["laa"].zone_id
+  name    = "developer-portal.laa.service.justice.gov.uk"
+  type    = "CNAME"
+  ttl     = "300"
+  records = ["ministryofjustice.github.io"]
+}
+
 # Github pages user guidance CNAME record
 
 resource "aws_route53_record" "github_pages" {
