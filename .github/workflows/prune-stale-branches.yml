@@ -6,7 +6,7 @@ name: Cleanup of Stale Branches
   schedule:
     - cron: '0 0 * * 0'
 
-permissions: {}
+permissions: read-all
 
 env:
   RATE_THRESHOLD: 100
@@ -22,10 +22,7 @@ jobs:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   cleanup:
-    permissions:
-      contents: write
-      pull-requests: write
-      id-token: write
+    permissions: {}
     name: Cleanup Stale Branches in Modernisation Platform Repos
     runs-on: ubuntu-latest
     needs: fetch-secrets

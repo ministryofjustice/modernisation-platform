@@ -9,18 +9,29 @@ name: Generate Terraform README docs
       - 'terraform/modules/**/*.md'
       - '.github/workflows/documentation.yml'
 
-permissions: {}
+permissions: read-all
+
+env:
+  APP_ID: 2013696
 
 jobs:
-  docs:
+  fetch-secrets:
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@5ec14e836f3de882a84f1c0b919645846a9d4f8e # v6.2.13
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
     permissions:
-      contents: write
-      pull-requests: write
+      id-token: write
+
+  docs:
+    permissions: {}
     runs-on: ubuntu-latest
+    needs: fetch-secrets
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         ref: ${{ github.event.pull_request.head.ref }}
+        persist-credentials: false
 
     - name: Render terraform docs and push changes back to PR
       uses: terraform-docs/gh-actions@6de6da0cefcc6b4b7a5cbea4d79d97060733093c # v1.4.1
@@ -33,7 +44,23 @@ jobs:
     - name: Fix Git permissions
       run: sudo chown -R "$(whoami)" .git/
 
+    - name: Decrypt Secrets
+      uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@5ec14e836f3de882a84f1c0b919645846a9d4f8e # v6.2.13
+      with:
+        mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
+        PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+    - name: Create GitHub App token
+      id: app
+      uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+      with:
+        client-id: ${{ env.APP_ID }}
+        private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
+        repositories: modernisation-platform
+        permission-contents: write
+        permission-pull-requests: write
+
     - name: Run Signed Commit Action
       uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@5ec14e836f3de882a84f1c0b919645846a9d4f8e # v6.2.13
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ steps.app.outputs.token }}
