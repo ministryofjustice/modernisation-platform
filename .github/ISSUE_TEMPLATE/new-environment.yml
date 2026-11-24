@@ -174,7 +174,7 @@ body:
       value: |
         ## Tags
         These will be used to tag your AWS resources, for further details on tagging please see here
-        https://cloud-optimisation-and-accountability.justice.gov.uk/documentation/finops-and-greenops-at-moj/standards/tagging.html#tagging-standard
+        https://octo-strategic-docs.apps.live.cloud-platform.service.justice.gov.uk/docs/standards/tagging-standard.html#infrastructure-tagging-standard
 
         The is-production tag will be inferred from the environment and is not needed here
 
