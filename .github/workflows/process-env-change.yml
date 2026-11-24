@@ -121,8 +121,10 @@ jobs:
 
       - name: Verify target JSON exists
         shell: bash
+        env:
+          ACCOUNT_NAME: ${{ steps.form.outputs.account_name }}
         run: |
-          safe_account="$(echo "${{ steps.form.outputs.account_name }}" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9_-]//g')"
+          safe_account="$(echo "$ACCOUNT_NAME" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9_-]//g')"
           target="environments/${safe_account}.json"
           echo "Checking for ${target}"
           if [ ! -f "$target" ]; then
@@ -176,14 +178,17 @@ jobs:
             --go-live-date "$GO_LIVE_DATE"
 
       - name: Commit changes
+        env:
+          ACCOUNT_NAME: ${{ steps.form.outputs.account_name }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
-          branch="env-json/${{ github.event.issue.number }}"
+          branch="env-json/$ISSUE_NUMBER"
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git checkout -b "$branch"
-          safe_account="$(echo "${{ steps.form.outputs.account_name }}" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9_-]//g')"
+          safe_account="$(echo "$ACCOUNT_NAME" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9_-]//g')"
           git add "environments/${safe_account}.json"
-          git commit -m "Structured env JSON change from issue #${{ github.event.issue.number }}"
+          git commit -m "Structured env JSON change from issue #$ISSUE_NUMBER"
           git push -u origin "$branch"
 
       - name: Open PR
