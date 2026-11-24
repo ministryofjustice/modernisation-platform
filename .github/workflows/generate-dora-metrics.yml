@@ -33,10 +33,7 @@ jobs:
 
     run_metrics:
         needs: fetch-secrets
-        permissions:
-            issues: read
-            contents: write
-            pull-requests: read
+        permissions: {}
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
