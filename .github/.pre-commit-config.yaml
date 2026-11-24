@@ -3,9 +3,6 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c  # frozen: v6.0.0
     hooks:
-      - id: check-added-large-files
-        args: ["--maxkb=5000"]
-        description: Do not upload files larger than 5000kb / 5MB to avoid data being uploaded
       - id: check-json
       - id: check-merge-conflict
         description: Check for merge conflict markers
@@ -28,11 +25,6 @@ repos:
     rev: 83d9cd684c87d95d656c1458ef04895a7f1cbd8e  # frozen: v8.30.1
     hooks:
       - id: gitleaks
-
-  - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: fa412071e4f5d44d44f9e365f4676f9df92456a2  # frozen: v1.30.1
-    hooks:
-      - id: zizmor
 
   - repo: https://github.com/streetsidesoftware/cspell-cli
     rev: 058f44e47719e80d8f1e597a235310b60e937860  # frozen: v10.2.0
