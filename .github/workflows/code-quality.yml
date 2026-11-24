@@ -11,7 +11,7 @@ name: Code Quality
     - cron: "0 7 * * 1-5"
   workflow_dispatch:
 
-permissions: {}
+permissions: read-all
 
 jobs:
   code-quality:
@@ -21,7 +21,7 @@ jobs:
       issues: write
       pull-requests: write
       security-events: write
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/reusable-code-quality.yml@5ec14e836f3de882a84f1c0b919645846a9d4f8e # v6.2.13
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/reusable-code-quality.yml@e871a076bef153a7d88291992f745cff81b54443 # v6.5.1
     with:
       validate_all_codebase: ${{ github.event_name != 'pull_request' && 'true' || 'false' }}
       filter_regex_exclude: "(^|.*/)README\\.md$|(^|.*/)terraform/modules/.*\\.md$|(^|.*/)\\.github/workflows/documentation\\.yml$"
