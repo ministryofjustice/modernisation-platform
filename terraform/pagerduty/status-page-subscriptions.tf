@@ -71,17 +71,18 @@ resource "null_resource" "sync_status_page_subscriptions" {
 # Outputs for visibility
 output "status_page_subscriber_count" {
   description = "Number of email addresses that should be subscribed to the status page"
-  value       = length(local.all_subscriber_emails)
+  value       = nonsensitive(length(local.all_subscriber_emails))
 }
 
 output "status_page_additional_emails_count" {
   description = "Number of additional hardcoded emails (before deduplication)"
-  value       = length(local.additional_subscriber_emails)
+  value       = nonsensitive(length(local.additional_subscriber_emails))
 }
 
 output "status_page_subscribers_hash" {
   description = "Hash of current subscriber list (changes when list is modified)"
   value       = local.emails_hash
+  sensitive   = true
 }
 
 output "status_page_subscriber_emails" {
