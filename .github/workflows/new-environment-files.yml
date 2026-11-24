@@ -10,7 +10,7 @@ name: New environment files
       - main
   workflow_dispatch:
 
-permissions: {}
+permissions: read-all
 
 defaults:
   run:
