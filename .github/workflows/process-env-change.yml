@@ -4,14 +4,18 @@ name: Process structured environment JSON change
   issues:
     types: [opened, edited]
 
+# Set default to read-all (minimal permissions)
+# Override only in jobs that need specific permissions
+permissions: read-all
+
 jobs:
   apply:
-    if: contains(github.event.issue.labels.*.name, 'account_amendment')
-    runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
       issues: read
+    if: contains(github.event.issue.labels.*.name, 'account_amendment')
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
