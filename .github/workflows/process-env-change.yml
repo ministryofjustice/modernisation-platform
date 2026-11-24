@@ -3,18 +3,24 @@ name: Process structured environment JSON change
 "on":
   issues:
     types: [opened, edited]
-permissions:
-  contents: write
-  pull-requests: write
-  issues: read
+
+# Set default to read-all (minimal permissions)
+# Override only in jobs that need specific permissions
+permissions: read-all
 
 jobs:
   apply:
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: read
     if: contains(github.event.issue.labels.*.name, 'account_amendment')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Extract issue form data
         id: form
@@ -119,8 +125,10 @@ jobs:
 
       - name: Verify target JSON exists
         shell: bash
+        env:
+          ACCOUNT_NAME: ${{ steps.form.outputs.account_name }}
         run: |
-          safe_account="$(echo "${{ steps.form.outputs.account_name }}" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9_-]//g')"
+          safe_account="$(echo "$ACCOUNT_NAME" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9_-]//g')"
           target="environments/${safe_account}.json"
           echo "Checking for ${target}"
           if [ ! -f "$target" ]; then
@@ -129,38 +137,62 @@ jobs:
           fi
 
       - name: Apply structured changes
+        env:
+          ACCOUNT_NAME: ${{ steps.form.outputs.account_name }}
+          ENVIRONMENT_CHANGE_ACTION: ${{ steps.form.outputs.environment_change_action }}
+          ENVIRONMENT_NAME: ${{ steps.form.outputs.environment_name }}
+          CURRENT_SSO_GROUP_NAME: ${{ steps.form.outputs.current_sso_group_name }}
+          CURRENT_LEVEL: ${{ steps.form.outputs.current_level }}
+          SSO_GROUP_NAME: ${{ steps.form.outputs.sso_group_name }}
+          LEVEL: ${{ steps.form.outputs.level }}
+          REVIEWERS_CHANGE_ACTION: ${{ steps.form.outputs.reviewers_change_action }}
+          CURRENT_ADDITIONAL_REVIEWERS: ${{ steps.form.outputs.current_additional_reviewers }}
+          ADDITIONAL_REVIEWERS: ${{ steps.form.outputs.additional_reviewers }}
+          TAGS_CHANGE_ACTION: ${{ steps.form.outputs.tags_change_action }}
+          CURRENT_TAG_KEY: ${{ steps.form.outputs.current_tag_key }}
+          CURRENT_TAG_VALUE: ${{ steps.form.outputs.current_tag_value }}
+          TAG_KEY: ${{ steps.form.outputs.tag_key }}
+          TAG_VALUE: ${{ steps.form.outputs.tag_value }}
+          OTHER_CHANGE_ACTION: ${{ steps.form.outputs.other_change_action }}
+          CURRENT_GITHUB_OIDC_TEAM_REPOSITORIES: ${{ steps.form.outputs.current_github_oidc_team_repositories }}
+          CURRENT_GO_LIVE_DATE: ${{ steps.form.outputs.current_go_live_date }}
+          GITHUB_OIDC_TEAM_REPOSITORIES: ${{ steps.form.outputs.github_oidc_team_repositories }}
+          GO_LIVE_DATE: ${{ steps.form.outputs.go_live_date }}
         run: |
           python3 scripts/process_env_changes.py \
-            --account-name "${{ steps.form.outputs.account_name }}" \
-            --environment-change-action "${{ steps.form.outputs.environment_change_action }}" \
-            --environment-name "${{ steps.form.outputs.environment_name }}" \
-            --current-sso-group-name "${{ steps.form.outputs.current_sso_group_name }}" \
-            --current-level "${{ steps.form.outputs.current_level }}" \
-            --sso-group-name "${{ steps.form.outputs.sso_group_name }}" \
-            --level "${{ steps.form.outputs.level }}" \
-            --reviewers-change-action "${{ steps.form.outputs.reviewers_change_action }}" \
-            --current-additional-reviewers "${{ steps.form.outputs.current_additional_reviewers }}" \
-            --additional-reviewers "${{ steps.form.outputs.additional_reviewers }}" \
-            --tags-change-action "${{ steps.form.outputs.tags_change_action }}" \
-            --current-tag-key "${{ steps.form.outputs.current_tag_key }}" \
-            --current-tag-value "${{ steps.form.outputs.current_tag_value }}" \
-            --tag-key "${{ steps.form.outputs.tag_key }}" \
-            --tag-value "${{ steps.form.outputs.tag_value }}" \
-            --other-change-action "${{ steps.form.outputs.other_change_action }}" \
-            --current-github-oidc-team-repositories "${{ steps.form.outputs.current_github_oidc_team_repositories }}" \
-            --current-go-live-date "${{ steps.form.outputs.current_go_live_date }}" \
-            --github-oidc-team-repositories "${{ steps.form.outputs.github_oidc_team_repositories }}" \
-            --go-live-date "${{ steps.form.outputs.go_live_date }}"
+            --account-name "$ACCOUNT_NAME" \
+            --environment-change-action "$ENVIRONMENT_CHANGE_ACTION" \
+            --environment-name "$ENVIRONMENT_NAME" \
+            --current-sso-group-name "$CURRENT_SSO_GROUP_NAME" \
+            --current-level "$CURRENT_LEVEL" \
+            --sso-group-name "$SSO_GROUP_NAME" \
+            --level "$LEVEL" \
+            --reviewers-change-action "$REVIEWERS_CHANGE_ACTION" \
+            --current-additional-reviewers "$CURRENT_ADDITIONAL_REVIEWERS" \
+            --additional-reviewers "$ADDITIONAL_REVIEWERS" \
+            --tags-change-action "$TAGS_CHANGE_ACTION" \
+            --current-tag-key "$CURRENT_TAG_KEY" \
+            --current-tag-value "$CURRENT_TAG_VALUE" \
+            --tag-key "$TAG_KEY" \
+            --tag-value "$TAG_VALUE" \
+            --other-change-action "$OTHER_CHANGE_ACTION" \
+            --current-github-oidc-team-repositories "$CURRENT_GITHUB_OIDC_TEAM_REPOSITORIES" \
+            --current-go-live-date "$CURRENT_GO_LIVE_DATE" \
+            --github-oidc-team-repositories "$GITHUB_OIDC_TEAM_REPOSITORIES" \
+            --go-live-date "$GO_LIVE_DATE"
 
       - name: Commit changes
+        env:
+          ACCOUNT_NAME: ${{ steps.form.outputs.account_name }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
-          branch="env-json/${{ github.event.issue.number }}"
+          branch="env-json/$ISSUE_NUMBER"
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git checkout -b "$branch"
-          safe_account="$(echo "${{ steps.form.outputs.account_name }}" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9_-]//g')"
+          safe_account="$(echo "$ACCOUNT_NAME" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9_-]//g')"
           git add "environments/${safe_account}.json"
-          git commit -m "Structured env JSON change from issue #${{ github.event.issue.number }}"
+          git commit -m "Structured env JSON change from issue #$ISSUE_NUMBER"
           git push -u origin "$branch"
 
       - name: Open PR
