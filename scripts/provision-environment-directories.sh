@@ -2,7 +2,7 @@
 
 basedir=terraform/environments
 networkdir=environments-networks
-templates=terraform/templates/modernisation-platform/*.*
+templates_glob="terraform/templates/modernisation-platform/*.*"
 environments=environments
 
 provision_environment_directories() {
@@ -32,7 +32,7 @@ provision_environment_directories() {
   # ]
   networking_definitions=$(jq -n '[ inputs | { subnet_sets: .cidr.subnet_sets | to_entries | map_values(.value + { set: .key, "business-unit": input_filename | ltrimstr("environments-networks/") | rtrimstr(".json") | split("-")[0] } ) } ]' "$networkdir"/*.json)
 
-  for file in ${environments}/*.json; do
+  for file in "${environments}"/*.json; do
     account_type=$(jq -r '."account-type"' "$file")
     application_name=$(basename "$file" .json)
     directory=$basedir/$application_name
@@ -88,7 +88,7 @@ provision_environment_directories() {
 
 copy_templates() {
 
-  for file in $templates; do
+  for file in $templates_glob; do
     filename=$(basename "$file")
     account_type=$(jq -r '."account-type"' "${environments}/${application_name}.json")
 
