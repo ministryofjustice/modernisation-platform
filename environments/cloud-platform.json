@@ -88,5 +88,5 @@
     "slack-channel": "cloud-platform",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [],
+  "github-oidc-team-repositories": []
 }
