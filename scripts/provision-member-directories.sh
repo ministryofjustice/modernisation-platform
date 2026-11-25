@@ -9,9 +9,6 @@ core_repo_dir=core-repo
 env_repo_dir=modernisation-platform-environments
 basedir=$env_repo_dir/terraform/environments
 networkdir=$core_repo_dir/environments-networks
-templates=$core_repo_dir/terraform/templates/modernisation-platform-environments/*.*
-component_templates=$core_repo_dir/terraform/templates/modernisation-platform-environments-components/*.*
-isolated_templates=$core_repo_dir/terraform/templates/modernisation-platform-environments-isolated/*.*
 environment_json_dir=$core_repo_dir/environments
 codeowners_file=$env_repo_dir/.github/CODEOWNERS
 
@@ -42,20 +39,20 @@ provision_environment_directories() {
   # ]
   networking_definitions=$(jq -n '[ inputs | { subnet_sets: .cidr.subnet_sets | to_entries | map_values(.value + { set: .key, "business-unit": input_filename | ltrimstr("'$core_repo_dir'/environments-networks/") | rtrimstr(".json") | split("-")[0] } ) } ]' "$networkdir"/*.json)
 
-  for file in $environment_json_dir/*.json; do
+  for file in "$environment_json_dir"/*.json; do
 
     echo "This is file: $file"
     application_name=$(basename "$file" .json)
     echo "This is the application name: $application_name"
     account_type=$(jq -r '."account-type"' "$file")
-    echo "This is a " $account_type " account"
+    echo "This is a $account_type account"
     isolated_network=$(jq -r '."isolated-network"' "$file")
     echo "Isolated network: $isolated_network"
     directory=$basedir/$application_name
     echo "This is the directory: $directory"
-    account_type=$(jq -r '."account-type"' ${environment_json_dir}/${application_name}.json)
+    account_type=$(jq -r '."account-type"' "${environment_json_dir}/${application_name}.json")
 
-    if [ -d $directory ] || [ "$account_type" != "member" ] || [ "$application_name" == "testing" ]; then
+    if [ -d "$directory" ] || [ "$account_type" != "member" ] || [ "$application_name" == "testing" ]; then
       # Do nothing if a directory already exists
       echo ""
       echo "Ignoring $directory, it already exists or is a core account or unrestricted account"
@@ -101,14 +98,14 @@ provision_environment_directories() {
     # ]
 
     # check if /environments-networks files exists for this application
-    FILE_EXISTS=`jq --arg APPLICATION_NAME "$application_name" '.[].subnet_sets[] | select(.accounts[] | test("^" + $APPLICATION_NAME + "-"))' <<< "$networking_definitions"`
+    FILE_EXISTS=$(jq --arg APPLICATION_NAME "$application_name" '.[].subnet_sets[] | select(.accounts[] | test("^" + $APPLICATION_NAME + "-"))' <<< "$networking_definitions")
     if [[ ${FILE_EXISTS} ]]
     then
       # set up raw jq data that includes application name, business unit and subnet-set
-      RAW_OUTPUT=`jq --arg APPLICATION_NAME "$application_name" 'limit(1;.[].subnet_sets[] | select(.accounts[] | test("^" + $APPLICATION_NAME + "-")) | { "business-unit": ."business-unit", "set": .set, "application": $APPLICATION_NAME } )' <<< "$networking_definitions"`
+      RAW_OUTPUT=$(jq --arg APPLICATION_NAME "$application_name" 'limit(1;.[].subnet_sets[] | select(.accounts[] | test("^" + $APPLICATION_NAME + "-")) | { "business-unit": ."business-unit", "set": .set, "application": $APPLICATION_NAME } )' <<< "$networking_definitions")
     else
       # set up raw jq data that includes application name, blank business unit and blank subnet-set
-      RAW_OUTPUT=`jq -n --arg APPLICATION_NAME "$application_name" '{ "business-unit": "", "set": "", "application": $APPLICATION_NAME }'`
+      RAW_OUTPUT=$(jq -n --arg APPLICATION_NAME "$application_name" '{ "business-unit": "", "set": "", "application": $APPLICATION_NAME }')
     fi
     # wrap raw json output with a header and store the result in the applications folder
     # Only populate networking.auto.tfvars.json if account type is not core
@@ -136,7 +133,7 @@ provision_environment_directories() {
 }
 
 copy_isolated_templates() {
-  for file in $isolated_templates; do
+  for file in "$core_repo_dir"/terraform/templates/modernisation-platform-environments-isolated/*.*; do
     filename=$(basename "$file")
     echo "Copying $file to $1, replacing application_name with $application_name"
     sed "s/\$application_name/${application_name}/g" "$file" > "$1/$filename"
@@ -145,7 +142,7 @@ copy_isolated_templates() {
 }
 
 copy_templates() {
-  for file in $templates; do
+  for file in "$core_repo_dir"/terraform/templates/modernisation-platform-environments/*.*; do
     filename=$(basename "$file")
     echo "Copying $file to $1, replacing application_name with $application_name"
     sed "s/\$application_name/${application_name}/g" "$file" > "$1/$filename"
@@ -157,7 +154,7 @@ copy_component_templates() {
   local target_dir=$1
   local app_name=$2
   local component_name=$3
-  for file in $component_templates; do
+  for file in "$core_repo_dir"/terraform/templates/modernisation-platform-environments-components/*.*; do
     filename=$(basename "$file")
     echo "Copying $file to $target_dir, replacing placeholders with $app_name and $component_name"
     sed -e "s/\$application_name/${app_name}/g" -e "s/\$component_name/${component_name}/g" "$file" > "$target_dir/$filename"
@@ -176,22 +173,22 @@ echo "Writing codeowners file"
 EOL
 
 
-  for file in $environment_json_dir/*.json; do
+  for file in "$environment_json_dir"/*.json; do
     application_name=$(basename "$file" .json)
     directory=/terraform/environments/$application_name
-    account_type=$(jq -r '."account-type"' ${environment_json_dir}/${application_name}.json)
-    codeowners=$(jq -r 'try (.codeowners[] | select(length > 0) | "@ministryofjustice/" + .)' ${environment_json_dir}/${application_name}.json | sort | uniq | tr '\n' ' ')
-    sso_group_names=$(jq -r '.environments[].access[].sso_group_name | "@ministryofjustice/" + .' ${environment_json_dir}/${application_name}.json | sort | uniq | tr '\n' ' ')
+    account_type=$(jq -r '."account-type"' "${environment_json_dir}/${application_name}.json")
+    codeowners=$(jq -r 'try (.codeowners[] | select(length > 0) | "@ministryofjustice/" + .)' "${environment_json_dir}/${application_name}.json" | sort | uniq | tr '\n' ' ')
+    sso_group_names=$(jq -r '.environments[].access[].sso_group_name | select(startswith("azure-aws-sso-") | not) | "@ministryofjustice/" + .' "${environment_json_dir}/${application_name}.json" | sort | uniq | tr '\n' ' ')
 
     if [ "$account_type" = "member" ]; then
       # if codeowners array has been defined in the json file, use that
       if [ -n "$codeowners" ]; then
         echo "Adding $directory $codeowners@ministryofjustice/modernisation-platform  to codeowners"
-        echo "$directory $codeowners@ministryofjustice/modernisation-platform" >> $codeowners_file
+        echo "$directory $codeowners@ministryofjustice/modernisation-platform" >> "$codeowners_file"
       # otherwise, use the sso_group_names array
       else
         echo "Adding $directory $sso_group_names@ministryofjustice/modernisation-platform to codeowners"
-        echo "$directory $sso_group_names@ministryofjustice/modernisation-platform" >> $codeowners_file
+        echo "$directory $sso_group_names@ministryofjustice/modernisation-platform" >> "$codeowners_file"
       fi
       
       components=$(jq -r '.components | length' "$file")
@@ -201,7 +198,7 @@ EOL
                 component_sso_group_name=$(jq -r --arg comp "$component" '.components[] | select(.name == $comp) | .sso_group_name' "$file")
                 if [ -n "$component_sso_group_name" ] && [ "$component_sso_group_name" != "null" ]; then
                     echo "Adding $component_directory $component_sso_group_name @ministryofjustice/modernisation-platform to CODEOWNERS"
-                    echo "$component_directory @ministryofjustice/$component_sso_group_name @ministryofjustice/modernisation-platform" >> $codeowners_file
+                    echo "$component_directory @ministryofjustice/$component_sso_group_name @ministryofjustice/modernisation-platform" >> "$codeowners_file"
                 fi
             done
         fi
