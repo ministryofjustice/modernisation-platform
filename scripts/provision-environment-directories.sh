@@ -68,7 +68,7 @@ provision_environment_directories() {
     # ]
 
     # check if /environments-networks files exists for this application
-    FILE_EXISTS=`jq --arg APPLICATION_NAME "$application_name" '.[].subnet_sets[] | select(.accounts[] | test("^" + $APPLICATION_NAME + "-"))' <<< "$networking_definitions"`
+    FILE_EXISTS=$(jq --arg APPLICATION_NAME "$application_name" '.[].subnet_sets[] | select(.accounts[] | test("^" + $APPLICATION_NAME + "-"))' <<< "$networking_definitions")
     if [[ ${FILE_EXISTS} ]]
     then
       # set up raw jq data that includes application name, business unit and subnet-set
@@ -90,9 +90,9 @@ copy_templates() {
 
   for file in $templates; do
     filename=$(basename "$file")
-    account_type=$(jq -r '."account-type"' ${environments}/${application_name}.json)
+    account_type=$(jq -r '."account-type"' "${environments}/${application_name}.json")
 
-      if [ ${filename} == "subnet_share.tf" ] && ([ ${account_type} == "member-unrestricted" ] ||  [ ${account_type} == "core" ]); then
+      if [ "${filename}" == "subnet_share.tf" ] && { [ "${account_type}" == "member-unrestricted" ] || [ "${account_type}" == "core" ]; }; then
         echo "Skipping $file for $application_name as it is an unrestricted or a core account."
       else
         echo "Copying $file to $1, replacing application_name with $application_name"
