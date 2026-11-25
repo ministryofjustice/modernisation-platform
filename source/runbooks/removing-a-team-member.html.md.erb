@@ -14,7 +14,7 @@ These are the steps that we need to follow to remove access for a team member:
 1. Remove them as a superadmin to our AWS landing zone [superadmins/main.tf](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins/blob/main/main.tf#L5)
 1. Run the modernisation-platform account Terraform for the above code change locally as a superuser (the CI user does not have permissions to delete users)
 1. Remove them from the Modernisation Platform Google Group and Slack teams.
-1. Remove them from the `pagerduty_users` secret in AWS Secrets Manager (users, existing_users and rotas), then run the `terraform-pagerduty.yml` workflow manually from `main` to apply it, see [terraform/pagerduty/README.md](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/pagerduty/README.md)
+1. Remove them from the `pagerduty_users` secret in AWS Secrets Manager (users, existing_users and rotas), then run the `terraform-pagerduty.yml` workflow manually from `main` to apply it, see [terraform/pagerduty/README.md](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/pagerduty/README.md). Removing someone from a rota changes who is on call, so follow the [rota change checks](adding-a-new-team-member.html#adding-them-to-pagerduty)
 1. Remove them from azure-aws-sso-modernisation-platform EntraID group [Azure Portal](https://portal.azure.com/).
 
 **Important: Managers will need to complete a leavers form. More information can be found [here](https://intranet.justice.gov.uk/guidance/hr/end-change-of-employment/).**

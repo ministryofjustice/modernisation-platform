@@ -31,6 +31,12 @@ Submit a pull request and when it's merged, they will appear on [our team page](
 
 User details and on-call rotas are held in the `pagerduty_users` secret in AWS Secrets Manager, not in the repository. Follow the steps in the [PagerDuty Terraform README](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/pagerduty/README.md) to add them and put them on the rota, then run the `terraform-pagerduty.yml` workflow manually from `main` to apply the change.
 
+> **Changing the rota shifts who is on call.** Applying updates the existing PagerDuty schedules in place, but the rotation is calculated from a fixed start date (`rotation_virtual_start`, 2022-07-25) and each person's position in the list. Reordering, adding or removing anyone in `rotas` or `octo_platform_operations` therefore changes who is on call, including for the current week. The Terraform plan shows only `(sensitive value)`, so it will not reveal this.
+>
+> 1. Make rota changes during working hours and tell the team beforehand, so anyone whose on-call slot moves is aware.
+> 1. Before applying, note who is currently on call in the PagerDuty schedules for "Modernisation Platform (primary)" and "(secondary)" (and the OCTO Platform Operations schedules if changed).
+> 1. After applying, check the same schedules again. If the current or next on-call person is not who was agreed, fix the order in the secret and re-run the workflow, and let the people affected know.
+
 ## Adding them to our GitHub team
 
 To add them to our GitHub team, update the file at [terraform/github/locals.tf](https://github.com/ministryofjustice/modernisation-platform-github/blob/main/terraform/github/locals.tf) with:

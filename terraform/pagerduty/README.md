@@ -30,6 +30,12 @@ Terraform reads the secret on every plan and apply, but editing the secret does 
 
 The values in the secret are sensitive, so the plan output shows `(sensitive value)` rather than the changes. To review the plan beforehand, run `terraform plan` locally.
 
+### Effect of rota changes on who is on call
+
+Applying updates the existing schedules in place (the schedule IDs don't change). However the rotation is calculated from a fixed `rotation_virtual_start` (2022-07-25) and each person's position in the list, so reordering, adding or removing people changes who is on call, including for the current week. If the order and number of people are unchanged, the same people stay on call.
+
+Because the plan output hides the secret's values, check who is on call in PagerDuty before and after applying, and make rota changes during working hours, telling the team beforehand so anyone whose on-call slot moves is aware.
+
 ### Running `terraform plan`
 
 In order to run `terraform plan` locally within the `pagerduty/` directory use a Modernisation Platform Account AdministratorAccess SSO role, and pass the `pagerduty_token` (found in the Modernisation Platform [secrets](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/rotating-secrets.html#how-to-rotate-secrets)) and a `pagerduty_user_token` (personal) in as a Terraform variables with permissions to the MoJ PagerDuty account.
