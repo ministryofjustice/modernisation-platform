@@ -1,7 +1,7 @@
 #!/bin/bash
 
 basedir=terraform/environments
-networkdir=environments-networks
+networkdir="environments-networks"
 templates_glob="terraform/templates/modernisation-platform/*.*"
 environments=environments
 
