@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Centralised VPC Endpoints
-last_reviewed_on: 2026-09-15
+last_reviewed_on: 2026-11-25
 review_in: 6 months
 ---
 
@@ -43,6 +43,33 @@ The current list is maintained in [centralised-vpc-endpoints.json](https://githu
 `apigateway`, `athena`, `backup`, `cloudtrail`, `config`, `detective`, `dms`, `ec2`, `ec2messages`, `ecr.api`, `ecr.dkr`, `eks`, `eks-auth`, `elasticache`, `email`, `email-smtp`, `events`, `guardduty-data`, `inspector2`, `kinesis-firehose`, `kms`, `lambda`, `logs`, `rds`, `rds-data`, `secretsmanager`, `securityhub`, `sns`, `sqs`, `ssm`, `ssmmessages`, `sts`, `transcribe`, `wafv2`
 
 Again, please check the JSON file for the current list rather than relying on this page.
+
+### Grafana Cloud PDC
+
+Two partner interface endpoints are defined separately in [vpc-endpoints-grafana-pdc.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/vpc-endpoints-grafana-pdc.tf) for Grafana Cloud's `prod-gb-south-1` PDC services:
+
+| Endpoint | Service name | Private DNS name | TCP port |
+| --- | --- | --- | --- |
+| API | `com.amazonaws.vpce.eu-west-2.vpce-svc-0b12fa07b304f0d79` | `private-datasource-connect-api.eu-west-2.vpce.grafana.net` | 443 |
+| SSH gateway | `com.amazonaws.vpce.eu-west-2.vpce-svc-04a3bf37de7c4c8be` | `private-datasource-connect.eu-west-2.vpce.grafana.net` | 22 |
+
+These serve all twelve CP3 consumer VPCs: `cloud-platform-{development,preproduction,nonlive,live}` and `container-platform-{cd,hmpps,laa,octo}-{nonlive,live}`. There is no non-live allow-list. They use the existing hub VPC, Transit Gateway routes and shared Route53 Profile; no endpoints are added to the consumer VPCs.
+
+Each endpoint has a dedicated security group allowing only its own TCP port from those VPCs' primary and secondary pod CIDRs. Keep `grafana_pdc_consumer_cidrs` aligned with [the CP network allocations](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/terraform/environments/cloud-platform/network/locals.tf). Terraform rejects a mismatch between its account keys and the existing Profile consumer list.
+
+The hub private-subnet NACL additionally permits these two inbound ports and TCP ephemeral replies to `100.64.0.0/13` and `100.80.0.0/14`: exact aggregates of the twelve pod CIDRs. This supports traffic without node SNAT as well as traffic using the primary VPC CIDRs. Existing AWS endpoint security groups remain unchanged; in particular, they do not gain SSH access.
+
+Supported AZs are discovered for each Grafana service using the hub account's AWS provider. Only matching hub private subnets are selected; no match fails the plan. Do not copy AZ names from another account.
+
+Each private name has a private hosted zone associated with the hub VPC, an apex A alias to its endpoint's regional DNS entry, and an association to the existing shared Profile. Endpoint-managed private DNS is disabled to avoid conflicting with these explicit zones. Public Grafana names are not overridden, and existing AWS endpoint DNS associations are unchanged.
+
+Agents must opt in with `-api-fqdn private-datasource-connect-api.eu-west-2.vpce.grafana.net` and `-gateway-fqdn private-datasource-connect.eu-west-2.vpce.grafana.net`; see [Grafana's PrivateLink guidance](https://grafana.com/docs/grafana-cloud/observe-and-act/connect-externally-hosted/private-data-source-connect/pdc-agent-aws-privatelink/). Provisioning the endpoints does not deploy agents, enable PDC data sources or move OpenSearch into a VPC. OpenSearch Assume Role plus PDC compatibility still needs verification before that rollout, and SigV4 sources need working STS HTTPS access and appropriate IAM permissions.
+
+Before deployment, review the `core-network-services-production` AWS plan for additive Grafana resources only and confirm hub-account service visibility, supported AZs, acceptance requirements and available endpoint, hosted-zone, Profile and NACL quotas. Interface endpoint AZ-hour/data-processing and TGW charges apply; a shared pair avoids a pair per consumer VPC.
+
+After an approved deployment, verify both private names resolve to hub endpoint IPs from live and non-live consumer VPCs, check TCP 443 to the API and TCP 22 to the gateway, and confirm PDC agent connectivity. For un-SNATed pods, verify both secondary CIDR propagation into the hub TGW table and consumer-side routes/NACLs. Check that unsupported ports and non-CP3 sources cannot connect. Local Terraform checks cannot prove these AWS/DNS/network behaviours.
+
+Rollback should remove only the Grafana Profile associations, zones, endpoints and dedicated security resources after agents have been disabled or given an approved alternative path. Do not disassociate the shared Profile or remove the existing AWS endpoints, routes or RAM shares.
 
 ## Using endpoints in a standard account
 
