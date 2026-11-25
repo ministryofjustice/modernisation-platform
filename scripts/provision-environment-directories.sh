@@ -74,8 +74,9 @@ provision_environment_directories() {
       # set up raw jq data that includes application name, business unit and subnet-set
       RAW_OUTPUT=`jq --arg APPLICATION_NAME "$application_name" 'limit(1;.[].subnet_sets[] | select(.accounts[] | test("^" + $APPLICATION_NAME + "-")) | { "business-unit": ."business-unit", "set": .set, "application": $APPLICATION_NAME } )' <<< "$networking_definitions"`
     else
-      # set up raw jq data that includes application name, blank business unit and blank subnet-set
-      RAW_OUTPUT=`jq -n --arg APPLICATION_NAME "$application_name" '{ "business-unit": "", "set": "", "application": $APPLICATION_NAME }'`
+      # For isolated accounts, extract business-unit from the environment definition but leave set empty
+      BUSINESS_UNIT=$(jq -r '.tags["business-unit"]' "$file" 2>/dev/null || echo "")
+      RAW_OUTPUT=`jq -n --arg APPLICATION_NAME "$application_name" --arg BU "$BUSINESS_UNIT" '{ "business-unit": $BU, "set": "", "application": $APPLICATION_NAME }'`
     fi
     # wrap raw json output with a header and store the result in the applications folder
     # Only populate networking.auto.tfvars.json if account type is not core
