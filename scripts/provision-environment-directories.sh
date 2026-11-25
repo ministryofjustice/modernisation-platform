@@ -1,8 +1,8 @@
 #!/bin/bash
 
 basedir=terraform/environments
-networkdir=environments-networks
-templates=terraform/templates/modernisation-platform/*.*
+networkdir="environments-networks"
+templates_glob="terraform/templates/modernisation-platform/*.*"
 environments=environments
 
 provision_environment_directories() {
@@ -32,7 +32,7 @@ provision_environment_directories() {
   # ]
   networking_definitions=$(jq -n '[ inputs | { subnet_sets: .cidr.subnet_sets | to_entries | map_values(.value + { set: .key, "business-unit": input_filename | ltrimstr("environments-networks/") | rtrimstr(".json") | split("-")[0] } ) } ]' "$networkdir"/*.json)
 
-  for file in ${environments}/*.json; do
+  for file in "${environments}"/*.json; do
     account_type=$(jq -r '."account-type"' "$file")
     application_name=$(basename "$file" .json)
     directory=$basedir/$application_name
@@ -68,14 +68,15 @@ provision_environment_directories() {
     # ]
 
     # check if /environments-networks files exists for this application
-    FILE_EXISTS=`jq --arg APPLICATION_NAME "$application_name" '.[].subnet_sets[] | select(.accounts[] | test("^" + $APPLICATION_NAME + "-"))' <<< "$networking_definitions"`
+    FILE_EXISTS=$(jq --arg APPLICATION_NAME "$application_name" '.[].subnet_sets[] | select(.accounts[] | test("^" + $APPLICATION_NAME + "-"))' <<< "$networking_definitions")
     if [[ ${FILE_EXISTS} ]]
     then
       # set up raw jq data that includes application name, business unit and subnet-set
-      RAW_OUTPUT=`jq --arg APPLICATION_NAME "$application_name" 'limit(1;.[].subnet_sets[] | select(.accounts[] | test("^" + $APPLICATION_NAME + "-")) | { "business-unit": ."business-unit", "set": .set, "application": $APPLICATION_NAME } )' <<< "$networking_definitions"`
+      RAW_OUTPUT=$(jq --arg APPLICATION_NAME "$application_name" 'limit(1;.[].subnet_sets[] | select(.accounts[] | test("^" + $APPLICATION_NAME + "-")) | { "business-unit": ."business-unit", "set": .set, "application": $APPLICATION_NAME } )' <<< "$networking_definitions")
     else
-      # set up raw jq data that includes application name, blank business unit and blank subnet-set
-      RAW_OUTPUT=`jq -n --arg APPLICATION_NAME "$application_name" '{ "business-unit": "", "set": "", "application": $APPLICATION_NAME }'`
+      # For isolated accounts, extract business-unit from the environment definition but leave set empty
+      BUSINESS_UNIT=$(jq -r '.tags["business-unit"]' "$file" 2>/dev/null || echo "")
+      RAW_OUTPUT=$(jq -n --arg APPLICATION_NAME "$application_name" --arg BU "$BUSINESS_UNIT" '{ "business-unit": $BU, "set": "", "application": $APPLICATION_NAME }')
     fi
     # wrap raw json output with a header and store the result in the applications folder
     # Only populate networking.auto.tfvars.json if account type is not core
@@ -87,11 +88,11 @@ provision_environment_directories() {
 
 copy_templates() {
 
-  for file in $templates; do
+  for file in $templates_glob; do
     filename=$(basename "$file")
-    account_type=$(jq -r '."account-type"' ${environments}/${application_name}.json)
+    account_type=$(jq -r '."account-type"' "${environments}/${application_name}.json")
 
-      if [ ${filename} == "subnet_share.tf" ] && ([ ${account_type} == "member-unrestricted" ] ||  [ ${account_type} == "core" ]); then
+      if [ "${filename}" == "subnet_share.tf" ] && { [ "${account_type}" == "member-unrestricted" ] || [ "${account_type}" == "core" ]; }; then
         echo "Skipping $file for $application_name as it is an unrestricted or a core account."
       else
         echo "Copying $file to $1, replacing application_name with $application_name"
