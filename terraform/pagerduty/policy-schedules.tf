@@ -76,14 +76,7 @@ resource "pagerduty_schedule" "primary" {
     start                        = "2022-07-25T06:00:00Z"
     rotation_virtual_start       = "2022-07-25T06:00:00Z"
     rotation_turn_length_seconds = 604800
-    users = [
-      local.richard_green,
-      local.edward_proctor,
-      local.ewa_stempel,
-      local.mark_roberts,
-      local.aaron_robinson,
-      local.sukesh_reddygade
-    ]
+    users                        = local.primary_rota_user_ids
   }
 
   teams = [pagerduty_team.modernisation_platform.id]
@@ -107,14 +100,7 @@ resource "pagerduty_schedule" "secondary" {
     start                        = "2022-07-25T06:00:00Z"
     rotation_virtual_start       = "2022-07-25T06:00:00Z"
     rotation_turn_length_seconds = 604800
-    users = [
-      local.ewa_stempel,
-      local.richard_green,
-      local.edward_proctor,
-      local.sukesh_reddygade,
-      local.mark_roberts,
-      local.aaron_robinson
-    ]
+    users                        = local.secondary_rota_user_ids
   }
 
   teams = [pagerduty_team.modernisation_platform.id]

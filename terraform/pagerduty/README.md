@@ -13,17 +13,28 @@ The state is stored in S3, as defined in [backend.tf](backend.tf).
 
 ## Adding a new team member to the Modernisation Platform on-call rota
 
-### User changes in [`locals.tf`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/pagerduty/locals.tf)
+### User and rota changes in the `pagerduty_users` secret
 
-If a new team member already exists in the MoJ Pager Duty (PD) account, add `data "pagerduty_user"` in the [`locals.tf`](https://github.com/ministryofjustice/modernisation-platform/blob/5f7483a0e14d9606f0f90c892cd55264e3932c46/terraform/pagerduty/locals.tf#L66) and reference them under the [`existing_users`](https://github.com/ministryofjustice/modernisation-platform/blob/5f7483a0e14d9606f0f90c892cd55264e3932c46/terraform/pagerduty/locals.tf#L37) local variable.
-Otherwise, add a new user entry under `pager_duty_users` local variable in the [`locals.tf`](https://github.com/ministryofjustice/modernisation-platform/blob/5f7483a0e14d9606f0f90c892cd55264e3932c46/terraform/pagerduty/locals.tf#L5).
+User names, emails and rota order are personal data, so they are held in the `pagerduty_users` AWS Secrets Manager secret in the Modernisation Platform account rather than in this repository. The JSON format is documented in [`data.tf`](data.tf).
 
-Add a newly added user to the local shortcuts in the [`locals.tf`](https://github.com/ministryofjustice/modernisation-platform/blob/5f7483a0e14d9606f0f90c892cd55264e3932c46/terraform/pagerduty/locals.tf#L49).
+- If the new team member already exists in the MoJ PagerDuty account, add their email under `existing_users`.
+- Otherwise, add them under `users` (name, email and role) so Terraform creates them.
+- Add their key to the `rotas.primary` and `rotas.secondary` lists to put them on the on-call rota. Make sure the order of the primary list differs from the secondary list, so one person is not on both rotas at the same time.
+- OCTO Platform Operations members and rota order are under `octo_platform_operations`.
 
-### Updating PagerDuty schedules in [`policy-schedules.tf`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/pagerduty/policy-schedules.tf)
+Keys are used in Terraform state addresses, so don't rename a key once it is in use. No Terraform code change is needed to add or remove people.
 
-Add a newly added user to the [`resource "pagerduty_schedule" "primary"`](https://github.com/ministryofjustice/modernisation-platform/blob/5f7483a0e14d9606f0f90c892cd55264e3932c46/terraform/pagerduty/policy-schedules.tf#L48) and the [`resource "pagerduty_schedule" "secondary"`](https://github.com/ministryofjustice/modernisation-platform/blob/5f7483a0e14d9606f0f90c892cd55264e3932c46/terraform/pagerduty/policy-schedules.tf#L80) resources under the `layer.users` attribute in the `policy-schedules.tf`.
-Make sure the order that users are listed in of the primary schedule differs from the order of the secondary list. This will ensure that one person is not on a rota for the primary and the secondary line at the same time.
+### Applying changes made to the secret
+
+Terraform reads the secret on every plan and apply, but editing the secret does not start a workflow run. After amending the secret, run the [`terraform-pagerduty.yml`](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/terraform-pagerduty.yml) workflow manually from `main` (Actions tab > "Terraform: PagerDuty resources" > Run workflow, or `gh workflow run terraform-pagerduty.yml`). This plans and applies the change to PagerDuty.
+
+The values in the secret are sensitive, so the plan output shows `(sensitive value)` rather than the changes. To review the plan beforehand, run `terraform plan` locally.
+
+### Effect of rota changes on who is on call
+
+Applying updates the existing schedules in place (the schedule IDs don't change). However the rotation is calculated from a fixed `rotation_virtual_start` (2022-07-25) and each person's position in the list, so reordering, adding or removing people changes who is on call, including for the current week. If the order and number of people are unchanged, the same people stay on call.
+
+Because the plan output hides the secret's values, check who is on call in PagerDuty before and after applying, and make rota changes during working hours, telling the team beforehand so anyone whose on-call slot moves is aware.
 
 ### Running `terraform plan`
 
@@ -47,13 +58,10 @@ The [status-page-subscriptions.tf](status-page-subscriptions.tf) automatically m
 
 ### Adding additional emails
 
-To add ad-hoc emails that aren't in the `environments/*.json` files, add them to the `additional_subscriber_emails` list in [status-page-subscriptions.tf](status-page-subscriptions.tf):
+To add ad-hoc emails that aren't in the `environments/*.json` files, add them to the `status_page_additional_emails` list in the `pagerduty_users` AWS Secrets Manager secret (format documented in [data.tf](data.tf)):
 
-```hcl
-additional_subscriber_emails = [
-  "team-email@digital.justice.gov.uk",
-  "external-partner@example.com",
-]
+```json
+"status_page_additional_emails": ["team-email@example.com", "external-partner@example.com"]
 ```
 
 The script will automatically subscribe these emails on the next `terraform apply`.

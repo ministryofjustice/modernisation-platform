@@ -1847,27 +1847,10 @@ resource "pagerduty_slack_connection" "chaps_slack" {
 # DSO Squad alarms
 
 locals {
-  # add users to this list once they've signed into PagerDuty via SSO for first time
-  # avoid putting full email as public repo
-  octo_platform_operations_team_members = {
-    "george.hill2"     = local.justice_email_suffix
-    "annesa.mariyam"   = local.justice_email_suffix
-    "antony.gowland"   = local.digital_email_suffix
-    "steve.williams4"  = local.justice_email_suffix
-    "prem.basumatary"  = local.digital_email_suffix
-    "sebastian.norris" = local.digital_email_suffix
-    "david.teeling1"   = local.justice_email_suffix
-  }
-  octo_platform_operations_primary_schedule_user_order = [
-    "annesa.mariyam",
-    "george.hill2",
-    "steve.williams4",
-  ]
-  octo_platform_operations_secondary_schedule_user_order = [
-    "sebastian.norris",
-    "david.teeling1",
-    "prem.basumatary",
-  ]
+  # members and rota order are held in the pagerduty_users secret (see data.tf)
+  octo_platform_operations_team_members                  = local.pagerduty_secret.octo_platform_operations.members
+  octo_platform_operations_primary_schedule_user_order   = local.pagerduty_secret.octo_platform_operations.primary
+  octo_platform_operations_secondary_schedule_user_order = local.pagerduty_secret.octo_platform_operations.secondary
 
   services = {
     corporate-staff-rostering-preproduction = { slack_channel_id = "C0617EZEVNZ" } # corporate_staff_rostering_alarms
@@ -2068,8 +2051,8 @@ resource "pagerduty_event_orchestration_service" "az_dso_alerts" {
 # OCTO Platform Operations
 
 data "pagerduty_user" "octo_platform_operations" {
-  for_each = local.octo_platform_operations_team_members
-  email    = "${each.key}${each.value}"
+  for_each = toset(nonsensitive(keys(local.octo_platform_operations_team_members)))
+  email    = local.octo_platform_operations_team_members[each.key]
 }
 
 resource "pagerduty_team" "octo_platform_operations" {

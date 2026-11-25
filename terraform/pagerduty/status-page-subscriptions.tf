@@ -3,11 +3,8 @@
 # to the PagerDuty external status page
 
 locals {
-  # Additional emails to subscribe that aren't in environments/*.json files
-  # Add any ad-hoc email addresses here as needed
-  additional_subscriber_emails = [
-    "alistair.curtis@digital.justice.gov.uk"
-  ]
+  # Additional emails to subscribe that aren't in environments/*.json files, held in the pagerduty_users secret
+  additional_subscriber_emails = local.pagerduty_secret.status_page_additional_emails
 
   # Read all environment JSON files
   environment_files = fileset("${path.module}/../../environments", "*.json")
@@ -74,17 +71,18 @@ resource "null_resource" "sync_status_page_subscriptions" {
 # Outputs for visibility
 output "status_page_subscriber_count" {
   description = "Number of email addresses that should be subscribed to the status page"
-  value       = length(local.all_subscriber_emails)
+  value       = nonsensitive(length(local.all_subscriber_emails))
 }
 
 output "status_page_additional_emails_count" {
   description = "Number of additional hardcoded emails (before deduplication)"
-  value       = length(local.additional_subscriber_emails)
+  value       = nonsensitive(length(local.additional_subscriber_emails))
 }
 
 output "status_page_subscribers_hash" {
   description = "Hash of current subscriber list (changes when list is modified)"
   value       = local.emails_hash
+  sensitive   = true
 }
 
 output "status_page_subscriber_emails" {
