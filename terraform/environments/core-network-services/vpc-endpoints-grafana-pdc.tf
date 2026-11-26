@@ -1,16 +1,30 @@
 locals {
+  # private_dns is each service's verified private DNS name, which the
+  # observability-platform tenant module's PDC agent uses. generic_dns is the
+  # form in Grafana's PrivateLink guide, already deployed for explicit agent flags.
   grafana_pdc_services = {
     api = {
       service_name = "com.amazonaws.vpce.eu-west-2.vpce-svc-0b12fa07b304f0d79"
-      private_dns  = "private-datasource-connect-api.eu-west-2.vpce.grafana.net"
+      private_dns  = "pdc-grafana-datasources-api.eu-west-2.vpce.grafana.net"
+      generic_dns  = "private-datasource-connect-api.eu-west-2.vpce.grafana.net"
       port         = 443
     }
     gateway = {
       service_name = "com.amazonaws.vpce.eu-west-2.vpce-svc-04a3bf37de7c4c8be"
-      private_dns  = "private-datasource-connect.eu-west-2.vpce.grafana.net"
+      private_dns  = "pdc-grafana-datasources.eu-west-2.vpce.grafana.net"
+      generic_dns  = "private-datasource-connect.eu-west-2.vpce.grafana.net"
       port         = 22
     }
   }
+
+  # Generic names keep the original service keys so their deployed zones,
+  # records and Profile associations are not replaced.
+  grafana_pdc_dns_names = merge([
+    for name, service in local.grafana_pdc_services : {
+      (name)             = { service = name, dns_name = service.generic_dns }
+      "${name}-verified" = { service = name, dns_name = service.private_dns }
+    }
+  ]...)
 
   # Keep aligned with modernisation-platform-environments:
   # terraform/environments/cloud-platform/network/locals.tf (vpc_cidr).
@@ -112,9 +126,9 @@ resource "aws_vpc_endpoint" "grafana_pdc" {
 }
 
 resource "aws_route53_zone" "grafana_pdc" {
-  for_each = local.grafana_pdc_services
+  for_each = local.grafana_pdc_dns_names
 
-  name = each.value.private_dns
+  name = each.value.dns_name
 
   vpc {
     vpc_id = module.vpc_centralised_endpoints.vpc_id
@@ -124,21 +138,21 @@ resource "aws_route53_zone" "grafana_pdc" {
 }
 
 resource "aws_route53_record" "grafana_pdc" {
-  for_each = local.grafana_pdc_services
+  for_each = local.grafana_pdc_dns_names
 
   zone_id = aws_route53_zone.grafana_pdc[each.key].zone_id
-  name    = each.value.private_dns
+  name    = each.value.dns_name
   type    = "A"
 
   alias {
-    name                   = aws_vpc_endpoint.grafana_pdc[each.key].dns_entry[0].dns_name
-    zone_id                = aws_vpc_endpoint.grafana_pdc[each.key].dns_entry[0].hosted_zone_id
+    name                   = aws_vpc_endpoint.grafana_pdc[each.value.service].dns_entry[0].dns_name
+    zone_id                = aws_vpc_endpoint.grafana_pdc[each.value.service].dns_entry[0].hosted_zone_id
     evaluate_target_health = false
   }
 }
 
 resource "aws_route53profiles_resource_association" "grafana_pdc" {
-  for_each = local.grafana_pdc_services
+  for_each = local.grafana_pdc_dns_names
 
   name         = "${local.application_name}-grafana-pdc-${each.key}"
   profile_id   = aws_route53profiles_profile.centralised_endpoint_dns_profile.id
