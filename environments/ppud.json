@@ -9,10 +9,6 @@
           "level": "developer"
         },
         {
-          "sso_group_name": "ppud-replacement-devs",
-          "level": "fleet-manager"
-        },
-        {
           "sso_group_name": "ppud-replacement-devs-np",
           "level": "fleet-manager"
         }
@@ -22,14 +18,6 @@
     {
       "name": "preproduction",
       "access": [
-        {
-          "sso_group_name": "ppud-replacement-devs",
-          "level": "developer"
-        },
-        {
-          "sso_group_name": "ppud-replacement-devs",
-          "level": "fleet-manager"
-        },
         {
           "sso_group_name": "ppud-replacement-devs-np",
           "level": "developer"
@@ -44,10 +32,6 @@
     {
       "name": "production",
       "access": [
-        {
-          "sso_group_name": "ppud-replacement-devs",
-          "level": "developer"
-        },
         {
           "sso_group_name": "modernisation-platform-audit",
           "level": "security-audit"
