@@ -93,6 +93,7 @@ No modules.
 | <a name="output_non_tgw_subnet_ids_map"></a> [non\_tgw\_subnet\_ids\_map](#output\_non\_tgw\_subnet\_ids\_map) | Map of subnet ids, with keys being the subnet types and values being the list of subnet ids |
 | <a name="output_private_route_tables"></a> [private\_route\_tables](#output\_private\_route\_tables) | Private route table keys and IDs |
 | <a name="output_private_route_tables_map"></a> [private\_route\_tables\_map](#output\_private\_route\_tables\_map) | Private route table keys and IDs, as a map organised by type |
+| <a name="output_private_subnet_ids_by_az"></a> [private\_subnet\_ids\_by\_az](#output\_private\_subnet\_ids\_by\_az) | Private subnet IDs keyed by availability zone name in the VPC account |
 | <a name="output_public_igw_route"></a> [public\_igw\_route](#output\_public\_igw\_route) | Public Internet Gateway route |
 | <a name="output_public_route_tables"></a> [public\_route\_tables](#output\_public\_route\_tables) | Public route tables |
 | <a name="output_tgw_subnet_ids"></a> [tgw\_subnet\_ids](#output\_tgw\_subnet\_ids) | Transit Gateway subnet IDs |

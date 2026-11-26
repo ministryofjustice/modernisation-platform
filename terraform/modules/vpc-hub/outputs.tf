@@ -44,6 +44,11 @@ output "non_tgw_subnet_ids_map" {
   }
 }
 
+output "private_subnet_ids_by_az" {
+  description = "Private subnet IDs keyed by availability zone name in the VPC account"
+  value       = { for subnet in aws_subnet.private : subnet.availability_zone => subnet.id }
+}
+
 output "private_route_tables" {
   description = "Private route table keys and IDs"
   value = merge({
