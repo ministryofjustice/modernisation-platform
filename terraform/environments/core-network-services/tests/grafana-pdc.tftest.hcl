@@ -98,6 +98,24 @@ override_resource {
 }
 
 override_resource {
+  target          = aws_route53_zone.grafana_pdc["api-verified"]
+  override_during = plan
+  values = {
+    zone_id = "ZPRIVATEAPIVERIFIED"
+    arn     = "arn:aws:route53:::hostedzone/ZPRIVATEAPIVERIFIED"
+  }
+}
+
+override_resource {
+  target          = aws_route53_zone.grafana_pdc["gateway-verified"]
+  override_during = plan
+  values = {
+    zone_id = "ZPRIVATEGATEWAYVERIFIED"
+    arn     = "arn:aws:route53:::hostedzone/ZPRIVATEGATEWAYVERIFIED"
+  }
+}
+
+override_resource {
   target          = aws_security_group.grafana_pdc["api"]
   override_during = plan
   values          = { id = "sg-00000000000000001" }
@@ -198,19 +216,37 @@ run "shared_endpoints" {
   }
 
   assert {
-    condition = alltrue([for name, service in local.grafana_pdc_services :
-      aws_route53_zone.grafana_pdc[name].name == service.private_dns &&
-      one(aws_route53_zone.grafana_pdc[name].vpc).vpc_id == module.vpc_centralised_endpoints.vpc_id &&
-      aws_route53_record.grafana_pdc[name].name == service.private_dns &&
-      aws_route53_record.grafana_pdc[name].type == "A" &&
-      aws_route53_record.grafana_pdc[name].zone_id == aws_route53_zone.grafana_pdc[name].zone_id &&
-      one(aws_route53_record.grafana_pdc[name].alias).name == aws_vpc_endpoint.grafana_pdc[name].dns_entry[0].dns_name &&
-      one(aws_route53_record.grafana_pdc[name].alias).zone_id == aws_vpc_endpoint.grafana_pdc[name].dns_entry[0].hosted_zone_id &&
-      !one(aws_route53_record.grafana_pdc[name].alias).evaluate_target_health &&
-      aws_route53profiles_resource_association.grafana_pdc[name].profile_id == aws_route53profiles_profile.centralised_endpoint_dns_profile.id &&
-      aws_route53profiles_resource_association.grafana_pdc[name].resource_arn == aws_route53_zone.grafana_pdc[name].arn
+    condition = alltrue([for key, entry in local.grafana_pdc_dns_names :
+      aws_route53_zone.grafana_pdc[key].name == entry.dns_name &&
+      one(aws_route53_zone.grafana_pdc[key].vpc).vpc_id == module.vpc_centralised_endpoints.vpc_id &&
+      aws_route53_record.grafana_pdc[key].name == entry.dns_name &&
+      aws_route53_record.grafana_pdc[key].type == "A" &&
+      aws_route53_record.grafana_pdc[key].zone_id == aws_route53_zone.grafana_pdc[key].zone_id &&
+      one(aws_route53_record.grafana_pdc[key].alias).name == aws_vpc_endpoint.grafana_pdc[entry.service].dns_entry[0].dns_name &&
+      one(aws_route53_record.grafana_pdc[key].alias).zone_id == aws_vpc_endpoint.grafana_pdc[entry.service].dns_entry[0].hosted_zone_id &&
+      !one(aws_route53_record.grafana_pdc[key].alias).evaluate_target_health &&
+      aws_route53profiles_resource_association.grafana_pdc[key].profile_id == aws_route53profiles_profile.centralised_endpoint_dns_profile.id &&
+      aws_route53profiles_resource_association.grafana_pdc[key].resource_arn == aws_route53_zone.grafana_pdc[key].arn
     ])
     error_message = "Each private name must alias its own endpoint and be shared through the existing Profile."
+  }
+
+  assert {
+    condition = (
+      { for key, entry in local.grafana_pdc_dns_names : entry.dns_name => entry.service } == {
+        "pdc-grafana-datasources-api.eu-west-2.vpce.grafana.net"    = "api"
+        "private-datasource-connect-api.eu-west-2.vpce.grafana.net" = "api"
+        "pdc-grafana-datasources.eu-west-2.vpce.grafana.net"        = "gateway"
+        "private-datasource-connect.eu-west-2.vpce.grafana.net"     = "gateway"
+      } &&
+      aws_route53_zone.grafana_pdc["api"].name == "private-datasource-connect-api.eu-west-2.vpce.grafana.net" &&
+      aws_route53_zone.grafana_pdc["gateway"].name == "private-datasource-connect.eu-west-2.vpce.grafana.net" &&
+      aws_route53_zone.grafana_pdc["api"].tags["Name"] == "core-network-services-grafana-pdc-api" &&
+      aws_route53_zone.grafana_pdc["gateway"].tags["Name"] == "core-network-services-grafana-pdc-gateway" &&
+      aws_route53profiles_resource_association.grafana_pdc["api"].name == "core-network-services-grafana-pdc-api" &&
+      aws_route53profiles_resource_association.grafana_pdc["gateway"].name == "core-network-services-grafana-pdc-gateway"
+    )
+    error_message = "Verified service names must be added while deployed generic aliases keep their addresses and settings."
   }
 
   assert {
