@@ -11,6 +11,10 @@
         {
           "sso_group_name": "ppud-replacement-devs",
           "level": "fleet-manager"
+        },
+        {
+          "sso_group_name": "ppud-replacement-devs-np",
+          "level": "fleet-manager"
         }
       ],
       "additional_reviewers": ["nbuckingham72"]
@@ -24,6 +28,14 @@
         },
         {
           "sso_group_name": "ppud-replacement-devs",
+          "level": "fleet-manager"
+        },
+        {
+          "sso_group_name": "ppud-replacement-devs-np",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "ppud-replacement-devs-np",
           "level": "fleet-manager"
         }
       ],
@@ -39,6 +51,10 @@
         {
           "sso_group_name": "modernisation-platform-audit",
           "level": "security-audit"
+        },
+        {
+          "sso_group_name": "ppud-replacement-devs-prod",
+          "level": "developer"
         }
       ],
       "additional_reviewers": ["nbuckingham72"]
