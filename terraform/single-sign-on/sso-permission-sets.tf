@@ -729,10 +729,10 @@ data "aws_iam_policy_document" "em_reconciliation_approver" {
       "iam:PassRole",
     ]
     resources = [
-      "arn:aws:iam::443370694497:role/downstream_reconciliation_approver", #preprod
-      "arn:aws:iam::976799291502:role/downstream_reconciliation_approver", #prod
-      "arn:aws:iam::800964199911:role/downstream_reconciliation_approver", #dev
-      "arn:aws:iam::396913731313:role/downstream_reconciliation_approver", #test
+      "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-preproduction"]}:role/downstream_reconciliation_approver",
+      "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/downstream_reconciliation_approver",
+      "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-development"]}:role/downstream_reconciliation_approver",
+      "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-test"]}:role/downstream_reconciliation_approver",
     ]
     condition {
       test     = "StringEquals"
