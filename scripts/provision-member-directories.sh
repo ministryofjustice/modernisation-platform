@@ -211,7 +211,18 @@ EOL
 **/subnet_share.tf @ministryofjustice/modernisation-platform
 **/networking.auto.tfvars.json @ministryofjustice/modernisation-platform
 **/platform_*.tf @ministryofjustice/modernisation-platform
-*.zip *.tar *.gz *.tgz *.bz2 *.7z *.rar *.exe *.bin *.dll *.iso *.img @ministryofjustice/modernisation-platform
+*.zip @ministryofjustice/modernisation-platform
+*.tar @ministryofjustice/modernisation-platform
+*.gz @ministryofjustice/modernisation-platform
+*.tgz @ministryofjustice/modernisation-platform
+*.bz2 @ministryofjustice/modernisation-platform
+*.7z @ministryofjustice/modernisation-platform
+*.rar @ministryofjustice/modernisation-platform
+*.exe @ministryofjustice/modernisation-platform
+*.bin @ministryofjustice/modernisation-platform
+*.dll @ministryofjustice/modernisation-platform
+*.iso @ministryofjustice/modernisation-platform
+*.img @ministryofjustice/modernisation-platform
 /terraform/modules/probation-webops @ministryofjustice/modernisation-platform @ministryofjustice/hmpps-migration
 /terraform/modules
 .devcontainer @ministryofjustice/devcontainer-community
