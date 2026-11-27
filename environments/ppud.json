@@ -19,11 +19,11 @@
       "name": "preproduction",
       "access": [
         {
-          "sso_group_name": "ppud-replacement-devs",
+          "sso_group_name": "ppud-replacement-live",
           "level": "developer"
         },
         {
-          "sso_group_name": "ppud-replacement-devs",
+          "sso_group_name": "ppud-replacement-live",
           "level": "fleet-manager"
         }
       ],
@@ -33,7 +33,7 @@
       "name": "production",
       "access": [
         {
-          "sso_group_name": "ppud-replacement-devs",
+          "sso_group_name": "ppud-replacement-live",
           "level": "developer"
         },
         {
