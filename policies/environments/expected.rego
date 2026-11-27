@@ -112,6 +112,7 @@ expected :=
     "prison-retail",
     "property-cafm-data-migration",
     "refer-monitor",
+    "software-factory-prototype",
     "sprinkler",
     "testing",
     "tipstaff",
