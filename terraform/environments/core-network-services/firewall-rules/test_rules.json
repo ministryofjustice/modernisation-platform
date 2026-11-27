@@ -1,4 +1,18 @@
 {
+  "block_malicious_ips_inbound": {
+    "action": "DROP",
+    "source_ip": "$BLOCKED_MALICIOUS_IPS_20261127",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "ANY",
+    "protocol": "IP"
+  },
+  "block_malicious_ips_outbound": {
+    "action": "DROP",
+    "source_ip": "0.0.0.0/0",
+    "destination_ip": "$BLOCKED_MALICIOUS_IPS_20261127",
+    "destination_port": "ANY",
+    "protocol": "IP"
+  },
   "gp_to_hmpps_test_http": {
     "action": "PASS",
     "source_ip": "${global-protect}",
