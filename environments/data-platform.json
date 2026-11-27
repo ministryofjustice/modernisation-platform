@@ -28,9 +28,6 @@
     },
     {
       "name": "airflow"
-    },
-    {
-      "name": "airflow-cluster"
     }
   ],
   "environments": [
