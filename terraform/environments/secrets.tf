@@ -17,7 +17,10 @@ resource "aws_secretsmanager_secret_version" "environment_management" {
   secret_id = aws_secretsmanager_secret.environment_management.id
   secret_string = jsonencode(merge(
     local.environment_management,
-    { account_ids : module.environments.environment_account_ids }
+    {
+      account_ids          = module.environments.environment_account_ids
+      account_applications = local.environment_account_applications
+    }
   ))
   depends_on = [data.aws_secretsmanager_secret_version.environment_management]
 }
@@ -151,6 +154,9 @@ resource "github_actions_secret" "environment_management" {
   repository  = each.key
   plaintext_value = jsonencode(merge(
     local.environment_management,
-    { account_ids : module.environments.environment_account_ids }
+    {
+      account_ids          = module.environments.environment_account_ids
+      account_applications = local.environment_account_applications
+    }
   ))
 }

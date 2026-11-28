@@ -13,6 +13,27 @@ data "aws_organizations_organizational_units" "platforms_architecture" {
 data "aws_caller_identity" "current" {}
 
 locals {
+  environment_definitions = {
+    for file in fileset("../../environments", "*.json") :
+    trimsuffix(file, ".json") => jsondecode(file("../../environments/${file}"))
+  }
+
+  environment_account_applications = {
+    for account in flatten([
+      for application_name, definition in local.environment_definitions : [
+        for environment in definition.environments : {
+          account_name = "${application_name}-${environment.name}"
+          application  = definition.tags.application
+          } if try(
+          definition.tags.application != "" &&
+          definition.tags.application == tostring(definition.tags.application) &&
+          trimspace(definition.tags.application) != "",
+          false
+        )
+      ]
+    ]) : account.account_name => account.application
+  }
+
   environments = {
     business-unit = "Platforms"
     service-area  = "Hosting"
